@@ -1,4 +1,4 @@
-package com.currentbooking.stag;
+package com.currentbooking.utilits;
 
 import org.junit.Test;
 
