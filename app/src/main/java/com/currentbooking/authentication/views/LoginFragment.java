@@ -1,18 +1,21 @@
 package com.currentbooking.authentication.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
+import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.views.BaseFragment;
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -69,7 +72,19 @@ public class LoginFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the select_bus_points for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.login).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
+        requireActivity().finish();
     }
 }

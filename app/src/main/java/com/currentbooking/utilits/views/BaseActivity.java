@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.currentbooking.R;
 
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

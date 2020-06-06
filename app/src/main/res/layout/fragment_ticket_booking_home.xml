@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ticketbooking.TicketBookingHomeFragment">
+    <ScrollView
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".authentication.views.LoginFragment">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/user_id"
+                android:drawableStart="@drawable/user_thumb"
+                android:drawableLeft="@drawable/user_thumb"
+                android:hint="@string/select_state_transport"
+                style="@style/text_view" />
+
+            <include layout="@layout/select_bus_points"/>
+        </LinearLayout>
+    </ScrollView>
+    <com.google.android.material.button.MaterialButton
+        android:layout_alignParentBottom="true"
+        android:id="@+id/search"
+        android:text="@string/search"
+        style="@style/button_gray"/>
+</RelativeLayout>

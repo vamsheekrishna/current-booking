@@ -1,6 +1,8 @@
-package com.currentbooking.authentication.views;
+package com.currentbooking.ticketbooking;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,7 @@ import android.view.ViewGroup;
 import com.currentbooking.R;
 import com.currentbooking.utilits.views.BaseFragment;
 
-public class ViewPagerFragment extends BaseFragment {
+public class TicketStatus extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -18,21 +20,12 @@ public class ViewPagerFragment extends BaseFragment {
     private String mParam1;
     private String mParam2;
 
-    public ViewPagerFragment() {
+    public TicketStatus() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewPagerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ViewPagerFragment newInstance(String param1, String param2) {
-        ViewPagerFragment fragment = new ViewPagerFragment();
+    public static TicketStatus newInstance(String param1, String param2) {
+        TicketStatus fragment = new TicketStatus();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -53,6 +46,8 @@ public class ViewPagerFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
-        return inflater.inflate(R.layout.fragment_view_pager, container, false);
+        return inflater.inflate(R.layout.fragment_ticket_status, container, false);
     }
+
+    
 }

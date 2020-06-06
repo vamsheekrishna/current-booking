@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/text_view"
+        android:layout_margin="0dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/pick_up"
+        android:drawableStart="@drawable/pickup_location"
+        android:drawableLeft="@drawable/pickup_location"
+        android:hint="@string/pickup_point" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/drop_point"
+        style="@style/text_view"
+        android:layout_margin="0dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/pick_up"
+        android:drawableLeft="@drawable/pickup_location"
+        android:drawableStart="@drawable/pickup_location"
+        android:hint="@string/drop_off_point" />
+    <ImageView
+        android:id="@+id/swipe_points"
+        android:layout_marginTop="-20dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/pick_up"
+        android:padding="8dp"
+        android:src="@drawable/reverse"
+        android:background="@drawable/swipe_points_bg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp" />
+</RelativeLayout>
