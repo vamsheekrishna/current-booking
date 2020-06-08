@@ -20,10 +20,12 @@
                 android:id="@+id/user_id"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/user_id"
+                android:inputType="text"
                 style="@style/edit_text"
                 android:drawableLeft="@drawable/user_thumb" />
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/password"
+                android:inputType="textPassword"
                 android:drawableLeft="@drawable/lock_thumb"
                 android:hint="@string/password"
                 style="@style/edit_text"/>

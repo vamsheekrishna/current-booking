@@ -30,6 +30,7 @@ android {
 
             buildConfigField("String", "REGISTRATION", '"login/registration"')
             buildConfigField("String", "LOGIN", '"login/login"')
+            buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
 
         }
         prod {
@@ -43,6 +44,7 @@ android {
 
             buildConfigField("String", "REGISTRATION", '"/login/registration"')
             buildConfigField("String", "LOGIN", '"/login/login"')
+            buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
         }
     }
     buildTypes {
@@ -62,7 +64,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "com.google.android.material:material:1.3.0-alpha01"
-    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.8.1'
@@ -70,5 +71,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
 
+    def lifecycle_version = "2.2.0"
 
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
 }

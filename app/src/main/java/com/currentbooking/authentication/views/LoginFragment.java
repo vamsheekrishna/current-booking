@@ -15,7 +15,7 @@ import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
-import com.currentbooking.utilits.cb_api.interfaces.LoginResponse;
+import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.views.BaseFragment;
 

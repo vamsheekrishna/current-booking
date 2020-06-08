@@ -12,25 +12,58 @@ tools:context=".authentication.views.RegistrationFragment">
         android:layout_height="match_parent"
         tools:context=".authentication.views.LoginFragment">
         <LinearLayout
-            android:layout_gravity="center"
+            android:layout_gravity="top"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/first_name"
+                android:drawableStart="@drawable/user_thumb"
+                android:hint="@string/first_name"
+                android:inputType="text"
+                style="@style/edit_text"
+                android:drawableLeft="@drawable/user_thumb" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/last_name"
+                android:drawableStart="@drawable/user_thumb"
+                android:hint="@string/last_name"
+                android:inputType="text"
+                style="@style/edit_text"
+                android:drawableLeft="@drawable/user_thumb" />
+
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/user_id"
                 android:drawableStart="@drawable/user_thumb"
+                android:hint="@string/user_id"
+                android:inputType="text"
+                style="@style/edit_text"
+                android:drawableLeft="@drawable/user_thumb" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/mobile_no"
+                android:maxLength="10"
+                android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/mobile_number"
+                android:inputType="number"
+                style="@style/edit_text"
+                android:drawableLeft="@drawable/user_thumb" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/email"
+                android:drawableStart="@drawable/user_thumb"
+                android:hint="@string/email_id"
+                android:inputType="textEmailAddress"
                 style="@style/edit_text"
                 android:drawableLeft="@drawable/user_thumb" />
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/password"
                 android:drawableLeft="@drawable/lock_thumb"
                 android:hint="@string/password"
+                android:inputType="textPassword"
                 style="@style/edit_text"/>
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/conform_password"
                 android:drawableLeft="@drawable/lock_thumb"
                 android:hint="@string/conform_password"
+                android:inputType="textPassword"
                 style="@style/edit_text"/>
         </LinearLayout>
     </ScrollView>

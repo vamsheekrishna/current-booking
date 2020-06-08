@@ -6,7 +6,6 @@
     <string name="sign_out">Sign Out</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="login">login</string>
-    <string name="user_id">User ID</string>
     <string name="password">Password</string>
     <string name="conform_password">Conform Password</string>
     <string name="mobile_number">Mobile Number</string>
@@ -17,4 +16,16 @@
     <string name="pickup_point">Pickup Point</string>
     <string name="drop_off_point">Drop Off Point</string>
     <string name="select_bus_type">Select Bus Type</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_id">Email ID</string>
+    <string name="user_id">User ID</string>
+    <string name="error_first_name">Please enter valid first name.</string>
+    <string name="error_last_name">Please enter valid last name.</string>
+    <string name="error_user_id">Please enter valid user id.</string>
+    <string name="error_mobile">Please enter valid mobile number.</string>
+    <string name="error_mail">Please enter valid email id.</string>
+    <string name="error_password">Please enter valid password.</string>
+    <string name="error_conformation_password">Please enter valid conformation password.</string>
+    <string name="error_mismatch_password">Password mismatched</string>
 </resources>

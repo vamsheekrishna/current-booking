@@ -23,7 +23,7 @@ public class BaseResponse {
     }
 
     public String getMsg() {
-        return msg;
+        return msg.replace(",","\n");
     }
 
     public void setMsg(String msg) {

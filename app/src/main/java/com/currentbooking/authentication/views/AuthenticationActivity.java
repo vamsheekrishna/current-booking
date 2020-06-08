@@ -1,11 +1,13 @@
 package com.currentbooking.authentication.views;
 import android.os.Bundle;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
+import com.currentbooking.authentication.view_models.Authentication;
 import com.currentbooking.utilits.views.BaseActivity;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -17,6 +19,8 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     private static final int NUM_PAGES = 2;
     private ViewPager2 viewPager;
     private FragmentStateAdapter pagerAdapter;
+    private Authentication authentication;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +28,8 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
             this.getSupportActionBar().hide();
 
         setContentView(R.layout.activity_authentication);
+
+        authentication = new ViewModelProvider(this).get(Authentication.class);
         ArrayList<BaseFragment> baseFragments = new ArrayList<>();
         baseFragments.add(LoginFragment.newInstance("",""));
         baseFragments.add(RegistrationFragment.newInstance("",""));

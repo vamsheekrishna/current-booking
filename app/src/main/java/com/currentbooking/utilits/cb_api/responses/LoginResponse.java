@@ -1,4 +1,4 @@
-package com.currentbooking.utilits.cb_api.interfaces;
+package com.currentbooking.utilits.cb_api.responses;
 
 import com.currentbooking.utilits.cb_api.responses.BaseResponse;
 import com.google.gson.annotations.Expose;
