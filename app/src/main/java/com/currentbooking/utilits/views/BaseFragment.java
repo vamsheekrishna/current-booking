@@ -17,7 +17,7 @@ import static com.currentbooking.utilits.Utils.internetConnectionAvailable;
 
 public class BaseFragment extends Fragment {
 
-    protected ProgressDialog progressBar;
+    protected ProgressDialog progressDialog;
     public BaseFragment() {
         // Required empty public constructor
     }
@@ -25,9 +25,9 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressBar = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
-        progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-        progressBar.setCancelable(false);
+        progressDialog = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
+        progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        progressDialog.setCancelable(false);
     }
 
     @Override

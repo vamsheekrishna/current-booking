@@ -37,7 +37,7 @@ public class BusTypeAdapter extends RecyclerView.Adapter<BusTypeAdapter.BusTypeV
         return busTypes.size();
     }
 
-    public class BusTypeViewHolder extends RecyclerView.ViewHolder {
+    public static class BusTypeViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
         public BusTypeViewHolder(@NonNull View itemView) {
             super(itemView);

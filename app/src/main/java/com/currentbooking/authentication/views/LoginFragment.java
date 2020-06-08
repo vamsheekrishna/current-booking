@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +14,14 @@ import androidx.annotation.Nullable;
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.LoginResponse;
+import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.views.BaseFragment;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
@@ -24,6 +32,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private String mParam1;
     private String mParam2;
     private OnAuthenticationClickedListener mListener;
+    private LoginService loginService;
+    private TextView userName;
+    private TextView password;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -80,11 +91,36 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.login).setOnClickListener(this);
+        userName = ((TextView)view.findViewById(R.id.user_id));
+        userName.setText("anita");
+        password = ((TextView)view.findViewById(R.id.password));
+        password.setText("anita123");
     }
 
     @Override
     public void onClick(View v) {
-        startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
-        requireActivity().finish();
+        progressDialog.show();
+        loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+        loginService.login(userName.getText().toString(), password.getText().toString()).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if(response.isSuccessful()) {
+                    LoginResponse data = response.body();
+                    if(data.getStatus().equalsIgnoreCase("success")) {
+                        startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
+                        requireActivity().finish();
+                    } else {
+                        showDialog("", data.getMsg());
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
     }
 }
