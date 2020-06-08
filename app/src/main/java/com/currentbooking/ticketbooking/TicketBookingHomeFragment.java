@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.currentbooking.R;
 import com.currentbooking.utilits.views.BaseFragment;
 
+import java.util.ArrayList;
+
 public class TicketBookingHomeFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -65,6 +67,13 @@ public class TicketBookingHomeFragment extends BaseFragment {
         LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new BusTypeAdapter());
+        ArrayList<String> busTypes = new ArrayList<>();
+        busTypes.add("Ac");
+        busTypes.add("Non Ac");
+        busTypes.add("Ac Sleeper");
+        busTypes.add("Non Ac Sleeper");
+        busTypes.add("Luxury");
+        busTypes.add("Deluxe");
+        recyclerView.setAdapter(new BusTypeAdapter(busTypes));
     }
 }
