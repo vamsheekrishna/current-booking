@@ -26,7 +26,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public NavigationView nv;
     protected LinearLayoutCompat signOut;
     private TextView textCartItemCount;
-    private int mCartItemCount = 10;
+    private int mCartItemCount = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

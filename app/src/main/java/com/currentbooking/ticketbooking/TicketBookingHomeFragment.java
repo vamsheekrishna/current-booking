@@ -11,13 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
 
-public class TicketBookingHomeFragment extends BaseFragment {
+public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -65,6 +68,7 @@ public class TicketBookingHomeFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rv_select_type);
+        view.findViewById(R.id.swipe_points).setOnClickListener(this);
         LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -76,5 +80,19 @@ public class TicketBookingHomeFragment extends BaseFragment {
         busTypes.add("Luxury");
         busTypes.add("Deluxe");
         recyclerView.setAdapter(new BusTypeAdapter(busTypes));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.swipe_points:
+                RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(1000);
+                rotate.setInterpolator(new LinearInterpolator());
+                //ImageView image= (ImageView) findViewById(R.id.imageView);
+                rotate.setFillAfter(true);
+                v.startAnimation(rotate);
+                break;
+        }
     }
 }

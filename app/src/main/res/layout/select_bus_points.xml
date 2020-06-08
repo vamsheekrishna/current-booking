@@ -22,7 +22,8 @@
     <ImageView
         android:id="@+id/swipe_points"
         android:layout_marginTop="-20dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/pick_up"
@@ -30,6 +31,5 @@
         android:src="@drawable/reverse"
         android:background="@drawable/swipe_points_bg"
         android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_height="40dp" />
 </RelativeLayout>
