@@ -30,6 +30,13 @@ public class BusTypeAdapter extends RecyclerView.Adapter<BusTypeAdapter.BusTypeV
     @Override
     public void onBindViewHolder(@NonNull BusTypeViewHolder holder, int position) {
         holder.textView.setText(busTypes.get(position));
+        if(position == 0 ) {
+            holder.textView.setBackgroundResource(R.drawable.edit_text_left_rounded_edges);
+        } else if(position == busTypes.size()-1) {
+            holder.textView.setBackgroundResource(R.drawable.edit_text_right_rounded_edges);
+        } else {
+            holder.textView.setBackgroundResource(R.drawable.edit_text_stright_edges);
+        }
     }
 
     @Override
