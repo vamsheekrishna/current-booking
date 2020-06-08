@@ -18,4 +18,5 @@
     <string name="select_state_transport">Select State Transport</string>
     <string name="pickup_point">Pickup Point</string>
     <string name="drop_off_point">Drop Off Point</string>
+    <string name="select_bus_type">Select Bus Type</string>
 </resources>
