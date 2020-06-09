@@ -5,7 +5,30 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
+
+    <style name="AppThemeNoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/colorAccent</item>
+        <item name="android:dividerHeight">0.5dp</item>
+    </style>
+
     <style name="mySpinnerTheme" parent="android:Theme.Holo.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="android:windowBackground">@android:color/transparent</item>

@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
+import com.currentbooking.ticketbooking.OptionSelection;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -53,7 +54,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         final MenuItem menuItem = menu.findItem(R.id.live_ticket);
 
         View actionView = menuItem.getActionView();
-        textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
+        textCartItemCount = actionView.findViewById(R.id.cart_badge);
 
         setupBadge();
 
@@ -123,13 +124,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 Toast.makeText(this,"nav_ticket_booking", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_history:
-                Toast.makeText(this,"nav_history", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "nav_history", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_my_ticket:
-                Toast.makeText(this,"nav_my_ticket", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "nav_my_ticket", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_help:
-                Toast.makeText(this,"nav_help", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.nav_options_selection:
+                replaceFragment(OptionSelection.newInstance("", ""), "OptionSelection", true);
                 break;
         }
         dl.closeDrawer(nv);

@@ -13,14 +13,20 @@
             android:id="@+id/nav_my_ticket"
             android:icon="@drawable/ticket"
             android:title="Live Tickets" />
+
+        <item
+            android:id="@+id/nav_options_selection"
+            android:icon="@drawable/ticket"
+            android:title="Options Selection" />
+
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ticket"
             android:title="Help" />
 
-<!--        <item-->
-<!--            android:id="@+id/nav_logout"-->
-<!--            android:icon="@drawable/logout"-->
-<!--            android:title="Sign Out" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_logout"-->
+        <!--            android:icon="@drawable/logout"-->
+        <!--            android:title="Sign Out" />-->
     </group>
 </menu>
