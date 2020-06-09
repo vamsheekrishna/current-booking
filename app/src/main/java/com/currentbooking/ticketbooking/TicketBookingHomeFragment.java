@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.TextView;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -30,6 +30,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private String mParam1;
     private String mParam2;
     private OnTicketBookingListener mListener;
+    private TextView selectTransport, pickUp, dropPoint;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -75,9 +76,19 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         RecyclerView recyclerView = view.findViewById(R.id.rv_select_type);
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
-        view.findViewById(R.id.select_transport).setOnClickListener(this);
+
+        selectTransport = view.findViewById(R.id.select_transport);
+        selectTransport.setOnClickListener(this);
+
+        pickUp = view.findViewById(R.id.pick_up);
+        pickUp.setOnClickListener(this);
+
+        dropPoint = view.findViewById(R.id.drop_point);
+        dropPoint.setOnClickListener(this);
+
         LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -103,6 +114,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 v.startAnimation(rotate);
                 break;
             case R.id.select_transport:
+            case R.id.pick_up:
+            case R.id.drop_point:
                 mListener.goToOptionSelection();
                 break;
         }
