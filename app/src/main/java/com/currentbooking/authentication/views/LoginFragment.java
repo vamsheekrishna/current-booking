@@ -111,6 +111,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             showDialog("", getString(R.string.password_cannot_be_empty));
             return;
         }
+
+        startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
+        requireActivity().finish();
+        /*
         progressDialog.show();
         loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
         loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
@@ -135,6 +139,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }
-        });
+        });*/
     }
 }

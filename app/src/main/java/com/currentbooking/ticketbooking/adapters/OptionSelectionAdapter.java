@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.ticketbooking.ItemData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +20,21 @@ import java.util.List;
 public class OptionSelectionAdapter extends RecyclerView.Adapter<OptionSelectionAdapter.OptionSelectionViewHolder>
         implements Filterable {
 
-    private List<String> listData;
+    private List<ItemData> listData;
     private LayoutInflater layoutInflater;
-    private List<String> filteredListData;
+    private List<ItemData> filteredListData;
     private MyFilter myFilter;
+    private View.OnClickListener onClick;
 
-    public OptionSelectionAdapter(Context context, List<String> listData) {
+    public OptionSelectionAdapter(Context context, List<ItemData> listData, View.OnClickListener _onClick) {
         this.listData = listData;
         this.filteredListData = new ArrayList<>();
         this.filteredListData.addAll(listData);
         layoutInflater = LayoutInflater.from(context);
+        this.onClick = _onClick;
     }
 
-    public void updateItems(List<String> listData) {
+    public void updateItems(List<ItemData> listData) {
         this.listData = listData;
         this.filteredListData.clear();
         this.filteredListData.addAll(listData);
@@ -41,12 +44,15 @@ public class OptionSelectionAdapter extends RecyclerView.Adapter<OptionSelection
     @Override
     public OptionSelectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = layoutInflater.inflate(R.layout.options_selection_list_items, parent, false);
-        return new OptionSelectionViewHolder(itemView);
+        OptionSelectionViewHolder viewHolder = new OptionSelectionViewHolder(itemView);
+        viewHolder.cityNameField.setOnClickListener(onClick);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull OptionSelectionViewHolder holder, int position) {
-        holder.cityNameField.setText(filteredListData.get(position));
+        holder.cityNameField.setText(filteredListData.get(position).getItemName());
+        holder.cityNameField.setTag(position);
     }
 
     @Override
@@ -79,8 +85,8 @@ public class OptionSelectionAdapter extends RecyclerView.Adapter<OptionSelection
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
-                for (String location : listData) {
-                    if (location.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                for (ItemData location : listData) {
+                    if (location.getItemName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredListData.add(location);
                     }
                 }
@@ -92,7 +98,7 @@ public class OptionSelectionAdapter extends RecyclerView.Adapter<OptionSelection
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredListData = (List<String>) results.values;
+            filteredListData = (List<ItemData>) results.values;
             notifyDataSetChanged();
         }
     }

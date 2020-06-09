@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,20 +18,22 @@ import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import com.currentbooking.R;
+import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    TicketBookingViewModel ticketBookingViewModel;
-
+    RecyclerView recyclerView;
     private String mParam1;
     private String mParam2;
     private OnTicketBookingListener mListener;
     private TextView selectTransport, pickUp, dropPoint;
+    private TicketBookingViewModel ticketBookingModule;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -76,8 +79,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        RecyclerView recyclerView = view.findViewById(R.id.rv_select_type);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        recyclerView = view.findViewById(R.id.rv_select_type);
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
 
         selectTransport = view.findViewById(R.id.select_transport);
@@ -100,6 +103,11 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         busTypes.add("Luxury");
         busTypes.add("Deluxe");
         recyclerView.setAdapter(new BusTypeAdapter(busTypes));
+        ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
+            if(null != busOperator) {
+                selectTransport.setText(busOperator.opertorName);
+            }
+        });
     }
 
     @Override
@@ -114,9 +122,19 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 v.startAnimation(rotate);
                 break;
             case R.id.select_transport:
+                /*ArrayList<String> transports = new ArrayList<>();
+                if(null != ticketBookingModule.getBusOperators().getValue() && ticketBookingModule.getBusOperators().getValue().size()>0) {
+                    for (BusOperator busOperator: ticketBookingModule.getBusOperators().getValue()) {
+                        transports.add(busOperator.opertorName);
+                    }
+                }*/
+                mListener.goToOptionSelection(0);
+                break;
             case R.id.pick_up:
+                mListener.goToOptionSelection(1);
+                break;
             case R.id.drop_point:
-                mListener.goToOptionSelection();
+                mListener.goToOptionSelection(2);
                 break;
         }
     }

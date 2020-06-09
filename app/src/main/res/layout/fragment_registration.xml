@@ -32,6 +32,7 @@ tools:context=".authentication.views.RegistrationFragment">
                 android:drawableLeft="@drawable/user_thumb" />
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:visibility="gone"
                 android:id="@+id/user_id"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/user_id"

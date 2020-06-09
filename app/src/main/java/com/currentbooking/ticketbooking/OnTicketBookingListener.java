@@ -6,5 +6,5 @@ public interface OnTicketBookingListener {
     void goToConformTicket();
     void goToPayment();
     void goToTicketStatus();
-    void goToOptionSelection();
+    void goToOptionSelection(int listData);
 }

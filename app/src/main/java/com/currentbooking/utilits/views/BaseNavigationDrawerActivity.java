@@ -132,6 +132,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
                 break;
             default:
+                Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
                 break;
         }
         dl.closeDrawer(nv);
