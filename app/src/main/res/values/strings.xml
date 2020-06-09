@@ -28,4 +28,8 @@
     <string name="error_password">Please enter valid password.</string>
     <string name="error_conformation_password">Please enter valid conformation password.</string>
     <string name="error_mismatch_password">Password mismatched</string>
+    <string name="user_id_cannot_be_empty">User ID cannot be Empty</string>
+    <string name="password_cannot_be_empty">Password cannot be Empty</string>
+    <string name="message">Message</string>
+    <string name="book_now">Book Now</string>
 </resources>

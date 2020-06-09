@@ -3,6 +3,7 @@ package com.currentbooking.utilits.views;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.currentbooking.R;
+
+import java.util.Objects;
 
 import static com.currentbooking.utilits.Utils.internetConnectionAvailable;
 
@@ -42,7 +45,7 @@ public class BaseFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        getActivity().onBackPressed();
+                        Objects.requireNonNull(getActivity()).onBackPressed();
                         // System.exit(0);
                     }
                 });
@@ -58,21 +61,20 @@ public class BaseFragment extends Fragment {
 
     protected void showDialog(String title, String msg) {
         try {
-            AlertDialog.Builder builder =new AlertDialog.Builder(requireActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            if (TextUtils.isEmpty(title)) {
+                title = requireActivity().getString(R.string.message);
+            }
             builder.setTitle(title);
             builder.setCancelable(false);
             builder.setMessage(msg);
-            builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            builder.setNegativeButton("close", (dialog, which) -> dialog.dismiss());
             AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+            if (!requireActivity().isFinishing()) {
+                alertDialog.show();
+            }
         } catch (Exception e) {
 
         }
-
     }
 }

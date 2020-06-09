@@ -3,6 +3,7 @@ package com.currentbooking.authentication.views;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,8 @@ import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
-import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
+import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import retrofit2.Call;
@@ -91,28 +92,41 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.login).setOnClickListener(this);
-        userName = ((TextView)view.findViewById(R.id.user_id));
+        userName = view.findViewById(R.id.user_id);
         userName.setText("anita");
-        password = ((TextView)view.findViewById(R.id.password));
+        password = view.findViewById(R.id.password);
         password.setText("anita123");
     }
 
     @Override
     public void onClick(View v) {
+        String userNameValue = userName.getText().toString().trim();
+        String passwordValue = userName.getText().toString().trim();
+
+        if (TextUtils.isEmpty(userNameValue)) {
+            showDialog("", getString(R.string.user_id_cannot_be_empty));
+            return;
+        }
+        if (TextUtils.isEmpty(passwordValue)) {
+            showDialog("", getString(R.string.password_cannot_be_empty));
+            return;
+        }
         progressDialog.show();
         loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-        loginService.login(userName.getText().toString(), password.getText().toString()).enqueue(new Callback<LoginResponse>() {
+        loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     LoginResponse data = response.body();
-                    if(data.getStatus().equalsIgnoreCase("success")) {
+                    if (data.getStatus().equalsIgnoreCase("success")) {
                         startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
                         requireActivity().finish();
                     } else {
                         showDialog("", data.getMsg());
                     }
                 }
+                startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
+                requireActivity().finish();
                 progressDialog.dismiss();
             }
 

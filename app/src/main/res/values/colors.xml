@@ -10,5 +10,7 @@
     <color name="edit_text_border_color">#B7B6B6</color>
     <color name="edit_text_hint">#707070</color>
     <color name="gray_color">#888888</color>
+    <color name="black">#000000</color>
+    <color name="book_color">#0083F6</color>
 
 </resources>

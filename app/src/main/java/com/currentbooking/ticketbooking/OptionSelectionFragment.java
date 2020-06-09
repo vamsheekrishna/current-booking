@@ -1,10 +1,12 @@
 package com.currentbooking.ticketbooking;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -13,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.databinding.FragmentOptionSelectionBinding;
+import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.ticketbooking.adapters.OptionSelectionAdapter;
 import com.currentbooking.ticketbooking.viewmodels.OptionSelectionViewModel;
+import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class OptionSelection extends BaseFragment {
+public class OptionSelectionFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +38,9 @@ public class OptionSelection extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private CallBackInterface callBackInterface;
 
-    public OptionSelection() {
+    public OptionSelectionFragment() {
         // Required empty public constructor
     }
 
@@ -48,8 +53,8 @@ public class OptionSelection extends BaseFragment {
      * @return A new instance of fragment OptionSelection.
      */
     // TODO: Rename and change types and number of parameters
-    public static OptionSelection newInstance(String param1, String param2) {
-        OptionSelection fragment = new OptionSelection();
+    public static OptionSelectionFragment newInstance(String param1, String param2) {
+        OptionSelectionFragment fragment = new OptionSelectionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,10 +72,14 @@ public class OptionSelection extends BaseFragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        callBackInterface = (CallBackInterface) context;
+    }
+
+    @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the select_bus_points for this fragment
-        //return inflater.inflate(R.layout.fragment_option_selection, container, false);
         return initDataBinding(inflater);
     }
 
@@ -95,8 +104,24 @@ public class OptionSelection extends BaseFragment {
                 R.drawable.recycler_decoration_divider)));
         resultsListField.addItemDecoration(divider);
 
-        OptionSelectionAdapter optionSelectionAdapter = new OptionSelectionAdapter(getActivity(), getCitiesList());
+        List<String> citiesList = getCitiesList();
+        OptionSelectionAdapter optionSelectionAdapter = new OptionSelectionAdapter(getActivity(), citiesList);
         resultsListField.setAdapter(optionSelectionAdapter);
+
+        resultsListField.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), resultsListField, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if (callBackInterface != null) {
+                    callBackInterface.callBackReceived(citiesList.get(position));
+                    closeFragment();
+                }
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -150,5 +175,9 @@ public class OptionSelection extends BaseFragment {
 
         Collections.sort(citiesList);
         return citiesList;
+    }
+
+    private void closeFragment() {
+        Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStack();
     }
 }

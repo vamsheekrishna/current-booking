@@ -16,7 +16,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
-import com.currentbooking.ticketbooking.OptionSelection;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -132,8 +131,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             case R.id.nav_help:
                 Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
                 break;
-            case R.id.nav_options_selection:
-                replaceFragment(OptionSelection.newInstance("", ""), "OptionSelection", true);
+            default:
                 break;
         }
         dl.closeDrawer(nv);

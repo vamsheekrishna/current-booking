@@ -1,15 +1,26 @@
 package com.currentbooking.ticketbooking;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.currentbooking.R;
+import com.currentbooking.databinding.FragmentSelectBusBinding;
+import com.currentbooking.ticketbooking.adapters.SelectBusesAdapter;
+import com.currentbooking.ticketbooking.viewmodels.SelectBusesViewModel;
 import com.currentbooking.utilits.views.BaseFragment;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 public class SelectBusFragment extends BaseFragment {
@@ -57,7 +68,37 @@ public class SelectBusFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the select_bus_points for this fragment
-        return inflater.inflate(R.layout.fragment_select_bus, container, false);
+        return initDataBinding(inflater);
+    }
+
+    private View initDataBinding(@NotNull LayoutInflater inflater) {
+        FragmentSelectBusBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_bus,
+                null, false);
+        SelectBusesViewModel selectBusesViewModel = new SelectBusesViewModel();
+        dataBinding.setViewModel(selectBusesViewModel);
+
+        loadUIComponents(dataBinding);
+        return dataBinding.getRoot();
+    }
+
+    private void loadUIComponents(FragmentSelectBusBinding dataBinding) {
+        RecyclerView busesResultListField = dataBinding.busesResultsListField;
+
+        busesResultListField.setHasFixedSize(false);
+
+        DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()),
+                R.drawable.recycler_decoration_divider)));
+        busesResultListField.addItemDecoration(divider);
+
+        List<Object> busesList = new ArrayList<>();
+        busesList.add(1);
+        busesList.add(2);
+        busesList.add(3);
+        busesList.add(4);
+        busesList.add(5);
+
+        SelectBusesAdapter selectBusesAdapter = new SelectBusesAdapter(getActivity(), busesList);
+        busesResultListField.setAdapter(selectBusesAdapter);
     }
 }
