@@ -1,11 +1,11 @@
-package com.currentbooking.ticketbooking;
+package com.currentbooking.ticketbooking.viewmodels;
 
 public class ItemData {
 
     String itemName;
     int index;
 
-    ItemData(String name, int id) {
+    public ItemData(String name, int id) {
         itemName = name;
         index = id;
     }

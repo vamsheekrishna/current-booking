@@ -22,7 +22,13 @@
                 android:drawableLeft="@drawable/user_thumb"
                 android:hint="@string/select_state_transport"
                 style="@style/text_view" />
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/select_bus_type"
+                android:drawableStart="@drawable/user_thumb"
+                android:drawableLeft="@drawable/user_thumb"
+                android:hint="@string/select_bus_type"
+                style="@style/text_view" />
+            <!--<TextView
                 android:layout_marginTop="16dp"
                 android:text="@string/select_bus_type"
                 android:textSize="14sp"
@@ -34,7 +40,7 @@
                 android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"/>-->
             <include
                 android:layout_marginTop="16dp"
                 layout="@layout/select_bus_points"

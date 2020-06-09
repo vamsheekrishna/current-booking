@@ -16,17 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.databinding.FragmentOptionSelectionBinding;
-import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.ticketbooking.adapters.OptionSelectionAdapter;
+import com.currentbooking.ticketbooking.viewmodels.ItemData;
 import com.currentbooking.ticketbooking.viewmodels.OptionSelectionViewModel;
-import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class OptionSelection extends BaseFragment implements View.OnClickListener {

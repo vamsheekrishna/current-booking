@@ -28,7 +28,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    RecyclerView recyclerView;
+    // RecyclerView recyclerView;
     private String mParam1;
     private String mParam2;
     private OnTicketBookingListener mListener;
@@ -80,7 +80,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
-        recyclerView = view.findViewById(R.id.rv_select_type);
+        // recyclerView = view.findViewById(R.id.rv_select_type);
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
 
         selectTransport = view.findViewById(R.id.select_transport);
@@ -92,7 +92,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         dropPoint = view.findViewById(R.id.drop_point);
         dropPoint.setOnClickListener(this);
 
-        LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(requireActivity());
+        /*LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         ArrayList<String> busTypes = new ArrayList<>();
@@ -102,7 +102,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         busTypes.add("Non Ac Sleeper");
         busTypes.add("Luxury");
         busTypes.add("Deluxe");
-        recyclerView.setAdapter(new BusTypeAdapter(busTypes));
+        recyclerView.setAdapter(new BusTypeAdapter(busTypes));*/
+
         ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
             if(null != busOperator) {
                 selectTransport.setText(busOperator.opertorName);

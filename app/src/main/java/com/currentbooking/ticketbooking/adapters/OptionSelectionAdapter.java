@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
-import com.currentbooking.ticketbooking.ItemData;
+import com.currentbooking.ticketbooking.viewmodels.ItemData;
 
 import java.util.ArrayList;
 import java.util.List;
