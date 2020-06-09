@@ -1,5 +1,6 @@
 package com.currentbooking.ticketbooking;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,9 +29,16 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
     private String mParam1;
     private String mParam2;
+    private OnTicketBookingListener mListener;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnTicketBookingListener)context;
     }
 
     public static TicketBookingHomeFragment newInstance(String param1, String param2) {
@@ -69,6 +77,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rv_select_type);
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
+        view.findViewById(R.id.select_transport).setOnClickListener(this);
         LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -92,6 +101,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 //ImageView image= (ImageView) findViewById(R.id.imageView);
                 rotate.setFillAfter(true);
                 v.startAnimation(rotate);
+                break;
+            case R.id.select_transport:
+                mListener.goToOptionSelection();
                 break;
         }
     }
