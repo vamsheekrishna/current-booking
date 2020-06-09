@@ -42,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>-->
             <include
+                android:id="@+id/bus_point"
                 android:layout_marginTop="16dp"
                 layout="@layout/select_bus_points"
                 android:layout_height="wrap_content"

@@ -32,8 +32,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private String mParam1;
     private String mParam2;
     private OnTicketBookingListener mListener;
-    private TextView selectTransport, pickUp, dropPoint;
+    private TextView selectTransport, pickUp, dropPoint, selectBusType;
     private TicketBookingViewModel ticketBookingModule;
+    private View bus_point;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -80,11 +81,16 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
-        // recyclerView = view.findViewById(R.id.rv_select_type);
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
 
         selectTransport = view.findViewById(R.id.select_transport);
         selectTransport.setOnClickListener(this);
+
+        selectBusType = view.findViewById(R.id.select_bus_type);
+        selectBusType.setOnClickListener(this);
+        selectBusType.setVisibility(View.GONE);
+        bus_point = view.findViewById(R.id.bus_point);
+        bus_point.setVisibility(View.GONE);
 
         pickUp = view.findViewById(R.id.pick_up);
         pickUp.setOnClickListener(this);
@@ -107,7 +113,13 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
             if(null != busOperator) {
                 selectTransport.setText(busOperator.opertorName);
+                selectBusType.setVisibility(View.VISIBLE);
             }
+        });
+
+        ticketBookingModule.getSelectedBusType().observe(getActivity(), busType -> {
+            selectBusType.setText(busType.getBusTypeName());
+            bus_point.setVisibility(View.VISIBLE);
         });
     }
 
@@ -123,19 +135,16 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 v.startAnimation(rotate);
                 break;
             case R.id.select_transport:
-                /*ArrayList<String> transports = new ArrayList<>();
-                if(null != ticketBookingModule.getBusOperators().getValue() && ticketBookingModule.getBusOperators().getValue().size()>0) {
-                    for (BusOperator busOperator: ticketBookingModule.getBusOperators().getValue()) {
-                        transports.add(busOperator.opertorName);
-                    }
-                }*/
                 mListener.goToOptionSelection(0);
                 break;
-            case R.id.pick_up:
+            case R.id.select_bus_type:
                 mListener.goToOptionSelection(1);
                 break;
-            case R.id.drop_point:
+            case R.id.pick_up:
                 mListener.goToOptionSelection(2);
+                break;
+            case R.id.drop_point:
+                mListener.goToOptionSelection(3);
                 break;
         }
     }

@@ -1,6 +1,5 @@
 package com.currentbooking.utilits.cb_api.responses;
 
-import com.currentbooking.ticketbooking.BusOperator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

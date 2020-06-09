@@ -1,4 +1,4 @@
-package com.currentbooking.ticketbooking;
+package com.currentbooking.utilits.cb_api.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,6 +10,7 @@ public class BusOperator {
 
     @SerializedName("opertor_name")
     @Expose
+    public
     String opertorName;
 
     @SerializedName("operator_code")

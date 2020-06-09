@@ -36,6 +36,7 @@ android {
             buildConfigField("String", "REGISTRATION", '"login/registration"')
             buildConfigField("String", "LOGIN", '"login/login"')
             buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
+            buildConfigField("String", "BUS_TYPE", '"operator/getBustype"')
 
         }
         prod {
