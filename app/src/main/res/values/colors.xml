@@ -12,5 +12,7 @@
     <color name="gray_color">#888888</color>
     <color name="black">#000000</color>
     <color name="book_color">#0083F6</color>
+    <color name="background_bg">#F1F1F1</color>
+    <color name="light_black">#00000029</color>
 
 </resources>

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class SelectBusFragment extends BaseFragment {
+public class SelectBusesFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +34,7 @@ public class SelectBusFragment extends BaseFragment {
     private String mParam1;
     private String mParam2;
 
-    public SelectBusFragment() {
+    public SelectBusesFragment() {
         // Required empty public constructor
     }
 
@@ -47,8 +47,8 @@ public class SelectBusFragment extends BaseFragment {
      * @return A new instance of fragment SelectBusFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SelectBusFragment newInstance(String param1, String param2) {
-        SelectBusFragment fragment = new SelectBusFragment();
+    public static SelectBusesFragment newInstance(String param1, String param2) {
+        SelectBusesFragment fragment = new SelectBusesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,7 +66,7 @@ public class SelectBusFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return initDataBinding(inflater);
     }
@@ -88,7 +88,7 @@ public class SelectBusFragment extends BaseFragment {
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()),
-                R.drawable.recycler_decoration_divider)));
+                R.drawable.recycler_decoration_divider_two)));
         busesResultListField.addItemDecoration(divider);
 
         List<Object> busesList = new ArrayList<>();

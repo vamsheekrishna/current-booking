@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class OptionSelection extends BaseFragment implements View.OnClickListener {
+public class OptionSelectionFragment extends BaseFragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,16 +43,17 @@ public class OptionSelection extends BaseFragment implements View.OnClickListene
     private ArrayList<BusOperator> busOperator;
     private ArrayList<BusType> busTypes;
 
-    public void OptionSelectionFragment() {
-        // Required empty public constructor
-    }
-    public static OptionSelection newInstance(int index, String param2) {
-        OptionSelection fragment = new OptionSelection();
+    public static OptionSelectionFragment newInstance(int index, String param2) {
+        OptionSelectionFragment fragment = new OptionSelectionFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, index);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void OptionSelectionFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -81,7 +82,7 @@ public class OptionSelection extends BaseFragment implements View.OnClickListene
                 null, false);
         OptionSelectionViewModel optionSelectionViewModel = new OptionSelectionViewModel();
         dataBinding.setViewModel(optionSelectionViewModel);
-        ticketBookingModule =  new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         loadUIComponents(dataBinding);
         return dataBinding.getRoot();
     }
@@ -94,25 +95,8 @@ public class OptionSelection extends BaseFragment implements View.OnClickListene
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
                 R.drawable.recycler_decoration_divider)));
         resultsListField.addItemDecoration(divider);
-        /*List<String> citiesList = getCitiesList();
-        OptionSelectionAdapter optionSelectionAdapter = new OptionSelectionAdapter(getActivity(), citiesList);*/
         OptionSelectionAdapter optionSelectionAdapter = new OptionSelectionAdapter(requireActivity(), getCitiesList(), this);
         resultsListField.setAdapter(optionSelectionAdapter);
-
-        /*resultsListField.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), resultsListField, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                if (callBackInterface != null) {
-                    callBackInterface.callBackReceived(citiesList.get(position));
-                    closeFragment();
-                }
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));*/
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -138,16 +122,16 @@ public class OptionSelection extends BaseFragment implements View.OnClickListene
     private ArrayList<ItemData> getCitiesList() {
 
         ArrayList<ItemData> list = new ArrayList<>();
-        if(mIndex == 0) {
+        if (mIndex == 0) {
             busOperator = Objects.requireNonNull(ticketBookingModule.getBusOperators().getValue());
-            if(null != busOperator) {
+            if (null != busOperator) {
                 for (int i = 0; i < busOperator.size(); i++) {
                     list.add(new ItemData(busOperator.get(i).opertorName, i));
                 }
             }
-        } else if(mIndex == 1) {
+        } else if (mIndex == 1) {
             busTypes = Objects.requireNonNull(ticketBookingModule.getBusTypes().getValue());
-            for (int i =0; i< busTypes.size(); i++) {
+            for (int i = 0; i < busTypes.size(); i++) {
                 list.add(new ItemData(busTypes.get(i).getBusTypeName(), i));
             }
         } else {
@@ -184,24 +168,20 @@ public class OptionSelection extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        int index = (int)v.getTag();
-        if(mIndex == 0) {
+        int index = (int) v.getTag();
+        if (mIndex == 0) {
             BusOperator selectedOperator = busOperator.get(index);
-            if(null == ticketBookingModule.getSelectedBusOperator().getValue() || !Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).opertorName.equals(selectedOperator.opertorName)) {
+            if (null == ticketBookingModule.getSelectedBusOperator().getValue() || !Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).opertorName.equals(selectedOperator.opertorName)) {
                 ticketBookingModule.getSelectedBusOperator().setValue(selectedOperator);
                 ticketBookingModule.onBusOperatorChanged();
             }
-        } else if(mIndex == 1) {
+        } else if (mIndex == 1) {
             BusType selectedBusType = busTypes.get(index);
-            if(null == ticketBookingModule.getSelectedBusType().getValue().getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
+            if (null == ticketBookingModule.getSelectedBusType().getValue().getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
                 ticketBookingModule.getSelectedBusType().setValue(selectedBusType);
                 ticketBookingModule.loadPickupDropPoints();
             }
         }
         getActivity().onBackPressed();
-    }
-
-    private void closeFragment() {
-        Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStack();
     }
 }

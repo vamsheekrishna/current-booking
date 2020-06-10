@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_corner_background_bg"
-    android:minHeight="80dp"
+    android:baselineAligned="false"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_weight="0.8"
+        android:layout_weight="0.7"
         android:orientation="vertical">
 
         <TextView
@@ -64,12 +64,12 @@
                 android:text="05:45" />
 
             <View
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:background="@drawable/small_rounded_circle_bg" />
 
             <View
-                android:layout_width="50dp"
+                android:layout_width="30dp"
                 android:layout_height="2dp"
                 android:background="@color/gray_color" />
 
@@ -84,13 +84,13 @@
                 android:textColor="@color/edit_text_border_color" />
 
             <View
-                android:layout_width="50dp"
+                android:layout_width="30dp"
                 android:layout_height="2dp"
                 android:background="@color/gray_color" />
 
             <View
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:background="@drawable/small_rounded_circle_bg" />
 
             <TextView
@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="5dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.3"
         android:orientation="vertical">
 
         <TextView
@@ -118,11 +118,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="Rs.175" />
 
-        <Button
+        <TextView
             android:id="@+id/btn_book_now_field"
             style="@style/text_style_extra_medium_normal"
             android:layout_width="wrap_content"
@@ -130,7 +132,11 @@
             android:background="@android:color/transparent"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
+            android:layout_gravity="center"
             android:text="@string/book_now"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textSize="17sp"
             android:textColor="@color/book_color" />
     </LinearLayout>
 

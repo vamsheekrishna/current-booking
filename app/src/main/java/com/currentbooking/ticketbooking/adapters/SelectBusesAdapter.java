@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,7 +48,7 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
         TextView tvBusStartTimeField;
         TextView tvBusEndTimeField;
         TextView tvBusFareField;
-        Button btnBookNowField;
+        TextView btnBookNowField;
         TextView tvJourneyHrsField;
 
         public SelectBusesViewHolder(@NonNull View itemView) {

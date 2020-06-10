@@ -134,11 +134,5 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 }
             });
         }
-
-
-        /*
-        startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
-        requireActivity().finish();
-        */
     }
 }

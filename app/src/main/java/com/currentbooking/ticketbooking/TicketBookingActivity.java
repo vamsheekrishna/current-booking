@@ -1,11 +1,13 @@
 package com.currentbooking.ticketbooking;
 
 import android.os.Bundle;
-// import com.currentbooking.interfaces.CallBackInterface;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
+
+// import com.currentbooking.interfaces.CallBackInterface;
 
 public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener/*, CallBackInterface*/ {
 
@@ -28,7 +30,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     @Override
     public void goToSelectBus() {
-        replaceFragment(SelectBusFragment.newInstance("", ""), "SelectBusFragment", true);
+        replaceFragment(SelectBusesFragment.newInstance("", ""), "SelectBusFragment", true);
     }
 
     @Override
@@ -46,17 +48,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
         replaceFragment(TicketStatus.newInstance("", ""), "TicketStatus", true);
     }
 
-    /*@Override
-    public void goToOptionSelection() {
-        replaceFragment(OptionSelectionFragment.newInstance("", ""), "OptionSelection", true);
-    }*/
-
-    /*@Override
-    public void callBackReceived(Object pObject) {
-        if (pObject instanceof String) {
-            optionSelectedState = (String) pObject;
-        }*/
     public void goToOptionSelection(int index) {
-        replaceFragment(OptionSelection.newInstance(index, ""), "OptionSelection", true);
+        replaceFragment(OptionSelectionFragment.newInstance(index, ""), "OptionSelection", true);
     }
 }
