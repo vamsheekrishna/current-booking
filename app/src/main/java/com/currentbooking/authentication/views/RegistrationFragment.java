@@ -103,12 +103,13 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
         String password = tvPassword.getText().toString();
         String conformPassword = tvConformPassword.getText().toString();
 
+         /*else if(null != userID && ! (userID.length() > 5)) {
+            showDialog("", getString(R.string.error_user_id));
+        }*/
         if(!Utils.isValidWord(fName)) {
             showDialog("", getString(R.string.error_first_name));
         } else if(!Utils.isValidWord(lName)) {
             showDialog("", getString(R.string.error_last_name));
-        } else if(null != userID && ! (userID.length() > 5)) {
-            showDialog("", getString(R.string.error_user_id));
         } else if(!Utils.isValidMobile(mobile)) {
             showDialog("", getString(R.string.error_mobile));
         } else if(!Utils.isValidEmail(email)) {
@@ -123,7 +124,7 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
             showDialog("", getString(R.string.error_mismatch_password));
         } else {
             loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.registration(fName, lName, userID, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
+            loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
                 @Override
                 public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
                     if(response.isSuccessful()) {

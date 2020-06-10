@@ -65,37 +65,44 @@ public class TicketBookingViewModel extends ViewModel {
                         if (null != data.getBusOperatorList().getBusOperators()) {
                             busOperators.setValue(data.getBusOperatorList().getBusOperators());
                         }
+                    } else {
+                        busOperators.setValue(new ArrayList<>());
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<BusOperatorList> call, Throwable t) {
-
+                busOperators.setValue(new ArrayList<>());
             }
         });
     }
 
     public void loadBusTypes() {
-        String operator = selectedBusOperator.getValue().getOperatorCode().toLowerCase();
-        ticketBookingServices.getBusTypes(operator).enqueue(new Callback<BusTypeList>() {
-            @Override
-            public void onResponse(Call<BusTypeList> call, Response<BusTypeList> response) {
-                if(response.isSuccessful()) {
-                    BusTypeList data = response.body();
-                    if(data.getStatus().equals("success")) {
-                        if (null != data.getBusTypes().getBusTypes()) {
-                            busTypes.setValue(data.getBusTypes().getBusTypes());
+        if(selectedBusOperator!=null) {
+            String operator = selectedBusOperator.getValue().getOperatorCode().toLowerCase();
+            ticketBookingServices.getBusTypes(operator).enqueue(new Callback<BusTypeList>() {
+                @Override
+                public void onResponse(Call<BusTypeList> call, Response<BusTypeList> response) {
+                    if(response.isSuccessful()) {
+                        BusTypeList data = response.body();
+                        if(data.getStatus().equals("success")) {
+                            if (null != data.getBusTypes().getBusTypes()) {
+                                busTypes.setValue(data.getBusTypes().getBusTypes());
+                            }
+                        } else {
+                            busTypes.setValue(new ArrayList<>());
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<BusTypeList> call, Throwable t) {
+                @Override
+                public void onFailure(Call<BusTypeList> call, Throwable t) {
+                    busTypes.setValue(new ArrayList<>());
+                }
+            });
+        }
 
-            }
-        });
     }
 
     public MutableLiveData<BusType>  getSelectedBusType() {
@@ -107,5 +114,11 @@ public class TicketBookingViewModel extends ViewModel {
 
     public void loadPickupDropPoints() {
 
+    }
+
+    public void onBusOperatorChanged() {
+        busTypes.setValue(new ArrayList<>());
+        selectBusType.setValue(new BusType());
+        loadBusTypes();
     }
 }

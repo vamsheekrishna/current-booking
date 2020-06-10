@@ -109,17 +109,25 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         busTypes.add("Luxury");
         busTypes.add("Deluxe");
         recyclerView.setAdapter(new BusTypeAdapter(busTypes));*/
+        ticketBookingModule.getBusTypes().observe(getActivity(), busTypes -> {
+            if( null == busTypes || busTypes.size()<=0) {
+                bus_point.setVisibility(View.GONE);
+            }
+        });
 
         ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
             if(null != busOperator) {
                 selectTransport.setText(busOperator.opertorName);
                 selectBusType.setVisibility(View.VISIBLE);
+                bus_point.setVisibility(View.GONE);
             }
         });
 
         ticketBookingModule.getSelectedBusType().observe(getActivity(), busType -> {
-            selectBusType.setText(busType.getBusTypeName());
-            bus_point.setVisibility(View.VISIBLE);
+            if(null != busType && null != busType.getBusTypeName() && busType.getBusTypeName().length()>0) {
+                selectBusType.setText(busType.getBusTypeName());
+                bus_point.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -130,7 +138,6 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(1000);
                 rotate.setInterpolator(new LinearInterpolator());
-                //ImageView image= (ImageView) findViewById(R.id.imageView);
                 rotate.setFillAfter(true);
                 v.startAnimation(rotate);
                 break;

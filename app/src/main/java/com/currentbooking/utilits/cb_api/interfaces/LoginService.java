@@ -12,14 +12,13 @@ import retrofit2.http.POST;
 public interface LoginService {
     @POST(BuildConfig.LOGIN)
     @FormUrlEncoded
-    Call<LoginResponse> login(@Field("Username") String username,
-                              @Field("Password") String password);
+    Call<LoginResponse> login(@Field("mobileno") String username,
+                              @Field("password") String password);
 
     @POST(BuildConfig.REGISTRATION)
     @FormUrlEncoded
     Call<RegistrationResponse> registration(@Field("first_name")  String fName,
                                             @Field("last_name") String lName,
-                                            @Field("username") String userID,
                                             @Field("mobno") String mobile,
                                             @Field("email") String email,
                                             @Field("password") String password,

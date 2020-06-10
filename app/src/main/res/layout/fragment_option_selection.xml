@@ -28,6 +28,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
             android:id="@+id/search_results_field"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

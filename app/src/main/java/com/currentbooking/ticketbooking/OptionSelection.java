@@ -140,8 +140,10 @@ public class OptionSelection extends BaseFragment implements View.OnClickListene
         ArrayList<ItemData> list = new ArrayList<>();
         if(mIndex == 0) {
             busOperator = Objects.requireNonNull(ticketBookingModule.getBusOperators().getValue());
-            for (int i =0; i< busOperator.size(); i++) {
-                list.add(new ItemData(busOperator.get(i).opertorName, i));
+            if(null != busOperator) {
+                for (int i = 0; i < busOperator.size(); i++) {
+                    list.add(new ItemData(busOperator.get(i).opertorName, i));
+                }
             }
         } else if(mIndex == 1) {
             busTypes = Objects.requireNonNull(ticketBookingModule.getBusTypes().getValue());
@@ -184,12 +186,17 @@ public class OptionSelection extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         int index = (int)v.getTag();
         if(mIndex == 0) {
-            ticketBookingModule.getSelectedBusOperator().setValue(busOperator.get(index));
-            ticketBookingModule.getBusTypes();
-            ticketBookingModule.loadBusTypes();
+            BusOperator selectedOperator = busOperator.get(index);
+            if(null == ticketBookingModule.getSelectedBusOperator().getValue() || !Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).opertorName.equals(selectedOperator.opertorName)) {
+                ticketBookingModule.getSelectedBusOperator().setValue(selectedOperator);
+                ticketBookingModule.onBusOperatorChanged();
+            }
         } else if(mIndex == 1) {
-            ticketBookingModule.getSelectedBusType().setValue(busTypes.get(index));
-            ticketBookingModule.loadPickupDropPoints();
+            BusType selectedBusType = busTypes.get(index);
+            if(null == ticketBookingModule.getSelectedBusType().getValue().getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
+                ticketBookingModule.getSelectedBusType().setValue(selectedBusType);
+                ticketBookingModule.loadPickupDropPoints();
+            }
         }
         getActivity().onBackPressed();
     }

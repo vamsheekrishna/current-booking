@@ -93,52 +93,52 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.login).setOnClickListener(this);
         userName = view.findViewById(R.id.user_id);
-        userName.setText("anita");
+        userName.setText("8919251921");
         password = view.findViewById(R.id.password);
-        password.setText("anita123");
+        password.setText("1234567v");
     }
 
     @Override
     public void onClick(View v) {
         String userNameValue = userName.getText().toString().trim();
-        String passwordValue = userName.getText().toString().trim();
+        String passwordValue = password.getText().toString().trim();
 
         if (TextUtils.isEmpty(userNameValue)) {
             showDialog("", getString(R.string.user_id_cannot_be_empty));
-            return;
-        }
-        if (TextUtils.isEmpty(passwordValue)) {
+        } else if (TextUtils.isEmpty(passwordValue)) {
             showDialog("", getString(R.string.password_cannot_be_empty));
-            return;
+        } else {
+            progressDialog.show();
+            loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+            loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
+                @Override
+                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    if (response.isSuccessful()) {
+                        LoginResponse data = response.body();
+                        if (data.getStatus().equalsIgnoreCase("success")) {
+                            startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
+                            requireActivity().finish();
+                        } else {
+                            showDialog("", data.getMsg());
+                        }
+                    }
+                    /*startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
+                    requireActivity().finish();*/
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<LoginResponse> call, Throwable t) {
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
         }
 
+
+        /*
         startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
         requireActivity().finish();
-        /*
-        progressDialog.show();
-        loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-        loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful()) {
-                    LoginResponse data = response.body();
-                    if (data.getStatus().equalsIgnoreCase("success")) {
-                        startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
-                        requireActivity().finish();
-                    } else {
-                        showDialog("", data.getMsg());
-                    }
-                }
-                startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
-                requireActivity().finish();
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                showDialog("", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });*/
+        */
     }
 }
