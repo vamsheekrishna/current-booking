@@ -10,6 +10,13 @@
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:theme">@style/MyThemeOverlay_Toolbar</item>
+    </style>
+    <style name="MyThemeOverlay_Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <!-- color used by the toolbar title -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- color used by navigation icon and overflow icon -->
+        <item name="colorOnPrimary">@color/white</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">

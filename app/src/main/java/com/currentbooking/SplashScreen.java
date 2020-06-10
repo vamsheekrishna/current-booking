@@ -9,15 +9,16 @@ import android.os.Handler;
 import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.UserData;
+import com.currentbooking.utilits.views.BaseActivity;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getSupportActionBar()!=null)
-            this.getSupportActionBar().hide();
+        /*if(getSupportActionBar()!=null)
+            this.getSupportActionBar().hide();*/
 
         setContentView(R.layout.activity_splash_screen);
         new Handler().postDelayed(new Runnable() {
