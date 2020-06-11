@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.cb_api.responses.BusPoint;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -120,7 +121,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         task.addOnSuccessListener(location -> {
             if (location != null) {
                 currentLocation = location;
-                Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                 //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
                 assert mapFragment != null;
                 mapFragment.getMapAsync(callback);
@@ -190,9 +191,27 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         switch (v.getId()) {
             case R.id.swipe_points:
                 RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(1000);
+                rotate.setDuration(700);
                 rotate.setInterpolator(new LinearInterpolator());
                 rotate.setFillAfter(true);
+                rotate.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        BusPoint pickup = ticketBookingModule.getSelectedPickUpPoint().getValue();
+                        ticketBookingModule.getSelectedPickUpPoint().setValue(ticketBookingModule.getSelectedDropPoint().getValue());
+                        ticketBookingModule.getSelectedDropPoint().setValue(pickup);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 v.startAnimation(rotate);
                 break;
             case R.id.select_transport:
@@ -214,12 +233,10 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    fetchLocation();
-                }
-                break;
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                fetchLocation();
+            }
         }
     }
 }

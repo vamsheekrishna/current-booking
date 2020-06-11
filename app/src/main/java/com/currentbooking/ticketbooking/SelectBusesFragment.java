@@ -80,6 +80,12 @@ public class SelectBusesFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().setTitle(getString(R.string.select_bus));
+    }
+
+    @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return initDataBinding(inflater);

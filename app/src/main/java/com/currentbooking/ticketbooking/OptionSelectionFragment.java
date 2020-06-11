@@ -125,6 +125,8 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
 
         ArrayList<ItemData> list = new ArrayList<>();
         if (mIndex == 0) {
+
+            requireActivity().setTitle(getString(R.string.select_bus_service));
             busOperator = Objects.requireNonNull(ticketBookingModule.getBusOperators().getValue());
             if (null != busOperator) {
                 for (int i = 0; i < busOperator.size(); i++) {
@@ -132,12 +134,13 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                 }
             }
         } else if (mIndex == 1) {
+            requireActivity().setTitle(getString(R.string.select_bus_type));
             busTypes = Objects.requireNonNull(ticketBookingModule.getBusTypes().getValue());
             for (int i = 0; i < busTypes.size(); i++) {
                 list.add(new ItemData(busTypes.get(i).getBusTypeName(), i));
             }
         } else if (mIndex == 2) {
-
+            requireActivity().setTitle(getString(R.string.selected_pickup_point));
             busPoints = Objects.requireNonNull(ticketBookingModule.getBusPoints().getValue());
             for (int i = 0; i < busPoints.size(); i++) {
                 if(!ticketBookingModule.getSelectedDropPoint().getValue().getName().equals(busPoints.get(i).getName()) ) {
@@ -145,6 +148,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                 }
             }
         } else if (mIndex == 3) {
+            requireActivity().setTitle(getString(R.string.selecte_drop_point));
             busPoints = Objects.requireNonNull(ticketBookingModule.getBusPoints().getValue());
             for (int i = 0; i < busPoints.size(); i++) {
                 if(!ticketBookingModule.getSelectedPickUpPoint().getValue().getName().equals(busPoints.get(i).getName()) ) {

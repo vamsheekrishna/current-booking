@@ -32,4 +32,8 @@
     <string name="password_cannot_be_empty">Password cannot be Empty</string>
     <string name="message">Message</string>
     <string name="book_now">Book Now</string>
+    <string name="select_bus_service">Select Bus Service</string>
+    <string name="selecte_drop_point">Select Drop Point</string>
+    <string name="selected_pickup_point">Select Pick Up Point</string>
+    <string name="select_bus">Select Bus</string>
 </resources>

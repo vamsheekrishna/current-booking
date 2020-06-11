@@ -104,6 +104,8 @@ public class TicketBookingViewModel extends ViewModel {
         list.add(new BusPoint("Sangareddi", 24));
         list.add(new BusPoint("Warangal", 25));
         busPoints.setValue(list);
+        selectedPickUpPoint.setValue(new BusPoint("", -1));
+        selectedDropPoint.setValue(new BusPoint("", -1));
         /*ticketBookingServices.getBusPoints(Objects.requireNonNull(selectedBusOperator.getValue()).opertorName,
                 selectBusType.getValue().getBusTypeID()).enqueue(new Callback<BusStopList>() {
             @Override
