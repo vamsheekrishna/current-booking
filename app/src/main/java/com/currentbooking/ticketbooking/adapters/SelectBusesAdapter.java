@@ -10,15 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.cb_api.responses.BusObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.SelectBusesViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<Object> listData;
+    private List<BusObject> listData;
 
-    public SelectBusesAdapter(Context context, List<Object> listData) {
+    public SelectBusesAdapter(Context context, ArrayList<BusObject> listData) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
     }

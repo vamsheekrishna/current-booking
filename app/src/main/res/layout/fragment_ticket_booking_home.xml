@@ -60,10 +60,18 @@
                 android:layout_width="wrap_content"/>
         </LinearLayout>
     </ScrollView>
-    <com.google.android.material.button.MaterialButton
-        android:layout_alignParentBottom="true"
+    <LinearLayout
+        android:padding="16dp"
         android:id="@+id/search"
-        android:text="@string/search"
-        style="@style/button_gray"
-        android:layout_margin="16dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+        <Button
+            android:background="#FFFFFF"
+            android:id="@+id/select_bus"
+            android:text="@string/search"
+            style="@style/button_gray"
+            android:layout_margin="0dp"/>
+    </LinearLayout>
 </RelativeLayout>

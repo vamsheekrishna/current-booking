@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,11 @@ import com.currentbooking.R;
 import com.currentbooking.databinding.FragmentSelectBusBinding;
 import com.currentbooking.ticketbooking.adapters.SelectBusesAdapter;
 import com.currentbooking.ticketbooking.viewmodels.SelectBusesViewModel;
+import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.AvailableBusList;
+import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SelectBusesFragment extends BaseFragment {
@@ -33,6 +43,10 @@ public class SelectBusesFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TicketBookingServices busListService;
+    private TicketBookingViewModel ticketBookingModule;
+    private SelectBusesAdapter selectBusesAdapter;
+    private RecyclerView busesResultListField;
 
     public SelectBusesFragment() {
         // Required empty public constructor
@@ -78,11 +92,45 @@ public class SelectBusesFragment extends BaseFragment {
         dataBinding.setViewModel(selectBusesViewModel);
 
         loadUIComponents(dataBinding);
+
+        progressDialog.show();
+        busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        /*ticketBookingModule.getSelectedBusOperator().getValue().opertorName.toLowerCase(),
+                ticketBookingModule.getSelectedBusType().getValue().getBusTypeCD(),*/
+        busListService.getAvailableBusList("msrtc",
+                "SC",
+                "PNL",
+                "TALOJA").enqueue(new Callback<AvailableBusList>() {
+            @Override
+            public void onResponse(Call<AvailableBusList> call, Response<AvailableBusList> response) {
+                if(response.isSuccessful()) {
+                    if (response.body().getStatus().equals("success")) {
+                        ArrayList<BusObject> data = response.body().getBusListObj().getBusList();
+                        selectBusesAdapter = new SelectBusesAdapter(getActivity(), data);
+                        busesResultListField.setAdapter(selectBusesAdapter);
+                    } else {
+                        showDialog("", response.body().getMsg());
+                    }
+                } else {
+                    showDialog("", "Error");
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<AvailableBusList> call, Throwable t) {
+                progressDialog.show();
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+
         return dataBinding.getRoot();
     }
 
     private void loadUIComponents(FragmentSelectBusBinding dataBinding) {
-        RecyclerView busesResultListField = dataBinding.busesResultsListField;
+        busesResultListField = dataBinding.busesResultsListField;
 
         busesResultListField.setHasFixedSize(false);
 
@@ -91,14 +139,5 @@ public class SelectBusesFragment extends BaseFragment {
                 R.drawable.recycler_decoration_divider_two)));
         busesResultListField.addItemDecoration(divider);
 
-        List<Object> busesList = new ArrayList<>();
-        busesList.add(1);
-        busesList.add(2);
-        busesList.add(3);
-        busesList.add(4);
-        busesList.add(5);
-
-        SelectBusesAdapter selectBusesAdapter = new SelectBusesAdapter(getActivity(), busesList);
-        busesResultListField.setAdapter(selectBusesAdapter);
     }
 }

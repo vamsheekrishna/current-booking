@@ -37,6 +37,7 @@ android {
             buildConfigField("String", "LOGIN", '"login/login"')
             buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
             buildConfigField("String", "BUS_TYPE", '"operator/getBustype"')
+            buildConfigField("String", "AVAILABLE_BUS_LIST", '"Bus_search/search"')
 
         }
         prod {

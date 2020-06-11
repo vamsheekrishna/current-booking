@@ -5,14 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +13,11 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
@@ -33,10 +30,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener {
@@ -84,22 +79,13 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     }
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
         @Override
         public void onMapReady(GoogleMap googleMap) {
             if(currentLocation != null) {
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                 MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 googleMap.addMarker(markerOptions);
             } else {
                 LatLng sydney = new LatLng(-34, 151);
@@ -168,22 +154,19 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
         dropPoint = view.findViewById(R.id.drop_point);
         dropPoint.setOnClickListener(this);
-
-        /*LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(requireActivity());
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        ArrayList<String> busTypes = new ArrayList<>();
-        busTypes.add("Ac");
-        busTypes.add("Non Ac");
-        busTypes.add("Ac Sleeper");
-        busTypes.add("Non Ac Sleeper");
-        busTypes.add("Luxury");
-        busTypes.add("Deluxe");
-        recyclerView.setAdapter(new BusTypeAdapter(busTypes));*/
+        view.findViewById(R.id.select_bus).setOnClickListener(this);
         ticketBookingModule.getBusTypes().observe(getActivity(), busTypes -> {
             if( null == busTypes || busTypes.size()<=0) {
                 bus_point.setVisibility(View.GONE);
             }
+        });
+
+        ticketBookingModule.getSelectedPickUpPoint().observe(getActivity(), busPoint -> {
+            pickUp.setText(busPoint.getName());
+        });
+
+        ticketBookingModule.getSelectedDropPoint().observe(getActivity(), busPoint -> {
+            dropPoint.setText(busPoint.getName());
         });
 
         ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
@@ -224,6 +207,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
             case R.id.drop_point:
                 mListener.goToOptionSelection(3);
                 break;
+            case R.id.select_bus:
+                mListener.goToSelectBus();
         }
     }
 

@@ -21,6 +21,7 @@ import com.currentbooking.ticketbooking.viewmodels.ItemData;
 import com.currentbooking.ticketbooking.viewmodels.OptionSelectionViewModel;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
+import com.currentbooking.utilits.cb_api.responses.BusPoint;
 import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.views.BaseFragment;
 
@@ -42,6 +43,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     private TicketBookingViewModel ticketBookingModule;
     private ArrayList<BusOperator> busOperator;
     private ArrayList<BusType> busTypes;
+    private ArrayList<BusPoint> busPoints;
 
     public static OptionSelectionFragment newInstance(int index, String param2) {
         OptionSelectionFragment fragment = new OptionSelectionFragment();
@@ -134,33 +136,21 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
             for (int i = 0; i < busTypes.size(); i++) {
                 list.add(new ItemData(busTypes.get(i).getBusTypeName(), i));
             }
-        } else {
-            list.add(new ItemData("Adoni", 0));
-            list.add(new ItemData("Amaravati", 1));
-            list.add(new ItemData("Anantapur", 2));
-            list.add(new ItemData("Chandragiri", 3));
-            list.add(new ItemData("Chittoor", 4));
-            list.add(new ItemData("Dowlaiswaram", 5));
-            list.add(new ItemData("Eluru", 6));
-            list.add(new ItemData("Guntur", 7));
-            list.add(new ItemData("Kadapa", 8));
-            list.add(new ItemData("Kakinada", 9));
-            list.add(new ItemData("Kurnool", 10));
-            list.add(new ItemData("Machilipatnam", 11));
-            list.add(new ItemData("Nagarjunakoṇḍa", 12));
-            list.add(new ItemData("Rajahmundry", 13));
-            list.add(new ItemData("Srikakulam", 14));
-            list.add(new ItemData("Tirupati", 15));
-            list.add(new ItemData("Vijayawada", 16));
-            list.add(new ItemData("Visakhapatnam", 17));
-            list.add(new ItemData("Vizianagaram", 18));
-            list.add(new ItemData("Hyderabad", 19));
-            list.add(new ItemData("Karimnagar", 20));
-            list.add(new ItemData("Khammam", 21));
-            list.add(new ItemData("Mahbubnagar", 22));
-            list.add(new ItemData("Nizamabad", 23));
-            list.add(new ItemData("Sangareddi", 24));
-            list.add(new ItemData("Warangal", 25));
+        } else if (mIndex == 2) {
+
+            busPoints = Objects.requireNonNull(ticketBookingModule.getBusPoints().getValue());
+            for (int i = 0; i < busPoints.size(); i++) {
+                if(!ticketBookingModule.getSelectedDropPoint().getValue().getName().equals(busPoints.get(i).getName()) ) {
+                    list.add(new ItemData(busPoints.get(i).getName(), i));
+                }
+            }
+        } else if (mIndex == 3) {
+            busPoints = Objects.requireNonNull(ticketBookingModule.getBusPoints().getValue());
+            for (int i = 0; i < busPoints.size(); i++) {
+                if(!ticketBookingModule.getSelectedPickUpPoint().getValue().getName().equals(busPoints.get(i).getName()) ) {
+                    list.add(new ItemData(busPoints.get(i).getName(), i));
+                }
+            }
         }
         //Collections.sort(list);
         return list;
@@ -179,7 +169,17 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
             BusType selectedBusType = busTypes.get(index);
             if (null == ticketBookingModule.getSelectedBusType().getValue().getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
                 ticketBookingModule.getSelectedBusType().setValue(selectedBusType);
-                ticketBookingModule.loadPickupDropPoints();
+                ticketBookingModule.loadBusPoints();
+            }
+        } else if (mIndex == 2) {
+            BusPoint selectedBusPoint = busPoints.get(index);
+            if (!ticketBookingModule.getSelectedPickUpPoint().getValue().getName().equals(selectedBusPoint.getName()) || !ticketBookingModule.getSelectedDropPoint().getValue().getName().equals(selectedBusPoint.getName())) {
+                ticketBookingModule.getSelectedPickUpPoint().setValue(selectedBusPoint);
+            }
+        } else if (mIndex == 3) {
+            BusPoint selectedBusPoint = busPoints.get(index);
+            if (!ticketBookingModule.getSelectedDropPoint().getValue().getName().equals(selectedBusPoint.getName()) || !ticketBookingModule.getSelectedPickUpPoint().getValue().getName().equals(selectedBusPoint.getName())) {
+                ticketBookingModule.getSelectedDropPoint().setValue(selectedBusPoint);
             }
         }
         getActivity().onBackPressed();
