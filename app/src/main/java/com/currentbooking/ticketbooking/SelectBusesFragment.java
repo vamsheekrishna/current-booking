@@ -25,7 +25,6 @@ import com.currentbooking.utilits.views.BaseFragment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -109,24 +108,27 @@ public class SelectBusesFragment extends BaseFragment {
                 "PNL",
                 "TALOJA").enqueue(new Callback<AvailableBusList>() {
             @Override
-            public void onResponse(Call<AvailableBusList> call, Response<AvailableBusList> response) {
-                if(response.isSuccessful()) {
-                    if (response.body().getStatus().equals("success")) {
-                        ArrayList<BusObject> data = response.body().getBusListObj().getBusList();
-                        selectBusesAdapter = new SelectBusesAdapter(getActivity(), data);
-                        busesResultListField.setAdapter(selectBusesAdapter);
-                    } else {
-                        showDialog("", response.body().getMsg());
+            public void onResponse(@NotNull Call<AvailableBusList> call, @NotNull Response<AvailableBusList> response) {
+                if (response.isSuccessful()) {
+                    AvailableBusList availableBusList = response.body();
+                    if (availableBusList != null) {
+                        if (availableBusList.getStatus().equals("success")) {
+                            AvailableBusList.BusListObj busListObj = availableBusList.getBusListObj();
+                            if (busListObj != null) {
+                                ArrayList<BusObject> busesList = busListObj.getBusList();
+                                if (busesList != null && !busesList.isEmpty()) {
+                                    selectBusesAdapter = new SelectBusesAdapter(getActivity(), busesList);
+                                }
+                            }
+                        }
                     }
-                } else {
-                    showDialog("", "Error");
                 }
                 progressDialog.dismiss();
+                setBusesAdapter();
             }
 
             @Override
-            public void onFailure(Call<AvailableBusList> call, Throwable t) {
-                progressDialog.show();
+            public void onFailure(@NotNull Call<AvailableBusList> call, @NotNull Throwable t) {
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }
@@ -145,5 +147,13 @@ public class SelectBusesFragment extends BaseFragment {
                 R.drawable.recycler_decoration_divider_two)));
         busesResultListField.addItemDecoration(divider);
 
+    }
+
+    private void setBusesAdapter() {
+        if (selectBusesAdapter != null) {
+            busesResultListField.setAdapter(selectBusesAdapter);
+        } else {
+            showDialog("", getString(R.string.no_information_available));
+        }
     }
 }

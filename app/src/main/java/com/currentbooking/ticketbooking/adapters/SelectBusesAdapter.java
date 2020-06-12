@@ -19,10 +19,12 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
 
     private LayoutInflater layoutInflater;
     private List<BusObject> listData;
+    private String toText;
 
     public SelectBusesAdapter(Context context, ArrayList<BusObject> listData) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
+        toText = context.getString(R.string.to);
     }
 
     @NonNull
@@ -34,7 +36,13 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SelectBusesViewHolder holder, int position) {
+        BusObject busObject = listData.get(position);
+        String busRoute = String.format("%s %s %s", busObject.getSourceStageName(), toText, busObject.getDestinationStageName());
+        holder.tvBusRouteField.setText(busRoute);
+        holder.tvBusTypeField.setText(busObject.getBusTypeNM());
 
+        String busRouteName = String.format("MSRRTC BUS %s", busObject.getRouteNumber());
+        holder.tvBusRouteNameField.setText(busRouteName);
     }
 
     @Override
@@ -63,7 +71,6 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
             tvBusFareField = itemView.findViewById(R.id.tv_bus_fare_price_field);
             btnBookNowField = itemView.findViewById(R.id.btn_book_now_field);
             tvJourneyHrsField = itemView.findViewById(R.id.tv_bus_journey_hours_field);
-
         }
     }
 }
