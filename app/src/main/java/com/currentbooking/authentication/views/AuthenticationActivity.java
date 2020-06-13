@@ -24,8 +24,8 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getSupportActionBar()!=null)
-            this.getSupportActionBar().hide();
+/*        if(getSupportActionBar()!=null)
+            this.getSupportActionBar().hide();*/
 
         setContentView(R.layout.activity_authentication);
 

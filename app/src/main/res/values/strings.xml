@@ -32,8 +32,17 @@
     <string name="password_cannot_be_empty">Password cannot be Empty</string>
     <string name="message">Message</string>
     <string name="book_now">Book Now</string>
+    <string name="book_ticket">Book Ticket</string>
+    <string name="booking_history">Booking History</string>
+    <string name="help">Help</string>
+    <string name="logout">Logout</string>
+    <string name="live_tickets">Live Tickets</string>
+    <string name="no_information_available">No Information Available</string>
     <string name="select_bus_service">Select Bus Service</string>
-    <string name="selecte_drop_point">Select Drop Point</string>
+    <string name="select_drop_point">Select Drop Point</string>
     <string name="selected_pickup_point">Select Pick Up Point</string>
     <string name="select_bus">Select Bus</string>
+    <string name="to">to</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email_address">Email Address</string>
 </resources>

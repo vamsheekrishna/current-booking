@@ -4,24 +4,25 @@
         <item
             android:id="@+id/nav_ticket_booking"
             android:icon="@drawable/ticket"
-            android:title="Ticket Booking" />
+            android:title="@string/book_ticket" />
         <item
             android:id="@+id/nav_history"
-            android:icon="@drawable/ticket"
-            android:title="Booking History" />
+            android:icon="@drawable/booking_history"
+            android:title="@string/booking_history" />
         <item
             android:id="@+id/nav_my_ticket"
             android:icon="@drawable/ticket"
-            android:title="Live Tickets" />
+            android:title="@string/live_tickets"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/ticket"
-            android:title="Help" />
+            android:icon="@drawable/question"
+            android:title="@string/help" />
 
-        <!--        <item-->
-        <!--            android:id="@+id/nav_logout"-->
-        <!--            android:icon="@drawable/logout"-->
-        <!--            android:title="Sign Out" />-->
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="@string/logout" />
     </group>
 </menu>

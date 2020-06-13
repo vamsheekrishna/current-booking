@@ -20,7 +20,7 @@ public interface TicketBookingServices {
     @FormUrlEncoded
     Call<BusTypeList> getBusTypes(@Field("operator") String operator);
 
-    Call<BusStopList> getBusPoints(String opertorName, String busTypeID);
+    Call<BusStopList> getBusPoints(String operatorName, String busTypeID);
 
     @POST(BuildConfig.AVAILABLE_BUS_LIST)
     @FormUrlEncoded

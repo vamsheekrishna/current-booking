@@ -32,7 +32,6 @@
             android:layout_marginTop="10dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="Non AC Semi Luxury"
             android:textColor="@color/edit_text_border_color" />
 
         <TextView
@@ -42,8 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="Hyderabad to Banglore" />
+            android:paddingEnd="5dp" />
 
         <LinearLayout
             style="@style/text_style_medium_normal"

@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.currentbooking.R;
@@ -19,12 +18,14 @@ import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.google.android.material.navigation.NavigationView;
 
-public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private Menu menu;
-    public DrawerLayout dl;
-    public ActionBarDrawerToggle t;
-    public NavigationView nv;
-    protected LinearLayoutCompat signOut;
+import org.jetbrains.annotations.NotNull;
+
+public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+
+    public DrawerLayout mDrawerLayout;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
+    public NavigationView navigationView;
+    //protected LinearLayoutCompat signOut;
     private TextView textCartItemCount;
     private int mCartItemCount = 1;
 
@@ -33,11 +34,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.nav_view_content);
         setNavigationView();
-        signOut.setOnClickListener(v -> {
-            dl.closeDrawer(nv);
-            startActivity(new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class));
-            finish();
-        });
+        /*signOut.setOnClickListener(v -> {
+
+        });*/
     }
 //    public void setContentView(int id) {
 //        FrameLayout dynamicContent = findViewById(R.id.main_content);
@@ -57,12 +56,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         setupBadge();
 
-        actionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(BaseNavigationDrawerActivity.this,"Live ticket selected.", Toast.LENGTH_LONG).show();
-            }
-        });
+        actionView.setOnClickListener(v -> Toast.makeText(BaseNavigationDrawerActivity.this, "Live ticket selected.", Toast.LENGTH_LONG).show());
 
         return true;
     }
@@ -81,25 +75,33 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             }
         }
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (t.onOptionsItemSelected(item)) {
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void setNavigationView() {
-        dl = findViewById(R.id.drawer_layout);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
-        dl.addDrawerListener(t);
-        t.syncState();
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
+        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
         ActionBar ab = getSupportActionBar();
-        assert ab != null;
-        ab.setDisplayHomeAsUpEnabled(true);
-        nv = findViewById(R.id.nav_view);
-        signOut = nv.findViewById(R.id.sign_out_btn);
-        nv.setNavigationItemSelectedListener(this);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+        navigationView = findViewById(R.id.nav_view);
+        //signOut = navigationView.findViewById(R.id.sign_out_btn);
+        navigationView.setNavigationItemSelectedListener(this);
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        findViewById(R.id.book_ticket_layout_field).setOnClickListener(this);
+        findViewById(R.id.booking_history_layout_field).setOnClickListener(this);
+        findViewById(R.id.help_layout_field).setOnClickListener(this);
+        findViewById(R.id.logout_layout_field).setOnClickListener(this);
 
     }
     @Override
@@ -135,8 +137,33 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
                 break;
         }
-        dl.closeDrawer(nv);
+        mDrawerLayout.closeDrawer(navigationView);
         return false;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.book_ticket_layout_field:
+                startActivity(new Intent(this, TicketBookingActivity.class));
+                finish();
+                Toast.makeText(this, "nav_ticket_booking", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.booking_history_layout_field:
+                Toast.makeText(this, "nav_history", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.help_layout_field:
+                Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.logout_layout_field:
+                mDrawerLayout.closeDrawer(navigationView);
+                startActivity(new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class));
+                finish();
+                break;
+            default:
+                Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
+                break;
+        }
+        mDrawerLayout.closeDrawer(navigationView);
+    }
 }

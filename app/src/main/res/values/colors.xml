@@ -14,5 +14,7 @@
     <color name="book_color">#0083F6</color>
     <color name="background_bg">#F1F1F1</color>
     <color name="light_black">#00000029</color>
+    <color name="black_color_two">#333333</color>
+    <color name="background_bg_two">#F8F8F8</color>
 
 </resources>

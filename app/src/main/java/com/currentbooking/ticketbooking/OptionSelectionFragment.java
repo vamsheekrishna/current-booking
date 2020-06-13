@@ -54,7 +54,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
         return fragment;
     }
 
-    public void OptionSelectionFragment() {
+    private OptionSelectionFragment() {
         // Required empty public constructor
     }
 
@@ -125,34 +125,47 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
 
         ArrayList<ItemData> list = new ArrayList<>();
         if (mIndex == 0) {
-
             requireActivity().setTitle(getString(R.string.select_bus_service));
-            busOperator = Objects.requireNonNull(ticketBookingModule.getBusOperators().getValue());
-            if (null != busOperator) {
-                for (int i = 0; i < busOperator.size(); i++) {
-                    list.add(new ItemData(busOperator.get(i).opertorName, i));
+            if (ticketBookingModule.getBusOperators() != null) {
+                busOperator = ticketBookingModule.getBusOperators().getValue();
+                if (busOperator != null && !busOperator.isEmpty()) {
+                    for (int i = 0; i < busOperator.size(); i++) {
+                        list.add(new ItemData(busOperator.get(i).opertorName, i));
+                    }
                 }
             }
         } else if (mIndex == 1) {
             requireActivity().setTitle(getString(R.string.select_bus_type));
-            busTypes = Objects.requireNonNull(ticketBookingModule.getBusTypes().getValue());
-            for (int i = 0; i < busTypes.size(); i++) {
-                list.add(new ItemData(busTypes.get(i).getBusTypeName(), i));
+            if (ticketBookingModule.getBusTypes() != null) {
+                busTypes = ticketBookingModule.getBusTypes().getValue();
+                if (busTypes != null && !busTypes.isEmpty()) {
+                    for (int i = 0; i < busTypes.size(); i++) {
+                        list.add(new ItemData(busTypes.get(i).getBusTypeName(), i));
+                    }
+                }
             }
         } else if (mIndex == 2) {
             requireActivity().setTitle(getString(R.string.selected_pickup_point));
-            busPoints = Objects.requireNonNull(ticketBookingModule.getBusPoints().getValue());
-            for (int i = 0; i < busPoints.size(); i++) {
-                if(!ticketBookingModule.getSelectedDropPoint().getValue().getName().equals(busPoints.get(i).getName()) ) {
-                    list.add(new ItemData(busPoints.get(i).getName(), i));
+            if (ticketBookingModule.getBusPoints() != null) {
+                busPoints = ticketBookingModule.getBusPoints().getValue();
+                if (busPoints != null && !busPoints.isEmpty()) {
+                    for (int i = 0; i < busPoints.size(); i++) {
+                        if (!Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getName().equals(busPoints.get(i).getName())) {
+                            list.add(new ItemData(busPoints.get(i).getName(), i));
+                        }
+                    }
                 }
             }
         } else if (mIndex == 3) {
-            requireActivity().setTitle(getString(R.string.selecte_drop_point));
-            busPoints = Objects.requireNonNull(ticketBookingModule.getBusPoints().getValue());
-            for (int i = 0; i < busPoints.size(); i++) {
-                if(!ticketBookingModule.getSelectedPickUpPoint().getValue().getName().equals(busPoints.get(i).getName()) ) {
-                    list.add(new ItemData(busPoints.get(i).getName(), i));
+            requireActivity().setTitle(getString(R.string.select_drop_point));
+            if (ticketBookingModule.getBusPoints() != null) {
+                busPoints = ticketBookingModule.getBusPoints().getValue();
+                if (busPoints != null && !busPoints.isEmpty()) {
+                    for (int i = 0; i < busPoints.size(); i++) {
+                        if (!Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getName().equals(busPoints.get(i).getName())) {
+                            list.add(new ItemData(busPoints.get(i).getName(), i));
+                        }
+                    }
                 }
             }
         }

@@ -32,11 +32,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ticketbooking.TicketBookingActivity" />
+
         <activity
-            android:name=".authentication.views.AuthenticationActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".SplashScreen">
+            android:name=".SplashScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +45,16 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".utilits.encrypt.testClient" />
+
+        <activity
+            android:name=".ticketbooking.TicketBookingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".authentication.views.AuthenticationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
