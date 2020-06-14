@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
+import com.currentbooking.profile.ui.main.ProfileFragment;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -102,6 +103,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.booking_history_layout_field).setOnClickListener(this);
         findViewById(R.id.help_layout_field).setOnClickListener(this);
         findViewById(R.id.logout_layout_field).setOnClickListener(this);
+        findViewById(R.id.profile).setOnClickListener(this);
 
     }
     @Override
@@ -122,7 +124,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             case R.id.nav_ticket_booking:
                 startActivity(new Intent(this, TicketBookingActivity.class));
                 finish();
-                Toast.makeText(this,"nav_ticket_booking", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"nav_ticket_booking", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_history:
                 Toast.makeText(this, "nav_history", Toast.LENGTH_LONG).show();
@@ -132,6 +134,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 break;
             case R.id.nav_help:
                 Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.profile:
+                startActivity(new Intent(this, ProfileFragment.class));
+                finish();
                 break;
             default:
                 Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
@@ -147,7 +153,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             case R.id.book_ticket_layout_field:
                 startActivity(new Intent(this, TicketBookingActivity.class));
                 finish();
-                Toast.makeText(this, "nav_ticket_booking", Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, "nav_ticket_booking", Toast.LENGTH_LONG).show();
                 break;
             case R.id.booking_history_layout_field:
                 Toast.makeText(this, "nav_history", Toast.LENGTH_LONG).show();

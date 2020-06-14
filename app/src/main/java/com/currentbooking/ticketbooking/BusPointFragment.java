@@ -20,13 +20,11 @@ import com.currentbooking.ticketbooking.viewmodels.ItemData;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
-import com.currentbooking.utilits.cb_api.responses.BusPoint;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusStopResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -75,6 +73,12 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Select Bus Stop");
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
@@ -99,15 +103,14 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() < 3) {
-
                     Toast.makeText(getActivity(), "updateItems "+newText, Toast.LENGTH_LONG).show();
                     busStopAdapter.updateItems(new ArrayList<>());
                     busStopAdapter.notifyDataSetChanged();
                 } else if (newText.length() == 3) {
-                    Toast.makeText(getActivity(), "updateItems "+newText, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getActivity(), "updateItems "+newText, Toast.LENGTH_LONG).show();
                     getBusStopList(newText);
                 } else {
-                    Toast.makeText(getActivity(), "onQueryTextChange "+newText, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getActivity(), "onQueryTextChange "+newText, Toast.LENGTH_LONG).show();
                     busStopAdapter.getFilter().filter(newText);
                 }
                 return false;
@@ -115,19 +118,18 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
-    private List<ItemData> getBusStopList(String stopPrefix) {
+    private void getBusStopList(String stopPrefix) {
 
         ArrayList<ItemData> list = new ArrayList<>();
-        ArrayList<BusPoint> busPoints = new ArrayList<>();
         progressDialog.show();
         ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         ticketService.getBusStopList("MSRTC", stopPrefix).enqueue(new Callback<BusStopResponse>() {
             @Override
             public void onResponse(Call<BusStopResponse> call, Response<BusStopResponse> response) {
                 if(response.isSuccessful()) {
+                    assert response.body() != null;
                     if(response.body().getStatus().equalsIgnoreCase(getString(R.string.success))) {
                         ArrayList<BusStopObject> data = response.body().getBusStopList().getBusStopList();
-                        Toast.makeText(getActivity(), "BusStopObject "+data.size(), Toast.LENGTH_LONG).show();
                         /*for (int i = 0; i < data.size(); i++) {
                             if (!Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopName().equals(data.get(i).getStopName())) {
                                 list.add(new ItemData(data.get(i).getStopName(), i));
@@ -135,6 +137,9 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
                         }*/
                         busStopAdapter.updateItems(data);
                         busStopAdapter.notifyDataSetChanged();
+                    } else {
+                        String date = response.body().getMsg();
+                        showDialog("", date);
                     }
                 }
                 progressDialog.dismiss();
@@ -142,7 +147,6 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
 
             @Override
             public void onFailure(Call<BusStopResponse> call, Throwable t) {
-
                 progressDialog.dismiss();
             }
         });
@@ -158,7 +162,6 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
             }
         }
         */
-        return list;
     }
 
     @Override
@@ -166,12 +169,12 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         BusStopObject data = (BusStopObject)v.getTag();
         if (mIndex == 2) {
             // BusStopObject selectedBusPoint = busPoints.get(index);
-            if (!ticketBookingModule.getSelectedPickUpPoint().getValue().getStopName().equals(data.getStopName()) || !ticketBookingModule.getSelectedDropPoint().getValue().getStopName().equals(data.getStopName())) {
+            if (!Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopName().equals(data.getStopName()) || !ticketBookingModule.getSelectedDropPoint().getValue().getStopName().equals(data.getStopName())) {
                 ticketBookingModule.getSelectedPickUpPoint().setValue(data);
             }
         } else if (mIndex == 3) {
             // BusStopObject selectedBusPoint = busPoints.get(index);
-            if (!ticketBookingModule.getSelectedDropPoint().getValue().getStopName().equals(data.getStopName()) || !ticketBookingModule.getSelectedPickUpPoint().getValue().getStopName().equals(data.getStopName())) {
+            if (!Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopName().equals(data.getStopName()) || !ticketBookingModule.getSelectedPickUpPoint().getValue().getStopName().equals(data.getStopName())) {
                 ticketBookingModule.getSelectedDropPoint().setValue(data);
             }
         }

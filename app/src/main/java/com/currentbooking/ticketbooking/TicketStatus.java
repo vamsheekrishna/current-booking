@@ -41,7 +41,11 @@ public class TicketStatus extends BaseFragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Booking success");
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

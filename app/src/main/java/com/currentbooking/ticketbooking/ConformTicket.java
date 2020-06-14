@@ -1,5 +1,6 @@
 package com.currentbooking.ticketbooking;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,7 @@ import com.currentbooking.R;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 
-public class ConformTicket extends BaseFragment {
+public class ConformTicket extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -25,7 +26,7 @@ public class ConformTicket extends BaseFragment {
     public ConformTicket() {
         // Required empty public constructor
     }
-
+    OnTicketBookingListener mListener;
     public static ConformTicket newInstance(String param1, String param2) {
         ConformTicket fragment = new ConformTicket();
         Bundle args = new Bundle();
@@ -33,6 +34,12 @@ public class ConformTicket extends BaseFragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnTicketBookingListener) context;
     }
 
     @Override
@@ -44,6 +51,11 @@ public class ConformTicket extends BaseFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Confirm Ticket");
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,6 +78,12 @@ public class ConformTicket extends BaseFragment {
         ((TextView)view.findViewById(R.id.state)).setText(MyProfile.getInstance().getState());
         ((TextView)view.findViewById(R.id.pin_code)).setText(MyProfile.getInstance().getPinCode());
         view.findViewById(R.id.edit_profile).setVisibility(View.GONE);
+        view.findViewById(R.id.conform).setOnClickListener(this);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        mListener.goToPayment();
     }
 }

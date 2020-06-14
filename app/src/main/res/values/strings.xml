@@ -59,4 +59,5 @@
     <string name="ticket_details">TICKET DETAILS</string>
     <string name="payment_details">Payment Details</string>
     <string name="confirm_ticket">Confirm Ticket</string>
+    <string name="confirm_payment">Confirm Payment</string>
 </resources>

@@ -47,7 +47,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle("My Profile");
+        getActivity().setTitle("Edit Profile");
     }
 
     @Override
