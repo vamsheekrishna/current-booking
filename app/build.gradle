@@ -38,8 +38,8 @@ android {
             buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
             buildConfigField("String", "BUS_TYPE", '"operator/getBustype"')
             buildConfigField("String", "AVAILABLE_BUS_LIST", '"Bus_search/search"')
-//            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/stops"')
-            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/busstop"')
+            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/stops"')
+//            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/busstop"')
 
         }
         prod {
@@ -70,6 +70,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     testImplementation 'junit:junit:4.13'
     implementation 'commons-codec:commons-codec:1.10'
 

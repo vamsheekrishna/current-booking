@@ -1,4 +1,5 @@
 package com.currentbooking.authentication.views;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -8,6 +9,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.authentication.view_models.Authentication;
+import com.currentbooking.profile.ProfileActivity;
+import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.views.BaseActivity;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -29,21 +32,24 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
         setContentView(R.layout.activity_authentication);
 
-        authentication = new ViewModelProvider(this).get(Authentication.class);
-        ArrayList<BaseFragment> baseFragments = new ArrayList<>();
-        baseFragments.add(LoginFragment.newInstance("",""));
-        baseFragments.add(RegistrationFragment.newInstance("",""));
-        // Instantiate a ViewPager2 and a PagerAdapter.
-        viewPager = findViewById(R.id.pager);
+        if(savedInstanceState == null) {
+            authentication = new ViewModelProvider(this).get(Authentication.class);
+            ArrayList<BaseFragment> baseFragments = new ArrayList<>();
+            baseFragments.add(LoginFragment.newInstance("",""));
+            baseFragments.add(RegistrationFragment.newInstance("",""));
+            // Instantiate a ViewPager2 and a PagerAdapter.
+            viewPager = findViewById(R.id.pager);
 
-        pagerAdapter = new ScreenSlidePagerAdapter(this,baseFragments);
-        viewPager.setPageTransformer(new ZoomOutPageTransformer());
-        viewPager.setAdapter(pagerAdapter);
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        String[] titles = new String[]{"Login", "Registration"};
-        // attaching tab mediator
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText(titles[position])).attach();
+            pagerAdapter = new ScreenSlidePagerAdapter(this,baseFragments);
+            viewPager.setPageTransformer(new ZoomOutPageTransformer());
+            viewPager.setAdapter(pagerAdapter);
+            TabLayout tabLayout = findViewById(R.id.tab_layout);
+            String[] titles = new String[]{"Login", "Registration"};
+            // attaching tab mediator
+            new TabLayoutMediator(tabLayout, viewPager,
+                    (tab, position) -> tab.setText(titles[position])).attach();
+        }
+
     }
 
     @Override
@@ -60,7 +66,9 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void goToTicketBookingActivity() {
-
+       Intent intent = new Intent(this, TicketBookingActivity.class);
+       startActivity(intent);
+       finish();
     }
 
     @Override
@@ -71,5 +79,12 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     public void goToTabView() {
 
+    }
+
+    @Override
+    public void goToProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

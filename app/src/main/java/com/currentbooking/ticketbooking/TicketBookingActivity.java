@@ -16,8 +16,16 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
-        addFragment(TicketBookingHomeFragment.newInstance("",""),"TicketBookingHomeFragment", false);
+        /*Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            newString= null;
+        } else {
+            newString= extras.getString("STRING_I_NEED");
+        }*/
+        if(savedInstanceState == null) {
+            ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
+            addFragment(TicketBookingHomeFragment.newInstance("",""),"TicketBookingHomeFragment", false);
+        }
     }
 
 

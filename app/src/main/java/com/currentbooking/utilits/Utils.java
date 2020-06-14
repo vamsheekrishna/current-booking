@@ -53,4 +53,8 @@ public class Utils {
     public static boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
+    public static String getDateString(Long value) {
+        return "";
+    }
 }

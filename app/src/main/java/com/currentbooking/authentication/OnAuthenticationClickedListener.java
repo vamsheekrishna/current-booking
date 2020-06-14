@@ -4,4 +4,6 @@ public interface OnAuthenticationClickedListener {
     void goToTicketBookingActivity();
     void goToForgotPassword();
     void goToTabView();
+
+    void goToProfileActivity();
 }

@@ -46,4 +46,13 @@
     <string name="phone_number">Phone Number</string>
     <string name="email_address">Email Address</string>
     <string name="success">success</string>
+    <string name="my_profile">My Profile</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="address">Full House Address</string>
+    <string name="address2">Street</string>
+    <string name="pin">Pin Code</string>
+    <string name="state">State</string>
+    <string name="profile">profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="save_profile">Save Profile</string>
 </resources>

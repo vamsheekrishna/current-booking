@@ -1,7 +1,6 @@
 package com.currentbooking.authentication.views;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
-import com.currentbooking.ticketbooking.TicketBookingActivity;
+import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
@@ -116,8 +115,12 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     if (response.isSuccessful()) {
                         LoginResponse data = response.body();
                         if (data.getStatus().equalsIgnoreCase("success")) {
-                            startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
-                            requireActivity().finish();
+                            MyProfile.getInstance().setData(data.getData().getProfileModel());
+                            if(MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length()<=0) {
+                                mListener.goToProfileActivity();
+                            } else {
+                                mListener.goToTicketBookingActivity();
+                            }
                         } else {
                             showDialog("", data.getMsg());
                         }

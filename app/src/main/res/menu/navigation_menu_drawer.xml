@@ -11,9 +11,8 @@
             android:title="@string/booking_history" />
         <item
             android:id="@+id/nav_my_ticket"
-            android:icon="@drawable/ticket"
-            android:title="@string/live_tickets"
-            android:visible="false" />
+            android:icon="@drawable/booking_history"
+            android:title="@string/my_profile" />
 
         <item
             android:id="@+id/nav_help"
