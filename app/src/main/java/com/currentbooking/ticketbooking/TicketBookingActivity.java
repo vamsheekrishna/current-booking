@@ -11,8 +11,6 @@ import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener/*, CallBackInterface*/ {
 
-    private String optionSelectedState;
-
     private TicketBookingViewModel ticketBookingModule;
 
     @Override
@@ -50,5 +48,10 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     public void goToOptionSelection(int index) {
         replaceFragment(OptionSelectionFragment.newInstance(index, ""), "OptionSelection", true);
+    }
+
+    @Override
+    public void goToBusStopSelect(int index) {
+        replaceFragment(BusPointFragment.newInstance(index, ""), "BusPointFragment", true);
     }
 }

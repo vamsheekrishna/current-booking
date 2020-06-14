@@ -3,7 +3,8 @@ package com.currentbooking.utilits.cb_api.interfaces;
 import com.currentbooking.BuildConfig;
 import com.currentbooking.utilits.cb_api.responses.AvailableBusList;
 import com.currentbooking.utilits.cb_api.responses.BusOperatorList;
-import com.currentbooking.utilits.cb_api.responses.BusStopList;
+import com.currentbooking.utilits.cb_api.responses.BusStopObject;
+import com.currentbooking.utilits.cb_api.responses.BusStopResponse;
 import com.currentbooking.utilits.cb_api.responses.BusTypeList;
 
 import retrofit2.Call;
@@ -20,7 +21,7 @@ public interface TicketBookingServices {
     @FormUrlEncoded
     Call<BusTypeList> getBusTypes(@Field("operator") String operator);
 
-    Call<BusStopList> getBusPoints(String operatorName, String busTypeID);
+    Call<BusStopObject> getBusPoints(String operatorName, String busTypeID);
 
     @POST(BuildConfig.AVAILABLE_BUS_LIST)
     @FormUrlEncoded
@@ -28,4 +29,8 @@ public interface TicketBookingServices {
                                                @Field("bus_type_cd") String busTypeCD,
                                                @Field("from") String from,
                                                @Field("to") String to);
+    @POST(BuildConfig.AVAILABLE_BUS_STOPS)
+    @FormUrlEncoded
+    Call<BusStopResponse> getBusStopList(@Field("operator") String operator,
+                                         @Field("stopname") String stopname);
 }

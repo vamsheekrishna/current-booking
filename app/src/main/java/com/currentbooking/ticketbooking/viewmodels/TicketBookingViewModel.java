@@ -9,15 +9,11 @@ import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusOperatorList;
 import com.currentbooking.utilits.cb_api.responses.BusPoint;
-import com.currentbooking.utilits.cb_api.responses.BusStopList;
+import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.cb_api.responses.BusTypeList;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.net.ssl.SSLSession;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,8 +30,8 @@ public class TicketBookingViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<BusPoint>> busPoints = new MutableLiveData<>();
 
-    private MutableLiveData<BusPoint> selectedPickUpPoint = new MutableLiveData<>();
-    private MutableLiveData<BusPoint> selectedDropPoint = new MutableLiveData<>();
+    private MutableLiveData<BusStopObject> selectedPickUpPoint = new MutableLiveData<>();
+    private MutableLiveData<BusStopObject> selectedDropPoint = new MutableLiveData<>();
 
     public TicketBookingViewModel() {
         ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
@@ -45,10 +41,10 @@ public class TicketBookingViewModel extends ViewModel {
     public LiveData<ArrayList<BusPoint>> getBusPoints() {
         return busPoints;
     }
-    public MutableLiveData<BusPoint> getSelectedPickUpPoint() {
+    public MutableLiveData<BusStopObject> getSelectedPickUpPoint() {
         return selectedPickUpPoint;
     }
-    public MutableLiveData<BusPoint> getSelectedDropPoint() {
+    public MutableLiveData<BusStopObject> getSelectedDropPoint() {
         return selectedDropPoint;
     }
 
@@ -104,8 +100,8 @@ public class TicketBookingViewModel extends ViewModel {
         list.add(new BusPoint("Sangareddi", 24));
         list.add(new BusPoint("Warangal", 25));
         busPoints.setValue(list);
-        selectedPickUpPoint.setValue(new BusPoint("", -1));
-        selectedDropPoint.setValue(new BusPoint("", -1));
+        selectedPickUpPoint.setValue(new BusStopObject());
+        selectedDropPoint.setValue(new BusStopObject());
         /*ticketBookingServices.getBusPoints(Objects.requireNonNull(selectedBusOperator.getValue()).opertorName,
                 selectBusType.getValue().getBusTypeID()).enqueue(new Callback<BusStopList>() {
             @Override
@@ -194,8 +190,8 @@ public class TicketBookingViewModel extends ViewModel {
         selectBusType.setValue(new BusType());
     }
     public void resetBusPointData() {
-        selectedPickUpPoint.setValue(new BusPoint("", -1));
-        selectedDropPoint.setValue(new BusPoint("", -1));
+        selectedPickUpPoint.setValue(new BusStopObject());
+        selectedDropPoint.setValue(new BusStopObject());
         busPoints.setValue(new ArrayList<>());
     }
 }

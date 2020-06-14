@@ -12,7 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
-import com.currentbooking.utilits.cb_api.responses.BusPoint;
+import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -163,11 +162,11 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         });
 
         ticketBookingModule.getSelectedPickUpPoint().observe(getActivity(), busPoint -> {
-            pickUp.setText(busPoint.getName());
+            pickUp.setText(busPoint.getStopName());
         });
 
         ticketBookingModule.getSelectedDropPoint().observe(getActivity(), busPoint -> {
-            dropPoint.setText(busPoint.getName());
+            dropPoint.setText(busPoint.getStopName());
         });
 
         ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
@@ -191,7 +190,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         switch (v.getId()) {
             case R.id.swipe_points:
                 RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(700);
+                rotate.setDuration(500);
                 rotate.setInterpolator(new LinearInterpolator());
                 rotate.setFillAfter(true);
                 rotate.setAnimationListener(new Animation.AnimationListener() {
@@ -202,7 +201,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        BusPoint pickup = ticketBookingModule.getSelectedPickUpPoint().getValue();
+                        BusStopObject pickup = ticketBookingModule.getSelectedPickUpPoint().getValue();
                         ticketBookingModule.getSelectedPickUpPoint().setValue(ticketBookingModule.getSelectedDropPoint().getValue());
                         ticketBookingModule.getSelectedDropPoint().setValue(pickup);
                     }
@@ -221,10 +220,10 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 mListener.goToOptionSelection(1);
                 break;
             case R.id.pick_up:
-                mListener.goToOptionSelection(2);
+                mListener.goToBusStopSelect(2);
                 break;
             case R.id.drop_point:
-                mListener.goToOptionSelection(3);
+                mListener.goToBusStopSelect(3);
                 break;
             case R.id.select_bus:
                 mListener.goToSelectBus();

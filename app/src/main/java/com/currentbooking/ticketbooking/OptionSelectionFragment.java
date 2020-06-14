@@ -22,6 +22,7 @@ import com.currentbooking.ticketbooking.viewmodels.OptionSelectionViewModel;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.BusPoint;
+import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.views.BaseFragment;
 
@@ -43,7 +44,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     private TicketBookingViewModel ticketBookingModule;
     private ArrayList<BusOperator> busOperator;
     private ArrayList<BusType> busTypes;
-    private ArrayList<BusPoint> busPoints;
+    private ArrayList<BusStopObject> busPoints;
 
     public static OptionSelectionFragment newInstance(int index, String param2) {
         OptionSelectionFragment fragment = new OptionSelectionFragment();
@@ -93,10 +94,10 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
         SearchView searchView = dataBinding.searchView;
         RecyclerView resultsListField = dataBinding.searchResultsField;
         resultsListField.setHasFixedSize(false);
-        DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
+        /*DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
                 R.drawable.recycler_decoration_divider)));
-        resultsListField.addItemDecoration(divider);
+        resultsListField.addItemDecoration(divider);*/
         OptionSelectionAdapter optionSelectionAdapter = new OptionSelectionAdapter(requireActivity(), getCitiesList(), this);
         resultsListField.setAdapter(optionSelectionAdapter);
 
@@ -115,7 +116,6 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                     optionSelectionAdapter.updateItems(getCitiesList());
                     optionSelectionAdapter.notifyDataSetChanged();
                 }
-
                 return false;
             }
         });
@@ -144,7 +144,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                     }
                 }
             }
-        } else if (mIndex == 2) {
+        } /*else if (mIndex == 2) {
             requireActivity().setTitle(getString(R.string.selected_pickup_point));
             if (ticketBookingModule.getBusPoints() != null) {
                 busPoints = ticketBookingModule.getBusPoints().getValue();
@@ -156,7 +156,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                     }
                 }
             }
-        } else if (mIndex == 3) {
+        }*//* else if (mIndex == 3) {
             requireActivity().setTitle(getString(R.string.select_drop_point));
             if (ticketBookingModule.getBusPoints() != null) {
                 busPoints = ticketBookingModule.getBusPoints().getValue();
@@ -168,37 +168,27 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                     }
                 }
             }
-        }
+        }*/
         //Collections.sort(list);
         return list;
     }
 
     @Override
     public void onClick(View v) {
-        int index = (int) v.getTag();
+        int Item = (int) v.getTag();
         if (mIndex == 0) {
-            BusOperator selectedOperator = busOperator.get(index);
+            BusOperator selectedOperator = busOperator.get(Item);
             if (null == ticketBookingModule.getSelectedBusOperator().getValue() || !Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).opertorName.equals(selectedOperator.opertorName)) {
                 ticketBookingModule.getSelectedBusOperator().setValue(selectedOperator);
                 ticketBookingModule.onBusOperatorChanged();
             }
         } else if (mIndex == 1) {
-            BusType selectedBusType = busTypes.get(index);
+            BusType selectedBusType = busTypes.get(Item);
             if (null == ticketBookingModule.getSelectedBusType().getValue().getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
                 ticketBookingModule.getSelectedBusType().setValue(selectedBusType);
                 ticketBookingModule.loadBusPoints();
             }
-        } else if (mIndex == 2) {
-            BusPoint selectedBusPoint = busPoints.get(index);
-            if (!ticketBookingModule.getSelectedPickUpPoint().getValue().getName().equals(selectedBusPoint.getName()) || !ticketBookingModule.getSelectedDropPoint().getValue().getName().equals(selectedBusPoint.getName())) {
-                ticketBookingModule.getSelectedPickUpPoint().setValue(selectedBusPoint);
-            }
-        } else if (mIndex == 3) {
-            BusPoint selectedBusPoint = busPoints.get(index);
-            if (!ticketBookingModule.getSelectedDropPoint().getValue().getName().equals(selectedBusPoint.getName()) || !ticketBookingModule.getSelectedPickUpPoint().getValue().getName().equals(selectedBusPoint.getName())) {
-                ticketBookingModule.getSelectedDropPoint().setValue(selectedBusPoint);
-            }
         }
-        getActivity().onBackPressed();
+        Objects.requireNonNull(getActivity()).onBackPressed();
     }
 }

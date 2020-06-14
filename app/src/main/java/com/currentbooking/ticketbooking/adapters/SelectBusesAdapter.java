@@ -20,10 +20,12 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
     private LayoutInflater layoutInflater;
     private List<BusObject> listData;
     private String toText;
+    private String busOperatorName;
 
-    public SelectBusesAdapter(Context context, ArrayList<BusObject> listData) {
+    public SelectBusesAdapter(Context context, ArrayList<BusObject> listData, String busOperatorName) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
+        this.busOperatorName = busOperatorName;
         toText = context.getString(R.string.to);
     }
 
@@ -41,7 +43,7 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
         holder.tvBusRouteField.setText(busRoute);
         holder.tvBusTypeField.setText(busObject.getBusTypeNM());
 
-        String busRouteName = String.format("MSRRTC BUS %s", busObject.getRouteNumber());
+        String busRouteName = busOperatorName +" "+ busObject.getRouteNumber();// String.format("MSRTC BUS %s", busObject.getRouteNumber());
         holder.tvBusRouteNameField.setText(busRouteName);
     }
 

@@ -117,7 +117,7 @@ public class SelectBusesFragment extends BaseFragment {
                             if (busListObj != null) {
                                 ArrayList<BusObject> busesList = busListObj.getBusList();
                                 if (busesList != null && !busesList.isEmpty()) {
-                                    selectBusesAdapter = new SelectBusesAdapter(getActivity(), busesList);
+                                    selectBusesAdapter = new SelectBusesAdapter(getActivity(), busesList, ticketBookingModule.getSelectedBusOperator().getValue().opertorName);
                                 }
                             }
                         }
