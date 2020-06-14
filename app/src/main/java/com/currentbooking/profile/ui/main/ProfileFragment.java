@@ -24,7 +24,7 @@ import java.util.Objects;
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
 
     // private ProfileViewModel mViewModel;
-    TextView dob;
+
     OnProfileListener mListener;
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -76,9 +76,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         ((TextView)view.findViewById(R.id.last_name)).setText(MyProfile.getInstance().getLastName());
         ((TextView)view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
         ((TextView)view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
-        dob = ((TextView)view.findViewById(R.id.dob));
+        TextView dob = ((TextView) view.findViewById(R.id.dob));
         dob.setText(MyProfile.getInstance().getDob());
-        dob.setOnClickListener(this);
         ((TextView)view.findViewById(R.id.address1)).setText(MyProfile.getInstance().getAddress1());
         ((TextView)view.findViewById(R.id.address2)).setText(MyProfile.getInstance().getAddress2());
         ((TextView)view.findViewById(R.id.state)).setText(MyProfile.getInstance().getState());

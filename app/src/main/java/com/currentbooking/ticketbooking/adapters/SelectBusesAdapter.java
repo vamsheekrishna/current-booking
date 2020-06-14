@@ -21,19 +21,22 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
     private List<BusObject> listData;
     private String toText;
     private String busOperatorName;
-
-    public SelectBusesAdapter(Context context, ArrayList<BusObject> listData, String busOperatorName) {
+    View.OnClickListener mClick;
+    public SelectBusesAdapter(View.OnClickListener click , Context context, ArrayList<BusObject> listData, String busOperatorName) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
         this.busOperatorName = busOperatorName;
         toText = context.getString(R.string.to);
+        mClick = click;
     }
 
     @NonNull
     @Override
     public SelectBusesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = layoutInflater.inflate(R.layout.select_buses_list_items, parent, false);
-        return new SelectBusesViewHolder(itemView);
+        SelectBusesViewHolder selectBusesViewHolder =  new SelectBusesViewHolder(itemView);
+        selectBusesViewHolder.btnBookNowField.setOnClickListener(mClick);
+        return selectBusesViewHolder;
     }
 
     @Override
@@ -42,9 +45,9 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
         String busRoute = String.format("%s %s %s", busObject.getSourceStageName(), toText, busObject.getDestinationStageName());
         holder.tvBusRouteField.setText(busRoute);
         holder.tvBusTypeField.setText(busObject.getBusTypeNM());
-
         String busRouteName = busOperatorName +" "+ busObject.getRouteNumber();// String.format("MSRTC BUS %s", busObject.getRouteNumber());
         holder.tvBusRouteNameField.setText(busRouteName);
+        holder.btnBookNowField.setTag(busObject);
     }
 
     @Override

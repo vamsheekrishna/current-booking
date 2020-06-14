@@ -168,4 +168,11 @@
         <item name="android:textColorHint">@color/gray_color</item>
     </style>
 
+    <style name="header_text_view" parent="text_view">
+        <item name="android:textSize">@dimen/header_text_size</item>
+        <item name="android:textColor">#B41A1D</item>
+        <item name="android:fontFamily">@font/opensans_semi_bold</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
 </resources>

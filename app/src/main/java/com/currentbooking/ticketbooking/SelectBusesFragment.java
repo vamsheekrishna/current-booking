@@ -1,10 +1,12 @@
 package com.currentbooking.ticketbooking;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -46,20 +48,11 @@ public class SelectBusesFragment extends BaseFragment {
     private TicketBookingViewModel ticketBookingModule;
     private SelectBusesAdapter selectBusesAdapter;
     private RecyclerView busesResultListField;
-
+    OnTicketBookingListener mListener;
     public SelectBusesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SelectBusFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SelectBusesFragment newInstance(String param1, String param2) {
         SelectBusesFragment fragment = new SelectBusesFragment();
         Bundle args = new Bundle();
@@ -67,6 +60,12 @@ public class SelectBusesFragment extends BaseFragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnTicketBookingListener) context;
     }
 
     @Override
@@ -117,7 +116,10 @@ public class SelectBusesFragment extends BaseFragment {
                             if (busListObj != null) {
                                 ArrayList<BusObject> busesList = busListObj.getBusList();
                                 if (busesList != null && !busesList.isEmpty()) {
-                                    selectBusesAdapter = new SelectBusesAdapter(getActivity(), busesList, ticketBookingModule.getSelectedBusOperator().getValue().opertorName);
+                                    selectBusesAdapter = new SelectBusesAdapter(v -> {
+                                        BusObject busObject = (BusObject) v.getTag();
+                                        mListener.goToConformTicket(busObject);
+                                    }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).opertorName);
                                 }
                             }
                         }
@@ -139,14 +141,11 @@ public class SelectBusesFragment extends BaseFragment {
 
     private void loadUIComponents(FragmentSelectBusBinding dataBinding) {
         busesResultListField = dataBinding.busesResultsListField;
-
         busesResultListField.setHasFixedSize(false);
-
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()),
                 R.drawable.recycler_decoration_divider_two)));
         busesResultListField.addItemDecoration(divider);
-
     }
 
     private void setBusesAdapter() {

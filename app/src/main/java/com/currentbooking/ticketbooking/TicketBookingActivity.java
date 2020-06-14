@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 // import com.currentbooking.interfaces.CallBackInterface;
@@ -40,7 +41,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void goToConformTicket() {
+    public void goToConformTicket(BusObject busObject) {
         replaceFragment(ConformTicket.newInstance("", ""), "ConformTicket", true);
     }
 

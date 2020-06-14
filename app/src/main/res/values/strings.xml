@@ -55,4 +55,8 @@
     <string name="profile">profile</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="save_profile">Save Profile</string>
+    <string name="passenger_details">PASSENGER DETAILS</string>
+    <string name="ticket_details">TICKET DETAILS</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="confirm_ticket">Confirm Ticket</string>
 </resources>
