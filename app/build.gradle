@@ -38,8 +38,8 @@ android {
             buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
             buildConfigField("String", "BUS_TYPE", '"operator/getBustype"')
             buildConfigField("String", "AVAILABLE_BUS_LIST", '"Bus_search/search"')
-            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/stops"')
-//            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/busstop"')
+//            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/stops"')
+            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/busstop"')
 
         }
         prod {

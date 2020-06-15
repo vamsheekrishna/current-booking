@@ -52,8 +52,9 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.OptionSe
 
     @Override
     public void onBindViewHolder(@NonNull OptionSelectionViewHolder holder, int position) {
-        holder.cityNameField.setText(filteredListData.get(position).getStopName()+" ( "+filteredListData.get(position).getStopCode()+" )");
-        holder.cityNameField.setTag(filteredListData.get(position));
+        BusStopObject data = filteredListData.get(position);
+        holder.cityNameField.setText(data.getStopName()+" ( "+data.getStopCode()+" )");
+        holder.cityNameField.setTag(data);
     }
 
     @Override

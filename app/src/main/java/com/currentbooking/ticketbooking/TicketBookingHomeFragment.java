@@ -171,7 +171,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
         ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
             if(null != busOperator) {
-                selectTransport.setText(busOperator.opertorName);
+                selectTransport.setText(busOperator.getOpertorName());
                 selectBusType.setVisibility(View.VISIBLE);
                 bus_point.setVisibility(View.GONE);
             }
@@ -227,7 +227,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 break;
             case R.id.select_bus:
                 if(ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length()>1 &&
-                        ticketBookingModule.getSelectedDropPoint().getValue().getStopCode()!= null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length()>1) {
+                        Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()!= null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length()>1) {
                     mListener.goToSelectBus();
                 } else {
                     showDialog("", "Please enter your travel details.");

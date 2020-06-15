@@ -130,7 +130,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                 busOperator = ticketBookingModule.getBusOperators().getValue();
                 if (busOperator != null && !busOperator.isEmpty()) {
                     for (int i = 0; i < busOperator.size(); i++) {
-                        list.add(new ItemData(busOperator.get(i).opertorName, i));
+                        list.add(new ItemData(busOperator.get(i).getOpertorName(), i));
                     }
                 }
             }
@@ -178,7 +178,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
         int Item = (int) v.getTag();
         if (mIndex == 0) {
             BusOperator selectedOperator = busOperator.get(Item);
-            if (null == ticketBookingModule.getSelectedBusOperator().getValue() || !Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).opertorName.equals(selectedOperator.opertorName)) {
+            if (null == ticketBookingModule.getSelectedBusOperator().getValue() || !Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName().equals(selectedOperator.getOpertorName())) {
                 ticketBookingModule.getSelectedBusOperator().setValue(selectedOperator);
                 ticketBookingModule.onBusOperatorChanged();
             }

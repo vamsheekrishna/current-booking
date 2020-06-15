@@ -6,28 +6,27 @@ import com.google.gson.annotations.SerializedName;
 public class BusOperator {
     @SerializedName("id")
     @Expose
-    String id;
+    private String id;
 
     @SerializedName("opertor_name")
     @Expose
-    public
-    String opertorName;
+    private String opertorName;
 
     @SerializedName("operator_code")
     @Expose
-    String operatorCode;
+    private String operatorCode;
 
     @SerializedName("status")
     @Expose
-    String status;
+    private String status;
 
     @SerializedName("created_by")
     @Expose
-    String createdBy;
+    private String createdBy;
 
     @SerializedName("created_date")
     @Expose
-    String createdDate = "2019-12-31 10:47:43";
+    private String createdDate = "2019-12-31 10:47:43";
 
     public String getId() {
         return id;
