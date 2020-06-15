@@ -198,7 +198,7 @@
             android:background="@color/gray_color" />
 
         <LinearLayout
-            android:id="@+id/profile"
+            android:id="@+id/my_profile_layout_field"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal">

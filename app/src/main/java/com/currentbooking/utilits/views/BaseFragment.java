@@ -61,7 +61,7 @@ public class BaseFragment extends Fragment {
 
     protected void showDialog(String title, String msg) {
         try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             if (TextUtils.isEmpty(title)) {
                 title = requireActivity().getString(R.string.message);
             }

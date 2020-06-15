@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ticketbooking.TicketBookingActivity">
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
-        app:defaultQueryHint="Please enter your stop name."
+        app:defaultQueryHint="@string/please_enter_your_stop_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iconifiedByDefault="false"

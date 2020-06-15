@@ -5,90 +5,96 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".authentication.views.RegistrationFragment">
+
     <ScrollView
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/registration"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         tools:context=".authentication.views.LoginFragment">
+
         <LinearLayout
-            android:layout_gravity="top"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/first_name"
-                android:drawableStart="@drawable/user_thumb"
-                android:hint="@string/first_name"
-                android:inputType="text"
-                style="@style/text_view"
-                android:drawableLeft="@drawable/user_thumb" />
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/last_name"
-                android:drawableStart="@drawable/user_thumb"
-                android:hint="@string/last_name"
-                android:inputType="text"
-                style="@style/text_view"
-                android:drawableLeft="@drawable/user_thumb" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
+                android:id="@+id/first_name"
+                style="@style/text_view"
+                android:drawableStart="@drawable/user_thumb"
+                android:hint="@string/first_name"
+                android:inputType="text" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/last_name"
+                style="@style/text_view"
+                android:drawableStart="@drawable/user_thumb"
+                android:hint="@string/last_name"
+                android:inputType="text" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/user_id"
+                style="@style/text_view"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/user_id"
                 android:inputType="text"
-                style="@style/text_view"
-                android:drawableLeft="@drawable/user_thumb" />
+                android:visibility="gone" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mobile_no"
-                android:maxLength="10"
+                style="@style/text_view"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/mobile_number"
                 android:inputType="number"
-                style="@style/text_view"
-                android:drawableLeft="@drawable/user_thumb" />
+                android:maxLength="10" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/email"
+                style="@style/text_view"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/email_id"
-                android:inputType="textEmailAddress"
-                style="@style/text_view"
-                android:drawableLeft="@drawable/user_thumb" />
+                android:inputType="textEmailAddress" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/dob"
-                android:drawableLeft="@drawable/calendar"
+                style="@style/text_view"
+                android:drawableStart="@drawable/calendar"
                 android:hint="@string/dob"
-                android:inputType="text"
-                style="@style/text_view"/>
+                android:inputType="text" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/address1"
-                android:drawableLeft="@drawable/home"
+                style="@style/text_view"
+                android:drawableStart="@drawable/home"
                 android:hint="@string/address"
-                android:inputType="textPassword"
-                style="@style/text_view"/>
+                android:inputType="textPassword" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/address2"
-                android:drawableLeft="@drawable/home"
+                style="@style/text_view"
+                android:drawableStart="@drawable/home"
                 android:hint="@string/address2"
-                android:inputType="textPassword"
-                style="@style/text_view"/>
+                android:inputType="textPassword" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/state"
-                android:drawableLeft="@drawable/state"
+                style="@style/text_view"
+                android:drawableStart="@drawable/state"
                 android:hint="@string/state"
-                android:inputType="textPassword"
-                style="@style/text_view"/>
+                android:inputType="textPassword" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/pin_code"
-                android:drawableLeft="@drawable/pin_code"
+                style="@style/text_view"
+                android:drawableStart="@drawable/pin_code"
                 android:hint="@string/pin"
-                android:inputType="textPassword"
-                style="@style/text_view"/>
+                android:inputType="textPassword" />
         </LinearLayout>
     </ScrollView>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/edit_profile"
+        style="@style/button_gray"
         android:layout_alignParentBottom="true"
-        android:text="@string/edit_profile"
-        style="@style/button_gray"/>
+        android:text="@string/edit_profile" />
 </RelativeLayout>

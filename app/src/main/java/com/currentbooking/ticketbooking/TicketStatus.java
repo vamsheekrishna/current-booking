@@ -1,15 +1,14 @@
 package com.currentbooking.ticketbooking;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.views.BaseFragment;
+
+import java.util.Objects;
 
 public class TicketStatus extends BaseFragment {
 
@@ -44,7 +43,7 @@ public class TicketStatus extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle("Booking success");
+        Objects.requireNonNull(getActivity()).setTitle("Booking success");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +51,4 @@ public class TicketStatus extends BaseFragment {
         // Inflate the select_bus_points for this fragment
         return inflater.inflate(R.layout.fragment_ticket_status, container, false);
     }
-
-    
 }

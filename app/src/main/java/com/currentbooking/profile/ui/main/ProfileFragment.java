@@ -1,24 +1,19 @@
 package com.currentbooking.profile.ui.main;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.views.BaseFragment;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
@@ -26,6 +21,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     // private ProfileViewModel mViewModel;
 
     OnProfileListener mListener;
+
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -33,7 +29,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (OnProfileListener)context;
+        mListener = (OnProfileListener) context;
     }
 
     @Nullable
@@ -46,7 +42,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle("My Profile");
+        Objects.requireNonNull(getActivity()).setTitle("My Profile");
     }
 
     @Override
@@ -72,27 +68,23 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((TextView)view.findViewById(R.id.first_name)).setText(MyProfile.getInstance().getFirstName());
-        ((TextView)view.findViewById(R.id.last_name)).setText(MyProfile.getInstance().getLastName());
-        ((TextView)view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
-        ((TextView)view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
-        TextView dob = ((TextView) view.findViewById(R.id.dob));
+        ((TextView) view.findViewById(R.id.first_name)).setText(MyProfile.getInstance().getFirstName());
+        ((TextView) view.findViewById(R.id.last_name)).setText(MyProfile.getInstance().getLastName());
+        ((TextView) view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
+        ((TextView) view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
+        TextView dob = view.findViewById(R.id.dob);
         dob.setText(MyProfile.getInstance().getDob());
-        ((TextView)view.findViewById(R.id.address1)).setText(MyProfile.getInstance().getAddress1());
-        ((TextView)view.findViewById(R.id.address2)).setText(MyProfile.getInstance().getAddress2());
-        ((TextView)view.findViewById(R.id.state)).setText(MyProfile.getInstance().getState());
-        ((TextView)view.findViewById(R.id.pin_code)).setText(MyProfile.getInstance().getPinCode());
+        ((TextView) view.findViewById(R.id.address1)).setText(MyProfile.getInstance().getAddress1());
+        ((TextView) view.findViewById(R.id.address2)).setText(MyProfile.getInstance().getAddress2());
+        ((TextView) view.findViewById(R.id.state)).setText(MyProfile.getInstance().getState());
+        ((TextView) view.findViewById(R.id.pin_code)).setText(MyProfile.getInstance().getPinCode());
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.edit_profile:
-                mListener.goToEditProfile();
-                break;
-            case R.id.dob:
-                break;
+        if (v.getId() == R.id.edit_profile) {
+            mListener.goToEditProfile();
         }
     }
 }

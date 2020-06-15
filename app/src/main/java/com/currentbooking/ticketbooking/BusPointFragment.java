@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.adapters.BusStopAdapter;
-import com.currentbooking.ticketbooking.viewmodels.ItemData;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
@@ -75,7 +74,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle("Select Bus Stop");
+        Objects.requireNonNull(getActivity()).setTitle("Select Bus Stop");
     }
 
     @Override
@@ -83,7 +82,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         SearchView searchView = view.findViewById(R.id.searchView);
-        RecyclerView resultsListField = view.findViewById(R.id.search_results_field);;
+        RecyclerView resultsListField = view.findViewById(R.id.search_results_field);
         resultsListField.setHasFixedSize(false);
         /*DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
@@ -119,8 +118,6 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void getBusStopList(String stopPrefix) {
-
-        ArrayList<ItemData> list = new ArrayList<>();
         progressDialog.show();
         ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         ticketService.getBusStopList("MSRTC", stopPrefix).enqueue(new Callback<BusStopResponse>() {
@@ -138,8 +135,8 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
                         busStopAdapter.updateItems(data);
                         busStopAdapter.notifyDataSetChanged();
                     } else {
-                        String date = response.body().getMsg();
-                        showDialog("", date);
+                        String data = response.body().getMsg();
+                        showDialog("", data);
                     }
                 }
                 progressDialog.dismiss();

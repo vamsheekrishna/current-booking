@@ -2,15 +2,14 @@ package com.currentbooking.ticketbooking;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.MyProfile;
@@ -71,7 +70,7 @@ public class ConformTicket extends BaseFragment implements View.OnClickListener 
         ((TextView)view.findViewById(R.id.last_name)).setText(MyProfile.getInstance().getLastName());
         ((TextView)view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
         ((TextView)view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
-        TextView dob = ((TextView) view.findViewById(R.id.dob));
+        AppCompatTextView dob = view.findViewById(R.id.dob);
         dob.setText(MyProfile.getInstance().getDob());
         ((TextView)view.findViewById(R.id.address1)).setText(MyProfile.getInstance().getAddress1());
         ((TextView)view.findViewById(R.id.address2)).setText(MyProfile.getInstance().getAddress2());

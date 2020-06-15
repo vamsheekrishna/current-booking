@@ -60,4 +60,5 @@
     <string name="payment_details">Payment Details</string>
     <string name="confirm_ticket">Confirm Ticket</string>
     <string name="confirm_payment">Confirm Payment</string>
+    <string name="please_enter_your_stop_name">Please enter your stop name</string>
 </resources>

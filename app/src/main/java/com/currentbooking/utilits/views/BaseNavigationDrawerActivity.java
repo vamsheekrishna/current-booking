@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
+import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.profile.ui.main.ProfileFragment;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -103,7 +104,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.booking_history_layout_field).setOnClickListener(this);
         findViewById(R.id.help_layout_field).setOnClickListener(this);
         findViewById(R.id.logout_layout_field).setOnClickListener(this);
-        findViewById(R.id.profile).setOnClickListener(this);
+        findViewById(R.id.my_profile_layout_field).setOnClickListener(this);
 
     }
     @Override
@@ -135,7 +136,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             case R.id.nav_help:
                 Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
                 break;
-            case R.id.profile:
+            case R.id.my_profile_layout_field:
                 startActivity(new Intent(this, ProfileFragment.class));
                 finish();
                 break;
@@ -165,6 +166,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 mDrawerLayout.closeDrawer(navigationView);
                 startActivity(new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class));
                 finish();
+                break;
+            case R.id.my_profile_layout_field:
+                mDrawerLayout.closeDrawer(navigationView);
+                startActivity(new Intent(BaseNavigationDrawerActivity.this, ProfileActivity.class));
                 break;
             default:
                 Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
