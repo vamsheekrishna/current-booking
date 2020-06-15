@@ -226,7 +226,12 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 mListener.goToBusStopSelect(3);
                 break;
             case R.id.select_bus:
-                mListener.goToSelectBus();
+                if(ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length()>1 &&
+                        ticketBookingModule.getSelectedDropPoint().getValue().getStopCode()!= null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length()>1) {
+                    mListener.goToSelectBus();
+                } else {
+                    showDialog("", "Please enter your travel details.");
+                }
         }
     }
 

@@ -102,14 +102,11 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() < 3) {
-                    Toast.makeText(getActivity(), "updateItems "+newText, Toast.LENGTH_LONG).show();
                     busStopAdapter.updateItems(new ArrayList<>());
                     busStopAdapter.notifyDataSetChanged();
                 } else if (newText.length() == 3) {
-                    // Toast.makeText(getActivity(), "updateItems "+newText, Toast.LENGTH_LONG).show();
                     getBusStopList(newText);
                 } else {
-                    // Toast.makeText(getActivity(), "onQueryTextChange "+newText, Toast.LENGTH_LONG).show();
                     busStopAdapter.getFilter().filter(newText);
                 }
                 return false;
