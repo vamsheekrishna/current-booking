@@ -25,7 +25,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
         }*/
         if(savedInstanceState == null) {
             ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
-            addFragment(TicketBookingHomeFragment.newInstance("",""),"TicketBookingHomeFragment", false);
+            addFragment(TicketStatusFragment.newInstance("", ""), "TicketBookingHomeFragment", false);
         }
     }
 
@@ -52,7 +52,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     @Override
     public void goToTicketStatus() {
-        replaceFragment(TicketStatus.newInstance("", ""), "TicketStatus", true);
+        replaceFragment(TicketStatusFragment.newInstance("", ""), "TicketStatusFragment", true);
     }
 
     public void goToOptionSelection(int index) {

@@ -1,14 +1,482 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ticketbooking.TicketStatus">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_bg"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment select_bus_points -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="@color/background_bg">
 
-</FrameLayout>
+        <View
+            android:id="@+id/viewOne"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@android:color/transparent" />
+
+        <View
+            android:id="@+id/viewTwo"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@+id/viewOne"
+            android:background="@android:color/transparent" />
+
+        <LinearLayout
+            android:id="@+id/bg_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewOne"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/rounded_corner_background_bg_two"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/opensans_semi_bold"
+                android:text="@string/booking_successful"
+                android:textAllCaps="true"
+                android:textColor="@color/button_bg"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/edit_text_border_color" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="@string/ticket_number"
+                            android:textColor="@color/black_color_two" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="@string/colon"
+                            android:textColor="@color/black_color_two" />
+
+                        <TextView
+                            android:id="@+id/tv_ticket_number_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/opensans_regular"
+                            android:textColor="@color/black_color_two" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/opensans_regular"
+                                android:text="@string/date"
+                                android:textColor="@color/black_color_two" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/opensans_regular"
+                                android:text="@string/colon"
+                                android:textColor="@color/black_color_two" />
+
+                            <TextView
+                                android:id="@+id/date_field"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:fontFamily="@font/opensans_regular"
+                                android:textColor="@color/black_color_two" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"
+                            android:gravity="end">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/opensans_regular"
+                                android:text="@string/time"
+                                android:textColor="@color/black_color_two" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/opensans_regular"
+                                android:text="@string/colon"
+                                android:textColor="@color/black_color_two" />
+
+                            <TextView
+                                android:id="@+id/time_field"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:fontFamily="@font/opensans_regular"
+                                android:textColor="@color/black_color_two" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:background="@color/btn_inc_dec_color"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_route_name_field"
+                                style="@style/text_style_extra_medium_bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="5dp"
+                                android:text="KMT BUS 3245  "
+                                android:textAllCaps="true"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/tv_bus_type_field"
+                                style="@style/text_style_medium_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="5dp"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/tv_bus_route_field"
+                                style="@style/text_style_medium_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="5dp"
+                                android:textColor="@color/white" />
+
+                            <RelativeLayout
+                                style="@style/text_style_medium_normal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_bus_journey_start_time_field"
+                                    style="@style/text_style_medium_normal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="5dp"
+                                    android:text="05:45"
+                                    android:textColor="@color/white" />
+
+                                <View
+                                    android:id="@+id/view_circle_one"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toEndOf="@id/tv_bus_journey_start_time_field"
+                                    android:background="@drawable/small_rounded_circle_bg" />
+
+                                <View
+                                    android:id="@+id/view_circle_two"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toStartOf="@id/tv_bus_journey_end_time_field"
+                                    android:background="@drawable/small_rounded_circle_bg" />
+
+                                <TextView
+                                    android:id="@+id/tv_bus_journey_end_time_field"
+                                    style="@style/text_style_medium_normal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:paddingStart="5dp"
+                                    android:paddingEnd="5dp"
+                                    android:text="08:45"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/tv_bus_journey_hours_field"
+                                    style="@style/text_style_medium_normal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:text="3 Hrs"
+                                    android:textColor="@color/white" />
+
+                                <View
+                                    android:id="@+id/gray_color_one"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="2dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_toStartOf="@id/tv_bus_journey_hours_field"
+                                    android:layout_toEndOf="@+id/view_circle_one"
+                                    android:background="@color/white" />
+
+                                <View
+                                    android:id="@+id/gray_color_two"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="2dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toStartOf="@+id/view_circle_two"
+                                    android:layout_toEndOf="@id/tv_bus_journey_hours_field"
+                                    android:background="@color/white" />
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="15dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_no_of_persons_field"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.3"
+                            android:background="@color/btn_inc_dec_color_two"
+                            android:fontFamily="@font/opensans_regular"
+                            android:gravity="center"
+                            android:minHeight="40dp"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="2 Adults\n1Child\n1 Sr Citizen"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/tv_bus_fare_price_field"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="@string/fare"
+                            android:textColor="@color/black_color_two" />
+
+                        <TextView
+                            android:id="@+id/tv_bus_fare_price_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="1880"
+                            android:textColor="@color/black_color_two" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/tv_service_charge_or_gst_field"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="@string/service_charge_or_gst"
+                            android:textColor="@color/black_color_two" />
+
+                        <TextView
+                            android:id="@+id/tv_service_charge_or_gst_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="320"
+                            android:textColor="@color/black_color_two" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/tv_total_fare_field"
+                            android:fontFamily="@font/opensans_bold"
+                            android:text="@string/total_fare"
+                            android:textColor="@color/black_color_two" />
+
+                        <TextView
+                            android:id="@+id/tv_total_fare_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/opensans_bold"
+                            android:text="2200"
+                            android:textColor="@color/black_color_two" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:gravity="center"
+                        android:text="@string/payment_failed_description"
+                        android:textColor="@color/black_color_two" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/edit_text_border_color" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_failed_try_again_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_semi_bold"
+                            android:text="@string/try_again"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_failed_go_to_home_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/go_to_home"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:backgroundTint="@color/edit_text_border_color" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_booking_status_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/viewTwo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="35dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/booking_success_icon" />
+
+        <LinearLayout
+            android:id="@+id/payment_success_layout_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bg_field"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_success_book_another_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_semi_bold"
+                android:text="@string/book_another"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_success_go_to_home_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/go_to_home"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:backgroundTint="@color/edit_text_border_color" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

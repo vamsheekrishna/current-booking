@@ -10,7 +10,7 @@ import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.Objects;
 
-public class TicketStatus extends BaseFragment {
+public class TicketStatusFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -19,12 +19,12 @@ public class TicketStatus extends BaseFragment {
     private String mParam1;
     private String mParam2;
 
-    public TicketStatus() {
+    private TicketStatusFragment() {
         // Required empty public constructor
     }
 
-    public static TicketStatus newInstance(String param1, String param2) {
-        TicketStatus fragment = new TicketStatus();
+    public static TicketStatusFragment newInstance(String param1, String param2) {
+        TicketStatusFragment fragment = new TicketStatusFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

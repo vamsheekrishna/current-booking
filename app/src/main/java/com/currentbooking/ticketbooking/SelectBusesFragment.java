@@ -119,7 +119,7 @@ public class SelectBusesFragment extends BaseFragment {
                                     selectBusesAdapter = new SelectBusesAdapter(v -> {
                                         BusObject busObject = (BusObject) v.getTag();
                                         mListener.goToConformTicket(busObject);
-                                    }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).opertorName);
+                                    }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName());
                                 }
                             }
                         }
