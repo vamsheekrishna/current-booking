@@ -77,6 +77,12 @@
     <string name="try_again">Try Again</string>
     <string name="payment_failed_description">Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</string>
     <string name="colon">:</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="validate_otp">Validate OTP</string>
+    <string name="error_enter_otp">Please enter a valid otp number</string>
+    <string name="error_mobile_number">Please enter valid mobile number.</string>
+    <string name="is_edit">IS_EDIT</string>
 
 
 </resources>

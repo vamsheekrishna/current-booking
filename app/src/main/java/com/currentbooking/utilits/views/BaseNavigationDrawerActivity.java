@@ -124,7 +124,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         switch (item.getItemId()) {
             case R.id.nav_ticket_booking:
                 startActivity(new Intent(this, TicketBookingActivity.class));
-                finish();
                 //Toast.makeText(this,"nav_ticket_booking", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_history:

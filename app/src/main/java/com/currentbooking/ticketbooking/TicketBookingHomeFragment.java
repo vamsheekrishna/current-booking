@@ -37,7 +37,6 @@ import java.util.Objects;
 public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final int REQUEST_CODE = 101;
 
     // RecyclerView recyclerView;
     private String mParam1;
@@ -57,7 +56,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (OnTicketBookingListener)context;
+        mListener = (OnTicketBookingListener) context;
     }
 
     public static TicketBookingHomeFragment newInstance(String param1, String param2) {
@@ -77,11 +76,12 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            if(currentLocation != null) {
+            if (currentLocation != null) {
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                 MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -95,6 +95,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
         }
     };
+
     @Override
     public void onResume() {
         super.onResume();
@@ -113,9 +114,10 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         if (ActivityCompat.checkSelfPermission(
                 getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
             return;
         }
+
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
@@ -232,15 +234,6 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 } else {
                     showDialog("", "Please enter your travel details.");
                 }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                fetchLocation();
-            }
         }
     }
 }

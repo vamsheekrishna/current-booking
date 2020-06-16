@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".authentication.views.AuthenticationActivity">
+
+<LinearLayout
+    android:background="@drawable/login_body_bg"
+    android:translationZ="90dp"
+    android:layout_marginTop="260dp"
+    android:padding="16dp"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/otp_placeholder"
+        android:drawableStart="@drawable/user_thumb"
+        android:hint="@string/enter_otp"
+        android:inputType="numberSigned"
+        android:layout_gravity="center"
+        android:gravity="center"
+        style="@style/edit_text"
+        android:drawableLeft="@drawable/user_thumb" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/validate_otp"
+        android:text="@string/validate_otp"
+        style="@style/button_gray"/>
+</LinearLayout>
+    <ImageView
+        android:id="@+id/header_img"
+        android:src="@drawable/login_top_bg"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="290dp"/>
+</RelativeLayout>

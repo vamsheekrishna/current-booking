@@ -18,7 +18,12 @@ public class ProfileActivity extends BaseNavigationDrawerActivity implements OnP
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.profile_activity);
         if (savedInstanceState == null) {
-            addFragment(ProfileFragment.newInstance(),"",false);
+            Bundle data = getIntent().getExtras();
+            if(data != null && data.getBoolean(getString(R.string.is_edit))) {
+                addFragment(EditProfileFragment.newInstance(), "", false);
+            } else {
+                addFragment(ProfileFragment.newInstance(), "", false);
+            }
             /*getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, ProfileFragment.newInstance())
                     .commitNow();*/

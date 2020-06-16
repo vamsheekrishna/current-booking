@@ -83,8 +83,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         firstName = view.findViewById(R.id.first_name);
-        firstName.setText(MyProfile.getInstance().getFirstName());
         lastName = view.findViewById(R.id.last_name);
+        firstName.setText(MyProfile.getInstance().getFirstName());
         lastName.setText(MyProfile.getInstance().getLastName());
         ((TextView)view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
         ((TextView)view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());

@@ -91,6 +91,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.login).setOnClickListener(this);
+        view.findViewById(R.id.forgot_password).setOnClickListener(this);
         userName = view.findViewById(R.id.user_id);
         userName.setText("8919251921");
         password = view.findViewById(R.id.password);
@@ -99,43 +100,48 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        String userNameValue = userName.getText().toString().trim();
-        String passwordValue = password.getText().toString().trim();
-
-        if (TextUtils.isEmpty(userNameValue)) {
-            showDialog("", getString(R.string.user_id_cannot_be_empty));
-        } else if (TextUtils.isEmpty(passwordValue)) {
-            showDialog("", getString(R.string.password_cannot_be_empty));
+        if (v.getId() == R.id.forgot_password) {
+            mListener.goToForgotPassword();
         } else {
-            progressDialog.show();
-            loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
-                @Override
-                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                    if (response.isSuccessful()) {
-                        LoginResponse data = response.body();
-                        if (data.getStatus().equalsIgnoreCase("success")) {
-                            MyProfile.getInstance().setData(data.getData().getProfileModel());
-                            if(MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length()<=0) {
-                                mListener.goToProfileActivity();
+            String userNameValue = userName.getText().toString().trim();
+            String passwordValue = password.getText().toString().trim();
+
+            if (TextUtils.isEmpty(userNameValue)) {
+                showDialog("", getString(R.string.user_id_cannot_be_empty));
+            } else if (TextUtils.isEmpty(passwordValue)) {
+                showDialog("", getString(R.string.password_cannot_be_empty));
+            } else {
+                progressDialog.show();
+                loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+                loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        if (response.isSuccessful()) {
+                            LoginResponse data = response.body();
+                            assert data != null;
+                            if (data.getStatus().equalsIgnoreCase("success")) {
+                                MyProfile.getInstance(data.getData().getProfileModel());
+                                if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
+                                    mListener.goToProfileActivity();
+                                } else {
+                                    mListener.goToTicketBookingActivity();
+                                }
                             } else {
-                                mListener.goToTicketBookingActivity();
+                                showDialog("", data.getMsg());
                             }
-                        } else {
-                            showDialog("", data.getMsg());
                         }
-                    }
                     /*startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
                     requireActivity().finish();*/
-                    progressDialog.dismiss();
-                }
+                        progressDialog.dismiss();
+                    }
 
-                @Override
-                public void onFailure(Call<LoginResponse> call, Throwable t) {
-                    showDialog("", t.getMessage());
-                    progressDialog.dismiss();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        showDialog("", t.getMessage());
+                        progressDialog.dismiss();
+                    }
+                });
+            }
         }
     }
 }

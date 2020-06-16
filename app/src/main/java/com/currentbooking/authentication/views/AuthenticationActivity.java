@@ -1,12 +1,17 @@
 package com.currentbooking.authentication.views;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.currentbooking.R;
+import com.currentbooking.SplashScreen;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.authentication.view_models.Authentication;
 import com.currentbooking.profile.ProfileActivity;
@@ -19,10 +24,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 
 public class AuthenticationActivity extends BaseActivity implements OnAuthenticationClickedListener {
-    private static final int NUM_PAGES = 2;
-    private ViewPager2 viewPager;
-    private FragmentStateAdapter pagerAdapter;
     private Authentication authentication;
+
+    private static final int REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,61 +34,57 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 /*        if(getSupportActionBar()!=null)
             this.getSupportActionBar().hide();*/
 
-        setContentView(R.layout.activity_authentication);
+        setContentView(R.layout.activity_home);
 
         if(savedInstanceState == null) {
             authentication = new ViewModelProvider(this).get(Authentication.class);
-            ArrayList<BaseFragment> baseFragments = new ArrayList<>();
-            baseFragments.add(LoginFragment.newInstance("",""));
-            baseFragments.add(RegistrationFragment.newInstance("",""));
-            // Instantiate a ViewPager2 and a PagerAdapter.
-            viewPager = findViewById(R.id.pager);
-
-            pagerAdapter = new ScreenSlidePagerAdapter(this,baseFragments);
-            viewPager.setPageTransformer(new ZoomOutPageTransformer());
-            viewPager.setAdapter(pagerAdapter);
-            TabLayout tabLayout = findViewById(R.id.tab_layout);
-            String[] titles = new String[]{"Login", "Registration"};
-            // attaching tab mediator
-            new TabLayoutMediator(tabLayout, viewPager,
-                    (tab, position) -> tab.setText(titles[position])).attach();
+            addFragment(AuthenticationHomeFragment.newInstance("", ""), "AuthenticationHomeFragment", false);
         }
-
     }
 
     @Override
-    public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+    public boolean showPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            return false;
         }
+        return true;
     }
 
     @Override
     public void goToTicketBookingActivity() {
-       Intent intent = new Intent(this, TicketBookingActivity.class);
-       startActivity(intent);
-       finish();
+        if (showPermission()) {
+            Intent intent = new Intent(this, TicketBookingActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
     public void goToForgotPassword() {
-
+        replaceFragment(ForgotPasswordFragment.newInstance("", ""), "ForgotPasswordFragment", true);
     }
 
     @Override
-    public void goToTabView() {
+    public void validateOTP() {
 
     }
 
     @Override
     public void goToProfileActivity() {
         Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(getString(R.string.is_edit), true);
         startActivity(intent);
         finish();
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                showPermission();
+            }
+        }
     }
 }

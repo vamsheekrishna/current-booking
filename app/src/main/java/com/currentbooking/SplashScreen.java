@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.currentbooking.authentication.views.AuthenticationActivity;
+import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
+import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.UserData;
 import com.currentbooking.utilits.views.BaseActivity;
 
@@ -24,10 +26,17 @@ public class SplashScreen extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(null == UserData.getInstance()) {
-                    startActivity(new Intent(SplashScreen.this, AuthenticationActivity.class));
+                if(null == MyProfile.getInstance()) {
+                    Intent intent = new Intent(SplashScreen.this, AuthenticationActivity.class);
+                    startActivity(intent);
                 } else {
-                    startActivity(new Intent(SplashScreen.this, TicketBookingActivity.class));
+                    if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
+                        Intent intent = new Intent(SplashScreen.this, ProfileActivity.class);
+                        intent.putExtra(getString(R.string.is_edit), true);
+                        startActivity(intent);
+                    } else {
+                        startActivity(new Intent(SplashScreen.this, TicketBookingActivity.class));
+                    }
                 }
                 finish();
             }

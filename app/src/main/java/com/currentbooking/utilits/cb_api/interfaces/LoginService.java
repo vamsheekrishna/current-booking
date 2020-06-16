@@ -1,8 +1,10 @@
 package com.currentbooking.utilits.cb_api.interfaces;
 
 import com.currentbooking.BuildConfig;
+import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.responses.RegistrationResponse;
+import com.currentbooking.utilits.cb_api.responses.ValidateOTP;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -23,4 +25,13 @@ public interface LoginService {
                                             @Field("email") String email,
                                             @Field("password") String password,
                                             @Field("confirm_password") String conformPassword);
+
+    @POST(BuildConfig.VALIDATE_OTP)
+    @FormUrlEncoded
+    Call<ValidateOTP> validateOTP(@Field("mobno") String mobile,
+                                  @Field("otp") String otp);
+
+    @POST(BuildConfig.FORGOT_PASSWORD)
+    @FormUrlEncoded
+    Call<ForgotPasswordResponse> forgotPassword(@Field("mobno") String mobile);
 }
