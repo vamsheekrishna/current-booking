@@ -2,140 +2,165 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_corner_background_bg"
-    android:baselineAligned="false"
-    android:orientation="horizontal">
+    android:background="@drawable/rounded_corner_background_bg_three"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_weight="0.7"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_route_name_field"
-            style="@style/text_style_extra_medium_bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="KMT BUS 3245  "
-            android:textAllCaps="true" />
-
-        <TextView
-            android:id="@+id/tv_bus_type_field"
-            style="@style/text_style_medium_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:textColor="@color/edit_text_border_color" />
-
-        <TextView
-            android:id="@+id/tv_bus_route_field"
-            style="@style/text_style_medium_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp" />
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <LinearLayout
-            style="@style/text_style_medium_normal"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:minHeight="40dp"
-            android:orientation="horizontal">
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_bus_journey_start_time_field"
-                style="@style/text_style_medium_normal"
+                android:id="@+id/tv_route_name_field"
+                style="@style/text_style_extra_medium_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:text="05:45" />
-
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:background="@drawable/small_rounded_circle_bg" />
-
-            <View
-                android:layout_width="30dp"
-                android:layout_height="2dp"
-                android:background="@color/gray_color" />
+                android:textAllCaps="true" />
 
             <TextView
-                android:id="@+id/tv_bus_journey_hours_field"
+                android:id="@+id/tv_bus_type_field"
                 style="@style/text_style_medium_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="3 Hrs"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textColor="@color/edit_text_border_color" />
 
-            <View
-                android:layout_width="30dp"
-                android:layout_height="2dp"
-                android:background="@color/gray_color" />
-
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:background="@drawable/small_rounded_circle_bg" />
-
             <TextView
-                android:id="@+id/tv_bus_journey_end_time_field"
+                android:id="@+id/tv_bus_route_field"
                 style="@style/text_style_medium_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp" />
+
+            <RelativeLayout
+                style="@style/text_style_medium_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_bus_journey_start_time_field"
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="5dp"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:id="@+id/view_circle_one"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/tv_bus_journey_start_time_field"
+                    android:background="@drawable/small_rounded_circle_bg" />
+
+                <View
+                    android:id="@+id/view_circle_two"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/tv_bus_journey_end_time_field"
+                    android:background="@drawable/small_rounded_circle_bg" />
+
+                <TextView
+                    android:id="@+id/tv_bus_journey_end_time_field"
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_bus_journey_hours_field"
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:id="@+id/gray_color_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_toStartOf="@id/tv_bus_journey_hours_field"
+                    android:layout_toEndOf="@+id/view_circle_one"
+                    android:background="@color/white" />
+
+                <View
+                    android:id="@+id/gray_color_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/view_circle_two"
+                    android:layout_toEndOf="@id/tv_bus_journey_hours_field"
+                    android:background="@color/white" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_bus_fare_price_field"
+                style="@style/text_style_extra_medium_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:minHeight="40dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp" />
+
+            <TextView
+                android:id="@+id/btn_book_now_field"
+                style="@style/text_style_extra_medium_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:gravity="center"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:text="08:45" />
+                android:text="@string/book_now"
+                android:textAllCaps="true"
+                android:textColor="@color/book_color"
+                android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="5dp"
-        android:layout_weight="0.3"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_bus_fare_price_field"
-            style="@style/text_style_extra_medium_bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="Rs.175" />
-
-        <TextView
-            android:id="@+id/btn_book_now_field"
-            style="@style/text_style_extra_medium_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:layout_gravity="center"
-            android:text="@string/book_now"
-            android:gravity="center"
-            android:textAllCaps="true"
-            android:textSize="17sp"
-            android:textColor="@color/book_color" />
-    </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 </LinearLayout>

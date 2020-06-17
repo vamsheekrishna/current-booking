@@ -118,7 +118,7 @@ public class SelectBusesFragment extends BaseFragment {
                                 if (busesList != null && !busesList.isEmpty()) {
                                     selectBusesAdapter = new SelectBusesAdapter(v -> {
                                         BusObject busObject = (BusObject) v.getTag();
-                                        mListener.goToConformTicket(busObject);
+                                        mListener.goToConfirmTicket(busObject);
                                     }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName());
                                 }
                             }

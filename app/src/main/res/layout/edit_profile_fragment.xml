@@ -5,82 +5,84 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".authentication.views.RegistrationFragment">
+
     <ScrollView
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/registration"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".authentication.views.LoginFragment">
+        android:layout_width="match_parent"
+        android:layout_above="@+id/save_profile">
+
         <LinearLayout
             android:layout_gravity="top"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/first_name"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/first_name"
-                android:inputType="text"
                 style="@style/edit_text"
-                android:drawableLeft="@drawable/user_thumb" />
+                android:inputType="textCapWords" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/last_name"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/last_name"
-                android:inputType="text"
                 style="@style/edit_text"
-                android:drawableLeft="@drawable/user_thumb" />
+                android:inputType="textCapWords" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:visibility="gone"
                 android:id="@+id/user_id"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/user_id"
-                android:inputType="text"
                 style="@style/edit_text"
-                android:drawableLeft="@drawable/user_thumb" />
+                android:inputType="textCapWords" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mobile_no"
                 android:maxLength="10"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/mobile_number"
                 android:inputType="number"
-                style="@style/text_view"
-                android:drawableLeft="@drawable/user_thumb" />
+                style="@style/text_view" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/email"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/email_id"
                 android:inputType="textEmailAddress"
-                style="@style/text_view"
-                android:drawableLeft="@drawable/user_thumb" />
+                style="@style/text_view" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/dob"
-                android:drawableLeft="@drawable/calendar"
+                android:drawableStart="@drawable/calendar"
                 android:hint="@string/dob"
                 android:inputType="text"
-                style="@style/text_view"/>
+                style="@style/text_view" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/address1"
-                android:drawableLeft="@drawable/home"
+                android:drawableStart="@drawable/home"
                 android:hint="@string/address"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 style="@style/edit_text"/>
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/address2"
-                android:drawableLeft="@drawable/home"
+                android:drawableStart="@drawable/home"
                 android:hint="@string/address2"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 style="@style/edit_text"/>
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/state"
-                android:drawableLeft="@drawable/state"
+                android:drawableStart="@drawable/state"
                 android:hint="@string/state"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 style="@style/edit_text"/>
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/pin_code"
-                android:drawableLeft="@drawable/pin_code"
+                android:drawableStart="@drawable/pin_code"
                 android:hint="@string/pin"
                 android:maxLength="6"
                 android:inputType="numberSigned"

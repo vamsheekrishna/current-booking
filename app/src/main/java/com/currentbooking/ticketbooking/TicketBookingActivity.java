@@ -10,7 +10,7 @@ import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 // import com.currentbooking.interfaces.CallBackInterface;
 
-public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener/*, CallBackInterface*/ {
+public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener {
 
     private TicketBookingViewModel ticketBookingModule;
 
@@ -41,8 +41,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void goToConformTicket(BusObject busObject) {
-        replaceFragment(ConformTicket.newInstance("", ""), "ConformTicket", true);
+    public void goToConfirmTicket(BusObject busObject) {
+        replaceFragment(ConfirmTicketFragment.newInstance("", ""), "ConfirmTicketFragment", true);
     }
 
     @Override

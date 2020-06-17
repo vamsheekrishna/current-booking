@@ -83,6 +83,16 @@
     <string name="error_enter_otp">Please enter a valid otp number</string>
     <string name="error_mobile_number">Please enter valid mobile number.</string>
     <string name="is_edit">IS_EDIT</string>
-
+    <string name="get_details_from_my_profile">Get details from My Profile</string>
+    <string name="close">Close</string>
+    <string name="adult">Adult</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="have_a_concession_code_apply_here">Have a Concession code? Apply here!</string>
+    <string name="apply">Apply</string>
+    <string name="concession_code_removed_desc">Concession code removed. Please enter the Concession code again to avail offer.</string>
+    <string name="enter_concession_code">Enter Concession code</string>
+    <string name="concession_code">Concession Code</string>
+    <string name="select_concession_type">Select Concession Type</string>
 
 </resources>

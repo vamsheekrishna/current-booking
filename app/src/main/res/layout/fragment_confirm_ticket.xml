@@ -2,34 +2,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="#EBEBEB"
+    android:background="@color/background_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ticketbooking.ConformTicket">
+    tools:context=".ticketbooking.ConfirmTicketFragment">
+
     <ScrollView
         android:id="@+id/body"
-        android:layout_above="@+id/conform"
+        android:layout_above="@+id/confirm"
         android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_height="wrap_content">
+
         <LinearLayout
-            android:layout_margin="16dp"
-            android:layout_marginBottom="0dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include
-                layout="@layout/select_buses_list_items"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <include layout="@layout/select_buses_list_items" />
+
             <LinearLayout
                 android:background="@drawable/rounded_corner_background_bg"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/header_text_view"
                     android:text="@string/passenger_details"/>
+
                 <LinearLayout
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
@@ -37,22 +47,53 @@
                     android:layout_weight="4"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="0dp">
+
                     <TextView
                         android:layout_weight="3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/edit_text_hint"
                         android:textSize="@dimen/edit_text_size"
-                        android:text="Get details from My Profile"/>
+                        android:text="@string/get_details_from_my_profile" />
+
                     <androidx.appcompat.widget.AppCompatToggleButton
                         android:id="@+id/load_profile_data"
                         android:layout_weight="1"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:background="@color/colorPrimary"
-                        android:layout_height="wrap_content"/>
+                        android:textColor="@color/white" />
                 </LinearLayout>
-                <include layout="@layout/profile_fragment"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/first_name"
+                    style="@style/text_view"
+                    android:drawableStart="@drawable/user_thumb"
+                    android:hint="@string/first_name"
+                    android:inputType="text" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/last_name"
+                    style="@style/text_view"
+                    android:drawableStart="@drawable/user_thumb"
+                    android:hint="@string/last_name"
+                    android:inputType="text" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mobile_no"
+                    style="@style/text_view"
+                    android:drawableStart="@drawable/user_thumb"
+                    android:hint="@string/mobile_number"
+                    android:inputType="number"
+                    android:maxLength="10" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/email"
+                    style="@style/text_view"
+                    android:drawableStart="@drawable/user_thumb"
+                    android:hint="@string/email_id"
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="16dp"
@@ -60,27 +101,24 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/header_text_view"
                     android:text="@string/ticket_details"/>
+
                 <include
                     android:id="@+id/adult"
                     android:layout_margin="8dp"
                     layout="@layout/item_inc_dec_view_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+
                 <include
                     android:id="@+id/child"
                     android:layout_margin="8dp"
-                    layout="@layout/item_inc_dec_view_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <include
-                    android:id="@+id/sr_citizen"
-                    android:layout_margin="8dp"
-                    layout="@layout/item_inc_dec_view_row"
+                    layout="@layout/child_item_inc_dec_view_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -92,6 +130,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -105,56 +144,62 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="0dp">
+
                     <TextView
                         android:layout_weight="3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/edit_text_hint"
                         android:textSize="@dimen/edit_text_size"
-                        android:text="Fare"/>
+                        android:text="@string/fare" />
+
                     <TextView
+                        android:id="@+id/tv_fare_field"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/edit_text_hint"
                         android:textSize="@dimen/edit_text_size"
-                        android:layout_gravity="center|right"
-                        android:gravity="center|right"
-                        android:text="1500"/>
+                        android:layout_gravity="center|end"
+                        android:gravity="center|end" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:gravity="center"
                     android:layout_weight="4"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="0dp">
+
                     <TextView
                         android:layout_weight="3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/edit_text_hint"
                         android:textSize="@dimen/edit_text_size"
-                        android:text="Service Charge / GST"/>
+                        android:text="@string/service_charge_or_gst" />
+
                     <TextView
+                        android:id="@+id/tv_service_charge_or_gst_field"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|right"
-                        android:gravity="center|right"
+                        android:layout_gravity="center|end"
+                        android:gravity="center|end"
                         android:textColor="@color/edit_text_hint"
-                        android:textSize="@dimen/edit_text_size"
-                        android:text="100"/>
+                        android:textSize="@dimen/edit_text_size" />
                 </LinearLayout>
+
                 <View
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@color/black"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_marginEnd="10dp" />
                 <LinearLayout
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
@@ -163,6 +208,7 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="0dp">
+
                     <TextView
                         android:layout_weight="3"
                         android:layout_width="0dp"
@@ -170,24 +216,103 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/edit_text_size"
-                        android:text="Service Charge / GST"/>
+                        android:text="@string/total_fare" />
+
                     <TextView
+                        android:id="@+id/tv_total_fare_field"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|right"
-                        android:gravity="center|right"
+                        android:layout_gravity="center|end"
+                        android:gravity="center|end"
                         android:fontFamily="@font/opensans_bold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/edit_text_size"
-                        android:text="1600"/>
+                        android:textSize="@dimen/edit_text_size" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_concession_code_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/background_bg"
+                    android:text="@string/have_a_concession_code_apply_here" />
+
+                <LinearLayout
+                    android:id="@+id/concession_code_apply_layout_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/text_style_medium_normal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:text="@string/enter_concession_code" />
+
+                    <TextView
+                        style="@style/text_style_medium_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="0.6">
+
+                        <TextView
+                            android:id="@+id/tv_concession_code_field"
+                            style="@style/text_style_medium_normal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@android:color/transparent"
+                            android:gravity="center_vertical"
+                            android:hint="@string/concession_code"
+                            android:maxLength="10"
+                            android:minHeight="40dp"
+                            android:padding="5dp" />
+
+                        <Button
+                            android:id="@+id/apply_concession_code_btn_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@id/tv_concession_code_field"
+                            android:text="@string/apply"
+                            android:visibility="gone"
+                            tools:ignore="RelativeOverlap" />
+
+                        <ImageView
+                            android:id="@+id/delete_concession_code_btn_field"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/close_icon"
+                            android:visibility="gone" />
+                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
     <com.google.android.material.button.MaterialButton
         android:layout_alignParentBottom="true"
-        android:id="@+id/conform"
+        android:id="@+id/confirm"
         android:layout_margin="16dp"
         android:text="@string/confirm_ticket"
         style="@style/button_gray"/>

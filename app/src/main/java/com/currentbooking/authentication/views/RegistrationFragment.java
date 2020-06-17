@@ -114,20 +114,20 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
             showDialog("", getString(R.string.error_mobile));
         } else if(!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
-        } else if(!Utils.isValidEmail(email)) {
+        } else if (!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
-        } else if(null != password && ! (password.length() > 5)) {
+        } else if (password.length() <= 5) {
             showDialog("", getString(R.string.error_password));
-        } else if(null != conformPassword && ! (conformPassword.length() > 5)) {
+        } else if (conformPassword.length() <= 5) {
             showDialog("", getString(R.string.error_conformation_password));
-        } else if(!conformPassword.equals(conformPassword)) {
+        } else if (!conformPassword.equals(conformPassword)) {
             showDialog("", getString(R.string.error_mismatch_password));
         } else {
             loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
             loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
                 @Override
                 public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
-                    if(response.isSuccessful()) {
+                    if (response.isSuccessful()) {
                         RegistrationResponse responseData = response.body();
                         if(responseData.getStatus().equals("success")) {
                             requireActivity().onBackPressed();

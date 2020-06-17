@@ -10,9 +10,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.LoggerInfo;
 
 import java.util.Objects;
 
@@ -61,22 +63,25 @@ public class BaseFragment extends Fragment {
 
     protected void showDialog(String title, String msg) {
         try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
-            /*
-            empty title is the client requirement
+            AlertDialog.Builder builder = new
+                    AlertDialog.Builder(
+                    requireActivity(),
+                    R.style.AlertDialog
+            );
             if (TextUtils.isEmpty(title)) {
                 title = requireActivity().getString(R.string.message);
-            }*/
+            }
             builder.setTitle(title);
             builder.setCancelable(false);
             builder.setMessage(msg);
-            builder.setNegativeButton("close", (dialog, which) -> dialog.dismiss());
+            builder.setNegativeButton(requireActivity().getString(R.string.close), null);
             AlertDialog alertDialog = builder.create();
+            alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
             if (!requireActivity().isFinishing()) {
                 alertDialog.show();
             }
         } catch (Exception e) {
-
+            LoggerInfo.errorLog("show dialog exception", e.getMessage());
         }
     }
 }

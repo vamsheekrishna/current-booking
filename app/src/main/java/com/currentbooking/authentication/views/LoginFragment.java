@@ -130,8 +130,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                 showDialog("", data.getMsg());
                             }
                         }
-                    /*startActivity(new Intent(requireActivity(), TicketBookingActivity.class));
-                    requireActivity().finish();*/
                         progressDialog.dismiss();
                     }
 

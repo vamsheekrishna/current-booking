@@ -5,10 +5,11 @@
     android:gravity="center"
     android:layout_width="wrap_content"
     android:layout_height="40dp">
+
     <TextView
         android:id="@+id/inc"
         android:background="@drawable/button_inc_dec"
-        android:text="-"
+        android:text="@string/minus"
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@color/btn_inc_dec_color"
@@ -20,9 +21,8 @@
         android:layout_marginRight="8dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:id="@+id/value"
+        android:id="@+id/tv_no_of_persons_field"
         android:textColor="@color/black"
-        android:text="1"
         android:textSize="@dimen/edit_text_size"
         android:layout_width="35dp"
         android:layout_height="35dp"/>
@@ -32,7 +32,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@drawable/button_inc_dec"
-        android:text="+"
+        android:text="@string/plus"
         android:textSize="@dimen/edit_text_size"
         android:layout_width="35dp"
         android:layout_height="35dp"/>

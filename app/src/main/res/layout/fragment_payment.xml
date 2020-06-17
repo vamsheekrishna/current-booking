@@ -5,7 +5,8 @@
     android:background="#EBEBEB"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ticketbooking.ConformTicket">
+    tools:context=".ticketbooking.ConfirmTicketFragment">
+
     <ScrollView
         android:layout_alignParentTop="true"
         android:id="@+id/body"
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content">
 
     </ScrollView>
+
     <com.google.android.material.button.MaterialButton
         android:layout_alignParentBottom="true"
         android:id="@+id/conform"

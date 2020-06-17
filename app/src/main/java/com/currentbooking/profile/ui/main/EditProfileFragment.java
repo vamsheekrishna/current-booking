@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.currentbooking.R;
 import com.currentbooking.interfaces.DateTimeInterface;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.text.SimpleDateFormat;
@@ -26,12 +27,13 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     // private ProfileViewModel mViewModel;
     OnProfileListener mListener;
-    private AppCompatEditText firstName;
-    private AppCompatEditText lastName;
-    private AppCompatEditText address1;
-    private AppCompatEditText address2;
-    private AppCompatEditText state;
-    private AppCompatEditText pinCode;
+    private AppCompatEditText etFirstName;
+    private AppCompatEditText etLastName;
+    private AppCompatEditText etAddress1;
+    private AppCompatEditText etAddress2;
+    private AppCompatEditText etState;
+    private AppCompatEditText etPinCode;
+
     AppCompatTextView dob;
     private Calendar dateOfBirthCalendar;
 
@@ -82,36 +84,70 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        firstName = view.findViewById(R.id.first_name);
-        lastName = view.findViewById(R.id.last_name);
-        firstName.setText(MyProfile.getInstance().getFirstName());
-        lastName.setText(MyProfile.getInstance().getLastName());
-        ((TextView)view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
-        ((TextView)view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
+        etFirstName = view.findViewById(R.id.first_name);
+        etLastName = view.findViewById(R.id.last_name);
+        etFirstName.setText(MyProfile.getInstance().getFirstName());
+        etLastName.setText(MyProfile.getInstance().getLastName());
+        ((TextView) view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
+        ((TextView) view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
         dob = view.findViewById(R.id.dob);
         dob.setText(MyProfile.getInstance().getDob());
         dob.setOnClickListener(this);
-        address1 = view.findViewById(R.id.address1);
-        address1.setText(MyProfile.getInstance().getAddress1());
-        address2 = view.findViewById(R.id.address2);
-        address2.setText(MyProfile.getInstance().getAddress2());
-        state = view.findViewById(R.id.state);
-        state.setText(MyProfile.getInstance().getState());
-        pinCode = view.findViewById(R.id.pin_code);
-        pinCode.setText(MyProfile.getInstance().getPinCode());
+        etAddress1 = view.findViewById(R.id.address1);
+        etAddress1.setText(MyProfile.getInstance().getAddress1());
+        etAddress2 = view.findViewById(R.id.address2);
+        etAddress2.setText(MyProfile.getInstance().getAddress2());
+        etState = view.findViewById(R.id.state);
+        etState.setText(MyProfile.getInstance().getState());
+        etPinCode = view.findViewById(R.id.pin_code);
+        etPinCode.setText(MyProfile.getInstance().getPinCode());
         view.findViewById(R.id.save_profile).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.edit_profile:
-                //
+            case R.id.save_profile:
+                saveSelected();
                 break;
             case R.id.dob:
                 dateOfPickerSelected();
             default:
                 break;
+        }
+    }
+
+    private void saveSelected() {
+
+        String fName = Objects.requireNonNull(etFirstName.getText()).toString().trim();
+        String lName = Objects.requireNonNull(etLastName.getText()).toString();
+
+
+        if (!Utils.isValidWord(fName)) {
+            showDialog("", getString(R.string.error_first_name));
+        } else if (!Utils.isValidWord(lName)) {
+            showDialog("", getString(R.string.error_last_name));
+        } else {
+            /*Retrofit loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+            loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
+                @Override
+                public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
+                    if(response.isSuccessful()) {
+                        RegistrationResponse responseData = response.body();
+                        if(responseData.getStatus().equals("success")) {
+                            requireActivity().onBackPressed();
+                        } else {
+                            showDialog("", responseData.getMsg());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+                    showDialog("", t.getMessage());
+                }
+            });*/
+            // requireActivity().onBackPressed();
         }
     }
 
