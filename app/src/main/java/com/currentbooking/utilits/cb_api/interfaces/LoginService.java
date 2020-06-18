@@ -4,6 +4,7 @@ import com.currentbooking.BuildConfig;
 import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.responses.RegistrationResponse;
+import com.currentbooking.utilits.cb_api.responses.ResendOTPResponse;
 import com.currentbooking.utilits.cb_api.responses.ValidateOTP;
 
 import retrofit2.Call;
@@ -28,10 +29,14 @@ public interface LoginService {
 
     @POST(BuildConfig.VALIDATE_OTP)
     @FormUrlEncoded
-    Call<ValidateOTP> validateOTP(@Field("mobno") String mobile,
+    Call<ValidateOTP> validateOTP(@Field("mobileno") String mobile,
                                   @Field("otp") String otp);
 
     @POST(BuildConfig.FORGOT_PASSWORD)
     @FormUrlEncoded
     Call<ForgotPasswordResponse> forgotPassword(@Field("mobileno") String mobile);
+
+    @POST(BuildConfig.RESEND_OTP)
+    @FormUrlEncoded
+    Call<ResendOTPResponse> resendOTP(@Field("mobileno") String mobile);
 }

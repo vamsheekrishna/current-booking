@@ -37,6 +37,7 @@ android {
             buildConfigField("String", "LOGIN", '"login/login"')
             buildConfigField("String", "FORGOT_PASSWORD", '"login/forgetpass"')
             buildConfigField("String", "VALIDATE_OTP", '"login/verifyotp"')
+            buildConfigField("String", 'RESEND_OTP', '"login/resendotp"')
             buildConfigField("String", "AVAILABLE_BUS_LIST", '"Bus_search/search"')
             buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
             buildConfigField("String", "BUS_TYPE", '"operator/getBustype"')

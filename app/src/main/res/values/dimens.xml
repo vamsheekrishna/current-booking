@@ -3,4 +3,5 @@
     <dimen name="edit_text_size">16sp</dimen>
     <dimen name="header_text_size">24sp</dimen>
     <dimen name="ticket_inc_dec">42dp</dimen>
+    <dimen name="mobile_number_length">10</dimen>
 </resources>

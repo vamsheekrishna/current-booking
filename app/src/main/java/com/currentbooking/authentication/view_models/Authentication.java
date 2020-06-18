@@ -27,25 +27,25 @@ public class Authentication extends ViewModel {
     }
 
 
-    String getFirstName() {
+    public String getFirstName() {
         return mFirstName.getValue();
     }
-    String getLastName() {
+    public String getLastName() {
         return mLastName.getValue();
     }
-    String getEmail() {
+    public String getEmail() {
         return mEmail.getValue();
     }
-    String getUserName() {
+    public String getUserName() {
         return mUserName.getValue();
     }
-    String getMobileNumber() {
+    public  String getMobileNumber() {
         return mMobile.getValue();
     }
-    String getPassword() {
+    public String getPassword() {
         return mPassword.getValue();
     }
-    String getConformationPassword() {
+    public String getConformationPassword() {
         return mConfirmPassword.getValue();
     }
 

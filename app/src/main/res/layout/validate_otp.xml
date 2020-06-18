@@ -25,14 +25,27 @@ tools:context=".authentication.views.AuthenticationActivity">
         android:textColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/mobile_no"
+        android:drawableStart="@drawable/user_thumb"
+        android:hint="@string/mobile_number"
+        android:inputType="numberSigned"
+        android:layout_gravity="center"
+        style="@style/edit_text"
+        android:maxLength="10"
+        android:layout_width="308dp"
+        android:drawableLeft="@drawable/user_thumb" />
+
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/otp_placeholder"
         android:drawableStart="@drawable/user_thumb"
         android:hint="@string/enter_otp"
         android:inputType="numberSigned"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:maxLength="6"
         style="@style/edit_text"
+        android:layout_width="308dp"
         android:drawableLeft="@drawable/user_thumb" />
 
     <LinearLayout

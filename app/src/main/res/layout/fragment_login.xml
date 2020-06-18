@@ -20,6 +20,7 @@
                 android:id="@+id/user_id"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/mobile_number"
+                android:maxLength="10"
                 android:inputType="numberSigned"
                 style="@style/edit_text"
                 android:drawableLeft="@drawable/user_thumb" />
@@ -28,6 +29,7 @@
                 android:inputType="textPassword"
                 android:drawableLeft="@drawable/lock_thumb"
                 android:hint="@string/password"
+                android:maxLength="8"
                 style="@style/edit_text"/>
         </LinearLayout>
     </ScrollView>

@@ -1,5 +1,6 @@
 package com.currentbooking.authentication.views;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,13 +11,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
+import com.currentbooking.authentication.view_models.Authentication;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
+import com.currentbooking.utilits.cb_api.responses.ResendOTPResponse;
 import com.currentbooking.utilits.cb_api.responses.ValidateOTP;
 import com.currentbooking.utilits.views.BaseFragment;
 
@@ -34,7 +39,9 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
     private OnAuthenticationClickedListener mListener;
     private LoginService loginService;
     private TextView otpView;
-    private TextView password;
+    // private TextView password;
+    private TextView mobileNumber;
+    private Authentication authentication;
 
     public ValidateOTPFragment() {
         // Required empty public constructor
@@ -84,6 +91,8 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
+
+        authentication = new ViewModelProvider(this).get(Authentication.class);
         return inflater.inflate(R.layout.validate_otp, container, false);
     }
 
@@ -91,40 +100,65 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.validate_otp).setOnClickListener(this);
+        view.findViewById(R.id.resend).setOnClickListener(this);
         otpView = view.findViewById(R.id.otp_placeholder);
-        otpView.setText("8919251921");
+        mobileNumber = view.findViewById(R.id.mobile_no);
+
     }
 
     @Override
     public void onClick(View v) {
         String otp = otpView.getText().toString().trim();
-
-        if (TextUtils.isEmpty(otp)) {
-            showDialog("", getString(R.string.error_enter_otp));
+        String _mobileNumber = mobileNumber.getText().toString().trim();
+        if (!Utils.isValidMobile(_mobileNumber)) {
+            showDialog("", getString(R.string.error_mobile_number));
         } else {
             progressDialog.show();
             loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.validateOTP("userNameValue", otp).enqueue(new Callback<ValidateOTP>() {
-                @Override
-                public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
-                    if(response.isSuccessful()) {
-                        ValidateOTP data = response.body();
-                        assert data != null;
-                        if (data.getStatus().equalsIgnoreCase("success")) {
-
-                        } else {
-                            showDialog("", data.getMsg());
-                        }
+            if (v.getId() == R.id.resend) {
+                loginService.resendOTP(_mobileNumber).enqueue(new Callback<ResendOTPResponse>() {
+                    @Override
+                    public void onResponse(Call<ResendOTPResponse> call, Response<ResendOTPResponse> response) {
+                        showDialog("", response.body().getMsg());
+                        progressDialog.dismiss();
                     }
-                    progressDialog.dismiss();
-                }
 
-                @Override
-                public void onFailure(Call<ValidateOTP> call, Throwable t) {
-                    showDialog("", t.getMessage());
+                    @Override
+                    public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+                        showDialog("", t.getMessage());
+                        progressDialog.dismiss();
+                    }
+                });
+            } else {
+                if (TextUtils.isEmpty(otp)) {
+                    showDialog("", getString(R.string.error_enter_otp));
                     progressDialog.dismiss();
+                } else {
+                    loginService.validateOTP(_mobileNumber, otp).enqueue(new Callback<ValidateOTP>() {
+                        @Override
+                        public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
+                            if (response.isSuccessful()) {
+                                ValidateOTP data = response.body();
+                                assert data != null;
+                                if (data.getStatus().equalsIgnoreCase("success")) {
+                                    showDialog("", data.getMsg(), (dialog, which) -> {
+                                        getActivity().onBackPressed();
+                                    });
+                                } else {
+                                    showDialog("", data.getMsg());
+                                }
+                            }
+                            progressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(Call<ValidateOTP> call, Throwable t) {
+                            showDialog("", t.getMessage());
+                            progressDialog.dismiss();
+                        }
+                    });
                 }
-            });
+            }
         }
     }
 }
