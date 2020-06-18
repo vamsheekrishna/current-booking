@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class ConcessionListResponse extends BaseResponse{
+public class ConcessionListResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
     ConcessionList concessionList;

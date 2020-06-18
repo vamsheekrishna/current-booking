@@ -12,6 +12,10 @@ import com.currentbooking.utilits.cb_api.responses.BusPoint;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.cb_api.responses.BusTypeList;
+import com.currentbooking.utilits.cb_api.responses.Concession;
+import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
+import com.currentbooking.utilits.cb_api.responses.ConcessionRates;
+import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 
 import java.util.ArrayList;
 
@@ -32,6 +36,12 @@ public class TicketBookingViewModel extends ViewModel {
 
     private MutableLiveData<BusStopObject> selectedPickUpPoint = new MutableLiveData<>();
     private MutableLiveData<BusStopObject> selectedDropPoint = new MutableLiveData<>();
+
+
+    private MutableLiveData<Concession> selectedConcession = new MutableLiveData<>();
+    private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
+    MutableLiveData<ArrayList<Concession>> concessionList = new MutableLiveData<>();
+    MutableLiveData<ArrayList<ConcessionRates>> concessionRates = new MutableLiveData<>();
 
     public TicketBookingViewModel() {
         ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
@@ -177,9 +187,59 @@ public class TicketBookingViewModel extends ViewModel {
     public void onBusOperatorChanged() {
         resetBusType();
         resetBusPointData();
+        resetConcession();
+        resetConcessionRate();
         loadBusTypes();
     }
 
+    private void resetConcession() {
+        ticketBookingServices.getConcessionList(selectedBusOperator.getValue().getOperatorCode()).enqueue(new Callback<ConcessionListResponse>() {
+            @Override
+            public void onResponse(Call<ConcessionListResponse> call, Response<ConcessionListResponse> response) {
+                if(response.isSuccessful()) {
+                    assert response.body() != null;
+                    if(response.body().getStatus().equalsIgnoreCase("success")) {
+                        ArrayList<Concession> data = response.body().getConcessionList().getConcessions();
+                        concessionList.setValue(data);
+                        selectedConcession.setValue(new Concession());
+                    } else {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ConcessionListResponse> call, Throwable t) {
+
+            }
+        });
+    }
+    private void resetConcessionRate() {
+        ticketBookingServices.getConcessionRatesList(selectedBusOperator.getValue().getOperatorCode()).enqueue(new Callback<ConcessionRatesListResponse>() {
+            @Override
+            public void onResponse(Call<ConcessionRatesListResponse> call, Response<ConcessionRatesListResponse> response) {
+                assert response.body() != null;
+                if(response.body().getStatus().equalsIgnoreCase("success")) {
+                    ArrayList<ConcessionRates> data = response.body().getConcessionRatesList().getConcessionRates();
+                    concessionRates.setValue(data);
+                    selectedConcessionRate.setValue(new ConcessionRates());
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ConcessionRatesListResponse> call, Throwable t) {
+
+            }
+        });
+    }
+    public void onConcessionSelected(Concession concession) {
+        selectedConcession.setValue(concession);
+    }
+    public void onConcessionRateSelected(ConcessionRates concessionRates) {
+        selectedConcessionRate.setValue(concessionRates);
+    }
     public void onBusTypeSelected() {
         resetBusType();
         resetBusPointData();
