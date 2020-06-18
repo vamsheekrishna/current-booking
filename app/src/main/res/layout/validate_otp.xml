@@ -42,10 +42,14 @@ tools:context=".authentication.views.AuthenticationActivity">
         android:layout_height="wrap_content">
         <com.google.android.material.button.MaterialButton
             android:id="@+id/validate_otp"
+            android:layout_width="150dp"
+            android:layout_marginRight="4dp"
             android:text="@string/validate_otp"
             style="@style/button_gray"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/resend"
+            android:layout_marginLeft="4dp"
+            android:layout_width="150dp"
             android:text="resend"
             style="@style/button_gray"/>
     </LinearLayout>
