@@ -127,7 +127,12 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                     mListener.goToTicketBookingActivity();
                                 }
                             } else {
-                                showDialog("", data.getMsg());
+                                showDialog("", data.getMsg(), (dialog, which) -> {
+                                    dialog.dismiss();
+                                    if(data.getMsg().contains("verify")) {
+                                        mListener.validateOTP();
+                                    }
+                                });
                             }
                         }
                         progressDialog.dismiss();

@@ -6,6 +6,8 @@ import com.currentbooking.utilits.cb_api.responses.BusOperatorList;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusStopResponse;
 import com.currentbooking.utilits.cb_api.responses.BusTypeList;
+import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
+import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -33,4 +35,12 @@ public interface TicketBookingServices {
     @FormUrlEncoded
     Call<BusStopResponse> getBusStopList(@Field("operator") String operator,
                                          @Field("stopname") String stopname);
+
+    @POST(BuildConfig.CONCESSION_LIST)
+    @FormUrlEncoded
+    Call<ConcessionListResponse> getConcessionList(@Field("operator") String operator);
+
+    @POST(BuildConfig.CONCESSION_RATE_LIST)
+    @FormUrlEncoded
+    Call<ConcessionRatesListResponse> getConcessionRatesList(@Field("operator") String operator);
 }

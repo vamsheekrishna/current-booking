@@ -31,9 +31,6 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*        if(getSupportActionBar()!=null)
-            this.getSupportActionBar().hide();*/
-
         setContentView(R.layout.activity_home);
 
         if(savedInstanceState == null) {
@@ -69,7 +66,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void validateOTP() {
-
+        replaceFragment(ValidateOTPFragment.newInstance("", ""), "ValidateOTPFragment", true);
     }
 
     @Override

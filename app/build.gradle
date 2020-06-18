@@ -35,14 +35,14 @@ android {
 
             buildConfigField("String", "REGISTRATION", '"login/registration"')
             buildConfigField("String", "LOGIN", '"login/login"')
+            buildConfigField("String", "FORGOT_PASSWORD", '"login/forgetpass"')
+            buildConfigField("String", "VALIDATE_OTP", '"login/verifyotp"')
+            buildConfigField("String", "AVAILABLE_BUS_LIST", '"Bus_search/search"')
             buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
             buildConfigField("String", "BUS_TYPE", '"operator/getBustype"')
-            buildConfigField("String", "AVAILABLE_BUS_LIST", '"Bus_search/search"')
-            buildConfigField("String", "FORGOT_PASSWORD", '"Bus_search/search"')
-            buildConfigField("String", "VALIDATE_OTP", '"Bus_search/search"')
-//            buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/stops"')
             buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/busstop"')
-
+            buildConfigField('String','CONCESSION_LIST','"operator/getConcession"')
+            buildConfigField('String','CONCESSION_RATE_LIST','"operator/getConcessionrates"')
         }
         prod {
             dimension "version"

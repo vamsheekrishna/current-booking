@@ -84,4 +84,25 @@ public class BaseFragment extends Fragment {
             LoggerInfo.errorLog("show dialog exception", e.getMessage());
         }
     }
+
+    protected void showDialog(String title, String msg, DialogInterface.OnClickListener onClickListener) {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
+            /*
+            empty title is the client requirement
+            if (TextUtils.isEmpty(title)) {
+                title = requireActivity().getString(R.string.message);
+            }*/
+            builder.setTitle(title);
+            builder.setCancelable(false);
+            builder.setMessage(msg);
+            builder.setNegativeButton("close", onClickListener);
+            AlertDialog alertDialog = builder.create();
+            if (!requireActivity().isFinishing()) {
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+
+        }
+    }
 }

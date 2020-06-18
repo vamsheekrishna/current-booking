@@ -17,6 +17,14 @@ tools:context=".authentication.views.AuthenticationActivity">
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
+    <TextView
+        android:id="@+id/header"
+        android:layout_marginBottom="32dp"
+        android:text="Validate OTP"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/otp_placeholder"
         android:drawableStart="@drawable/user_thumb"
@@ -27,10 +35,20 @@ tools:context=".authentication.views.AuthenticationActivity">
         style="@style/edit_text"
         android:drawableLeft="@drawable/user_thumb" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/validate_otp"
-        android:text="@string/validate_otp"
-        style="@style/button_gray"/>
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/validate_otp"
+            android:text="@string/validate_otp"
+            style="@style/button_gray"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/resend"
+            android:text="resend"
+            style="@style/button_gray"/>
+    </LinearLayout>
 </LinearLayout>
     <ImageView
         android:id="@+id/header_img"

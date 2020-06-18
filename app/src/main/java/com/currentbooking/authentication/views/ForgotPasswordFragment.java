@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
@@ -99,7 +100,7 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
     public void onClick(View v) {
         String _mobileNumber = mobileNumber.getText().toString().trim();
 
-        if (TextUtils.isEmpty(_mobileNumber)) {
+        if (!Utils.isValidMobile(_mobileNumber)) {
             showDialog("", getString(R.string.error_mobile_number));
         } else {
             progressDialog.show();
@@ -107,12 +108,15 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
             loginService.forgotPassword(_mobileNumber).enqueue(new Callback<ForgotPasswordResponse>() {
                 @Override
                 public void onResponse(Call<ForgotPasswordResponse> call, Response<ForgotPasswordResponse> response) {
-
+                    assert response.body() != null;
+                    showDialog("", response.body().getMsg());
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<ForgotPasswordResponse> call, Throwable t) {
-
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
                 }
             });
         }

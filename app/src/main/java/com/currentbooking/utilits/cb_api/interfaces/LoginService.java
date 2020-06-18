@@ -33,5 +33,5 @@ public interface LoginService {
 
     @POST(BuildConfig.FORGOT_PASSWORD)
     @FormUrlEncoded
-    Call<ForgotPasswordResponse> forgotPassword(@Field("mobno") String mobile);
+    Call<ForgotPasswordResponse> forgotPassword(@Field("mobileno") String mobile);
 }

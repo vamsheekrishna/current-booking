@@ -130,7 +130,8 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
                     if (response.isSuccessful()) {
                         RegistrationResponse responseData = response.body();
                         if(responseData.getStatus().equals("success")) {
-                            requireActivity().onBackPressed();
+                            mListener.validateOTP();
+                            // requireActivity().onBackPressed();
                         } else {
                             showDialog("", responseData.getMsg());
                         }
