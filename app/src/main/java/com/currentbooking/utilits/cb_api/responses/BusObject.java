@@ -3,7 +3,10 @@ package com.currentbooking.utilits.cb_api.responses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BusObject {
+import java.io.Serializable;
+
+public class BusObject implements Serializable {
+
     @SerializedName("route_no")
     @Expose
     String routeNumber;

@@ -45,7 +45,7 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
         String busRoute = String.format("%s %s %s", busObject.getSourceStageName(), toText, busObject.getDestinationStageName());
         holder.tvBusRouteField.setText(busRoute);
         holder.tvBusTypeField.setText(busObject.getBusTypeNM());
-        String busRouteName = busOperatorName +" "+ busObject.getRouteNumber();// String.format("MSRTC BUS %s", busObject.getRouteNumber());
+        String busRouteName = busOperatorName +" "+ busObject.getRouteNumber();
         holder.tvBusRouteNameField.setText(busRouteName);
         holder.btnBookNowField.setTag(busObject);
     }

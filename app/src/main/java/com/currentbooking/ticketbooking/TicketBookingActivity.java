@@ -41,8 +41,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void goToConfirmTicket(BusObject busObject) {
-        replaceFragment(ConfirmTicketFragment.newInstance("", ""), "ConfirmTicketFragment", true);
+    public void goToConfirmTicket(String busOperatorName, BusObject busObject) {
+        replaceFragment(ConfirmTicketFragment.newInstance(busObject, busOperatorName), "ConfirmTicketFragment", true);
     }
 
     @Override

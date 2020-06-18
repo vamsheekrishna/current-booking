@@ -38,7 +38,7 @@ public class SelectBusesFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_BUS_OPERATOR_NAME = "BusOperatorName";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -49,14 +49,16 @@ public class SelectBusesFragment extends BaseFragment {
     private SelectBusesAdapter selectBusesAdapter;
     private RecyclerView busesResultListField;
     OnTicketBookingListener mListener;
+    private String busOperatorName;
+
     public SelectBusesFragment() {
         // Required empty public constructor
     }
 
-    public static SelectBusesFragment newInstance(String param1, String param2) {
+    public static SelectBusesFragment newInstance(String busOperatorName, String param2) {
         SelectBusesFragment fragment = new SelectBusesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_BUS_OPERATOR_NAME, busOperatorName);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -72,7 +74,7 @@ public class SelectBusesFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            busOperatorName = getArguments().getString(ARG_BUS_OPERATOR_NAME);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -102,7 +104,8 @@ public class SelectBusesFragment extends BaseFragment {
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         /*ticketBookingModule.getSelectedBusOperator().getValue().opertorName.toLowerCase(),
                 ticketBookingModule.getSelectedBusType().getValue().getBusTypeCD(),*/
-        busListService.getAvailableBusList("msrtc",
+        busOperatorName = "msrtc";
+        busListService.getAvailableBusList(busOperatorName,
                 "SC",
                 "PNL",
                 "TALOJA").enqueue(new Callback<AvailableBusList>() {
@@ -118,7 +121,7 @@ public class SelectBusesFragment extends BaseFragment {
                                 if (busesList != null && !busesList.isEmpty()) {
                                     selectBusesAdapter = new SelectBusesAdapter(v -> {
                                         BusObject busObject = (BusObject) v.getTag();
-                                        mListener.goToConfirmTicket(busObject);
+                                        mListener.goToConfirmTicket(busOperatorName, busObject);
                                     }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName());
                                 }
                             }

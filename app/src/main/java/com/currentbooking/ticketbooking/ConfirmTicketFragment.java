@@ -18,16 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.Objects;
 
 public class ConfirmTicketFragment extends BaseFragment implements View.OnClickListener {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_BUS_DETAILS = "BusDetails";
+    private static final String ARG_BUS_OPERATOR_NAME = "BusOperatorName";
 
-    private String mParam1;
-    private String mParam2;
+    private BusObject busDetails;
+    private String busOperatorName;
 
     private TextView tvConcessionCodeField;
 
@@ -37,11 +38,11 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
 
     OnTicketBookingListener mListener;
 
-    public static ConfirmTicketFragment newInstance(String param1, String param2) {
+    public static ConfirmTicketFragment newInstance(BusObject busDetails, String busOperatorName) {
         ConfirmTicketFragment fragment = new ConfirmTicketFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_BUS_DETAILS, busDetails);
+        args.putString(ARG_BUS_OPERATOR_NAME, busOperatorName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,8 +57,8 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            busDetails = (BusObject) getArguments().getSerializable(ARG_BUS_DETAILS);
+            busOperatorName = getArguments().getString(ARG_BUS_OPERATOR_NAME);
         }
     }
 
@@ -90,9 +91,11 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
         view.findViewById(R.id.edit_profile).setVisibility(View.GONE);
         view.findViewById(R.id.conform).setOnClickListener(this);
 
-        ((TextView) view.findViewById(R.id.tv_route_name_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_bus_route_field)).setText("");
+        String busRoute = String.format("%s to %s", busDetails.getSourceStageName(), busDetails.getDestinationStageName());
+        String busRouteName = busOperatorName +" "+ busDetails.getRouteNumber();
+        ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
+        ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBusTypeNM());
+        ((TextView) view.findViewById(R.id.tv_bus_route_field)).setText(busRoute);
         ((TextView) view.findViewById(R.id.tv_bus_journey_start_time_field)).setText("");
         ((TextView) view.findViewById(R.id.tv_bus_journey_hours_field)).setText("");
         ((TextView) view.findViewById(R.id.tv_bus_journey_end_time_field)).setText("");
