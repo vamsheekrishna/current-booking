@@ -40,8 +40,8 @@ public class TicketBookingViewModel extends ViewModel {
 
     private MutableLiveData<Concession> selectedConcession = new MutableLiveData<>();
     private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
-    MutableLiveData<ArrayList<Concession>> concessionList = new MutableLiveData<>();
-    MutableLiveData<ArrayList<ConcessionRates>> concessionRates = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Concession>> concessionList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<ConcessionRates>> concessionRates = new MutableLiveData<>();
 
     public TicketBookingViewModel() {
         ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
@@ -187,12 +187,19 @@ public class TicketBookingViewModel extends ViewModel {
     public void onBusOperatorChanged() {
         resetBusType();
         resetBusPointData();
-        resetConcession();
-        resetConcessionRate();
+        getConcession();
+        getConcessionRate();
         loadBusTypes();
     }
 
-    private void resetConcession() {
+    public MutableLiveData<ArrayList<Concession>>  getConcessionLiveData() {
+        if(concessionList == null) {
+            concessionList = new MutableLiveData<>();
+        }
+        return concessionList;
+    }
+
+    private void getConcession() {
         ticketBookingServices.getConcessionList(selectedBusOperator.getValue().getOperatorCode()).enqueue(new Callback<ConcessionListResponse>() {
             @Override
             public void onResponse(Call<ConcessionListResponse> call, Response<ConcessionListResponse> response) {
@@ -214,7 +221,7 @@ public class TicketBookingViewModel extends ViewModel {
             }
         });
     }
-    private void resetConcessionRate() {
+    private void getConcessionRate() {
         ticketBookingServices.getConcessionRatesList(selectedBusOperator.getValue().getOperatorCode()).enqueue(new Callback<ConcessionRatesListResponse>() {
             @Override
             public void onResponse(Call<ConcessionRatesListResponse> call, Response<ConcessionRatesListResponse> response) {

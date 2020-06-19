@@ -7,7 +7,7 @@
     android:layout_height="40dp">
 
     <TextView
-        android:id="@+id/inc"
+        android:id="@+id/tv_adult_dec_field"
         android:background="@drawable/button_inc_dec"
         android:text="@string/minus"
         android:layout_gravity="center"
@@ -16,18 +16,19 @@
         android:textSize="@dimen/edit_text_size"
         android:layout_width="35dp"
         android:layout_height="35dp"/>
+
     <TextView
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:id="@+id/tv_no_of_persons_field"
+        android:id="@+id/tv_no_of_adults_field"
         android:textColor="@color/black"
         android:textSize="@dimen/edit_text_size"
         android:layout_width="35dp"
         android:layout_height="35dp"/>
     <TextView
-        android:id="@+id/dec"
+        android:id="@+id/tv_adult_inc_field"
         android:textColor="@color/btn_inc_dec_color"
         android:layout_gravity="center"
         android:gravity="center"

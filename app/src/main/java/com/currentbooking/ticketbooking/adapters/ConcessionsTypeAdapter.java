@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.cb_api.responses.Concession;
 
 import java.util.List;
 
@@ -19,9 +20,9 @@ import java.util.List;
 public class ConcessionsTypeAdapter extends RecyclerView.Adapter<ConcessionsTypeAdapter.ConcessionTypeViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<Object> concessionsList;
+    private List<Concession> concessionsList;
 
-    public ConcessionsTypeAdapter(Context context, List<Object> concessionsList) {
+    public ConcessionsTypeAdapter(Context context, List<Concession> concessionsList) {
         layoutInflater = LayoutInflater.from(context);
         this.concessionsList = concessionsList;
     }
@@ -35,7 +36,9 @@ public class ConcessionsTypeAdapter extends RecyclerView.Adapter<ConcessionsType
 
     @Override
     public void onBindViewHolder(@NonNull ConcessionTypeViewHolder holder, int position) {
-
+        Concession concessionModel = concessionsList.get(position);
+        holder.concessionNameField.setText(concessionModel.getConcessionNM());
+        holder.concessionDescriptionField.setText(concessionModel.getAdultPermitted());
     }
 
     @Override
@@ -43,7 +46,7 @@ public class ConcessionsTypeAdapter extends RecyclerView.Adapter<ConcessionsType
         return concessionsList.size();
     }
 
-    public static class ConcessionTypeViewHolder extends RecyclerView.ViewHolder {
+    static class ConcessionTypeViewHolder extends RecyclerView.ViewHolder {
 
         TextView concessionNameField;
         TextView concessionDescriptionField;

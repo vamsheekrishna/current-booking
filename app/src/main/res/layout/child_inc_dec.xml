@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/child_inc"
+        android:id="@+id/tv_child_dec_field"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
@@ -29,7 +29,7 @@
         android:textSize="@dimen/edit_text_size" />
 
     <TextView
-        android:id="@+id/child_dec"
+        android:id="@+id/tv_child_inc_field"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
