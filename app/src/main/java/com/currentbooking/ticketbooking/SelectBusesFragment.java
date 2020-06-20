@@ -104,11 +104,11 @@ public class SelectBusesFragment extends BaseFragment {
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         /*ticketBookingModule.getSelectedBusOperator().getValue().opertorName.toLowerCase(),
                 ticketBookingModule.getSelectedBusType().getValue().getBusTypeCD(),*/
-        busOperatorName = "msrtc";
+        busOperatorName = "MSRTC";
         busListService.getAvailableBusList(busOperatorName,
-                "SC",
-                "PNL",
-                "TALOJA").enqueue(new Callback<AvailableBusList>() {
+                "SL",
+                "MCT",
+                "SWR").enqueue(new Callback<AvailableBusList>() {
             @Override
             public void onResponse(@NotNull Call<AvailableBusList> call, @NotNull Response<AvailableBusList> response) {
                 if (response.isSuccessful()) {
