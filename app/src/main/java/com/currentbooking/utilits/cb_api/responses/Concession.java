@@ -49,6 +49,8 @@ public class Concession implements Serializable  {
     @Expose
     String concessionDevnagiriNM;
 
+    private String personType;
+
     public String getConcessionID() {
         return concessionID;
     }
@@ -159,5 +161,13 @@ public class Concession implements Serializable  {
 
     public void setConcessionDevnagiriNM(String concessionDevnagiriNM) {
         this.concessionDevnagiriNM = concessionDevnagiriNM;
+    }
+
+    public String getPersonType() {
+        return personType;
+    }
+
+    public void setPersonType(String personType) {
+        this.personType = personType;
     }
 }

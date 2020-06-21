@@ -111,6 +111,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             } else if (TextUtils.isEmpty(passwordValue)) {
                 showDialog("", getString(R.string.password_cannot_be_empty));
             } else {
+
                 progressDialog.show();
                 loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
                 loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {

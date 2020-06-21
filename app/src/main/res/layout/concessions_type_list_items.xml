@@ -1,52 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_concession_type_field"
+    style="@style/text_style_medium_normal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.8"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_concession_name_field"
-            style="@style/text_style_medium_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:maxLength="10"
-            android:minHeight="40dp"
-            android:padding="5dp"
-            android:textAllCaps="true"
-            android:textColor="@color/button_bg"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tv_concession_description_field"
-            style="@style/text_style_medium_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:maxLength="10"
-            android:minHeight="40dp"
-            android:padding="5dp"
-            android:textColor="@color/black" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_concession_amount_field"
-        style="@style/text_style_medium_bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:maxLength="10"
-        android:minHeight="40dp"
-        android:padding="5dp"
-        android:textColor="@color/button_bg"
-        android:textSize="20sp" />
-</LinearLayout>
+    android:minHeight="40dp"
+    android:paddingStart="40dp"
+    android:paddingEnd="30dp"
+    android:textColor="@color/black" />

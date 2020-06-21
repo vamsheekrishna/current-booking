@@ -24,7 +24,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
             newString= extras.getString("STRING_I_NEED");
         }*/
         if(savedInstanceState == null) {
-            ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
+            TicketBookingViewModel ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
+            ticketBookingModule.getConcession("MSRTC");
             addFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", false);
             //BusObject busObject = new BusObject();
             //addFragment(ConfirmTicketFragment.newInstance(busObject, "MSRTC"), "ConfirmTicketFragment", false);
@@ -38,8 +39,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void goToSelectBus() {
-        replaceFragment(SelectBusesFragment.newInstance("", ""), "SelectBusFragment", true);
+    public void goToSelectBus(String busOperatorName, String busType) {
+        replaceFragment(SelectBusesFragment.newInstance(busOperatorName, busType), "SelectBusFragment", true);
     }
 
     @Override

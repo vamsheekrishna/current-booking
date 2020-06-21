@@ -191,7 +191,7 @@ public class TicketBookingViewModel extends ViewModel {
     public void onBusOperatorChanged() {
         resetBusType();
         resetBusPointData();
-        getConcession();
+        getConcession(Objects.requireNonNull(selectedBusOperator.getValue()).getOperatorCode());
         getConcessionRate();
         loadBusTypes();
     }
@@ -203,8 +203,8 @@ public class TicketBookingViewModel extends ViewModel {
         return concessionList;
     }
 
-    private void getConcession() {
-        ticketBookingServices.getConcessionList(Objects.requireNonNull(selectedBusOperator.getValue()).getOperatorCode()).enqueue(new Callback<ConcessionListResponse>() {
+    public void getConcession(String selectedOperator) {
+        ticketBookingServices.getConcessionList(selectedOperator).enqueue(new Callback<ConcessionListResponse>() {
             @Override
             public void onResponse(Call<ConcessionListResponse> call, Response<ConcessionListResponse> response) {
                 if(response.isSuccessful()) {

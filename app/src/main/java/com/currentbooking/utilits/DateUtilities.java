@@ -5,9 +5,6 @@ import android.text.TextUtils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Period;
-import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -77,18 +74,18 @@ public class DateUtilities {
         long diffDays = difference / (24 * 60 * 60 * 1000);
         long diffHours = difference / (60 * 60 * 1000) % 24;
 
-        if(diffMinutes <= 15) {
+        if (diffMinutes > 0 && diffMinutes <= 15) {
             diffMinutes = 15;
-        } else if(diffMinutes <= 30) {
+        } else if (diffMinutes > 15 && diffMinutes <= 30) {
             diffMinutes = 30;
-        } else if(diffMinutes <= 45) {
+        } else if (diffMinutes > 30 && diffMinutes <= 45) {
             diffMinutes = 45;
-        } else {
+        } else if (diffMinutes > 45) {
             diffMinutes = 0;
             diffHours += 1;
         }
 
-        if(diffDays == 0) {
+        if (diffDays == 0) {
             return String.format(Locale.getDefault(), "%02d:%02d", diffHours, diffMinutes);
         } else {
             return String.format(Locale.getDefault(), "%02d:%02d:%02d", diffDays, diffHours, diffMinutes);

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.currentbooking.R;
 import com.currentbooking.interfaces.CallBackInterface;
-import com.currentbooking.models.ConcessionTypeModel;
 import com.currentbooking.ticketbooking.adapters.CustomSpinnerAdapter;
 import com.currentbooking.utilits.DialogUtility;
 import com.currentbooking.utilits.cb_api.responses.Concession;
@@ -30,10 +30,11 @@ import java.util.List;
 public class AddPassengersDialogView extends DialogFragment {
 
     private List<Object> personsTypeList = new ArrayList<>();
-    private List<Object> concessionsTypeList = new ArrayList<>();
+    private List<Concession> concessionsTypeList = new ArrayList<>();
     private Concession selectedConcessionDetails;
     private CallBackInterface callBackInterface;
     private String selectedPersonType;
+    private TextView tvConcessionTypeField;
 
     public static AddPassengersDialogView getInstance(List<Concession> concessionList) {
         AddPassengersDialogView addPassengersDialog = new AddPassengersDialogView();
@@ -62,7 +63,7 @@ public class AddPassengersDialogView extends DialogFragment {
 
         Bundle extras = getArguments();
         if (extras != null) {
-            concessionsTypeList = (List<Object>) extras.getSerializable("ConcessionsList");
+            concessionsTypeList = (List<Concession>) extras.getSerializable("ConcessionsList");
         }
 
         loadUIComponents(view);
@@ -71,12 +72,10 @@ public class AddPassengersDialogView extends DialogFragment {
 
     private void loadUIComponents(View view) {
         Spinner personTypesSpinnerField = view.findViewById(R.id.person_type_spinner_field);
-        Spinner concessionTypesSpinnerField = view.findViewById(R.id.concession_type_spinner_field);
+        tvConcessionTypeField = view.findViewById(R.id.tv_concession_type_field);
 
         String[] personTypesItems = getResources().getStringArray(R.array.person_types_items);
         personsTypeList.addAll(Arrays.asList(personTypesItems));
-
-        concessionsTypeList.add(0, getString(R.string.concession_type));
 
         CustomSpinnerAdapter personsTypeAdapter = new CustomSpinnerAdapter(requireActivity(), personsTypeList);
         personTypesSpinnerField.setAdapter(personsTypeAdapter);
@@ -96,31 +95,28 @@ public class AddPassengersDialogView extends DialogFragment {
             }
         });
 
-        CustomSpinnerAdapter concessionsTypeAdapter = new CustomSpinnerAdapter(requireActivity(), concessionsTypeList);
-        concessionTypesSpinnerField.setAdapter(concessionsTypeAdapter);
-
-        concessionTypesSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Object lSelectedItem = concessionTypesSpinnerField.getSelectedItem();
-                if (lSelectedItem instanceof Concession) {
-                    selectedConcessionDetails = null;
-                    selectedConcessionDetails = (Concession) lSelectedItem;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         view.findViewById(R.id.btn_cancel_field).setOnClickListener(v -> {
             closeDialog();
         });
         view.findViewById(R.id.btn_add_field).setOnClickListener(v -> {
             addPassengerSelected();
         });
+        tvConcessionTypeField.setOnClickListener(v -> {
+            addConcessionScreen();
+        });
+    }
+
+    private void addConcessionScreen() {
+        ConcessionTypeSelectionDialog concessionTypeSelectionDialog = ConcessionTypeSelectionDialog.getInstance(concessionsTypeList);
+        concessionTypeSelectionDialog.setInterfaceClickListener(pObject -> {
+            if (pObject instanceof Concession) {
+                selectedConcessionDetails = (Concession) pObject;
+                tvConcessionTypeField.setText(selectedConcessionDetails.getConcessionNM());
+            }
+        });
+        if (!requireActivity().isFinishing()) {
+            concessionTypeSelectionDialog.show(requireActivity().getSupportFragmentManager(), ConcessionTypeSelectionDialog.class.getName());
+        }
     }
 
     public void setInterfaceClickListener(CallBackInterface callBackInterface) {
@@ -132,12 +128,8 @@ public class AddPassengersDialogView extends DialogFragment {
             showErrorMessage(getString(R.string.please_select_concession));
             return;
         }
-
-        ConcessionTypeModel concessionTypeModel = new ConcessionTypeModel();
-        concessionTypeModel.setPersonType(selectedPersonType);
-        concessionTypeModel.setConcessionCode(selectedConcessionDetails.getConcessionNM());
-        concessionTypeModel.setConcessionType(selectedConcessionDetails.getConcessionID());
-        callBackInterface.callBackReceived(concessionTypeModel);
+        selectedConcessionDetails.setPersonType(selectedPersonType);
+        callBackInterface.callBackReceived(selectedConcessionDetails);
         closeDialog();
     }
 

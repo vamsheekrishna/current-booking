@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.interfaces.CallBackInterface;
-import com.currentbooking.models.ConcessionTypeModel;
+import com.currentbooking.utilits.cb_api.responses.Concession;
 
 import java.util.List;
 
@@ -22,16 +22,16 @@ import java.util.List;
 public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<ConcessionAddPassengersAdapter.ConcessionTypeViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<ConcessionTypeModel> passengersList;
+    private List<Concession> passengersList;
     private CallBackInterface callBackInterface;
 
-    public ConcessionAddPassengersAdapter(Context context, List<ConcessionTypeModel> passengersList, CallBackInterface callBackInterface) {
+    public ConcessionAddPassengersAdapter(Context context, List<Concession> passengersList, CallBackInterface callBackInterface) {
         layoutInflater = LayoutInflater.from(context);
         this.passengersList = passengersList;
         this.callBackInterface = callBackInterface;
     }
 
-    public void updateItems(List<ConcessionTypeModel> passengersList) {
+    public void updateItems(List<Concession> passengersList) {
         this.passengersList = passengersList;
     }
 
@@ -44,9 +44,9 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
 
     @Override
     public void onBindViewHolder(@NonNull ConcessionAddPassengersAdapter.ConcessionTypeViewHolder holder, int position) {
-        ConcessionTypeModel passengersDetails = passengersList.get(position);
+        Concession passengersDetails = passengersList.get(position);
         holder.tvPersonTypeField.setText(passengersDetails.getPersonType());
-        holder.tvConcessionTypeField.setText(passengersDetails.getConcessionType());
+        holder.tvConcessionTypeField.setText(passengersDetails.getConcessionNM());
         holder.deleteConcessionBtnLayoutField.setTag(position);
         holder.deleteConcessionBtnLayoutField.setOnClickListener(v -> {
             int tag = (int) v.getTag();

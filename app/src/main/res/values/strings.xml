@@ -106,5 +106,7 @@
     <string name="street_address_cannot_be_empty">Street Address cannot be Empty</string>
     <string name="state_address_cannot_be_empty">State cannot be Empty</string>
     <string name="pin_code_address_cannot_be_empty">Pin Code cannot be Empty</string>
+    <string name="search_concession_type">Search Concession Type</string>
+    <string name="select_concession">Select Concession</string>
 
 </resources>

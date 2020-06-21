@@ -1,27 +1,22 @@
 package com.currentbooking.ticketbooking;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
-import com.currentbooking.models.ConcessionTypeModel;
 import com.currentbooking.ticketbooking.adapters.ConcessionAddPassengersAdapter;
-import com.currentbooking.ticketbooking.adapters.ConcessionsTypeAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
@@ -52,8 +47,8 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     private TextView tvTotalFareField;
     private double totalFare = 0.0;
     private List<Concession> concessionList;
-    private List<ConcessionTypeModel> concessionTypeModelList;
-    private ConcessionAddPassengersAdapter concessionAddPassengersAdapter;
+    private List<Concession> personsAddedList;
+    private ConcessionAddPassengersAdapter addedPassengersAdapter;
     private RecyclerView addPassengerRecyclerField;
     private TicketBookingViewModel ticketBookingModule;
 
@@ -101,7 +96,7 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
         super.onViewCreated(view, savedInstanceState);
 
         concessionList = new ArrayList<>();
-        concessionTypeModelList = new ArrayList<>();
+        personsAddedList = new ArrayList<>();
         if (getArguments() != null) {
             busDetails = (BusObject) getArguments().getSerializable(ARG_BUS_DETAILS);
             busOperatorName = getArguments().getString(ARG_BUS_OPERATOR_NAME);
@@ -145,8 +140,7 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
         tvTotalFareField = view.findViewById(R.id.tv_total_fare_field);
         tvTotalFareField.setText(String.valueOf(totalFare));
 
-        Button btnAddPassengerField = view.findViewById(R.id.add_passenger_btn_field);
-        btnAddPassengerField.setOnClickListener(v -> {
+        view.findViewById(R.id.add_passenger_btn_field).setOnClickListener(v -> {
             addPassengerSelected();
         });
 
@@ -155,36 +149,41 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
         addPassengerRecyclerField = view.findViewById(R.id.passengers_recycler_field);
         addPassengerRecyclerField.setHasFixedSize(false);
 
-        concessionAddPassengersAdapter = new ConcessionAddPassengersAdapter(requireActivity(), concessionTypeModelList, pObject -> {
-            if (pObject instanceof ConcessionTypeModel) {
-                int index = concessionTypeModelList.indexOf(pObject);
+        DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
+                R.drawable.recycler_decoration_divider_two)));
+        addPassengerRecyclerField.addItemDecoration(divider);
+
+        addedPassengersAdapter = new ConcessionAddPassengersAdapter(requireActivity(), personsAddedList, pObject -> {
+            if (pObject instanceof Concession) {
+                int index = personsAddedList.indexOf(pObject);
                 if (index > -1) {
-                    concessionTypeModelList.remove(pObject);
-                    concessionAddPassengersAdapter.notifyItemRemoved(index);
-                    int size = concessionTypeModelList.size();
+                    personsAddedList.remove(pObject);
+                    addedPassengersAdapter.notifyItemRemoved(index);
+                    int size = personsAddedList.size();
                     if (size == 0) {
                         addPassengerRecyclerField.setVisibility(View.GONE);
                     }
                 }
             }
         });
-        addPassengerRecyclerField.setAdapter(concessionAddPassengersAdapter);
+        addPassengerRecyclerField.setAdapter(addedPassengersAdapter);
     }
 
     private void addPassengerSelected() {
         concessionList = ticketBookingModule.getConcessionLiveData().getValue();
         AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(concessionList);
         addPassengersDialog.setInterfaceClickListener(pObject -> {
-            if (pObject instanceof ConcessionTypeModel) {
+            if (pObject instanceof Concession) {
                 addPassengerRecyclerField.setVisibility(View.VISIBLE);
-                concessionTypeModelList.add((ConcessionTypeModel) pObject);
-                int size = concessionTypeModelList.size();
-                concessionAddPassengersAdapter.notifyItemInserted(size);
+                personsAddedList.add((Concession) pObject);
+                int size = personsAddedList.size();
+                addedPassengersAdapter.notifyItemInserted(size);
             }
         });
-        /*if (!requireActivity().isFinishing()) {
+        if (!requireActivity().isFinishing()) {
             addPassengersDialog.show(requireActivity().getSupportFragmentManager(), AddPassengersDialogView.class.getName());
-        }*/
+        }
     }
 
     private void updateTicketPrice() {

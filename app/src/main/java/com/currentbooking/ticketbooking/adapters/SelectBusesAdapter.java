@@ -23,13 +23,16 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
     private List<BusObject> listData;
     private String toText;
     private String busOperatorName;
-    View.OnClickListener mClick;
-    public SelectBusesAdapter(View.OnClickListener click , Context context, ArrayList<BusObject> listData, String busOperatorName) {
+    private View.OnClickListener mClick;
+    private String busType;
+
+    public SelectBusesAdapter(View.OnClickListener click , Context context, ArrayList<BusObject> listData, String busOperatorName, String busType) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
         this.busOperatorName = busOperatorName;
         toText = context.getString(R.string.to);
         mClick = click;
+        this.busType = busType;
     }
 
     @NonNull
@@ -46,9 +49,9 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
         BusObject busObject = listData.get(position);
         String busRoute = String.format("%s %s %s", busObject.getOriginStopName(), toText, busObject.getLastStopName());
         holder.tvBusRouteField.setText(busRoute);
-        //holder.tvBusTypeField.setText(busObject.getBusTypeNM());
-        //String busRouteName = busOperatorName +" "+ busObject.getRouteNumber();
-        //holder.tvBusRouteNameField.setText(busRouteName);
+        holder.tvBusTypeField.setText(busType);
+        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busObject.getBusServiceNo());
+        holder.tvBusRouteNameField.setText(busRouteName);
         holder.btnBookNowField.setTag(busObject);
         Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busObject.getOriginDateTime());
         Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busObject.getLastStopDateTime());

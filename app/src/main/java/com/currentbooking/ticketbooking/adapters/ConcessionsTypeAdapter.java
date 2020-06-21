@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,19 +14,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.currentbooking.R;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Satya Seshu on 17/06/20.
  */
-public class ConcessionsTypeAdapter extends RecyclerView.Adapter<ConcessionsTypeAdapter.ConcessionTypeViewHolder> {
+public class ConcessionsTypeAdapter extends RecyclerView.Adapter<ConcessionsTypeAdapter.ConcessionTypeViewHolder>
+        implements Filterable {
 
     private LayoutInflater layoutInflater;
     private List<Concession> concessionsList;
+    private List<Concession> filteredListData;
+    private MyFilter myFilter;
 
     public ConcessionsTypeAdapter(Context context, List<Concession> concessionsList) {
         layoutInflater = LayoutInflater.from(context);
         this.concessionsList = concessionsList;
+        this.filteredListData = new ArrayList<>();
+        this.filteredListData.addAll(concessionsList);
     }
 
     @NonNull
@@ -36,27 +44,55 @@ public class ConcessionsTypeAdapter extends RecyclerView.Adapter<ConcessionsType
 
     @Override
     public void onBindViewHolder(@NonNull ConcessionTypeViewHolder holder, int position) {
-        Concession concessionModel = concessionsList.get(position);
+        Concession concessionModel = filteredListData.get(position);
         holder.concessionNameField.setText(concessionModel.getConcessionNM());
-        holder.concessionDescriptionField.setText(concessionModel.getAdultPermitted());
     }
 
     @Override
     public int getItemCount() {
-        return concessionsList.size();
+        return filteredListData.size();
     }
 
     static class ConcessionTypeViewHolder extends RecyclerView.ViewHolder {
 
         TextView concessionNameField;
-        TextView concessionDescriptionField;
-        TextView concessionAmountField;
 
         public ConcessionTypeViewHolder(@NonNull View itemView) {
             super(itemView);
-            concessionNameField = itemView.findViewById(R.id.tv_concession_name_field);
-            concessionDescriptionField = itemView.findViewById(R.id.tv_concession_description_field);
-            concessionAmountField = itemView.findViewById(R.id.tv_concession_amount_field);
+            concessionNameField = itemView.findViewById(R.id.tv_concession_type_field);
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (myFilter == null) {
+            myFilter = new MyFilter();
+        }
+        return myFilter;
+    }
+
+    private class MyFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            if (constraint != null && constraint.length() > 0) {
+                filteredListData.clear();
+                for (Concession concessionDetails : concessionsList) {
+                    if (concessionDetails.getConcessionNM().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        filteredListData.add(concessionDetails);
+                    }
+                }
+            }
+            results.count = filteredListData.size();
+            results.values = filteredListData;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredListData = (List<Concession>) results.values;
+            notifyDataSetChanged();
         }
     }
 }

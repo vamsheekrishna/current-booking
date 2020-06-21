@@ -100,10 +100,15 @@ public class SelectBusesFragment extends BaseFragment {
 
         loadUIComponents(dataBinding);
 
+        setDummyData();
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+
+        /*
         progressDialog.show();
         busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         busOperatorName = "MSRTC";
+
+
         busListService.getAvailableBusList(busOperatorName,
                 "SL",
                 "MCT",
@@ -121,7 +126,7 @@ public class SelectBusesFragment extends BaseFragment {
                                     selectBusesAdapter = new SelectBusesAdapter(v -> {
                                         BusObject busObject = (BusObject) v.getTag();
                                         mListener.goToConfirmTicket(busOperatorName, busObject);
-                                    }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName());
+                                    }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName(), busTypeName);
                                 }
                             }
                         }
@@ -136,9 +141,36 @@ public class SelectBusesFragment extends BaseFragment {
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }
-        });
+        });*/
 
         return dataBinding.getRoot();
+    }
+
+    private void setDummyData() {
+        ArrayList<BusObject> busesList = new ArrayList<>();
+        BusObject busObject = new BusObject();
+
+        busObject.setOriginStopName("MUMBAI CENTRAL");
+        busObject.setOriginDateTime("2020-06-20 15:00:00");
+        busObject.setLastStopCd("SWR");
+        busObject.setLastStopName("SWARGATE, PUNE");
+        busObject.setLastStopDateTime("2020-06-20 20:00:00");
+        busObject.setReqFromStopCd("MCT");
+        busObject.setReqFromStopNm("MUMBAI CENTRAL");
+        busObject.setReqFromDateTime("2020-06-20 15:00:00");
+        busObject.setReqTillStopCd("SWR");
+        busObject.setReqTillStopNm("SWARGATE, PUNE");
+        busObject.setReqTillDateTime("2020-06-20 20:00:00");
+        busObject.setDepotNm("THN");
+        busObject.setBusServiceNo("507559");
+        busObject.setFareAmt(282.80);
+        busesList.add(busObject);
+
+        selectBusesAdapter = new SelectBusesAdapter(v -> {
+            BusObject busObjectDetails = (BusObject) v.getTag();
+            mListener.goToConfirmTicket(busOperatorName, busObjectDetails);
+        }, getActivity(), busesList, "MSRTC", busTypeName);
+        busesResultListField.setAdapter(selectBusesAdapter);
     }
 
     private void loadUIComponents(FragmentSelectBusBinding dataBinding) {

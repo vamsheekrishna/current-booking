@@ -84,10 +84,6 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         SearchView searchView = view.findViewById(R.id.searchView);
         RecyclerView resultsListField = view.findViewById(R.id.search_results_field);
         resultsListField.setHasFixedSize(false);
-        /*DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
-        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
-                R.drawable.recycler_decoration_divider)));
-        resultsListField.addItemDecoration(divider);*/
         busStopAdapter = new BusStopAdapter(requireActivity(), new ArrayList<>(), this);
         resultsListField.setAdapter(busStopAdapter);
 
