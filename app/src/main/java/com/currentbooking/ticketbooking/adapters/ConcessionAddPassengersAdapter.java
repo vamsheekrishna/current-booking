@@ -42,12 +42,15 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
         ConcessionTypeViewHolder viewHolder = new ConcessionTypeViewHolder(itemView);
         viewHolder.deleteConcessionBtnLayoutField.setOnClickListener(v -> {
             int tag = (int) v.getTag();
-            callBackInterface.callBackReceived(passengersList.get(tag), "delete");
+            callBackInterface.callBackReceived(passengersList.get(tag));
         });
-        viewHolder.rootView.setOnClickListener(v -> {
+        /*viewHolder.rootView.setOnClickListener(v -> {
             int tag = (int) v.getTag();
-            callBackInterface.callBackReceived(passengersList.get(tag), "edit");
-        });
+            ContentModel contentModel = new ContentModel();
+            contentModel.setStatus("edit");
+            contentModel.setValue(passengersList.get(tag));
+            callBackInterface.callBackReceived(contentModel);
+        });*/
         return viewHolder;
     }
 
@@ -69,10 +72,10 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
         TextView tvPersonTypeField;
         TextView tvConcessionTypeField;
         LinearLayout deleteConcessionBtnLayoutField;
-        LinearLayout rootView;
+        //LinearLayout rootView;
         public ConcessionTypeViewHolder(@NonNull View itemView) {
             super(itemView);
-            rootView = itemView.findViewById(R.id.root_view);
+            //rootView = itemView.findViewById(R.id.root_view);
             tvPersonTypeField = itemView.findViewById(R.id.tv_person_type_field);
             tvConcessionTypeField = itemView.findViewById(R.id.tv_concession_type_field);
             deleteConcessionBtnLayoutField = itemView.findViewById(R.id.delete_concession_code_btn_field);

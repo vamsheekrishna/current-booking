@@ -108,7 +108,7 @@ public class AddPassengersDialogView extends DialogFragment {
 
     private void addConcessionScreen() {
         ConcessionTypeSelectionDialog concessionTypeSelectionDialog = ConcessionTypeSelectionDialog.getInstance(concessionsTypeList);
-        concessionTypeSelectionDialog.setInterfaceClickListener((pObject, delete) -> {
+        concessionTypeSelectionDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof Concession) {
                 selectedConcessionDetails = (Concession) pObject;
                 tvConcessionTypeField.setText(selectedConcessionDetails.getConcessionNM());
@@ -129,7 +129,7 @@ public class AddPassengersDialogView extends DialogFragment {
             return;
         }
         selectedConcessionDetails.setPersonType(selectedPersonType);
-        callBackInterface.callBackReceived(selectedConcessionDetails, "delete");
+        callBackInterface.callBackReceived(selectedConcessionDetails);
         closeDialog();
     }
 

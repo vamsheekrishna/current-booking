@@ -137,6 +137,9 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
         tvTotalFareField = view.findViewById(R.id.tv_total_fare_field);
         tvTotalFareField.setText(String.valueOf(totalFare));
 
+        //String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busObject.getBusServiceNo());
+        //holder.tvBusRouteNameField.setText(busRouteName);
+
         view.findViewById(R.id.add_passenger_btn_field).setOnClickListener(v -> {
             addPassengerSelected();
         });
@@ -151,9 +154,8 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
                 R.drawable.recycler_decoration_divider_two)));
         addPassengerRecyclerField.addItemDecoration(divider);
 
-        addedPassengersAdapter = new ConcessionAddPassengersAdapter(requireActivity(), personsAddedList, (pObject, mode) -> {
-
-            if (mode.equalsIgnoreCase("delete")) {
+        addedPassengersAdapter = new ConcessionAddPassengersAdapter(requireActivity(), personsAddedList, pObject -> {
+            if (pObject instanceof Concession) {
                 int index = personsAddedList.indexOf(pObject);
                 if (index > -1) {
                     personsAddedList.remove(pObject);
@@ -171,7 +173,7 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     private void addPassengerSelected() {
         concessionList = ticketBookingModule.getConcessionLiveData().getValue();
         AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(concessionList);
-        addPassengersDialog.setInterfaceClickListener((pObject, delete) -> {
+        addPassengersDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof Concession) {
                 addPassengerRecyclerField.setVisibility(View.VISIBLE);
                 personsAddedList.add((Concession) pObject);

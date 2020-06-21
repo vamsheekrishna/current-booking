@@ -6,5 +6,5 @@ package com.currentbooking.interfaces;
 
 public interface CallBackInterface {
 
-    void callBackReceived(Object pObject, String delete);
+    void callBackReceived(Object pObject);
 }
