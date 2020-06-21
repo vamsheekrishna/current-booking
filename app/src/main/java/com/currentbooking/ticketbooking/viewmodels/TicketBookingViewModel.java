@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.currentbooking.utilits.LoggerInfo;
+import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
@@ -30,16 +31,17 @@ public class TicketBookingViewModel extends ViewModel {
     private final TicketBookingServices ticketBookingServices;
 
     private MutableLiveData<BusOperator> selectedBusOperator;
-    private MutableLiveData<BusType> selectBusType;
-
     private MutableLiveData<ArrayList<BusOperator>> busOperators;
+
     private MutableLiveData<ArrayList<BusType>> busTypes;
+    private MutableLiveData<BusType> selectBusType;
 
     private MutableLiveData<ArrayList<BusPoint>> busPoints = new MutableLiveData<>();
 
     private MutableLiveData<BusStopObject> selectedPickUpPoint = new MutableLiveData<>();
     private MutableLiveData<BusStopObject> selectedDropPoint = new MutableLiveData<>();
 
+    private MutableLiveData<BusObject> selectedBusObject = new MutableLiveData<>();
 
     private MutableLiveData<Concession> selectedConcession = new MutableLiveData<>();
     private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
@@ -129,6 +131,9 @@ public class TicketBookingViewModel extends ViewModel {
         });*/
 
 
+    }
+    public MutableLiveData<BusObject> getSelectedBusObject() {
+        return selectedBusObject;
     }
     private void loadBusOperators() {
         ticketBookingServices.getBusOperators().enqueue(new Callback<BusOperatorList>() {

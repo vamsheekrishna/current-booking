@@ -99,7 +99,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
             @Override
             public void onClick(View view, int position) {
                 selectedConcessionDetails = concessionsTypeList.get(position);
-                callBackInterface.callBackReceived(selectedConcessionDetails);
+                callBackInterface.callBackReceived(selectedConcessionDetails, "delete");
                 closeDialog();
             }
 

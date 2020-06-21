@@ -58,10 +58,9 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
 
     OnTicketBookingListener mListener;
 
-    public static ConfirmTicketFragment newInstance(BusObject busDetails, String busOperatorName) {
+    public static ConfirmTicketFragment newInstance(String busOperatorName) {
         ConfirmTicketFragment fragment = new ConfirmTicketFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_BUS_DETAILS, busDetails);
         args.putString(ARG_BUS_OPERATOR_NAME, busOperatorName);
         fragment.setArguments(args);
         return fragment;
@@ -97,10 +96,8 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
 
         concessionList = new ArrayList<>();
         personsAddedList = new ArrayList<>();
-        if (getArguments() != null) {
-            busDetails = (BusObject) getArguments().getSerializable(ARG_BUS_DETAILS);
-            busOperatorName = getArguments().getString(ARG_BUS_OPERATOR_NAME);
-        }
+        busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
+        busDetails = ticketBookingModule.getSelectedBusObject().getValue();
 
         loadUIComponents(view);
     }
@@ -154,8 +151,9 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
                 R.drawable.recycler_decoration_divider_two)));
         addPassengerRecyclerField.addItemDecoration(divider);
 
-        addedPassengersAdapter = new ConcessionAddPassengersAdapter(requireActivity(), personsAddedList, pObject -> {
-            if (pObject instanceof Concession) {
+        addedPassengersAdapter = new ConcessionAddPassengersAdapter(requireActivity(), personsAddedList, (pObject, mode) -> {
+
+            if (mode.equalsIgnoreCase("delete")) {
                 int index = personsAddedList.indexOf(pObject);
                 if (index > -1) {
                     personsAddedList.remove(pObject);
@@ -173,7 +171,7 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     private void addPassengerSelected() {
         concessionList = ticketBookingModule.getConcessionLiveData().getValue();
         AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(concessionList);
-        addPassengersDialog.setInterfaceClickListener(pObject -> {
+        addPassengersDialog.setInterfaceClickListener((pObject, delete) -> {
             if (pObject instanceof Concession) {
                 addPassengerRecyclerField.setVisibility(View.VISIBLE);
                 personsAddedList.add((Concession) pObject);

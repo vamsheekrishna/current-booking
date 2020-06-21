@@ -6,7 +6,7 @@ public interface OnTicketBookingListener {
     void goToHome();
     void goToSelectBus(String busOperatorName, String busType);
 
-    void goToConfirmTicket(String busOperatorName, BusObject busObject);
+    void goToConfirmTicket();
 
     void goToPayment();
     void goToTicketStatus();

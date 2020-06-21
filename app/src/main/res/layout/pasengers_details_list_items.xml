@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/root_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/rounded_corner_background_bg_four"
