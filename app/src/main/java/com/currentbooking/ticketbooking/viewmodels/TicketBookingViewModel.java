@@ -20,6 +20,7 @@ import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -203,7 +204,7 @@ public class TicketBookingViewModel extends ViewModel {
     }
 
     private void getConcession() {
-        ticketBookingServices.getConcessionList(selectedBusOperator.getValue().getOperatorCode()).enqueue(new Callback<ConcessionListResponse>() {
+        ticketBookingServices.getConcessionList(Objects.requireNonNull(selectedBusOperator.getValue()).getOperatorCode()).enqueue(new Callback<ConcessionListResponse>() {
             @Override
             public void onResponse(Call<ConcessionListResponse> call, Response<ConcessionListResponse> response) {
                 if(response.isSuccessful()) {
@@ -211,11 +212,11 @@ public class TicketBookingViewModel extends ViewModel {
                     if(response.body().getStatus().equalsIgnoreCase("success")) {
                         ArrayList<Concession> data = response.body().getConcessionList().getConcessions();
                         concessionList.setValue(data);
-                        selectedConcession.setValue(new Concession());
                     } else {
                         ArrayList<Concession> data = new ArrayList<>();
                         concessionList.setValue(data);
                     }
+                    selectedConcession.setValue(new Concession());
                 }
             }
 
@@ -223,6 +224,7 @@ public class TicketBookingViewModel extends ViewModel {
             public void onFailure(Call<ConcessionListResponse> call, Throwable t) {
                 ArrayList<Concession> data = new ArrayList<>();
                 concessionList.setValue(data);
+                selectedConcession.setValue(new Concession());
             }
         });
     }
@@ -255,7 +257,7 @@ public class TicketBookingViewModel extends ViewModel {
     public void onBusTypeSelected() {
         resetBusType();
         resetBusPointData();
-        loadBusPoints();
+        // loadBusPoints();
     }
     public void resetBusType() {
         busTypes.setValue(new ArrayList<>());

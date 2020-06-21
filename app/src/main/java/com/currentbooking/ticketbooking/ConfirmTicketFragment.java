@@ -92,6 +92,7 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.fragment_confirm_ticket, container, false);
     }
 
@@ -99,7 +100,6 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
         concessionList = new ArrayList<>();
         concessionTypeModelList = new ArrayList<>();
         if (getArguments() != null) {
