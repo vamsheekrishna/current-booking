@@ -204,7 +204,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     showDialog("", t.getMessage());
                 }
             });
-            // requireActivity().onBackPressed();
         }
     }
 

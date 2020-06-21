@@ -51,7 +51,7 @@ public class BusObject implements Serializable {
     private String busServiceNo;
     @SerializedName("fare_amt")
     @Expose
-    private Double fareAmt;
+    private String fareAmt;
 
     public String getOriginStopCd() {
         return originStopCd;
@@ -165,11 +165,11 @@ public class BusObject implements Serializable {
         this.busServiceNo = busServiceNo;
     }
 
-    public Double getFareAmt() {
+    public String getFareAmt() {
         return fareAmt;
     }
 
-    public void setFareAmt(Double fareAmt) {
+    public void setFareAmt(String fareAmt) {
         this.fareAmt = fareAmt;
     }
 }

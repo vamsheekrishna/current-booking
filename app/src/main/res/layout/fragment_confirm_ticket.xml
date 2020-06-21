@@ -135,7 +135,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:visibility="gone" />
             </LinearLayout>
-            <LinearLayout
+            <!--<LinearLayout
                 android:background="@drawable/ticket_inc_dec_bg_edges"
                 android:layout_marginTop="16dp"
                 android:paddingBottom="16dp"
@@ -242,7 +242,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/edit_text_size" />
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
         </LinearLayout>
     </ScrollView>
 

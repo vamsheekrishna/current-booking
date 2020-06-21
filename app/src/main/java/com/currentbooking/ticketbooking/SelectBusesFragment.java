@@ -99,20 +99,17 @@ public class SelectBusesFragment extends BaseFragment {
         dataBinding.setViewModel(selectBusesViewModel);
 
         loadUIComponents(dataBinding);
-
-        setDummyData();
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
 
-        /*
         progressDialog.show();
         busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        busOperatorName = "MSRTC";
-
+        busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode();
+        busTypeName =  Objects.requireNonNull(Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD());
 
         busListService.getAvailableBusList(busOperatorName,
-                "SL",
-                "MCT",
-                "SWR").enqueue(new Callback<AvailableBusList>() {
+                busTypeName,
+                Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
+                Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()).enqueue(new Callback<AvailableBusList>() {
             @Override
             public void onResponse(@NotNull Call<AvailableBusList> call, @NotNull Response<AvailableBusList> response) {
                 if (response.isSuccessful()) {
@@ -141,12 +138,12 @@ public class SelectBusesFragment extends BaseFragment {
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }
-        });*/
+        });
 
         return dataBinding.getRoot();
     }
 
-    private void setDummyData() {
+   /* private void setDummyData() {
         ArrayList<BusObject> busesList = new ArrayList<>();
         BusObject busObject = new BusObject();
 
@@ -171,7 +168,7 @@ public class SelectBusesFragment extends BaseFragment {
             mListener.goToConfirmTicket(busOperatorName, busObjectDetails);
         }, getActivity(), busesList, "MSRTC", busTypeName);
         busesResultListField.setAdapter(selectBusesAdapter);
-    }
+    }*/
 
     private void loadUIComponents(FragmentSelectBusBinding dataBinding) {
         busesResultListField = dataBinding.busesResultsListField;
