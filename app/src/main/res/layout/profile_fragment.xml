@@ -7,9 +7,11 @@
     tools:context=".authentication.views.RegistrationFragment">
 
     <ScrollView
+        android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:layout_above="@+id/edit_profile"
         tools:context=".authentication.views.LoginFragment">
 
         <LinearLayout
@@ -71,28 +73,28 @@
                 style="@style/text_view"
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address"
-                android:inputType="textPassword" />
+                android:inputType="text" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/address2"
                 style="@style/text_view"
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address2"
-                android:inputType="textPassword" />
+                android:inputType="text" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/state"
                 style="@style/text_view"
                 android:drawableStart="@drawable/state"
                 android:hint="@string/state"
-                android:inputType="textPassword" />
+                android:inputType="text" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/pin_code"
                 style="@style/text_view"
                 android:drawableStart="@drawable/pin_code"
                 android:hint="@string/pin"
-                android:inputType="textPassword" />
+                android:inputType="text" />
         </LinearLayout>
     </ScrollView>
 

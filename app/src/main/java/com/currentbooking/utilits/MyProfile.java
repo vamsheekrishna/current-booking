@@ -10,6 +10,7 @@ public class MyProfile {
     private String lastName;
     private String dob;
     private String email;
+    private String gender = "Male";
     private String mobileNumber;
     private String pinCode;
     private String profileImage;
@@ -112,6 +113,14 @@ public class MyProfile {
         this.profileImage = profileImage;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public static MyProfile getInstance(ProfileModel profileModel) {
         if(null == myProfile) {
             myProfile = new MyProfile();
@@ -128,5 +137,10 @@ public class MyProfile {
         mobileNumber = profileModel.getMobileNumber();
         pinCode = profileModel.getPinCode();
         profileImage = profileModel.getProfileImage();
+        address1 = profileModel.getAddress();
+        address2 = profileModel.getAddress2();
+        state = profileModel.getState();
+
     }
+
 }

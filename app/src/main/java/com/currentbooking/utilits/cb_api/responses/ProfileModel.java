@@ -38,6 +38,43 @@ public class ProfileModel {
     @Expose
     String profileImage;
 
+    @SerializedName("address")
+    @Expose
+    String address;
+
+    @SerializedName("address2")
+    @Expose
+    String address2;
+
+    @SerializedName("state")
+    @Expose
+    String state;
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public String getUserID() {
         return UserID;
     }

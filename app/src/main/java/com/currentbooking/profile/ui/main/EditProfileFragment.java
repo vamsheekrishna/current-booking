@@ -115,6 +115,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         etPinCode = view.findViewById(R.id.pin_code);
         etPinCode.setText(MyProfile.getInstance().getPinCode());
         view.findViewById(R.id.save_profile).setOnClickListener(this);
+        if(MyProfile.getInstance().getGender().equalsIgnoreCase("Male")) {
+            selectedMail();
+        } else {
+            selectedFemale();
+        }
     }
 
     @Override
@@ -127,23 +132,31 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 dateOfPickerSelected();
             case R.id.female:
                 gender = "Female";
-                female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
-                female.setTextColor(getResources().getColor(R.color.white));
-                male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
-                male.setTextColor(getResources().getColor(R.color.colorAccent));
+                selectedFemale();
 
                 break;
             case R.id.male:
                 gender = "Male";
-                male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
-                male.setTextColor(getResources().getColor(R.color.white));
-                female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
-                female.setTextColor(getResources().getColor(R.color.colorAccent));
+                selectedMail();
 
                 break;
             default:
                 break;
         }
+    }
+
+    private void selectedMail() {
+        male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
+        male.setTextColor(getResources().getColor(R.color.white));
+        female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
+        female.setTextColor(getResources().getColor(R.color.colorAccent));
+    }
+
+    private void selectedFemale() {
+        female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
+        female.setTextColor(getResources().getColor(R.color.white));
+        male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
+        male.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     private void saveSelected() {
@@ -169,7 +182,17 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         if(response.isSuccessful()) {
                             assert response.body() != null;
                             if(response.body().getStatus().equalsIgnoreCase("success")) {
-                                showDialog("", response.body().getMsg());
+                                MyProfile.getInstance().setFirstName(fName);
+                                MyProfile.getInstance().setLastName(lName);
+                                MyProfile.getInstance().setAddress1(_etAddress1);
+                                MyProfile.getInstance().setAddress2(_etAddress2);
+                                MyProfile.getInstance().setState(_etState);
+                                MyProfile.getInstance().setPinCode(_etPinCode);
+                                MyProfile.getInstance().setEmail(_email);
+                                MyProfile.getInstance().setDob(_dob);
+                                showDialog("", response.body().getMsg(), (dialog, which) -> {
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                });
                             } else {
                                 showDialog("", response.body().getMsg());
                             }

@@ -21,6 +21,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     // private ProfileViewModel mViewModel;
 
     OnProfileListener mListener;
+    private TextView fName;
+    private TextView lastName;
+    private TextView mobileNo;
+    private TextView email;
+    private TextView dob;
+    private TextView address1;
+    private TextView address2;
+    private TextView state;
+    private TextView pinCode;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -43,44 +52,36 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("My Profile");
+        fName.setText(MyProfile.getInstance().getFirstName());
+        lastName.setText(MyProfile.getInstance().getLastName());
+        mobileNo.setText(MyProfile.getInstance().getMobileNumber());
+        dob.setText(MyProfile.getInstance().getDob());
+        address1.setText(MyProfile.getInstance().getAddress1());
+        address2.setText(MyProfile.getInstance().getAddress2());
+        pinCode.setText(MyProfile.getInstance().getPinCode());
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState == null) {
-            /*mViewModel = new ViewModelProvider(getActivity()).get(ProfileViewModel.class);
-
-
-            mViewModel.getFirstName().setValue(MyProfile.);
-            mViewModel.getLastName().getValue());
-            mViewModel.getMobileNumber().getValue());
-            mViewModel.getEmail().getValue());
-            mViewModel.getDob().getValue()));
-            mViewModel.getAddress1().getValue());
-            mViewModel.getAddress2().getValue());
-            mViewModel.getState().getValue());
-            mViewModel.getPinCode().getValue());*/
-
-        }//.of(this).get(ProfileViewModel.class);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((TextView) view.findViewById(R.id.first_name)).setText(MyProfile.getInstance().getFirstName());
-        ((TextView) view.findViewById(R.id.last_name)).setText(MyProfile.getInstance().getLastName());
-        ((TextView) view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
-        ((TextView) view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
-        TextView dob = view.findViewById(R.id.dob);
-        dob.setText(MyProfile.getInstance().getDob());
-        ((TextView) view.findViewById(R.id.address1)).setText(MyProfile.getInstance().getAddress1());
-        ((TextView) view.findViewById(R.id.address2)).setText(MyProfile.getInstance().getAddress2());
-        ((TextView) view.findViewById(R.id.state)).setText(MyProfile.getInstance().getState());
-        ((TextView) view.findViewById(R.id.pin_code)).setText(MyProfile.getInstance().getPinCode());
+        fName = ((TextView) view.findViewById(R.id.first_name));
+        lastName = ((TextView) view.findViewById(R.id.last_name));
+        mobileNo = ((TextView) view.findViewById(R.id.mobile_no));
+        email = ((TextView) view.findViewById(R.id.email));
+        email.setText(MyProfile.getInstance().getEmail());
+        dob = (TextView)view.findViewById(R.id.dob);
+        address1 = ((TextView) view.findViewById(R.id.address1));
+        address2 = ((TextView) view.findViewById(R.id.address2));
+        state = ((TextView) view.findViewById(R.id.state));
+        state.setText(MyProfile.getInstance().getState());
+        pinCode = ((TextView) view.findViewById(R.id.pin_code));
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.edit_profile) {
