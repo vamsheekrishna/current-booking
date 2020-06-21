@@ -55,6 +55,7 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     private List<ConcessionTypeModel> concessionTypeModelList;
     private ConcessionAddPassengersAdapter concessionAddPassengersAdapter;
     private RecyclerView addPassengerRecyclerField;
+    private TicketBookingViewModel ticketBookingModule;
 
     public ConfirmTicketFragment() {
         // Required empty public constructor
@@ -98,15 +99,9 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TicketBookingViewModel ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
         concessionList = new ArrayList<>();
         concessionTypeModelList = new ArrayList<>();
-        ticketBookingModule.getConcessionLiveData().observe(Objects.requireNonNull(getActivity()), concessions -> {
-            if (concessions != null && !concessions.isEmpty()) {
-                concessionList.addAll(concessions);
-            }
-        });
-
         if (getArguments() != null) {
             busDetails = (BusObject) getArguments().getSerializable(ARG_BUS_DETAILS);
             busOperatorName = getArguments().getString(ARG_BUS_OPERATOR_NAME);
@@ -123,6 +118,13 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
         if(!TextUtils.isEmpty(dob)) {
             ((TextView) view.findViewById(R.id.user_age_field)).setText("");
         }
+
+        ticketBookingModule.getConcessionLiveData().observe(Objects.requireNonNull(getActivity()), concessions -> {
+            if (concessions != null && !concessions.isEmpty()) {
+                concessionList.addAll(concessions);
+            }
+        });
+
         String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopName());
         //String busRouteName = String.format("%s %s", busOperatorName, busDetails.getRouteNumber());
         //((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
@@ -170,6 +172,7 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     }
 
     private void addPassengerSelected() {
+        concessionList = ticketBookingModule.getConcessionLiveData().getValue();
         AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(concessionList);
         addPassengersDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof ConcessionTypeModel) {
@@ -179,9 +182,9 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
                 concessionAddPassengersAdapter.notifyItemInserted(size);
             }
         });
-        if (!requireActivity().isFinishing()) {
+        /*if (!requireActivity().isFinishing()) {
             addPassengersDialog.show(requireActivity().getSupportFragmentManager(), AddPassengersDialogView.class.getName());
-        }
+        }*/
     }
 
     private void updateTicketPrice() {

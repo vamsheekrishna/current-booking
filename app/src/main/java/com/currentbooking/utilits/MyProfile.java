@@ -5,7 +5,7 @@ import com.currentbooking.utilits.cb_api.responses.ProfileModel;
 public class MyProfile {
     private static MyProfile myProfile;
 
-    private int userId;
+    private String userId;
     private String firstName;
     private String lastName;
     private String dob;
@@ -24,11 +24,11 @@ public class MyProfile {
         return myProfile;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -120,6 +120,7 @@ public class MyProfile {
         return myProfile;
     }
     private void setData(ProfileModel profileModel) {
+        userId = profileModel.getUserID();
         firstName = profileModel.getFirstName();
         lastName = profileModel.getLastName();
         dob = profileModel.getDob();

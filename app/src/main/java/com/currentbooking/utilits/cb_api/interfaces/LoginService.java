@@ -5,6 +5,7 @@ import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.responses.RegistrationResponse;
 import com.currentbooking.utilits.cb_api.responses.ResendOTPResponse;
+import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
 import com.currentbooking.utilits.cb_api.responses.ValidateOTP;
 
 import retrofit2.Call;
@@ -40,12 +41,17 @@ public interface LoginService {
     @FormUrlEncoded
     Call<ResendOTPResponse> resendOTP(@Field("mobileno") String mobile);
 
-    @POST(BuildConfig.REGISTRATION)
+    @POST(BuildConfig.PROFILE_UPDATE)
     @FormUrlEncoded
-    Call<RegistrationResponse> updateProfile(@Field("first_name")  String fName,
-                                            @Field("last_name") String lName,
-                                            @Field("mobno") String mobile,
-                                            @Field("email") String email,
-                                            @Field("password") String password,
-                                            @Field("confirm_password") String conformPassword);
+    Call<ResponseUpdateProfile> updateProfile(@Field("user_id") String userID,
+                                              @Field("first_name") String firstName,
+                                              @Field("last_name") String lastName,
+                                              @Field("gender") String gender,
+                                              @Field("email") String email,
+                                              @Field("address") String address,
+                                              @Field("address2") String address2,
+                                              @Field("pincode") String pincode,
+                                              @Field("dob") String dob,
+                                              @Field("image") String image,
+                                              @Field("state") String state);
 }

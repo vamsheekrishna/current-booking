@@ -39,7 +39,11 @@
                 android:hint="@string/user_id"
                 android:inputType="text"
                 android:visibility="gone" />
-
+            <androidx.appcompat.widget.AppCompatTextView
+                android:drawableStart="@drawable/user_thumb"
+                android:hint="@string/user_id"
+                style="@style/edit_text"
+                android:text="MAIL"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mobile_no"
                 style="@style/text_view"

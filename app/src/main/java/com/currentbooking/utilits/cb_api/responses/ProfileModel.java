@@ -6,6 +6,10 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class ProfileModel {
+    @SerializedName("User id")
+    @Expose
+    String UserID;
+
     @SerializedName("First Name")
     @Expose
     String firstName;
@@ -33,6 +37,14 @@ public class ProfileModel {
     @SerializedName("profile image")
     @Expose
     String profileImage;
+
+    public String getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(String userID) {
+        UserID = userID;
+    }
 
     public String getFirstName() {
         return firstName;

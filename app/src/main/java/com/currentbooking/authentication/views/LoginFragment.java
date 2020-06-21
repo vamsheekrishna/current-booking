@@ -95,7 +95,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         userName = view.findViewById(R.id.user_id);
         userName.setText("8919251921");
         password = view.findViewById(R.id.password);
-        password.setText("1234567v");
+        password.setText("12345");
     }
 
     @Override
