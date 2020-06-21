@@ -29,7 +29,6 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
 
@@ -42,9 +41,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private AppCompatEditText etState;
     private AppCompatEditText etPinCode, email;
 
-    AppCompatTextView dob;
+    AppCompatTextView dob, male, female;
     private Calendar dateOfBirthCalendar;
-
+    String gender = "Male";
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
     }
@@ -101,6 +100,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         dob = view.findViewById(R.id.dob);
         dob.setText(MyProfile.getInstance().getDob());
         dob.setOnClickListener(this);
+        male= view.findViewById(R.id.male);
+        male.setOnClickListener(this);
+        female = view.findViewById(R.id.female);
+        female.setOnClickListener(this);
         etAddress1 = view.findViewById(R.id.address1);
         etAddress1.setText(MyProfile.getInstance().getAddress1());
         etAddress2 = view.findViewById(R.id.address2);
@@ -122,6 +125,22 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 break;
             case R.id.dob:
                 dateOfPickerSelected();
+            case R.id.female:
+                gender = "Female";
+                female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
+                female.setTextColor(getResources().getColor(R.color.white));
+                male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
+                male.setTextColor(getResources().getColor(R.color.colorAccent));
+
+                break;
+            case R.id.male:
+                gender = "Male";
+                male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
+                male.setTextColor(getResources().getColor(R.color.white));
+                female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
+                female.setTextColor(getResources().getColor(R.color.colorAccent));
+
+                break;
             default:
                 break;
         }
@@ -143,7 +162,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             showDialog("", getString(R.string.error_last_name));
         } else {
             LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, "Male", _email,
+            loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
                     _etAddress1, _etAddress2, _etPinCode, _dob,"sample/sample", _etState ).enqueue(new Callback<ResponseUpdateProfile>() {
                 @Override
                 public void onResponse(Call<ResponseUpdateProfile> call, Response<ResponseUpdateProfile> response) {
