@@ -39,7 +39,7 @@ public class SelectBusesFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_BUS_OPERATOR_NAME = "BusOperatorName";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_BUS_TYPE_NAME = "BusTypeName";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -50,16 +50,17 @@ public class SelectBusesFragment extends BaseFragment {
     private RecyclerView busesResultListField;
     OnTicketBookingListener mListener;
     private String busOperatorName;
+    private String busTypeName;
 
     public SelectBusesFragment() {
         // Required empty public constructor
     }
 
-    public static SelectBusesFragment newInstance(String busOperatorName, String param2) {
+    public static SelectBusesFragment newInstance(String busOperatorName, String busTypeName) {
         SelectBusesFragment fragment = new SelectBusesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_BUS_OPERATOR_NAME, busOperatorName);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_BUS_TYPE_NAME, busTypeName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,7 +76,7 @@ public class SelectBusesFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             busOperatorName = getArguments().getString(ARG_BUS_OPERATOR_NAME);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            busTypeName = getArguments().getString(ARG_BUS_TYPE_NAME);
         }
     }
 
@@ -102,8 +103,6 @@ public class SelectBusesFragment extends BaseFragment {
         progressDialog.show();
         busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
-        /*ticketBookingModule.getSelectedBusOperator().getValue().opertorName.toLowerCase(),
-                ticketBookingModule.getSelectedBusType().getValue().getBusTypeCD(),*/
         busOperatorName = "MSRTC";
         busListService.getAvailableBusList(busOperatorName,
                 "SL",

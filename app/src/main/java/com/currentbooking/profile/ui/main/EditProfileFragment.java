@@ -2,6 +2,7 @@ package com.currentbooking.profile.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,16 @@ import com.currentbooking.R;
 import com.currentbooking.interfaces.DateTimeInterface;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.Utils;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Retrofit;
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
 
@@ -33,6 +38,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private AppCompatEditText etAddress2;
     private AppCompatEditText etState;
     private AppCompatEditText etPinCode;
+    private String dateOfBirthValue;
+
 
     AppCompatTextView dob;
     private Calendar dateOfBirthCalendar;
@@ -120,35 +127,61 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private void saveSelected() {
 
         String fName = Objects.requireNonNull(etFirstName.getText()).toString().trim();
-        String lName = Objects.requireNonNull(etLastName.getText()).toString();
-
+        String lName = Objects.requireNonNull(etLastName.getText()).toString().trim();
+        String fullAddress = Objects.requireNonNull(etAddress1.getText()).toString().trim();
+        String streetAddress = Objects.requireNonNull(etAddress2.getText()).toString().trim();
+        String state = Objects.requireNonNull(etState.getText()).toString().trim();
+        String pinCode = Objects.requireNonNull(etPinCode.getText()).toString().trim();
 
         if (!Utils.isValidWord(fName)) {
             showDialog("", getString(R.string.error_first_name));
-        } else if (!Utils.isValidWord(lName)) {
+            return;
+        }
+        if (!Utils.isValidWord(lName)) {
             showDialog("", getString(R.string.error_last_name));
-        } else {
-            /*Retrofit loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
-                @Override
-                public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
-                    if(response.isSuccessful()) {
-                        RegistrationResponse responseData = response.body();
-                        if(responseData.getStatus().equals("success")) {
-                            requireActivity().onBackPressed();
-                        } else {
-                            showDialog("", responseData.getMsg());
-                        }
+            return;
+        }
+        if (TextUtils.isEmpty(dateOfBirthValue)) {
+            showDialog("", getString(R.string.date_of_birth_cannot_be_empty));
+            return;
+        }
+        if (TextUtils.isEmpty(fullAddress)) {
+            showDialog("", getString(R.string.full_address_cannot_be_empty));
+            return;
+        }
+        if (TextUtils.isEmpty(streetAddress)) {
+            showDialog("", getString(R.string.street_address_cannot_be_empty));
+            return;
+        }
+        if (TextUtils.isEmpty(state)) {
+            showDialog("", getString(R.string.state_address_cannot_be_empty));
+            return;
+        }
+        if (TextUtils.isEmpty(pinCode)) {
+            showDialog("", getString(R.string.pin_code_address_cannot_be_empty));
+            return;
+        }
+
+        /*Retrofit loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+        loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
+            @Override
+            public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
+                if (response.isSuccessful()) {
+                    RegistrationResponse responseData = response.body();
+                    if (responseData.getStatus().equals("success")) {
+                        requireActivity().onBackPressed();
+                    } else {
+                        showDialog("", responseData.getMsg());
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(Call<RegistrationResponse> call, Throwable t) {
-                    showDialog("", t.getMessage());
-                }
-            });*/
-            // requireActivity().onBackPressed();
-        }
+            @Override
+            public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+                showDialog("", t.getMessage());
+            }
+        });
+        requireActivity().onBackPressed();*/
     }
 
     private void dateOfPickerSelected() {

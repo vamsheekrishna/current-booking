@@ -25,10 +25,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
-            <include layout="@layout/select_buses_list_items" />
+            <include layout="@layout/confirm_passenger_route_details" />
 
             <LinearLayout
-                android:background="@drawable/rounded_corner_background_bg"
+                android:background="@drawable/rounded_corner_background_bg_two"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -67,60 +67,72 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/first_name"
+                    android:id="@+id/full_name"
                     style="@style/text_view"
                     android:drawableStart="@drawable/user_thumb"
-                    android:hint="@string/first_name"
-                    android:inputType="text" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/last_name"
-                    style="@style/text_view"
-                    android:drawableStart="@drawable/user_thumb"
-                    android:hint="@string/last_name"
+                    android:hint="@string/full_name"
                     android:inputType="text" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mobile_no"
                     style="@style/text_view"
-                    android:drawableStart="@drawable/user_thumb"
+                    android:drawableStart="@drawable/calendar"
                     android:hint="@string/mobile_number"
                     android:inputType="number"
                     android:maxLength="10" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/email"
+                    android:id="@+id/user_age_field"
                     style="@style/text_view"
                     android:drawableStart="@drawable/user_thumb"
-                    android:hint="@string/email_id"
-                    android:inputType="textEmailAddress" />
+                    android:hint="@string/age"
+                    android:inputType="number"
+                    android:maxLength="2" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_marginTop="16dp"
-                android:background="@drawable/ticket_inc_dec_bg_edges"
+                android:background="@color/background_bg"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/header_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/add_passenger_btn_field"
+                        android:background="@color/background_bg"
+                        android:text="@string/ticket_details" />
+
+                    <Button
+                        android:id="@+id/add_passenger_btn_field"
+                        style="@style/text_style_medium_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
+                        android:text="@string/add_passenger"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black_color_two" />
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/passengers_recycler_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/header_text_view"
-                    android:text="@string/ticket_details"/>
-
-                <include
-                    android:id="@+id/adult"
-                    android:layout_margin="8dp"
-                    layout="@layout/item_inc_dec_view_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <include
-                    android:id="@+id/child"
-                    android:layout_margin="8dp"
-                    layout="@layout/child_item_inc_dec_view_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone" />
             </LinearLayout>
             <LinearLayout
                 android:background="@drawable/ticket_inc_dec_bg_edges"
@@ -228,83 +240,6 @@
                         android:fontFamily="@font/opensans_bold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/edit_text_size" />
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_concession_code_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="10dp"
-                    android:backgroundTint="@color/background_bg"
-                    android:text="@string/have_a_concession_code_apply_here" />
-
-                <LinearLayout
-                    android:id="@+id/concession_code_apply_layout_field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center_vertical"
-                    android:minHeight="40dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        style="@style/text_style_medium_normal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:text="@string/enter_concession_code" />
-
-                    <TextView
-                        style="@style/text_style_medium_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/colon" />
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="0.6">
-
-                        <TextView
-                            android:id="@+id/tv_concession_code_field"
-                            style="@style/text_style_medium_normal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:background="@android:color/transparent"
-                            android:gravity="center_vertical"
-                            android:hint="@string/concession_code"
-                            android:maxLength="10"
-                            android:minHeight="40dp"
-                            android:padding="5dp" />
-
-                        <Button
-                            android:id="@+id/apply_concession_code_btn_field"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_toStartOf="@id/tv_concession_code_field"
-                            android:text="@string/apply"
-                            android:visibility="gone"
-                            tools:ignore="RelativeOverlap" />
-
-                        <ImageView
-                            android:id="@+id/delete_concession_code_btn_field"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/close_icon"
-                            android:visibility="gone" />
-                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

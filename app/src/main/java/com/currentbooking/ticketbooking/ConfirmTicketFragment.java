@@ -3,6 +3,7 @@ package com.currentbooking.ticketbooking;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +19,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.models.ConcessionTypeModel;
+import com.currentbooking.ticketbooking.adapters.ConcessionAddPassengersAdapter;
 import com.currentbooking.ticketbooking.adapters.ConcessionsTypeAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,8 +42,6 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     private String busOperatorName;
 
     private TextView tvConcessionCodeField;
-    private TextView tvAdultsTicketPriceField;
-    private TextView tvChildTicketPriceField;
     private TextView tvAdultsTicketCountField;
     private TextView tvChildTicketCountField;
 
@@ -48,8 +51,10 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     private double childTicketPrice = 0.0;
     private TextView tvTotalFareField;
     private double totalFare = 0.0;
-    private TicketBookingViewModel ticketBookingModule;
     private List<Concession> concessionList;
+    private List<ConcessionTypeModel> concessionTypeModelList;
+    private ConcessionAddPassengersAdapter concessionAddPassengersAdapter;
+    private RecyclerView addPassengerRecyclerField;
 
     public ConfirmTicketFragment() {
         // Required empty public constructor
@@ -93,8 +98,9 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
+        TicketBookingViewModel ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
         concessionList = new ArrayList<>();
+        concessionTypeModelList = new ArrayList<>();
         ticketBookingModule.getConcessionLiveData().observe(Objects.requireNonNull(getActivity()), concessions -> {
             if (concessions != null && !concessions.isEmpty()) {
                 concessionList.addAll(concessions);
@@ -110,96 +116,72 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
     }
 
     private void loadUIComponents(View view) {
-        ((TextView) view.findViewById(R.id.first_name)).setText(MyProfile.getInstance().getFirstName());
-        ((TextView) view.findViewById(R.id.last_name)).setText(MyProfile.getInstance().getLastName());
+        String fullName = MyProfile.getInstance().getFirstName() + " " + MyProfile.getInstance().getLastName();
+        ((TextView) view.findViewById(R.id.full_name)).setText(fullName);
         ((TextView) view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
-        ((TextView) view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
-        AppCompatTextView dob = view.findViewById(R.id.dob);
-        dob.setText(MyProfile.getInstance().getDob());
-        ((TextView) view.findViewById(R.id.address1)).setText(MyProfile.getInstance().getAddress1());
-        ((TextView) view.findViewById(R.id.address2)).setText(MyProfile.getInstance().getAddress2());
-        ((TextView) view.findViewById(R.id.state)).setText(MyProfile.getInstance().getState());
-        ((TextView) view.findViewById(R.id.pin_code)).setText(MyProfile.getInstance().getPinCode());
-        view.findViewById(R.id.edit_profile).setVisibility(View.GONE);
-        view.findViewById(R.id.conform).setOnClickListener(this);
+        String dob = MyProfile.getInstance().getDob();
+        if(!TextUtils.isEmpty(dob)) {
+            ((TextView) view.findViewById(R.id.user_age_field)).setText("");
+        }
+        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopName());
+        //String busRouteName = String.format("%s %s", busOperatorName, busDetails.getRouteNumber());
+        //((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
+        //((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBusTypeNM());
 
-        String busRoute = String.format("%s to %s", busDetails.getSourceStageName(), busDetails.getDestinationStageName());
-        String busRouteName = String.format("%s %s", busOperatorName, busDetails.getRouteNumber());
-        ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
-        ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBusTypeNM());
+        Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busDetails.getOriginDateTime());
+        Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busDetails.getLastStopDateTime());
+        String startTime = DateUtilities.getTimeFromCalendar(journeyStartCalendar);
+        String endTime = DateUtilities.getTimeFromCalendar(journeyEndCalendar);
+        String hoursDifference = String.format("%s Hrs", DateUtilities.getJourneyHours(journeyStartCalendar, journeyEndCalendar));
+
         ((TextView) view.findViewById(R.id.tv_bus_route_field)).setText(busRoute);
-        ((TextView) view.findViewById(R.id.tv_bus_journey_start_time_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_bus_journey_hours_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_bus_journey_end_time_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText("");
-        view.findViewById(R.id.btn_book_now_field).setVisibility(View.GONE);
+        ((TextView) view.findViewById(R.id.tv_bus_journey_start_time_field)).setText(startTime);
+        ((TextView) view.findViewById(R.id.tv_bus_journey_hours_field)).setText(hoursDifference);
+        ((TextView) view.findViewById(R.id.tv_bus_journey_end_time_field)).setText(endTime);
+        String fareAmount = String.format("Rs. %s", busDetails.getFareAmt());
+        ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(fareAmount);
         tvTotalFareField = view.findViewById(R.id.tv_total_fare_field);
         tvTotalFareField.setText(String.valueOf(totalFare));
 
+        Button btnAddPassengerField = view.findViewById(R.id.add_passenger_btn_field);
+        btnAddPassengerField.setOnClickListener(v -> {
+            addPassengerSelected();
+        });
+
         view.findViewById(R.id.confirm).setOnClickListener(this);
 
-        Button btnConcessionCodeField = view.findViewById(R.id.btn_concession_code_field);
-        LinearLayout concessionCodeLayoutField = view.findViewById(R.id.concession_code_apply_layout_field);
-        ImageView ivDeleteConcessionCodeField = view.findViewById(R.id.delete_concession_code_btn_field);
-        tvConcessionCodeField = view.findViewById(R.id.tv_concession_code_field);
-        btnConcessionCodeField.setOnClickListener(v -> {
-            btnConcessionCodeField.setVisibility(View.GONE);
-            concessionCodeLayoutField.setVisibility(View.VISIBLE);
-            gotoConcessionScreen();
-        });
-        ivDeleteConcessionCodeField.setOnClickListener(v -> {
-            tvConcessionCodeField.setText("");
-            ivDeleteConcessionCodeField.setVisibility(View.GONE);
-            concessionCodeLayoutField.setVisibility(View.GONE);
-            btnConcessionCodeField.setVisibility(View.VISIBLE);
-        });
+        addPassengerRecyclerField = view.findViewById(R.id.passengers_recycler_field);
+        addPassengerRecyclerField.setHasFixedSize(false);
 
-        adultTicketPrice = 300;
-        childTicketPrice = 150;
-
-        tvAdultsTicketCountField = view.findViewById(R.id.tv_no_of_adults_field);
-        tvChildTicketCountField = view.findViewById(R.id.tv_no_of_childs_field);
-        tvAdultsTicketPriceField = view.findViewById(R.id.tv_adult_ticket_price_field);
-        tvChildTicketPriceField = view.findViewById(R.id.tv_child_ticket_price_field);
-
-        tvAdultsTicketCountField.setText(String.valueOf(adultsCount));
-        tvChildTicketCountField.setText(String.valueOf(childCount));
-
-        TextView tvAdultDecrementField = view.findViewById(R.id.tv_adult_dec_field);
-        TextView tvAdultIncrementField = view.findViewById(R.id.tv_adult_inc_field);
-
-        tvAdultDecrementField.setOnClickListener(v -> {
-            if (adultsCount > 0) {
-                adultsCount--;
-                tvAdultsTicketCountField.setText(String.valueOf(adultsCount));
-                updateTicketPrice();
+        concessionAddPassengersAdapter = new ConcessionAddPassengersAdapter(requireActivity(), concessionTypeModelList, pObject -> {
+            if (pObject instanceof ConcessionTypeModel) {
+                int index = concessionTypeModelList.indexOf(pObject);
+                if (index > -1) {
+                    concessionTypeModelList.remove(pObject);
+                    concessionAddPassengersAdapter.notifyItemRemoved(index);
+                    int size = concessionTypeModelList.size();
+                    if (size == 0) {
+                        addPassengerRecyclerField.setVisibility(View.GONE);
+                    }
+                }
             }
         });
-        tvAdultIncrementField.setOnClickListener(v -> {
-            if (adultsCount >= 0 && adultsCount <= 10) {
-                adultsCount++;
-                tvAdultsTicketCountField.setText(String.valueOf(adultsCount));
-                updateTicketPrice();
-            }
-        });
+        addPassengerRecyclerField.setAdapter(concessionAddPassengersAdapter);
+    }
 
-        TextView tvChildDecrementField = view.findViewById(R.id.tv_child_dec_field);
-        TextView tvChildIncrementField = view.findViewById(R.id.tv_child_inc_field);
-
-        tvChildDecrementField.setOnClickListener(v -> {
-            if (childCount > 0) {
-                childCount--;
-                tvChildTicketCountField.setText(String.valueOf(childCount));
-                updateTicketPrice();
+    private void addPassengerSelected() {
+        AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(concessionList);
+        addPassengersDialog.setInterfaceClickListener(pObject -> {
+            if (pObject instanceof ConcessionTypeModel) {
+                addPassengerRecyclerField.setVisibility(View.VISIBLE);
+                concessionTypeModelList.add((ConcessionTypeModel) pObject);
+                int size = concessionTypeModelList.size();
+                concessionAddPassengersAdapter.notifyItemInserted(size);
             }
         });
-        tvChildIncrementField.setOnClickListener(v -> {
-            if (childCount >= 0 && childCount <= 10) {
-                childCount++;
-                tvChildTicketCountField.setText(String.valueOf(childCount));
-                updateTicketPrice();
-            }
-        });
+        if (!requireActivity().isFinishing()) {
+            addPassengersDialog.show(requireActivity().getSupportFragmentManager(), AddPassengersDialogView.class.getName());
+        }
     }
 
     private void updateTicketPrice() {
@@ -209,17 +191,6 @@ public class ConfirmTicketFragment extends BaseFragment implements View.OnClickL
         totalFare = adultsTotalFare + childTotalFare;
         totalFare = Math.round(totalFare);
         tvTotalFareField.setText(String.valueOf(totalFare));
-    }
-
-    private void gotoConcessionScreen() {
-        Dialog dialog = new Dialog(Objects.requireNonNull(getActivity()), R.style.Theme_AppCompat_Dialog);
-        View view = View.inflate(getActivity(), R.layout.concession_list_view, null);
-        dialog.setContentView(view);
-        RecyclerView recyclerView = view.findViewById(R.id.concession_list_field);
-        recyclerView.setHasFixedSize(false);
-        ConcessionsTypeAdapter concessionsTypeAdapter = new ConcessionsTypeAdapter(getActivity(), concessionList);
-        recyclerView.setAdapter(concessionsTypeAdapter);
-        dialog.show();
     }
 
     @Override

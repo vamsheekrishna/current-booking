@@ -39,4 +39,13 @@ public interface LoginService {
     @POST(BuildConfig.RESEND_OTP)
     @FormUrlEncoded
     Call<ResendOTPResponse> resendOTP(@Field("mobileno") String mobile);
+
+    @POST(BuildConfig.REGISTRATION)
+    @FormUrlEncoded
+    Call<RegistrationResponse> updateProfile(@Field("first_name")  String fName,
+                                            @Field("last_name") String lName,
+                                            @Field("mobno") String mobile,
+                                            @Field("email") String email,
+                                            @Field("password") String password,
+                                            @Field("confirm_password") String conformPassword);
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="person_types_items">
+        <item>Adult</item>
+        <item>Child</item>
+        <item>Sr Citizen</item>
+    </string-array>
+</resources>

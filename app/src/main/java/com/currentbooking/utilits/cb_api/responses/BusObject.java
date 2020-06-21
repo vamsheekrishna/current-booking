@@ -7,87 +7,169 @@ import java.io.Serializable;
 
 public class BusObject implements Serializable {
 
-    @SerializedName("route_no")
+    @SerializedName("origin_stop_cd")
     @Expose
-    String routeNumber;
-
-    @SerializedName("source_stage_short_name")
+    private String originStopCd;
+    @SerializedName("origin_stop_name")
     @Expose
-    String sourceStageShortName;
-
-    @SerializedName("source_stage_name")
+    private String originStopName;
+    @SerializedName("origin_date_time")
     @Expose
-    String sourceStageName;
-
-    @SerializedName("destination_stage_short_name")
+    private String originDateTime;
+    @SerializedName("last_stop_cd")
     @Expose
-    String destinationStageShortName;
-
-    @SerializedName("destination_stage_name")
+    private String lastStopCd;
+    @SerializedName("last_stop_name")
     @Expose
-    String destinationStageName;
-
-    @SerializedName("BUS_TYPE_CD")
+    private String lastStopName;
+    @SerializedName("last_stop_date_time")
     @Expose
-    String busTypeCD;
-
-    @SerializedName("BUS_TYPE_NM")
+    private String lastStopDateTime;
+    @SerializedName("req_from_stop_cd")
     @Expose
-    String busTypeNM;
+    private String reqFromStopCd;
+    @SerializedName("req_from_stop_nm")
+    @Expose
+    private String reqFromStopNm;
+    @SerializedName("req_from_date_time")
+    @Expose
+    private String reqFromDateTime;
+    @SerializedName("req_till_stop_cd")
+    @Expose
+    private String reqTillStopCd;
+    @SerializedName("req_till_stop_nm")
+    @Expose
+    private String reqTillStopNm;
+    @SerializedName("req_till_date_time")
+    @Expose
+    private String reqTillDateTime;
+    @SerializedName("depot_nm")
+    @Expose
+    private String depotNm;
+    @SerializedName("bus_service_no")
+    @Expose
+    private String busServiceNo;
+    @SerializedName("fare_amt")
+    @Expose
+    private Double fareAmt;
 
-    public String getRouteNumber() {
-        return routeNumber;
+    public String getOriginStopCd() {
+        return originStopCd;
     }
 
-    public void setRouteNumber(String routeNumber) {
-        this.routeNumber = routeNumber;
+    public void setOriginStopCd(String originStopCd) {
+        this.originStopCd = originStopCd;
     }
 
-    public String getSourceStageShortName() {
-        return sourceStageShortName;
+    public String getOriginStopName() {
+        return originStopName;
     }
 
-    public void setSourceStageShortName(String sourceStageShortName) {
-        this.sourceStageShortName = sourceStageShortName;
+    public void setOriginStopName(String originStopName) {
+        this.originStopName = originStopName;
     }
 
-    public String getSourceStageName() {
-        return sourceStageName;
+    public String getOriginDateTime() {
+        return originDateTime;
     }
 
-    public void setSourceStageName(String sourceStageName) {
-        this.sourceStageName = sourceStageName;
+    public void setOriginDateTime(String originDateTime) {
+        this.originDateTime = originDateTime;
     }
 
-    public String getDestinationStageShortName() {
-        return destinationStageShortName;
+    public String getLastStopCd() {
+        return lastStopCd;
     }
 
-    public void setDestinationStageShortName(String destinationStageShortName) {
-        this.destinationStageShortName = destinationStageShortName;
+    public void setLastStopCd(String lastStopCd) {
+        this.lastStopCd = lastStopCd;
     }
 
-    public String getDestinationStageName() {
-        return destinationStageName;
+    public String getLastStopName() {
+        return lastStopName;
     }
 
-    public void setDestinationStageName(String destinationStageName) {
-        this.destinationStageName = destinationStageName;
+    public void setLastStopName(String lastStopName) {
+        this.lastStopName = lastStopName;
     }
 
-    public String getBusTypeCD() {
-        return busTypeCD;
+    public String getLastStopDateTime() {
+        return lastStopDateTime;
     }
 
-    public void setBusTypeCD(String busTypeCD) {
-        this.busTypeCD = busTypeCD;
+    public void setLastStopDateTime(String lastStopDateTime) {
+        this.lastStopDateTime = lastStopDateTime;
     }
 
-    public String getBusTypeNM() {
-        return busTypeNM;
+    public String getReqFromStopCd() {
+        return reqFromStopCd;
     }
 
-    public void setBusTypeNM(String busTypeNM) {
-        this.busTypeNM = busTypeNM;
+    public void setReqFromStopCd(String reqFromStopCd) {
+        this.reqFromStopCd = reqFromStopCd;
+    }
+
+    public String getReqFromStopNm() {
+        return reqFromStopNm;
+    }
+
+    public void setReqFromStopNm(String reqFromStopNm) {
+        this.reqFromStopNm = reqFromStopNm;
+    }
+
+    public String getReqFromDateTime() {
+        return reqFromDateTime;
+    }
+
+    public void setReqFromDateTime(String reqFromDateTime) {
+        this.reqFromDateTime = reqFromDateTime;
+    }
+
+    public String getReqTillStopCd() {
+        return reqTillStopCd;
+    }
+
+    public void setReqTillStopCd(String reqTillStopCd) {
+        this.reqTillStopCd = reqTillStopCd;
+    }
+
+    public String getReqTillStopNm() {
+        return reqTillStopNm;
+    }
+
+    public void setReqTillStopNm(String reqTillStopNm) {
+        this.reqTillStopNm = reqTillStopNm;
+    }
+
+    public String getReqTillDateTime() {
+        return reqTillDateTime;
+    }
+
+    public void setReqTillDateTime(String reqTillDateTime) {
+        this.reqTillDateTime = reqTillDateTime;
+    }
+
+    public String getDepotNm() {
+        return depotNm;
+    }
+
+    public void setDepotNm(String depotNm) {
+        this.depotNm = depotNm;
+    }
+
+    public String getBusServiceNo() {
+        return busServiceNo;
+    }
+
+    public void setBusServiceNo(String busServiceNo) {
+        this.busServiceNo = busServiceNo;
+    }
+
+    public Double getFareAmt() {
+        return fareAmt;
+    }
+
+    public void setFareAmt(Double fareAmt) {
+        this.fareAmt = fareAmt;
     }
 }

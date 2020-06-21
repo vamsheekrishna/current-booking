@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
@@ -18,6 +19,7 @@ import com.currentbooking.utilits.cb_api.responses.ConcessionRates;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -132,6 +134,7 @@ public class TicketBookingViewModel extends ViewModel {
             @Override
             public void onResponse(Call<BusOperatorList> call, Response<BusOperatorList> response) {
                 if(response.isSuccessful()) {
+                    LoggerInfo.printLog("operators list response", response.body());
                     BusOperatorList data = response.body();
                     if(data.getStatus().equals("success")) {
                         if (null != data.getBusOperatorList().getBusOperators()) {
@@ -210,14 +213,16 @@ public class TicketBookingViewModel extends ViewModel {
                         concessionList.setValue(data);
                         selectedConcession.setValue(new Concession());
                     } else {
-
+                        ArrayList<Concession> data = new ArrayList<>();
+                        concessionList.setValue(data);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<ConcessionListResponse> call, Throwable t) {
-
+                ArrayList<Concession> data = new ArrayList<>();
+                concessionList.setValue(data);
             }
         });
     }

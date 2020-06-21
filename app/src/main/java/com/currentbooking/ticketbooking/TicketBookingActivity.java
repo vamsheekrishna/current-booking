@@ -26,6 +26,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
         if(savedInstanceState == null) {
             ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
             addFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", false);
+            //BusObject busObject = new BusObject();
+            //addFragment(ConfirmTicketFragment.newInstance(busObject, "MSRTC"), "ConfirmTicketFragment", false);
         }
     }
 

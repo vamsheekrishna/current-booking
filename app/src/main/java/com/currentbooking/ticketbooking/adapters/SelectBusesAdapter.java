@@ -10,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.SelectBusesViewHolder> {
@@ -42,12 +44,20 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
     @Override
     public void onBindViewHolder(@NonNull SelectBusesViewHolder holder, int position) {
         BusObject busObject = listData.get(position);
-        String busRoute = String.format("%s %s %s", busObject.getSourceStageName(), toText, busObject.getDestinationStageName());
+        String busRoute = String.format("%s %s %s", busObject.getOriginStopName(), toText, busObject.getLastStopName());
         holder.tvBusRouteField.setText(busRoute);
-        holder.tvBusTypeField.setText(busObject.getBusTypeNM());
-        String busRouteName = busOperatorName +" "+ busObject.getRouteNumber();
-        holder.tvBusRouteNameField.setText(busRouteName);
+        //holder.tvBusTypeField.setText(busObject.getBusTypeNM());
+        //String busRouteName = busOperatorName +" "+ busObject.getRouteNumber();
+        //holder.tvBusRouteNameField.setText(busRouteName);
         holder.btnBookNowField.setTag(busObject);
+        Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busObject.getOriginDateTime());
+        Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busObject.getLastStopDateTime());
+        String startTime = DateUtilities.getTimeFromCalendar(journeyStartCalendar);
+        String endTime = DateUtilities.getTimeFromCalendar(journeyEndCalendar);
+        holder.tvBusStartTimeField.setText(startTime);
+        holder.tvBusEndTimeField.setText(endTime);
+        String hoursDifference  = String.format("%s Hrs", DateUtilities.getJourneyHours(journeyStartCalendar, journeyEndCalendar));
+        holder.tvJourneyHrsField.setText(hoursDifference);
     }
 
     @Override

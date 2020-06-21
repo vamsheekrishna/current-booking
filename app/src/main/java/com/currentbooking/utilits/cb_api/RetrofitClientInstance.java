@@ -1,5 +1,6 @@
 package com.currentbooking.utilits.cb_api;
 
+import android.annotation.SuppressLint;
 import android.util.Base64;
 import android.util.Log;
 
@@ -81,10 +82,12 @@ public class RetrofitClientInstance {
 
     private final static TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
+                @SuppressLint("TrustAllX509TrustManager")
                 @Override
                 public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                 }
 
+                @SuppressLint("TrustAllX509TrustManager")
                 @Override
                 public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                 }

@@ -3,7 +3,9 @@ package com.currentbooking.utilits.cb_api.responses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Concession {
+import java.io.Serializable;
+
+public class Concession implements Serializable  {
     @SerializedName("concession_id")
     @Expose
     String concessionID;

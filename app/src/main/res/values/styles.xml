@@ -149,17 +149,17 @@
     </style>
 
     <style name="text_style_medium_bold">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/opensans_bold</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="text_style_medium_normal">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">@font/opensans_regular</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/black_color_two</item>
         <item name="android:textColorHint">@color/gray_color</item>
     </style>
 
