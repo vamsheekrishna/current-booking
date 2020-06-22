@@ -1,15 +1,18 @@
 package com.currentbooking.ticketbooking;
 
-import com.currentbooking.utilits.cb_api.responses.BusObject;
+import com.currentbooking.utilits.cb_api.responses.Concession;
+
+import java.util.List;
 
 public interface OnTicketBookingListener {
     void goToHome();
-    void goToSelectBus(String busOperatorName, String busType);
+    void gotoSelectBus(String busOperatorName, String busType);
 
-    void goToConfirmTicket();
+    void gotoConfirmTicket(String busType, List<Concession> personsAddedList);
+    void gotoPassengerDetails(String busType);
 
-    void goToPayment();
-    void goToTicketStatus();
-    void goToOptionSelection(int listData);
-    void goToBusStopSelect(int i);
+    void gotoPayment();
+    void gotoTicketStatus(boolean ticketStatus, String passengerDetails, Object bookingDetails);
+    void gotoOptionSelection(int listData);
+    void gotoBusStopSelect(int i);
 }

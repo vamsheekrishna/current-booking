@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
+import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
+
+import java.util.List;
 
 // import com.currentbooking.interfaces.CallBackInterface;
 
@@ -39,31 +42,36 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void goToSelectBus(String busOperatorName, String busType) {
+    public void gotoSelectBus(String busOperatorName, String busType) {
         replaceFragment(SelectBusesFragment.newInstance(busOperatorName, busType), "SelectBusFragment", true);
     }
 
     @Override
-    public void goToConfirmTicket() {
-        replaceFragment(ConfirmTicketFragment.newInstance(""), "ConfirmTicketFragment", true);
+    public void gotoConfirmTicket(String busType, List<Concession> personsAddedList) {
+        addFragment(ConfirmTicketFragment.newInstance(busType, personsAddedList), "ConfirmTicketFragment", true);
     }
 
     @Override
-    public void goToPayment() {
+    public void gotoPassengerDetails(String busType) {
+        replaceFragment(PassengerDetailsFragment.newInstance(busType), "PassengerDetailsFragment", true);
+    }
+
+    @Override
+    public void gotoPayment() {
         replaceFragment(PaymentFragment.newInstance("", ""), "PaymentFragment", true);
     }
 
     @Override
-    public void goToTicketStatus() {
-        replaceFragment(TicketStatusFragment.newInstance("", ""), "TicketStatusFragment", true);
+    public void gotoTicketStatus(boolean ticketStatus, String passengerDetails, Object bookingDetails) {
+        replaceFragment(TicketStatusFragment.newInstance(ticketStatus, passengerDetails, bookingDetails), "TicketStatusFragment", true);
     }
 
-    public void goToOptionSelection(int index) {
+    public void gotoOptionSelection(int index) {
         replaceFragment(OptionSelectionFragment.newInstance(index, ""), "OptionSelection", true);
     }
 
     @Override
-    public void goToBusStopSelect(int index) {
+    public void gotoBusStopSelect(int index) {
         replaceFragment(BusPointFragment.newInstance(index, ""), "BusPointFragment", true);
     }
 }

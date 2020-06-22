@@ -216,21 +216,21 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 v.startAnimation(rotate);
                 break;
             case R.id.select_transport:
-                mListener.goToOptionSelection(0);
+                mListener.gotoOptionSelection(0);
                 break;
             case R.id.select_bus_type:
-                mListener.goToOptionSelection(1);
+                mListener.gotoOptionSelection(1);
                 break;
             case R.id.pick_up:
-                mListener.goToBusStopSelect(2);
+                mListener.gotoBusStopSelect(2);
                 break;
             case R.id.drop_point:
-                mListener.goToBusStopSelect(3);
+                mListener.gotoBusStopSelect(3);
                 break;
             case R.id.select_bus:
                 if(ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length()>1 &&
                         Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()!= null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length()>1) {
-                    mListener.goToSelectBus(selectTransport.getText().toString(), selectBusType.getText().toString());
+                    mListener.gotoSelectBus(selectTransport.getText().toString(), selectBusType.getText().toString());
                 } else {
                     showDialog("", "Please enter your travel details.");
                 }

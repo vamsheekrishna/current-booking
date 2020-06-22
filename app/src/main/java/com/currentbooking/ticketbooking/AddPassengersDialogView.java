@@ -111,6 +111,7 @@ public class AddPassengersDialogView extends DialogFragment {
         concessionTypeSelectionDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof Concession) {
                 selectedConcessionDetails = (Concession) pObject;
+                selectedConcessionDetails.setConcessionDetailsAdded(true);
                 tvConcessionTypeField.setText(selectedConcessionDetails.getConcessionNM());
             }
         });
@@ -124,9 +125,9 @@ public class AddPassengersDialogView extends DialogFragment {
     }
 
     private void addPassengerSelected() {
-        if (selectedConcessionDetails == null) {
-            showErrorMessage(getString(R.string.please_select_concession));
-            return;
+        if(selectedConcessionDetails == null) {
+            selectedConcessionDetails = new Concession();
+            selectedConcessionDetails.setConcessionDetailsAdded(false);
         }
         selectedConcessionDetails.setPersonType(selectedPersonType);
         callBackInterface.callBackReceived(selectedConcessionDetails);

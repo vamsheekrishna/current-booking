@@ -108,5 +108,12 @@
     <string name="pin_code_address_cannot_be_empty">Pin Code cannot be Empty</string>
     <string name="search_concession_type">Search Concession Type</string>
     <string name="select_concession">Select Concession</string>
+    <string name="please_enter_passenger_details">Please enter Passenger Details</string>
+    <string name="fare_details">Fare Details</string>
+    <string name="Adult">Adult</string>
+    <string name="children">Children</string>
+    <string name="sr_citizens">Sr Citizens</string>
+    <string name="booking_success">Booking Success</string>
+    <string name="booking_status">Booking Status</string>
 
 </resources>

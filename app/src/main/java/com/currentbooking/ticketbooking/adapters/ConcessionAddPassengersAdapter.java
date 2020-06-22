@@ -31,10 +31,6 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
         this.callBackInterface = callBackInterface;
     }
 
-    public void updateItems(List<Concession> passengersList) {
-        this.passengersList = passengersList;
-    }
-
     @NonNull
     @Override
     public ConcessionAddPassengersAdapter.ConcessionTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,13 +40,6 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
             int tag = (int) v.getTag();
             callBackInterface.callBackReceived(passengersList.get(tag));
         });
-        /*viewHolder.rootView.setOnClickListener(v -> {
-            int tag = (int) v.getTag();
-            ContentModel contentModel = new ContentModel();
-            contentModel.setStatus("edit");
-            contentModel.setValue(passengersList.get(tag));
-            callBackInterface.callBackReceived(contentModel);
-        });*/
         return viewHolder;
     }
 
@@ -58,7 +47,9 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
     public void onBindViewHolder(@NonNull ConcessionAddPassengersAdapter.ConcessionTypeViewHolder holder, int position) {
         Concession passengersDetails = passengersList.get(position);
         holder.tvPersonTypeField.setText(passengersDetails.getPersonType());
-        holder.tvConcessionTypeField.setText(passengersDetails.getConcessionNM());
+        if (passengersDetails.isConcessionDetailsAdded()) {
+            holder.tvConcessionTypeField.setText(passengersDetails.getConcessionNM());
+        }
         holder.deleteConcessionBtnLayoutField.setTag(position);
     }
 

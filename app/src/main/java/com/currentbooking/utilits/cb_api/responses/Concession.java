@@ -50,6 +50,7 @@ public class Concession implements Serializable  {
     String concessionDevnagiriNM;
 
     private String personType;
+    private boolean isConcessionDetailsAdded = false;
 
     public String getConcessionID() {
         return concessionID;
@@ -169,5 +170,13 @@ public class Concession implements Serializable  {
 
     public void setPersonType(String personType) {
         this.personType = personType;
+    }
+
+    public boolean isConcessionDetailsAdded() {
+        return isConcessionDetailsAdded;
+    }
+
+    public void setConcessionDetailsAdded(boolean concessionDetailsAdded) {
+        isConcessionDetailsAdded = concessionDetailsAdded;
     }
 }

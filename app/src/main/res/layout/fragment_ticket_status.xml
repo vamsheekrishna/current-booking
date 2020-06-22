@@ -35,12 +35,12 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_booking_status_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:fontFamily="@font/opensans_semi_bold"
-                android:text="@string/booking_successful"
                 android:textAllCaps="true"
                 android:textColor="@color/button_bg"
                 android:textSize="20sp" />
@@ -56,6 +56,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/booking_success_layout_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -163,7 +164,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp" />
 
-                    <include layout="@layout/select_buses_list_items" />
+                    <include layout="@layout/confirm_passenger_route_details" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -176,13 +177,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
-                            android:layout_toStartOf="@id/tv_bus_fare_price_field"
+                            android:layout_toStartOf="@id/tv_total_persons_bus_fare_price_field"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/fare"
                             android:textColor="@color/black_color_two" />
 
                         <TextView
-                            android:id="@+id/tv_bus_fare_price_field"
+                            android:id="@+id/tv_total_persons_bus_fare_price_field"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -202,13 +203,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
-                            android:layout_toStartOf="@id/tv_service_charge_or_gst_field"
+                            android:layout_toStartOf="@id/tv_total_persons_service_charge_or_gst_field"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/service_charge_or_gst"
                             android:textColor="@color/black_color_two" />
 
                         <TextView
-                            android:id="@+id/tv_service_charge_or_gst_field"
+                            android:id="@+id/tv_total_persons_service_charge_or_gst_field"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -228,13 +229,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
-                            android:layout_toStartOf="@id/tv_total_fare_field"
+                            android:layout_toStartOf="@id/tv_total_persons_total_fare_field"
                             android:fontFamily="@font/opensans_bold"
                             android:text="@string/total_fare"
                             android:textColor="@color/black_color_two" />
 
                         <TextView
-                            android:id="@+id/tv_total_fare_field"
+                            android:id="@+id/tv_total_persons_total_fare_field"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -249,6 +250,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/booking_failed_layout_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -306,11 +308,10 @@
             android:layout_alignBottom="@+id/viewTwo"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="35dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/booking_success_icon" />
+            android:contentDescription="@string/app_name" />
 
         <LinearLayout
-            android:id="@+id/payment_success_layout_field"
+            android:id="@+id/payment_success_buttons_layout_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/bg_field"

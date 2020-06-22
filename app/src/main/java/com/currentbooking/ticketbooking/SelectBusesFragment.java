@@ -42,9 +42,6 @@ public class SelectBusesFragment extends BaseFragment {
     private static final String ARG_BUS_TYPE_NAME = "BusTypeName";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private TicketBookingServices busListService;
     private TicketBookingViewModel ticketBookingModule;
     private SelectBusesAdapter selectBusesAdapter;
     private RecyclerView busesResultListField;
@@ -102,9 +99,9 @@ public class SelectBusesFragment extends BaseFragment {
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
 
         progressDialog.show();
-        busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        TicketBookingServices busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode();
-        busTypeName =  Objects.requireNonNull(Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD());
+        //busTypeName =  Objects.requireNonNull(Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD());
 
         busListService.getAvailableBusList(busOperatorName,
                 busTypeName,
@@ -123,7 +120,7 @@ public class SelectBusesFragment extends BaseFragment {
                                     selectBusesAdapter = new SelectBusesAdapter(v -> {
                                         BusObject busObject = (BusObject) v.getTag();
                                         ticketBookingModule.getSelectedBusObject().setValue(busObject);
-                                        mListener.goToConfirmTicket();
+                                        mListener.gotoPassengerDetails(busTypeName);
                                     }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName(), busTypeName);
                                 }
                             }

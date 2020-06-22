@@ -72,6 +72,6 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        mListener.goToTicketStatus();
+        //mListener.gotoTicketStatus();
     }
 }

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_bg"
+    android:orientation="vertical"
+    tools:context=".ticketbooking.ConfirmTicketFragment">
+
+    <ScrollView
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/confirm"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <include layout="@layout/confirm_passenger_route_details" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_corner_background_bg_two"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/header_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/passenger_details" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/get_details_from_my_profile"
+                        android:textColor="@color/edit_text_hint"
+                        android:textSize="@dimen/edit_text_size" />
+
+                    <androidx.appcompat.widget.AppCompatToggleButton
+                        android:id="@+id/load_profile_data"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/full_name"
+                    style="@style/text_view"
+                    android:drawableStart="@drawable/user_thumb"
+                    android:hint="@string/full_name"
+                    android:inputType="text" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mobile_no"
+                    style="@style/text_view"
+                    android:drawableStart="@drawable/calendar"
+                    android:hint="@string/mobile_number"
+                    android:inputType="number"
+                    android:maxLength="10" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/user_age_field"
+                    style="@style/text_view"
+                    android:drawableStart="@drawable/user_thumb"
+                    android:hint="@string/age"
+                    android:inputType="number"
+                    android:maxLength="2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/background_bg"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/header_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/add_passenger_btn_field"
+                        android:background="@color/background_bg"
+                        android:text="@string/ticket_details" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/add_passenger_btn_field"
+                        style="@style/text_style_medium_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@color/button_bg_two"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/add_passenger"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black_color_two" />
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/passengers_recycler_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/ticket_inc_dec_bg_edges"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/header_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_details" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/fare"
+                        android:textColor="@color/edit_text_hint"
+                        android:textSize="@dimen/edit_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_fare_field"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:layout_weight="1"
+                        android:gravity="center|end"
+                        android:textColor="@color/edit_text_hint"
+                        android:textSize="@dimen/edit_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/service_charge_or_gst"
+                        android:textColor="@color/edit_text_hint"
+                        android:textSize="@dimen/edit_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_service_charge_or_gst_field"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:layout_weight="1"
+                        android:gravity="center|end"
+                        android:textColor="@color/edit_text_hint"
+                        android:textSize="@dimen/edit_text_size" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/opensans_bold"
+                        android:text="@string/total_fare"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edit_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_total_fare_field"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/opensans_bold"
+                        android:gravity="center|end"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edit_text_size" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_payment"
+        style="@style/button_gray"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="@string/confirm_ticket" />
+
+</RelativeLayout>

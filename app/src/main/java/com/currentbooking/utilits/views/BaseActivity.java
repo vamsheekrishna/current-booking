@@ -25,6 +25,7 @@ public class BaseActivity extends AppCompatActivity {
             }
             fragmentTransaction.commit();
     }
+
     protected void addFragment(BaseFragment baseFragment, String fragment_id, boolean isAddToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
