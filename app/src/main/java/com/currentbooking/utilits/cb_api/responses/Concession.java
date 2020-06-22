@@ -51,6 +51,7 @@ public class Concession implements Serializable  {
 
     private String personType;
     private boolean isConcessionDetailsAdded = false;
+    private int age;
 
     public String getConcessionID() {
         return concessionID;
@@ -178,5 +179,13 @@ public class Concession implements Serializable  {
 
     public void setConcessionDetailsAdded(boolean concessionDetailsAdded) {
         isConcessionDetailsAdded = concessionDetailsAdded;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

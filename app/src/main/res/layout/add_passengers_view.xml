@@ -5,7 +5,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/header_text_view"
         android:layout_width="match_parent"
@@ -41,6 +40,28 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_drop_down_icon" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/text_style_medium_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/age" />
+
+        <NumberPicker
+            android:id="@+id/number_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class AddPassengersDialogView extends DialogFragment {
     private CallBackInterface callBackInterface;
     private String selectedPersonType;
     private TextView tvConcessionTypeField;
+    private  NumberPicker numberPickerField;
 
     public static AddPassengersDialogView getInstance(List<Concession> concessionList) {
         AddPassengersDialogView addPassengersDialog = new AddPassengersDialogView();
@@ -71,6 +73,9 @@ public class AddPassengersDialogView extends DialogFragment {
     }
 
     private void loadUIComponents(View view) {
+        numberPickerField = view.findViewById(R.id.number_picker);
+        numberPickerField.setMinValue(13);
+        numberPickerField.setMaxValue(59);
         Spinner personTypesSpinnerField = view.findViewById(R.id.person_type_spinner_field);
         tvConcessionTypeField = view.findViewById(R.id.tv_concession_type_field);
 
@@ -86,6 +91,7 @@ public class AddPassengersDialogView extends DialogFragment {
                 Object lSelectedItem = personTypesSpinnerField.getSelectedItem();
                 if (lSelectedItem instanceof String) {
                     selectedPersonType = (String) lSelectedItem;
+                    setAgeLimit();
                 }
             }
 
@@ -104,6 +110,19 @@ public class AddPassengersDialogView extends DialogFragment {
         tvConcessionTypeField.setOnClickListener(v -> {
             addConcessionScreen();
         });
+    }
+
+    private void setAgeLimit() {
+        if(selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
+            numberPickerField.setMinValue(13);
+            numberPickerField.setMaxValue(59);
+        } else if(selectedPersonType.equalsIgnoreCase(getString(R.string.sr_citizen))) {
+            numberPickerField.setMinValue(60);
+            numberPickerField.setMaxValue(120);
+        } else if(selectedPersonType.equalsIgnoreCase(getString(R.string.child))) {
+            numberPickerField.setMinValue(3);
+            numberPickerField.setMaxValue(12);
+        }
     }
 
     private void addConcessionScreen() {
@@ -129,6 +148,7 @@ public class AddPassengersDialogView extends DialogFragment {
             selectedConcessionDetails = new Concession();
             selectedConcessionDetails.setConcessionDetailsAdded(false);
         }
+        selectedConcessionDetails.setAge(numberPickerField.getValue());
         selectedConcessionDetails.setPersonType(selectedPersonType);
         callBackInterface.callBackReceived(selectedConcessionDetails);
         closeDialog();
