@@ -1,5 +1,6 @@
 package com.currentbooking.utilits.views;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import static com.currentbooking.utilits.Utils.internetConnectionAvailable;
 
 public class BaseFragment extends Fragment {
 
-    protected ProgressDialog progressDialog;
+    protected Dialog progressDialog;
     public BaseFragment() {
         // Required empty public constructor
     }
@@ -30,9 +31,10 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressDialog = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
-        progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-        progressDialog.setCancelable(false);
+        //progressDialog = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
+        progressDialog = CustomLoadingDialog.getInstance(getActivity());
+        //progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        //progressDialog.setCancelable(false);
     }
 
     @Override

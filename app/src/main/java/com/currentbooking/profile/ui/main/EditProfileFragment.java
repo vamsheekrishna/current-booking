@@ -67,7 +67,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     String gender = "Male";
     private Uri profileImageUri = null;
     private Bitmap profileImageBitmap;
-    private Dialog loadingDialog;
 
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
@@ -84,7 +83,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         dateOfBirthCalendar = Calendar.getInstance();
-        loadingDialog = CustomLoadingDialog.getInstance(requireActivity());
         return inflater.inflate(R.layout.edit_profile_fragment, container, false);
     }
 
@@ -229,14 +227,14 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         } else if (!Utils.isValidWord(lName)) {
             showDialog("", getString(R.string.error_last_name));
         } else {
-            loadingDialog.show();
+            progressDialog.show();
             String encodedImage = getEncodedImage();
             LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
             loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
                     _etAddress1, _etAddress2, _etPinCode, _dob, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
                 @Override
                 public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
-                    loadingDialog.dismiss();
+                    progressDialog.dismiss();
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             if (response.body().getStatus().equalsIgnoreCase("success")) {
@@ -260,7 +258,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
                 @Override
                 public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
-                    loadingDialog.dismiss();
+                    progressDialog.dismiss();
                     showDialog("", t.getMessage());
                 }
             });
