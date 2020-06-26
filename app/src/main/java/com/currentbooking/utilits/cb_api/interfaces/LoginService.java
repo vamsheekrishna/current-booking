@@ -1,6 +1,7 @@
 package com.currentbooking.utilits.cb_api.interfaces;
 
 import com.currentbooking.BuildConfig;
+import com.currentbooking.utilits.cb_api.responses.ChangePasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.responses.RegistrationResponse;
@@ -36,6 +37,13 @@ public interface LoginService {
     @POST(BuildConfig.FORGOT_PASSWORD)
     @FormUrlEncoded
     Call<ForgotPasswordResponse> forgotPassword(@Field("mobileno") String mobile);
+
+    @POST(BuildConfig.CHANGE_PASSWORD)
+    @FormUrlEncoded
+    Call<ChangePasswordResponse> changePassword(@Field("user_id") String user_id,
+                                                @Field("mobileno") String mobileno,
+                                                @Field("old_password") String old_password,
+                                                @Field("new_password") String new_password);
 
     @POST(BuildConfig.RESEND_OTP)
     @FormUrlEncoded

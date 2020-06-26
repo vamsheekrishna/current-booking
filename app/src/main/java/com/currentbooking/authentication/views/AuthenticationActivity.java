@@ -32,8 +32,12 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Bundle extras = getIntent().getExtras();
+        String userName;
 
-        if(savedInstanceState == null) {
+        if (extras != null) {
+            addFragment(ChangePasswordFragment.newInstance("", ""), "ChangePasswordFragment", false);
+        } else if(savedInstanceState == null) {
             authentication = new ViewModelProvider(this).get(Authentication.class);
             addFragment(AuthenticationHomeFragment.newInstance("", ""), "AuthenticationHomeFragment", false);
         }
@@ -67,6 +71,11 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     public void validateOTP() {
         replaceFragment(ValidateOTPFragment.newInstance("", ""), "ValidateOTPFragment", true);
+    }
+
+    @Override
+    public void changePassword() {
+
     }
 
     @Override

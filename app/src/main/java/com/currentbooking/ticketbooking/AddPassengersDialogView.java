@@ -72,6 +72,12 @@ public class AddPassengersDialogView extends DialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadUIComponents(view);
+    }
+
     private void loadUIComponents(View view) {
         numberPickerField = view.findViewById(R.id.number_picker);
         numberPickerField.setMinValue(13);

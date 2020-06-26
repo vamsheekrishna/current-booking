@@ -17,6 +17,9 @@ import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
+import com.currentbooking.utilits.encrypt.Encryption;
+import com.currentbooking.utilits.encrypt.EncryptionFactory;
+import com.currentbooking.utilits.encrypt.EncryptionHelper;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import retrofit2.Call;
@@ -93,9 +96,34 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         userName = view.findViewById(R.id.user_id);
-        userName.setText("9821688899");
+        userName.setText("8919251921");
         password = view.findViewById(R.id.password);
-        password.setText("anita456");
+        password.setText("12345");
+
+        // encryptionSample();
+    }
+
+    private void encryptionSample() {
+        Encryption AESencryption;
+        EncryptionHelper objEncryptionHelper = new EncryptionHelper();
+
+
+        try {
+            AESencryption = EncryptionFactory.getEncryptionByName("AES");
+
+
+            String input = "Rajan";
+            String key = "QWRTEfnfdys635";//E-m!tr@2016
+            AESencryption.setKey(key);
+
+            String output = AESencryption.encrypt(input);
+
+            System.out.println("des string : " + AESencryption.encrypt(input));
+            System.out.println("des string : " + AESencryption.decrypt(output));
+            System.out.println("des string : " + AESencryption.decrypt("uxAnGbyK8Ligc+4s8PIxcw=="));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

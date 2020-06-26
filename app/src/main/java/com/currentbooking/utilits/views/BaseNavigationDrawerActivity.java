@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.currentbooking.R;
+import com.currentbooking.authentication.view_models.Authentication;
 import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.profile.ui.main.ProfileFragment;
@@ -145,6 +146,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.help_layout_field).setOnClickListener(this);
         findViewById(R.id.logout_layout_field).setOnClickListener(this);
         findViewById(R.id.my_profile_layout_field).setOnClickListener(this);
+        findViewById(R.id.logout_change_password_field).setOnClickListener(this);
 
     }
     @Override
@@ -161,7 +163,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
+        /*switch (item.getItemId()) {
             case R.id.nav_ticket_booking:
                 startActivity(new Intent(this, TicketBookingActivity.class));
                 //Toast.makeText(this,"nav_ticket_booking", Toast.LENGTH_LONG).show();
@@ -179,10 +181,15 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 startActivity(new Intent(this, ProfileFragment.class));
                 finish();
                 break;
+            case R.id.nav_change_password:
+                Intent intent = new Intent(this, AuthenticationActivity.class);
+                intent.putExtra(getString(R.string.change_password), );
+                startActivity(intent);
+                break;
             default:
                 Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
                 break;
-        }
+        }*/
         mDrawerLayout.closeDrawer(navigationView);
         return false;
     }
@@ -209,6 +216,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             case R.id.my_profile_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
                 startActivity(new Intent(BaseNavigationDrawerActivity.this, ProfileActivity.class));
+                break;
+            case R.id.logout_change_password_field:
+                mDrawerLayout.closeDrawer(navigationView);
+                Intent intent = new Intent(this, AuthenticationActivity.class);
+                intent.putExtra(getString(R.string.change_password), true);
+                startActivity(intent);
                 break;
             default:
                 Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
