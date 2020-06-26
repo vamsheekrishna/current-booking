@@ -2,6 +2,7 @@ package com.currentbooking.ticketbooking;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -97,7 +98,7 @@ public class AddPassengersDialogView extends DialogFragment {
                 Object lSelectedItem = personTypesSpinnerField.getSelectedItem();
                 if (lSelectedItem instanceof String) {
                     selectedPersonType = (String) lSelectedItem;
-                    setAgeLimit();
+                    setDefaultAgeLimit();
                 }
             }
 
@@ -118,26 +119,56 @@ public class AddPassengersDialogView extends DialogFragment {
         });
     }
 
+    private int getIntegerValueFromString(String value) {
+        int newValue = 0;
+        if (!TextUtils.isEmpty(value)) {
+            try {
+                newValue = Integer.parseInt(value);
+            } catch (Exception e) {
+
+            }
+        }
+        return newValue;
+    }
+
     private void setAgeLimit() {
-        if(selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
+        if (selectedConcessionDetails != null) {
+            int minAge = getIntegerValueFromString(selectedConcessionDetails.getMinAgeLimit());
+            int maxAge = getIntegerValueFromString(selectedConcessionDetails.getMaxAgeLimit());
+
+            if(minAge != 0 && maxAge != 0) {
+                numberPickerField.setMinValue(minAge);
+                numberPickerField.setMaxValue(maxAge);
+                numberPickerField.setValue(minAge);
+            } else {
+                setDefaultAgeLimit();
+            }
+        } else {
+            setDefaultAgeLimit();
+        }
+    }
+
+    private void setDefaultAgeLimit() {
+        if (selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
             numberPickerField.setMinValue(13);
             numberPickerField.setMaxValue(59);
-        } else if(selectedPersonType.equalsIgnoreCase(getString(R.string.sr_citizen))) {
+        } else if (selectedPersonType.equalsIgnoreCase(getString(R.string.sr_citizen))) {
             numberPickerField.setMinValue(60);
             numberPickerField.setMaxValue(120);
-        } else if(selectedPersonType.equalsIgnoreCase(getString(R.string.child))) {
+        } else if (selectedPersonType.equalsIgnoreCase(getString(R.string.child))) {
             numberPickerField.setMinValue(3);
             numberPickerField.setMaxValue(12);
         }
     }
 
     private void addConcessionScreen() {
-        ConcessionTypeSelectionDialog concessionTypeSelectionDialog = ConcessionTypeSelectionDialog.getInstance(concessionsTypeList);
+        ConcessionTypeSelectionDialog concessionTypeSelectionDialog = ConcessionTypeSelectionDialog.getInstance(selectedPersonType, concessionsTypeList);
         concessionTypeSelectionDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof Concession) {
                 selectedConcessionDetails = (Concession) pObject;
                 selectedConcessionDetails.setConcessionDetailsAdded(true);
                 tvConcessionTypeField.setText(selectedConcessionDetails.getConcessionNM());
+                setAgeLimit();
             }
         });
         if (!requireActivity().isFinishing()) {

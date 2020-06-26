@@ -48,6 +48,12 @@ public class Concession implements Serializable  {
     @SerializedName("concession_devnagiri_nm")
     @Expose
     String concessionDevnagiriNM;
+    @SerializedName("min_age_limit")
+    @Expose
+    String minAgeLimit;
+    @SerializedName("max_age_limit")
+    @Expose
+    String maxAgeLimit;
 
     private String personType;
     private boolean isConcessionDetailsAdded = false;
@@ -187,5 +193,21 @@ public class Concession implements Serializable  {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getMinAgeLimit() {
+        return minAgeLimit;
+    }
+
+    public void setMinAgeLimit(String minAgeLimit) {
+        this.minAgeLimit = minAgeLimit;
+    }
+
+    public String getMaxAgeLimit() {
+        return maxAgeLimit;
+    }
+
+    public void setMaxAgeLimit(String maxAgeLimit) {
+        this.maxAgeLimit = maxAgeLimit;
     }
 }

@@ -7,19 +7,19 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
-import com.currentbooking.interfaces.CallBackInterface;
-import com.currentbooking.utilits.CircleTransform;
+import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -39,6 +39,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private TextView state;
     private TextView pinCode;
     private AppCompatImageView ivProfileImageField;
+    private TicketBookingViewModel ticketBookingModule;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -54,6 +55,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.profile_fragment, container, false);
     }
 
@@ -69,9 +71,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         address2.setText(MyProfile.getInstance().getAddress2());
         pinCode.setText(MyProfile.getInstance().getPinCode());
 
-        String imageUrl = MyProfile.getInstance().getProfileImage();
-        if(!TextUtils.isEmpty(imageUrl)) {
-            Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.avatar).into(ivProfileImageField);
+        Bitmap bitmap = ticketBookingModule.getUserProfileImage().getValue();
+        if (bitmap != null) {
+            ivProfileImageField.setImageBitmap(bitmap);
+        } else {
+            String imageUrl = MyProfile.getInstance().getProfileImage();
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                        error(R.drawable.avatar).into(ivProfileImageField);
+            }
         }
     }
 
@@ -83,17 +91,17 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fName = ((TextView) view.findViewById(R.id.first_name));
-        lastName = ((TextView) view.findViewById(R.id.last_name));
-        mobileNo = ((TextView) view.findViewById(R.id.mobile_no));
-        email = ((TextView) view.findViewById(R.id.email));
+        fName = view.findViewById(R.id.first_name);
+        lastName = view.findViewById(R.id.last_name);
+        mobileNo = view.findViewById(R.id.mobile_no);
+        email = view.findViewById(R.id.email);
         email.setText(MyProfile.getInstance().getEmail());
-        dob = (TextView)view.findViewById(R.id.dob);
-        address1 = ((TextView) view.findViewById(R.id.address1));
-        address2 = ((TextView) view.findViewById(R.id.address2));
-        state = ((TextView) view.findViewById(R.id.state));
+        dob = view.findViewById(R.id.dob);
+        address1 = view.findViewById(R.id.address1);
+        address2 = view.findViewById(R.id.address2);
+        state = view.findViewById(R.id.state);
         state.setText(MyProfile.getInstance().getState());
-        pinCode = ((TextView) view.findViewById(R.id.pin_code));
+        pinCode = view.findViewById(R.id.pin_code);
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
     }

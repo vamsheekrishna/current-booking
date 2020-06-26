@@ -19,9 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.interfaces.DateTimeInterface;
+import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.Utils;
@@ -31,6 +33,7 @@ import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.currentbooking.utilits.views.CustomLoadingDialog;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -67,6 +70,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     String gender = "Male";
     private Uri profileImageUri = null;
     private Bitmap profileImageBitmap;
+    private TicketBookingViewModel ticketBookingModule;
 
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
@@ -83,6 +87,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         dateOfBirthCalendar = Calendar.getInstance();
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.edit_profile_fragment, container, false);
     }
 
@@ -146,11 +151,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         }
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
         ivProfileImageField.setOnClickListener(this);
-
-        String imageUrl = MyProfile.getInstance().getProfileImage();
-        if (!TextUtils.isEmpty(imageUrl)) {
-            Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.avatar).into(ivProfileImageField);
-        }
+        updateUserProfileImage();
     }
 
     @Override
@@ -247,9 +248,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 MyProfile.getInstance().setEmail(_email);
                                 MyProfile.getInstance().setDob(_dob);
                                 showDialog("", response.body().getMsg(), (dialog, which) -> {
+                                    ticketBookingModule.setUserProfileImage(profileImageBitmap);
                                     Objects.requireNonNull(getActivity()).onBackPressed();
                                 });
                             } else {
+                                updateUserProfileImage();
                                 showDialog("", response.body().getMsg());
                             }
                         }
@@ -259,9 +262,18 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 @Override
                 public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
+                    updateUserProfileImage();
                     showDialog("", t.getMessage());
                 }
             });
+        }
+    }
+
+    private void updateUserProfileImage() {
+        String imageUrl = MyProfile.getInstance().getProfileImage();
+        if (!TextUtils.isEmpty(imageUrl)) {
+            Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                    error(R.drawable.avatar).into(ivProfileImageField);
         }
     }
 
@@ -306,14 +318,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         });
         if (!Objects.requireNonNull(getActivity()).isFinishing()) {
             datePickerFragment.show(getActivity().getSupportFragmentManager(), DatePickerFragment.class.getName());
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if(profileImageBitmap != null) {
-            profileImageBitmap.recycle();
         }
     }
 }

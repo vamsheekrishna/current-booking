@@ -1,5 +1,7 @@
 package com.currentbooking.ticketbooking.viewmodels;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -47,6 +49,7 @@ public class TicketBookingViewModel extends ViewModel {
     private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Concession>> concessionList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ConcessionRates>> concessionRates = new MutableLiveData<>();
+    private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
 
     public TicketBookingViewModel() {
         ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
@@ -84,6 +87,14 @@ public class TicketBookingViewModel extends ViewModel {
             selectedBusOperator = new MutableLiveData<>();
         }
         return selectedBusOperator;
+    }
+
+    public MutableLiveData<Bitmap> getUserProfileImage() {
+        return userProfileImage;
+    }
+
+    public void setUserProfileImage(Bitmap userImageBitmap) {
+        userProfileImage.setValue(userImageBitmap);
     }
 
     public void loadBusPoints() {

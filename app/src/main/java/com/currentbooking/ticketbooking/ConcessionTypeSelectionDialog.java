@@ -3,6 +3,7 @@ package com.currentbooking.ticketbooking;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,10 +40,12 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
     private Concession selectedConcessionDetails;
     private CallBackInterface callBackInterface;
     private ConcessionsTypeAdapter concessionsTypeAdapter;
+    private String selectedPersonType;
 
-    public static ConcessionTypeSelectionDialog getInstance(List<Concession> concessionList) {
+    public static ConcessionTypeSelectionDialog getInstance(String selectedPersonType, List<Concession> concessionList) {
         ConcessionTypeSelectionDialog concessionTypeSelectionDialog = new ConcessionTypeSelectionDialog();
         Bundle extras = new Bundle();
+        extras.putString("PersonType", selectedPersonType);
         extras.putSerializable("ConcessionsList", (Serializable) concessionList);
         concessionTypeSelectionDialog.setArguments(extras);
         return concessionTypeSelectionDialog;
@@ -72,6 +76,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
 
         Bundle extras = getArguments();
         if (extras != null) {
+            selectedPersonType = extras.getString("PersonType");
             concessionsTypeList = (List<Concession>) extras.getSerializable("ConcessionsList");
         }
 
@@ -81,6 +86,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
     }
 
     private void loadUIComponents(View view) {
+        List<Concession> filterConcessionTypesList = new ArrayList<>();
         TextView tvTitleField = view.findViewById(R.id.tv_title_field);
         tvTitleField.setText(getString(R.string.select_concession).toUpperCase());
         view.findViewById(R.id.iv_back_arrow_field).setOnClickListener(v -> {
@@ -98,7 +104,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
 
             @Override
             public void onClick(View view, int position) {
-                selectedConcessionDetails = concessionsTypeList.get(position);
+                selectedConcessionDetails = filterConcessionTypesList.get(position);
                 callBackInterface.callBackReceived(selectedConcessionDetails);
                 closeDialog();
             }
@@ -109,8 +115,27 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
             }
         }));
 
-        if (concessionsTypeList != null && !concessionsTypeList.isEmpty()) {
-            concessionsTypeAdapter = new ConcessionsTypeAdapter(requireActivity(), concessionsTypeList);
+        boolean isChildSelected = false;
+        if(selectedPersonType.equalsIgnoreCase(getString(R.string.child))) {
+            isChildSelected = true;
+        }
+
+        if(isChildSelected) {
+            for(Concession concessionDetails : concessionsTypeList) {
+                if(concessionDetails.getChildPermitted().equalsIgnoreCase("Y")) {
+                    filterConcessionTypesList.add(concessionDetails);
+                }
+            }
+        } else {
+            for(Concession concessionDetails : concessionsTypeList) {
+                if(concessionDetails.getChildPermitted().equalsIgnoreCase("N") && concessionDetails.getAdultPermitted().equalsIgnoreCase("Y")) {
+                    filterConcessionTypesList.add(concessionDetails);
+                }
+            }
+        }
+
+        if (!filterConcessionTypesList.isEmpty()) {
+            concessionsTypeAdapter = new ConcessionsTypeAdapter(requireActivity(), filterConcessionTypesList);
             concessionsListField.setAdapter(concessionsTypeAdapter);
         }
 

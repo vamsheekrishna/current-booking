@@ -1,6 +1,12 @@
 package com.currentbooking.utilits.views;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -14,6 +20,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.view_models.Authentication;
@@ -21,17 +28,20 @@ import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.profile.ui.main.ProfileFragment;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
+import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -63,7 +73,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         if (myProfile != null) {
             String imageUrl = myProfile.getProfileImage();
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).memoryPolicy(MemoryPolicy.NO_CACHE).transform(new CircleTransform()).into(ivProfileImageField);
+                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                        transform(new CircleTransform()).into(ivProfileImageField);
             }
             String emailID = myProfile.getEmail();
             if (!TextUtils.isEmpty(emailID)) {
@@ -85,6 +96,44 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 tvUserAgeField.setText(ageDifference);
             }
         }
+
+        TicketBookingViewModel ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
+        ticketBookingModule.getUserProfileImage().observe(this, bitmap -> {
+            Bitmap newBitmap = getCircularBitmap(bitmap);
+            ivProfileImageField.setImageBitmap(newBitmap);
+        });
+    }
+
+    private Bitmap getCircularBitmap(Bitmap bitmap) {
+        Bitmap output;
+
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        } else {
+            output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        float r = 0;
+
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            r = bitmap.getHeight() / 2;
+        } else {
+            r = bitmap.getWidth() / 2;
+        }
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(r, r, r, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 
     @Override
