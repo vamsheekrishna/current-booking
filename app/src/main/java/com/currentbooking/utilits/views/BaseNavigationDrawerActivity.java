@@ -2,6 +2,7 @@ package com.currentbooking.utilits.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.currentbooking.R;
@@ -18,9 +20,17 @@ import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.profile.ui.main.ProfileFragment;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
+import com.currentbooking.utilits.CircleTransform;
+import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.MyProfile;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -30,22 +40,51 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     //protected LinearLayoutCompat signOut;
     private TextView textCartItemCount;
     private int mCartItemCount = 1;
+    private AppCompatImageView ivProfileImageField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.nav_view_content);
         setNavigationView();
-        /*signOut.setOnClickListener(v -> {
 
-        });*/
+        loadUIComponents();
     }
-//    public void setContentView(int id) {
-//        FrameLayout dynamicContent = findViewById(R.id.main_content);
-//        View wizardView = getLayoutInflater().inflate(id, dynamicContent, false);
-//        // add the inflated View to the select_bus_points
-//        dynamicContent.addView(wizardView);
-//    }
+
+    private void loadUIComponents() {
+        ivProfileImageField = findViewById(R.id.iv_profile_image_field);
+        TextView tvEmailIdField = findViewById(R.id.email_address_field);
+        TextView tvPhoneNoField = findViewById(R.id.phone_number_field);
+        TextView tvUserNameField = findViewById(R.id.user_name_field);
+        TextView tvUserAgeField = findViewById(R.id.user_age_field);
+
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            String imageUrl = myProfile.getProfileImage();
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).memoryPolicy(MemoryPolicy.NO_CACHE).transform(new CircleTransform()).into(ivProfileImageField);
+            }
+            String emailID = myProfile.getEmail();
+            if (!TextUtils.isEmpty(emailID)) {
+                tvEmailIdField.setText(emailID);
+            }
+            String phoneNumber = myProfile.getMobileNumber();
+            if (!TextUtils.isEmpty(phoneNumber)) {
+                tvPhoneNoField.setText(phoneNumber);
+            }
+            String userName = String.format("%s %s", myProfile.getFirstName(), myProfile.getLastName());
+            if (!TextUtils.isEmpty(userName)) {
+                tvUserNameField.setText(userName);
+            }
+            String dateOfBirth = MyProfile.getInstance().getDob();
+            if (!TextUtils.isEmpty(dateOfBirth)) {
+                Calendar dateOfBirthCalendar = DateUtilities.getCalendarFromDate2(dateOfBirth);
+                int age = DateUtilities.getAgeDifference(dateOfBirthCalendar);
+                String ageDifference = String.format(Locale.getDefault(), "%d yrs", age);
+                tvUserAgeField.setText(ageDifference);
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,6 +101,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         return true;
     }
+
     private void setupBadge() {
 
         if (textCartItemCount != null) {

@@ -54,6 +54,26 @@ public class DateUtilities {
         return calendar;
     }
 
+    public static Calendar getCalendarFromDate2(String dateValue) {
+        Locale locale = Locale.getDefault();
+        Calendar calendar = Calendar.getInstance();
+        if (TextUtils.isEmpty(dateValue)) {
+            return calendar;
+        }
+        try {
+            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_TIME_FORMAT_TWO, locale); //dd-MM-yyyy
+            Date date = formatter.parse(dateValue);
+            if (date != null) {
+                calendar.setTime(date);
+            }
+            return calendar;
+        } catch (ParseException ex) {
+            LoggerInfo.errorLog("", ex.getMessage());
+        }
+
+        return calendar;
+    }
+
     public static String getTimeFromCalendar(Calendar calendar) {
         Locale locale = Locale.getDefault();
         try {
@@ -92,12 +112,17 @@ public class DateUtilities {
         }
     }
 
+    public static int getAgeDifference(Calendar dateOfBirthCalendar) {
+        Calendar currentCalendar = Calendar.getInstance();
+        return currentCalendar.get(Calendar.YEAR) - dateOfBirthCalendar.get(Calendar.YEAR);
+    }
+
     private static String CALENDAR_DATE_FORMAT_ONE = "dd/MM/yyyy";
     private static String CALENDAR_DATE_FORMAT_TWO = "MM/dd/yyyy";
     private static String CALENDAR_TIME_FORMAT_ONE = "hh:mm";
     private static String CALENDAR_TIME_FORMAT_TWO = "HH:mm";
     private static String CALENDAR_DATE_TIME_FORMAT_ONE = "yyyy-MM-dd HH:mm:ss"; // 2020-06-21 15:00:00
-    private static String CALENDAR_DATE_TIME_FORMAT_TWO = "MM/dd/yyyy hh:mm:ss a";
+    private static String CALENDAR_DATE_TIME_FORMAT_TWO = "dd-MM-yyyy";
     private static String CALENDAR_DATE_TIME_FORMAT_THREE = "dd/MM/yyyy HH:mm:ss";
     private static String CALENDAR_DATE_TIME_FORMAT_FOUR = "dd/MM/yyyy hh:mm:ss a";
     private static String CALENDAR_TIME_IN_MILLI_SECS_REG_EXP = "[^\\d.]";

@@ -5,17 +5,12 @@ import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
-import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 import java.util.List;
 
-// import com.currentbooking.interfaces.CallBackInterface;
-
 public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener {
-
-    private TicketBookingViewModel ticketBookingModule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +21,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
         } else {
             newString= extras.getString("STRING_I_NEED");
         }*/
-        if(savedInstanceState == null) {
+
+        if (savedInstanceState == null) {
             TicketBookingViewModel ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
             ticketBookingModule.getConcession("MSRTC");
             addFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", false);
@@ -73,5 +69,10 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     @Override
     public void gotoBusStopSelect(int index) {
         replaceFragment(BusPointFragment.newInstance(index, ""), "BusPointFragment", true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

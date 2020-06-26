@@ -45,25 +45,30 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/male"
                     android:drawableStart="@drawable/user_thumb"
                     style="@style/edit_text"
                     android:layout_width="0dp"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1"
                     android:background="@drawable/gender_bg_selected"
                     android:textColor="@color/white"
-                    android:text="MALE"/>
+                    android:text="@string/male"
+                    android:textAllCaps="true" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/female"
                     android:drawableStart="@drawable/user_thumb"
                     style="@style/edit_text"
                     android:layout_width="0dp"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_weight="1"
-                    android:text="FEMAIL"/>
+                    android:text="@string/female"
+                    android:textAllCaps="true" />
             </LinearLayout>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mobile_no"
                 android:maxLength="10"
@@ -92,26 +97,54 @@
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address"
                 android:inputType="textCapWords"
-                style="@style/edit_text"/>
+                style="@style/edit_text" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/address2"
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address2"
                 android:inputType="textCapWords"
-                style="@style/edit_text"/>
+                style="@style/edit_text" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/state"
                 android:drawableStart="@drawable/state"
                 android:hint="@string/state"
                 android:inputType="textCapWords"
-                style="@style/edit_text"/>
+                style="@style/edit_text" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/pin_code"
                 android:drawableStart="@drawable/pin_code"
                 android:hint="@string/pin"
                 android:maxLength="6"
                 android:inputType="numberSigned"
-                style="@style/edit_text"/>
+                style="@style/edit_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_image"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/edit_text_size" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_profile_image_field"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:src="@drawable/avatar" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <com.google.android.material.button.MaterialButton

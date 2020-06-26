@@ -93,9 +93,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         userName = view.findViewById(R.id.user_id);
-        userName.setText("8919251921");
+        userName.setText("9821688899");
         password = view.findViewById(R.id.password);
-        password.setText("12345");
+        password.setText("anita456");
     }
 
     @Override
@@ -119,21 +119,22 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         if (response.isSuccessful()) {
                             LoginResponse data = response.body();
-                            assert data != null;
-                            if (data.getStatus().equalsIgnoreCase("success")) {
-                                MyProfile.getInstance(data.getData().getProfileModel());
-                                if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
-                                    mListener.goToProfileActivity();
-                                } else {
-                                    mListener.goToTicketBookingActivity();
-                                }
-                            } else {
-                                showDialog("", data.getMsg(), (dialog, which) -> {
-                                    dialog.dismiss();
-                                    if(data.getMsg().contains("verify")) {
-                                        mListener.validateOTP();
+                            if(data != null) {
+                                if (data.getStatus().equalsIgnoreCase("success")) {
+                                    MyProfile.getInstance(data.getData().getProfileModel());
+                                    if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
+                                        mListener.goToProfileActivity();
+                                    } else {
+                                        mListener.goToTicketBookingActivity();
                                     }
-                                });
+                                } else {
+                                    showDialog("", data.getMsg(), (dialog, which) -> {
+                                        dialog.dismiss();
+                                        if(data.getMsg().contains("verify")) {
+                                            mListener.validateOTP();
+                                        }
+                                    });
+                                }
                             }
                         }
                         progressDialog.dismiss();

@@ -128,6 +128,7 @@ public class MyProfile {
         }
         return myProfile;
     }
+
     private void setData(ProfileModel profileModel) {
         userId = profileModel.getUserID();
         firstName = profileModel.getFirstName();

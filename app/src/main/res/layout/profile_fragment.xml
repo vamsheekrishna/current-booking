@@ -41,11 +41,13 @@
                 android:hint="@string/user_id"
                 android:inputType="text"
                 android:visibility="gone" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/user_id"
                 style="@style/edit_text"
-                android:text="MAIL"/>
+                android:text="@string/user_id" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mobile_no"
                 style="@style/text_view"
@@ -65,36 +67,61 @@
                 android:id="@+id/dob"
                 style="@style/text_view"
                 android:drawableStart="@drawable/calendar"
-                android:hint="@string/dob"
-                android:inputType="text" />
+                android:hint="@string/dob" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/address1"
                 style="@style/text_view"
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address"
-                android:inputType="text" />
+                android:inputType="textCapWords" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/address2"
                 style="@style/text_view"
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address2"
-                android:inputType="text" />
+                android:inputType="textCapWords" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/state"
                 style="@style/text_view"
                 android:drawableStart="@drawable/state"
                 android:hint="@string/state"
-                android:inputType="text" />
+                android:inputType="textCapWords" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/pin_code"
                 style="@style/text_view"
                 android:drawableStart="@drawable/pin_code"
                 android:hint="@string/pin"
-                android:inputType="text" />
+                android:inputType="numberDecimal"
+                android:maxLength="6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_image"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/edit_text_size" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_profile_image_field"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginStart="30dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:src="@drawable/avatar" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -115,5 +115,8 @@
     <string name="sr_citizens">Sr Citizens</string>
     <string name="booking_success">Booking Success</string>
     <string name="booking_status">Booking Status</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
 
 </resources>

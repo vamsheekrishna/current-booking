@@ -1,7 +1,14 @@
 package com.currentbooking.profile.ui.main;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +17,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.currentbooking.R;
 import com.currentbooking.interfaces.DateTimeInterface;
+import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
 import com.currentbooking.utilits.views.BaseFragment;
+import com.currentbooking.utilits.views.CustomLoadingDialog;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -29,6 +46,8 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
 
@@ -39,11 +58,17 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private AppCompatEditText etAddress1;
     private AppCompatEditText etAddress2;
     private AppCompatEditText etState;
-    private AppCompatEditText etPinCode, email;
+    private AppCompatEditText etPinCode;
+    private AppCompatEditText email;
+    private AppCompatImageView ivProfileImageField;
 
     AppCompatTextView dob, male, female;
     private Calendar dateOfBirthCalendar;
     String gender = "Male";
+    private Uri profileImageUri = null;
+    private Bitmap profileImageBitmap;
+    private Dialog loadingDialog;
+
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
     }
@@ -59,6 +84,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         dateOfBirthCalendar = Calendar.getInstance();
+        loadingDialog = CustomLoadingDialog.getInstance(requireActivity());
         return inflater.inflate(R.layout.edit_profile_fragment, container, false);
     }
 
@@ -115,10 +141,17 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         etPinCode = view.findViewById(R.id.pin_code);
         etPinCode.setText(MyProfile.getInstance().getPinCode());
         view.findViewById(R.id.save_profile).setOnClickListener(this);
-        if(MyProfile.getInstance().getGender().equalsIgnoreCase("Male")) {
-            selectedMail();
+        if (MyProfile.getInstance().getGender().equalsIgnoreCase(getString(R.string.male))) {
+            selectedMale();
         } else {
             selectedFemale();
+        }
+        ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
+        ivProfileImageField.setOnClickListener(this);
+
+        String imageUrl = MyProfile.getInstance().getProfileImage();
+        if (!TextUtils.isEmpty(imageUrl)) {
+            Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).memoryPolicy(MemoryPolicy.NO_CACHE).error(R.drawable.avatar).into(ivProfileImageField);
         }
     }
 
@@ -131,21 +164,43 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             case R.id.dob:
                 dateOfPickerSelected();
             case R.id.female:
-                gender = "Female";
+                gender = getString(R.string.female);
                 selectedFemale();
-
                 break;
             case R.id.male:
-                gender = "Male";
-                selectedMail();
-
+                gender = getString(R.string.male);
+                selectedMale();
+                break;
+            case R.id.iv_profile_image_field:
+                profileSelected();
                 break;
             default:
                 break;
         }
     }
 
-    private void selectedMail() {
+    private void profileSelected() {
+        CropImage.activity()
+                .start(Objects.requireNonNull(getContext()), this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (result != null) {
+                profileImageUri = null;
+                if (resultCode == RESULT_OK) {
+                    profileImageUri = result.getUri();
+                    ivProfileImageField.setImageURI(profileImageUri);
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        }
+    }
+
+    private void selectedMale() {
         male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
         male.setTextColor(getResources().getColor(R.color.white));
         female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
@@ -174,14 +229,17 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         } else if (!Utils.isValidWord(lName)) {
             showDialog("", getString(R.string.error_last_name));
         } else {
+            loadingDialog.show();
+            String encodedImage = getEncodedImage();
             LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
             loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
-                    _etAddress1, _etAddress2, _etPinCode, _dob,"sample/sample", _etState ).enqueue(new Callback<ResponseUpdateProfile>() {
+                    _etAddress1, _etAddress2, _etPinCode, _dob, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
                 @Override
-                public void onResponse(Call<ResponseUpdateProfile> call, Response<ResponseUpdateProfile> response) {
-                        if(response.isSuccessful()) {
-                            assert response.body() != null;
-                            if(response.body().getStatus().equalsIgnoreCase("success")) {
+                public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
+                    loadingDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            if (response.body().getStatus().equalsIgnoreCase("success")) {
                                 MyProfile.getInstance().setFirstName(fName);
                                 MyProfile.getInstance().setLastName(lName);
                                 MyProfile.getInstance().setAddress1(_etAddress1);
@@ -197,14 +255,32 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 showDialog("", response.body().getMsg());
                             }
                         }
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<ResponseUpdateProfile> call, Throwable t) {
+                public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
+                    loadingDialog.dismiss();
                     showDialog("", t.getMessage());
                 }
             });
         }
+    }
+
+    private String getEncodedImage() {
+        try {
+            if (profileImageUri != null) {
+                final InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
+                profileImageBitmap = BitmapFactory.decodeStream(imageStream);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] b = baos.toByteArray();
+                return Base64.encodeToString(b, Base64.DEFAULT);
+            }
+        } catch (Exception ex) {
+            LoggerInfo.errorLog("encode image exception", ex.getMessage());
+        }
+        return "";
     }
 
     private void dateOfPickerSelected() {
@@ -232,6 +308,14 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         });
         if (!Objects.requireNonNull(getActivity()).isFinishing()) {
             datePickerFragment.show(getActivity().getSupportFragmentManager(), DatePickerFragment.class.getName());
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(profileImageBitmap != null) {
+            profileImageBitmap.recycle();
         }
     }
 }
