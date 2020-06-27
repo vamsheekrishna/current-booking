@@ -12,10 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
-import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.squareup.picasso.MemoryPolicy;
@@ -39,7 +37,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private TextView state;
     private TextView pinCode;
     private AppCompatImageView ivProfileImageField;
-    private TicketBookingViewModel ticketBookingModule;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -55,7 +52,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.profile_fragment, container, false);
     }
 
@@ -71,7 +67,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         address2.setText(MyProfile.getInstance().getAddress2());
         pinCode.setText(MyProfile.getInstance().getPinCode());
 
-        Bitmap bitmap = ticketBookingModule.getUserProfileImage().getValue();
+        Bitmap bitmap = MyProfile.getInstance().getUserProfileImage().getValue();
         if (bitmap != null) {
             ivProfileImageField.setImageBitmap(bitmap);
         } else {

@@ -13,12 +13,9 @@ import androidx.annotation.Nullable;
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.UserData;
-import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ChangePasswordResponse;
-import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import retrofit2.Call;
@@ -35,7 +32,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     private String mParam2;
     private OnAuthenticationClickedListener mListener;
     private LoginService loginService;
-    private TextView mobileNumber, oldPassword, newPassword, confirmPassword;
+    private TextView oldPassword, newPassword, confirmPassword;
 
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -44,7 +41,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (OnAuthenticationClickedListener)context;
+        mListener = (OnAuthenticationClickedListener) context;
     }
 
     public static ChangePasswordFragment newInstance(String param1, String param2) {
@@ -92,24 +89,25 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.change_password).setOnClickListener(this);
-        mobileNumber = view.findViewById(R.id.mobile_number);
+        //mobileNumber = view.findViewById(R.id.mobile_number);
         oldPassword = view.findViewById(R.id.old_password);
         newPassword = view.findViewById(R.id.new_password);
         confirmPassword = view.findViewById(R.id.confirm_password);
-        mobileNumber.setText("");
+        //mobileNumber.setText("");
     }
 
     @Override
     public void onClick(View v) {
-        String _mobileNumber = mobileNumber.getText().toString().trim();
+        //String _mobileNumber = mobileNumber.getText().toString().trim();
         String _oldPassword = oldPassword.getText().toString().trim();
         String _newPassword = newPassword.getText().toString().trim();
         String _confirmPassword = confirmPassword.getText().toString().trim();
-        if (!Utils.isValidMobile(_mobileNumber)) {
+        /*if (!Utils.isValidMobile(_mobileNumber)) {
             showDialog("", getString(R.string.error_mobile_number));
-        } else if (_oldPassword.length() <= 4) {
+        }*/
+        if (_oldPassword.length() <= 4) {
             showDialog("", getString(R.string.error_password));
-        }  else if (_newPassword.length() <= 4) {
+        } else if (_newPassword.length() <= 4) {
             showDialog("", getString(R.string.error_password));
         } else if (_confirmPassword.length() <= 4) {
             showDialog("", getString(R.string.error_password));
@@ -119,17 +117,18 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
             showDialog("", getString(R.string.error_new_password));
         } else {
             progressDialog.show();
+            String mobileNumber = MyProfile.getInstance().getMobileNumber();
             loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.changePassword(MyProfile.getInstance().getUserId(), _mobileNumber, _oldPassword, _newPassword).enqueue(new Callback<ChangePasswordResponse>() {
+            loginService.changePassword(MyProfile.getInstance().getUserId(), mobileNumber, _oldPassword, _newPassword).enqueue(new Callback<ChangePasswordResponse>() {
                 @Override
                 public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
-                    if(response.isSuccessful()) {
-                        if(response.body().getStatus().equalsIgnoreCase("success")) {
-                            showDialog("",response.body().getMsg(), (dialog, which) -> {
+                    if (response.isSuccessful()) {
+                        if (response.body().getStatus().equalsIgnoreCase("success")) {
+                            showDialog("", response.body().getMsg(), (dialog, which) -> {
                                 getActivity().finish();
-                            } );
+                            });
                         } else {
-                            showDialog("",response.body().getMsg());
+                            showDialog("", response.body().getMsg());
                         }
                     }
                     progressDialog.dismiss();

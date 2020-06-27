@@ -97,8 +97,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             }
         }
 
-        TicketBookingViewModel ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
-        ticketBookingModule.getUserProfileImage().observe(this, bitmap -> {
+        MyProfile.getInstance().getUserProfileImage().observe(this, bitmap -> {
             Bitmap newBitmap = getCircularBitmap(bitmap);
             ivProfileImageField.setImageBitmap(newBitmap);
         });

@@ -118,9 +118,12 @@
     <string name="profile_image">Profile Image</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="enter_current_password">Enter Current Password</string>
-    <string name="enter_new_password">Enter new password</string>
+    <string name="enter_current_password">Current Password</string>
+    <string name="enter_new_password">New password</string>
     <string name="change_password">Change Password</string>
     <string name="error_new_password">New password is same as the current password.</string>
+    <string name="resend">Resend</string>
+    <string name="update">Update</string>
+    <string name="generate">Generate</string>
 
 </resources>

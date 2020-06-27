@@ -1,5 +1,9 @@
 package com.currentbooking.utilits;
 
+import android.graphics.Bitmap;
+
+import androidx.lifecycle.MutableLiveData;
+
 import com.currentbooking.utilits.cb_api.responses.ProfileModel;
 
 public class MyProfile {
@@ -17,6 +21,7 @@ public class MyProfile {
     private String address1;
     private String address2;
     private String state;
+    private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
 
     private MyProfile() {
 
@@ -144,4 +149,11 @@ public class MyProfile {
 
     }
 
+    public MutableLiveData<Bitmap> getUserProfileImage() {
+        return userProfileImage;
+    }
+
+    public void setUserProfileImage(Bitmap userImageBitmap) {
+        userProfileImage.setValue(userImageBitmap);
+    }
 }

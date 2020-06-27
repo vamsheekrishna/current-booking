@@ -1,6 +1,5 @@
 package com.currentbooking.profile.ui.main;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,7 +30,6 @@ import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
 import com.currentbooking.utilits.views.BaseFragment;
-import com.currentbooking.utilits.views.CustomLoadingDialog;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -70,7 +68,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     String gender = "Male";
     private Uri profileImageUri = null;
     private Bitmap profileImageBitmap;
-    private TicketBookingViewModel ticketBookingModule;
 
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
@@ -87,7 +84,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         dateOfBirthCalendar = Calendar.getInstance();
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.edit_profile_fragment, container, false);
     }
 
@@ -248,7 +244,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 MyProfile.getInstance().setEmail(_email);
                                 MyProfile.getInstance().setDob(_dob);
                                 showDialog("", response.body().getMsg(), (dialog, which) -> {
-                                    ticketBookingModule.setUserProfileImage(profileImageBitmap);
+                                    MyProfile.getInstance().setUserProfileImage(profileImageBitmap);
                                     Objects.requireNonNull(getActivity()).onBackPressed();
                                 });
                             } else {
