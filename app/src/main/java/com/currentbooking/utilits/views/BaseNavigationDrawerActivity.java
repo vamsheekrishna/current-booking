@@ -29,6 +29,7 @@ import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.profile.ui.main.ProfileFragment;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.ticketbookinghistory.TicketBookingHistoryActivity;
 import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
@@ -146,7 +147,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         setupBadge();
 
-        actionView.setOnClickListener(v -> Toast.makeText(BaseNavigationDrawerActivity.this, "Live ticket selected.", Toast.LENGTH_LONG).show());
+        actionView.setOnClickListener(v -> {
+            startActivity(new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class));
+        });
 
         return true;
     }
@@ -211,33 +214,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        /*switch (item.getItemId()) {
-            case R.id.nav_ticket_booking:
-                startActivity(new Intent(this, TicketBookingActivity.class));
-                //Toast.makeText(this,"nav_ticket_booking", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.nav_history:
-                Toast.makeText(this, "nav_history", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.nav_my_ticket:
-                Toast.makeText(this, "nav_my_ticket", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.nav_help:
-                Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.my_profile_layout_field:
-                startActivity(new Intent(this, ProfileFragment.class));
-                finish();
-                break;
-            case R.id.nav_change_password:
-                Intent intent = new Intent(this, AuthenticationActivity.class);
-                intent.putExtra(getString(R.string.change_password), );
-                startActivity(intent);
-                break;
-            default:
-                Toast.makeText(this, "default", Toast.LENGTH_LONG).show();
-                break;
-        }*/
         mDrawerLayout.closeDrawer(navigationView);
         return false;
     }
@@ -251,7 +227,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 // Toast.makeText(this, "nav_ticket_booking", Toast.LENGTH_LONG).show();
                 break;
             case R.id.booking_history_layout_field:
-                Toast.makeText(this, "nav_history", Toast.LENGTH_LONG).show();
+                mDrawerLayout.closeDrawer(navigationView);
+                Intent intent = new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 break;
             case R.id.help_layout_field:
                 Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
@@ -259,7 +238,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             case R.id.logout_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
                 startActivity(new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class));
-                finish();
                 break;
             case R.id.my_profile_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
@@ -267,7 +245,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 break;
             case R.id.logout_change_password_field:
                 mDrawerLayout.closeDrawer(navigationView);
-                Intent intent = new Intent(this, AuthenticationActivity.class);
+                intent = new Intent(this, AuthenticationActivity.class);
                 intent.putExtra(getString(R.string.change_password), true);
                 startActivity(intent);
                 break;
