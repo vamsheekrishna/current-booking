@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.squareup.picasso.MemoryPolicy;
@@ -73,8 +74,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         } else {
             String imageUrl = MyProfile.getInstance().getProfileImage();
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
-                        error(R.drawable.avatar).into(ivProfileImageField);
+                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                        transform(new CircleTransform()).into(ivProfileImageField);
             }
         }
     }

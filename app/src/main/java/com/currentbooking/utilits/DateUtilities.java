@@ -117,7 +117,19 @@ public class DateUtilities {
         return currentCalendar.get(Calendar.YEAR) - dateOfBirthCalendar.get(Calendar.YEAR);
     }
 
-    private static String CALENDAR_DATE_FORMAT_ONE = "dd/MM/yyyy";
+    public static String getDateOfBirthFromCalendar(Calendar calendar) {
+        Locale locale = Locale.getDefault();
+        try {
+            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_FORMAT_ONE, locale);
+            return formatter.format(calendar.getTime());
+        } catch (Exception ex) {
+            LoggerInfo.errorLog("getDateStringFromCalendar1", ex.getMessage());
+        }
+
+        return getDateOfBirthFromCalendar(Calendar.getInstance(locale));
+    }
+
+    private static String CALENDAR_DATE_FORMAT_ONE = "dd-MM-yyyy";
     private static String CALENDAR_DATE_FORMAT_TWO = "MM/dd/yyyy";
     private static String CALENDAR_TIME_FORMAT_ONE = "hh:mm";
     private static String CALENDAR_TIME_FORMAT_TWO = "HH:mm";

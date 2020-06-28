@@ -210,4 +210,9 @@
         <item name="android:topBright">@color/btn_inc_dec_color</item>
         <item name="android:topDark">@color/btn_inc_dec_color</item>
     </style>
+
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

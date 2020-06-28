@@ -99,28 +99,26 @@
                 android:maxLength="6" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_border_bg"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_image"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/edit_text_size" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_profile_image_field"
+                <LinearLayout
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    android:layout_marginStart="30dp"
-                    android:scaleType="fitXY"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:src="@drawable/avatar" />
+                    android:background="@drawable/rounded_circle"
+                    android:gravity="center">
 
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_profile_image_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/photo_camera" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

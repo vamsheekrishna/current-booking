@@ -99,6 +99,8 @@ public class AddPassengersDialogView extends DialogFragment {
                 if (lSelectedItem instanceof String) {
                     selectedPersonType = (String) lSelectedItem;
                     setDefaultAgeLimit();
+                    selectedConcessionDetails = null;
+                    tvConcessionTypeField.setText(getString(R.string.concession_type));
                 }
             }
 

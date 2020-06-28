@@ -23,6 +23,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.currentbooking.R;
 import com.currentbooking.interfaces.DateTimeInterface;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.CircleTransform;
+import com.currentbooking.utilits.CommonUtils;
+import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.Utils;
@@ -68,6 +71,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     String gender = "Male";
     private Uri profileImageUri = null;
     private Bitmap profileImageBitmap;
+    private String dateOfBirthValue;
 
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
@@ -228,7 +232,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             String encodedImage = getEncodedImage();
             LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
             loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
-                    _etAddress1, _etAddress2, _etPinCode, _dob, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
+                    _etAddress1, _etAddress2, _etPinCode, dateOfBirthValue, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
                 @Override
                 public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
                     progressDialog.dismiss();
@@ -244,7 +248,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 MyProfile.getInstance().setEmail(_email);
                                 MyProfile.getInstance().setDob(_dob);
                                 showDialog("", response.body().getMsg(), (dialog, which) -> {
-                                    MyProfile.getInstance().setUserProfileImage(profileImageBitmap);
+                                    Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
+                                    MyProfile.getInstance().setUserProfileImage(bitmap);
                                     Objects.requireNonNull(getActivity()).onBackPressed();
                                 });
                             } else {
@@ -268,8 +273,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private void updateUserProfileImage() {
         String imageUrl = MyProfile.getInstance().getProfileImage();
         if (!TextUtils.isEmpty(imageUrl)) {
-            Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
-                    error(R.drawable.avatar).into(ivProfileImageField);
+            Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                    transform(new CircleTransform()).into(ivProfileImageField);
         }
     }
 
@@ -310,6 +315,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 String myFormat = "dd/MMM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
                 dob.setText(sdf.format(dateOfBirthCalendar.getTime()));
+                dateOfBirthValue = DateUtilities.getDateOfBirthFromCalendar(dateOfBirthCalendar);
             }
         });
         if (!Objects.requireNonNull(getActivity()).isFinishing()) {
