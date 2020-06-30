@@ -2,7 +2,6 @@ package com.currentbooking.ticketbooking;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,22 +9,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.currentbooking.R;
-import com.currentbooking.ticketbooking.adapters.ConcessionAddPassengersAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
-import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
-import com.currentbooking.utilits.cb_api.responses.Concession;
+import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
-import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -37,7 +30,7 @@ public class ConfirmTicketFragment extends BaseFragment {
     private String busOperatorName;
     private String busType;
 
-    private List<Concession> personsAddedList;
+    private GetFareResponse.FareDetails mFareDetails;
     private TicketBookingViewModel ticketBookingModule;
     private TextView tvTotalFareField;
     private TextView tvFareField;
@@ -50,11 +43,11 @@ public class ConfirmTicketFragment extends BaseFragment {
 
     private OnTicketBookingListener mListener;
 
-    public static ConfirmTicketFragment newInstance(String busType, List<Concession> personsAddedList) {
+    public static ConfirmTicketFragment newInstance(String busType, GetFareResponse.FareDetails personsAddedList) {
         ConfirmTicketFragment fragment = new ConfirmTicketFragment();
         Bundle args = new Bundle();
         args.putString(ARG_BUS_TYPE, busType);
-        args.putSerializable(ARG_ADDED_PASSENGERS_LIST, (Serializable) personsAddedList);
+        args.putSerializable(ARG_ADDED_PASSENGERS_LIST, personsAddedList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,7 +86,7 @@ public class ConfirmTicketFragment extends BaseFragment {
         Bundle extras = getArguments();
         if (extras != null) {
             busType = extras.getString(ARG_BUS_TYPE);
-            personsAddedList = (List<Concession>) extras.getSerializable(ARG_ADDED_PASSENGERS_LIST);
+            mFareDetails = (GetFareResponse.FareDetails) extras.getSerializable(ARG_ADDED_PASSENGERS_LIST);
         }
 
         loadUIComponents(view);
@@ -119,42 +112,46 @@ public class ConfirmTicketFragment extends BaseFragment {
 
         ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(fareAmount);
         tvTotalFareField = view.findViewById(R.id.tv_total_fare_field);
-        tvTotalFareField.setText(String.valueOf(1300));
+        tvTotalFareField.setText(String.valueOf(mFareDetails.getTotal()));
 
         tvFareField = view.findViewById(R.id.tv_fare_field);
         tvTaxesFareField = view.findViewById(R.id.tv_service_charge_or_gst_field);
 
         tvPassengersDetailsField = view.findViewById(R.id.tv_passengers_details_field);
 
-        int adultsCount = 0;
-        int childCount = 0;
+        int adultsCount = mFareDetails.getTotalAdultSeat();
+        int childCount = mFareDetails.getTotalChildSeat();
         int srCitizensCount = 0;
-        for(Concession concessionDetails : personsAddedList) {
-            if(concessionDetails.getPersonType().equals(getString(R.string.adult))) {
+        /*for( FareBreakup concessionDetails : personsAddedList.getFareDetails().getFareBreakups()) {
+            if(concessionDetails.getLabel().equals(getString(R.string.adult))) {
                 adultsCount += 1;
             } else if(concessionDetails.getPersonType().equals(getString(R.string.child))) {
                 childCount += 1;
             } else if(concessionDetails.getPersonType().equals(getString(R.string.sr_citizen))) {
                 srCitizensCount += 1;
             }
-        }
+        }*/
 
         String adultsDetails = "";
         if(adultsCount != 0) {
             if(adultsCount == 1) adultsDetails = String.format(Locale.getDefault(), "%d %s", adultsCount, getString(R.string.adult));
             else adultsDetails = String.format(Locale.getDefault(), "%d %s", adultsCount, getString(R.string.adults));
+
         }
-        String childDetails = "";
+        //String childDetails = "";
         if(childCount > 0) {
-            childDetails = String.format(Locale.getDefault(), "%d %s", childCount, getString(R.string.children));
+            if(adultsDetails.length()>1) {
+                adultsDetails = adultsDetails+", ";
+            }
+            adultsDetails = adultsDetails + String.format(Locale.getDefault(), "%d %s", childCount, getString(R.string.children));
         }
-        String srCitizenDetails = "";
+        /*String srCitizenDetails = "";
         if(srCitizensCount != 0) {
             if(srCitizensCount == 1) srCitizenDetails = String.format(Locale.getDefault(), "%d %s", srCitizensCount, getString(R.string.sr_citizen));
             else srCitizenDetails = String.format(Locale.getDefault(), "%d %s", srCitizensCount, getString(R.string.sr_citizens));
-        }
+        }*/
 
-        String passengerDetails = "";
+        /*String passengerDetails = "";
         if(!TextUtils.isEmpty(childDetails)) {
             passengerDetails = String.format("%s,\n%s,\n%s", adultsDetails, childDetails, srCitizenDetails);
         } else {
@@ -169,12 +166,14 @@ public class ConfirmTicketFragment extends BaseFragment {
         char lastChar = passengerDetails.charAt(length - 2);
         if (lastChar == ',') {
             passengerDetails = passengerDetails.substring(0, length - 2);
-        }
-        tvPassengersDetailsField.setText(passengerDetails);
+        }*/
+        tvPassengersDetailsField.setText(adultsDetails);
         view.findViewById(R.id.confirm_payment).setOnClickListener(v -> confirmSelected());
     }
 
+
     private void confirmSelected() {
-        mListener.gotoTicketStatus(true, tvPassengersDetailsField.getText().toString(), "success");
+        mListener.gotoPayment(mFareDetails);
+        // mListener.gotoTicketStatus(true, tvPassengersDetailsField.getText().toString(), "success");
     }
 }

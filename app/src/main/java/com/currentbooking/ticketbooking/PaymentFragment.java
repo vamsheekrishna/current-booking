@@ -5,13 +5,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
 public class PaymentFragment extends BaseFragment implements View.OnClickListener {
@@ -20,18 +20,18 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
-    private String mParam2;
+    private GetFareResponse.FareDetails mFareDetails;
 
     OnTicketBookingListener mListener;
     public PaymentFragment() {
         // Required empty public constructor
     }
 
-    public static PaymentFragment newInstance(String param1, String param2) {
+    public static PaymentFragment newInstance(String param1, GetFareResponse.FareDetails param2) {
         PaymentFragment fragment = new PaymentFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,7 +53,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mFareDetails = (GetFareResponse.FareDetails) getArguments().getSerializable(ARG_PARAM2);
         }
     }
 

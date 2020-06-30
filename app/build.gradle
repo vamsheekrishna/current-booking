@@ -47,6 +47,7 @@ android {
             buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/busstop"')
             buildConfigField('String','CONCESSION_LIST','"operator/getConcession"')
             buildConfigField('String','CONCESSION_RATE_LIST','"operator/getConcessionrates"')
+            buildConfigField('String','GET_FARE','"get/fare"')
         }
         prod {
             dimension "version"

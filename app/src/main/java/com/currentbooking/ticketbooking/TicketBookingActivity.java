@@ -5,10 +5,8 @@ import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
-import com.currentbooking.utilits.cb_api.responses.Concession;
+import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
-
-import java.util.List;
 
 public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener {
 
@@ -24,7 +22,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
         if (savedInstanceState == null) {
             TicketBookingViewModel ticketBookingModule = new ViewModelProvider(this).get(TicketBookingViewModel.class);
-            ticketBookingModule.getConcession("MSRTC");
+            // ticketBookingModule.getConcession("MSRTC");
             addFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", false);
             //BusObject busObject = new BusObject();
             //addFragment(ConfirmTicketFragment.newInstance(busObject, "MSRTC"), "ConfirmTicketFragment", false);
@@ -43,7 +41,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void gotoConfirmTicket(String busType, List<Concession> personsAddedList) {
+    public void gotoConfirmTicket(String busType, GetFareResponse.FareDetails personsAddedList) {
         addFragment(ConfirmTicketFragment.newInstance(busType, personsAddedList), "ConfirmTicketFragment", true);
     }
 
@@ -53,8 +51,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void gotoPayment() {
-        replaceFragment(PaymentFragment.newInstance("", ""), "PaymentFragment", true);
+    public void gotoPayment(GetFareResponse.FareDetails fareDetails) {
+        replaceFragment(PaymentFragment.newInstance("", fareDetails), "PaymentFragment", true);
     }
 
     @Override

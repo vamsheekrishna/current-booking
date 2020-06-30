@@ -6,8 +6,16 @@ import com.currentbooking.utilits.cb_api.responses.BusOperatorList;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusStopResponse;
 import com.currentbooking.utilits.cb_api.responses.BusTypeList;
+import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
+import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -43,4 +51,15 @@ public interface TicketBookingServices {
     @POST(BuildConfig.CONCESSION_RATE_LIST)
     @FormUrlEncoded
     Call<ConcessionRatesListResponse> getConcessionRatesList(@Field("operator") String operator);
+
+
+    @POST(BuildConfig.GET_FARE)
+    @FormUrlEncoded
+    Call<GetFareResponse> getFare(@Field("operator") String operator,
+                                  @Field("date") String date,
+                                  @Field("from") String from,
+                                  @Field("to") String to,
+                                  @Field("bus_type_cd") String busTypeCD,
+                                  @Field("bus_service_no") String busServiceNO,
+                                  @Field("passenger_details") String result);
 }
