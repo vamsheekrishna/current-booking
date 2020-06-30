@@ -20,5 +20,10 @@
     <color name="btn_inc_dec_color_two">#3688F3</color>
     <color name="background_bg_color_two">#0D74C2</color>
     <color name="button_bg_two">#E9E9E9</color>
+    <color name="green">#2EAC01</color>
+    <color name="orange_color">#FFB404</color>
+    <color name="pink_color">#EF4B88</color>
+    <color name="red_two">#EF4B4E</color>
+    <color name="edit_text_border_color_two">#E0E0E0</color>
 
 </resources>

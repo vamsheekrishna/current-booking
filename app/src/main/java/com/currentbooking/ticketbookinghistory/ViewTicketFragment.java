@@ -5,8 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.currentbooking.R;
+import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
+import com.currentbooking.ticketbookinghistory.models.LiveTicketsModel;
 import com.currentbooking.utilits.views.BaseFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ViewTicketFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
@@ -15,6 +27,9 @@ public class ViewTicketFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView liveTicketsListRecyclerField;
+    private List<LiveTicketsModel> liveTicketsList;
 
     public ViewTicketFragment() {
         // Required empty public constructor
@@ -51,5 +66,42 @@ public class ViewTicketFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_view_ticket, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadUIComponents(view);
+    }
+
+    private void loadUIComponents(View view) {
+        liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_fieid);
+        liveTicketsListRecyclerField.setHasFixedSize(false);
+
+        DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
+                R.drawable.recycler_decoration_divider_two)));
+        liveTicketsListRecyclerField.addItemDecoration(divider);
+
+        liveTicketsList = new ArrayList<>();
+
+        LiveTicketsModel liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(0);
+        liveTicketsList.add(liveTicketsModel);
+
+        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(1);
+        liveTicketsList.add(liveTicketsModel);
+
+        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(2);
+        liveTicketsList.add(liveTicketsModel);
+
+        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(3);
+        liveTicketsList.add(liveTicketsModel);
+
+        LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
+        liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
     }
 }

@@ -151,8 +151,8 @@
 
     <style name="text_style_medium_bold">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">@font/opensans_bold</item>
+        <item name="android:textColor">@color/black_color_two</item>
+        <item name="android:fontFamily">@font/opensans_semi_bold</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -169,6 +169,18 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/opensans_bold</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_style_small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/opensans_regular</item>
+    </style>
+
+    <style name="text_style_small_bold">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/opensans_bold</item>
     </style>
 
     <style name="text_style_extra_medium_normal">
