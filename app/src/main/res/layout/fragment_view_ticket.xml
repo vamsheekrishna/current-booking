@@ -1,27 +1,196 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_bg"
-    android:orientation="vertical">
+    android:background="@color/background_bg">
 
-
-    <TextView
-        style="@style/text_style_medium_normal"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical"
-        android:background="@color/edit_text_border_color_two"
-        android:gravity="center_vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:text="4 Live Tickets Found on 24 June 2020"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/live_ticket_bookings_list_fieid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-</LinearLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/header_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:text="@string/bus_details"
+            android:textAllCaps="true" />
+
+        <include layout="@layout/passenger_route_details_items" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/header_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:text="@string/passenger_details"
+            android:textAllCaps="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/white_background_rounded_corner"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_border_bg"
+                android:gravity="center_vertical"
+                android:minHeight="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/passenger"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/age"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/concession"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/passenger_list_recycler_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/header_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:text="@string/fare_details"
+            android:textAllCaps="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/white_background_rounded_corner"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/tv_total_persons_bus_fare_price_field"
+                    android:fontFamily="@font/opensans_regular"
+                    android:text="@string/fare"
+                    android:textColor="@color/black_color_two" />
+
+                <TextView
+                    android:id="@+id/tv_total_persons_bus_fare_price_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/opensans_regular"
+                    android:text="1880"
+                    android:textColor="@color/black_color_two" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/tv_total_persons_service_charge_or_gst_field"
+                    android:fontFamily="@font/opensans_regular"
+                    android:text="@string/service_charge_or_gst"
+                    android:textColor="@color/black_color_two" />
+
+                <TextView
+                    android:id="@+id/tv_total_persons_service_charge_or_gst_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/opensans_regular"
+                    android:text="320"
+                    android:textColor="@color/black_color_two" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/tv_total_persons_total_fare_field"
+                    android:fontFamily="@font/opensans_bold"
+                    android:text="@string/total_fare"
+                    android:textColor="@color/black_color_two" />
+
+                <TextView
+                    android:id="@+id/tv_total_persons_total_fare_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/opensans_bold"
+                    android:text="2200"
+                    android:textColor="@color/black_color_two" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

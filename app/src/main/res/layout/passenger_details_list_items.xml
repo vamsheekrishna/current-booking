@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="40dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_passenger_type_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/passenger"
+        android:textColor="@color/black_color_two" />
+
+    <TextView
+        android:id="@+id/tv_passenger_age_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/age"
+        android:textColor="@color/black_color_two" />
+
+    <TextView
+        android:id="@+id/tv_passenger_concession_type_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/concession"
+        android:textColor="@color/black_color_two" />
+</LinearLayout>

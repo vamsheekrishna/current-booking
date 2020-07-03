@@ -12,14 +12,18 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
-import com.currentbooking.ticketbookinghistory.adapters.PassengerDetailsAdapter;
+import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
+import com.currentbooking.ticketbookinghistory.models.LiveTicketsModel;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ViewTicketFragment extends BaseFragment {
+/**
+ * Created by Satya Seshu on 03/07/20.
+ */
+public class LiveTicketFragment  extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -27,7 +31,10 @@ public class ViewTicketFragment extends BaseFragment {
     private String mParam1;
     private String mParam2;
 
-    public ViewTicketFragment() {
+    private RecyclerView liveTicketsListRecyclerField;
+    private List<LiveTicketsModel> liveTicketsList;
+
+    public LiveTicketFragment() {
         // Required empty public constructor
     }
 
@@ -40,8 +47,8 @@ public class ViewTicketFragment extends BaseFragment {
      * @return A new instance of fragment ViewTicketFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ViewTicketFragment newInstance(String param1, String param2) {
-        ViewTicketFragment fragment = new ViewTicketFragment();
+    public static LiveTicketFragment newInstance(String param1, String param2) {
+        LiveTicketFragment fragment = new LiveTicketFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,7 +68,7 @@ public class ViewTicketFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_view_ticket, container, false);
+        return inflater.inflate(R.layout.fragment_live_ticket, container, false);
     }
 
     @Override
@@ -71,19 +78,33 @@ public class ViewTicketFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
-        RecyclerView passengerListRecyclerField = view.findViewById(R.id.passenger_list_recycler_field);
-        passengerListRecyclerField.setHasFixedSize(false);
+        liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_fieid);
+        liveTicketsListRecyclerField.setHasFixedSize(false);
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
-                R.drawable.recycler_decoration_divider)));
-        passengerListRecyclerField.addItemDecoration(divider);
+                R.drawable.recycler_decoration_divider_two)));
+        liveTicketsListRecyclerField.addItemDecoration(divider);
 
-        List<Object> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        PassengerDetailsAdapter passengerDetailsAdapter = new PassengerDetailsAdapter(requireActivity(), list);
-        passengerListRecyclerField.setAdapter(passengerDetailsAdapter);
+        liveTicketsList = new ArrayList<>();
+
+        LiveTicketsModel liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(0);
+        liveTicketsList.add(liveTicketsModel);
+
+        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(1);
+        liveTicketsList.add(liveTicketsModel);
+
+        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(2);
+        liveTicketsList.add(liveTicketsModel);
+
+        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel.setStatus(3);
+        liveTicketsList.add(liveTicketsModel);
+
+        LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
+        liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
     }
 }

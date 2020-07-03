@@ -12,7 +12,7 @@
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/confirm"
+        android:layout_above="@+id/confirm_payment"
         android:layout_alignParentTop="true">
 
         <LinearLayout
@@ -40,6 +40,7 @@
                     style="@style/header_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAllCaps="true"
                     android:text="@string/passenger_details" />
 
                 <LinearLayout
@@ -110,6 +111,7 @@
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@id/add_passenger_btn_field"
                         android:background="@color/background_bg"
+                        android:textAllCaps="true"
                         android:text="@string/ticket_details" />
 
                     <androidx.appcompat.widget.AppCompatButton
