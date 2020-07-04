@@ -17,6 +17,7 @@ import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
+import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.io.Serializable;
@@ -27,24 +28,35 @@ public class TicketStatusFragment extends BaseFragment {
 
     private static final String ARG_BOOKING_STATUS = "BookingStatus";
     private static final String ARG_BOOKING_DETAILS = "BookingDetails";
+    private static final String CC_AVENUE_RESPONSE = "ccavenue";
     private static final String ARG_PASSENGER_DETAILS = "PassengerDetails";
 
     // TODO: Rename and change types of parameters
-    private boolean bookingStatus;
-    private Object bookingDetails;
+    // private boolean bookingStatus;
+    // private Object bookingDetails;
     private TicketBookingViewModel ticketBookingModule;
-    private String passengerDetails;
+    private CCAvenueResponse ccAvenueResponse;
+    //private String passengerDetails;
 
     private TicketStatusFragment() {
         // Required empty public constructor
     }
 
-    public static TicketStatusFragment newInstance(boolean bookingStatus, String passengerDetails, Object bookingDetails) {
+    /*public static TicketStatusFragment newInstance(boolean bookingStatus, String passengerDetails, Object bookingDetails) {
         TicketStatusFragment fragment = new TicketStatusFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_BOOKING_STATUS, bookingStatus);
         args.putSerializable(ARG_BOOKING_DETAILS, (Serializable) bookingDetails);
         args.putString(ARG_PASSENGER_DETAILS, passengerDetails);
+        fragment.setArguments(args);
+        return fragment;
+    }*/
+    public static TicketStatusFragment newInstance(CCAvenueResponse ccAvenueResponse) {
+        TicketStatusFragment fragment = new TicketStatusFragment();
+        Bundle args = new Bundle();
+        // args.putBoolean(ARG_BOOKING_STATUS, bookingStatus);
+        args.putSerializable(CC_AVENUE_RESPONSE, ccAvenueResponse);
+        // args.putString(ARG_PASSENGER_DETAILS, passengerDetails);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,9 +66,9 @@ public class TicketStatusFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            bookingStatus = extras.getBoolean(ARG_BOOKING_STATUS);
-            bookingDetails = extras.getSerializable(ARG_BOOKING_DETAILS);
-            passengerDetails = extras.getString(ARG_PASSENGER_DETAILS);
+            // bookingStatus = extras.getBoolean(ARG_BOOKING_STATUS);
+            ccAvenueResponse = (CCAvenueResponse) extras.getSerializable(CC_AVENUE_RESPONSE);
+            // passengerDetails = extras.getString(ARG_PASSENGER_DETAILS);
         }
     }
 
@@ -79,7 +91,7 @@ public class TicketStatusFragment extends BaseFragment {
         Objects.requireNonNull(getActivity()).setTitle(getString(R.string.booking_status));
         LinearLayout bookingSuccessLayoutField = view.findViewById(R.id.booking_success_layout_field);
         LinearLayout bookingFailedLayoutField = view.findViewById(R.id.booking_failed_layout_field);
-        if (bookingStatus) {
+        if (ccAvenueResponse.getOrder_status().equalsIgnoreCase("success")) {
             ivBookingStatusField.setImageResource(R.drawable.booking_success_icon);
             paymentSuccessBtnLayoutField.setVisibility(View.VISIBLE);
             tvBookingStatusField.setText(getString(R.string.booking_successful));
@@ -126,7 +138,7 @@ public class TicketStatusFragment extends BaseFragment {
             ((TextView) view.findViewById(R.id.tv_bus_journey_hours_field)).setText(hoursDifference);
             ((TextView) view.findViewById(R.id.tv_bus_journey_end_time_field)).setText(endTime);
         }
-        ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(passengerDetails);
+        ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(ccAvenueResponse.getAmount());
     }
 
     private void paymentSuccessHomeBtnSelected() {

@@ -7,20 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".ticketbooking.ConfirmTicketFragment">
 
-    <ScrollView
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <!--<LinearLayout
         android:layout_alignParentTop="true"
         android:id="@+id/body"
+        android:orientation="horizontal"
         android:layout_above="@+id/conform"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-    </ScrollView>
+    </LinearLayout>-->
 
-    <com.google.android.material.button.MaterialButton
+    <!--<com.google.android.material.button.MaterialButton
         android:layout_alignParentBottom="true"
         android:id="@+id/conform"
         android:layout_margin="16dp"
         android:text="@string/confirm_payment"
-        style="@style/button_gray"/>
+        style="@style/button_gray"/>-->
 
 </RelativeLayout>

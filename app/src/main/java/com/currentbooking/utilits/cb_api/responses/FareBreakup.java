@@ -3,7 +3,9 @@ package com.currentbooking.utilits.cb_api.responses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FareBreakup {
+import java.io.Serializable;
+
+public class FareBreakup implements Serializable {
     @SerializedName("lable")
     @Expose
     String lable;

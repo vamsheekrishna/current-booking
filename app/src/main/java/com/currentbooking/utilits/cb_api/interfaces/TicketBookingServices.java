@@ -10,6 +10,7 @@ import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
+import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
@@ -62,4 +63,6 @@ public interface TicketBookingServices {
                                   @Field("bus_type_cd") String busTypeCD,
                                   @Field("bus_service_no") String busServiceNO,
                                   @Field("passenger_details") String result);
+    @POST(BuildConfig.GET_RSA_KEY)
+    Call<RSAKeyResponse> getRSAKey();
 }

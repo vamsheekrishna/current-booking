@@ -1,10 +1,13 @@
 package com.currentbooking.utilits;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.currentbooking.utilits.cb_api.responses.ProfileModel;
+import com.currentbooking.utilits.encrypt.Encryption;
+import com.currentbooking.utilits.encrypt.EncryptionFactory;
 
 public class MyProfile {
     private static MyProfile myProfile;
@@ -22,9 +25,13 @@ public class MyProfile {
     private String address2;
     private String state;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
+    Encryption aesEncryption;
 
-    private MyProfile() {
-
+    private MyProfile() throws Exception {
+        aesEncryption = EncryptionFactory.getEncryptionByName("AES");
+        String input = "Rajan";
+        String key = "QWRTEfnfdys635";//E-m!tr@2016
+        aesEncryption.setKey(key);
     }
     public static MyProfile getInstance() {
         return myProfile;
@@ -126,7 +133,7 @@ public class MyProfile {
         this.gender = gender;
     }
 
-    public static MyProfile getInstance(ProfileModel profileModel) {
+    public static MyProfile getInstance(ProfileModel profileModel) throws Exception {
         if(null == myProfile) {
             myProfile = new MyProfile();
             myProfile.setData(profileModel);
@@ -135,10 +142,13 @@ public class MyProfile {
     }
 
     private void setData(ProfileModel profileModel) {
+        // userId = getDecryptedString(profileModel.getUserID());
         userId = profileModel.getUserID();
         firstName = profileModel.getFirstName();
         lastName = profileModel.getLastName();
         dob = profileModel.getDob();
+        // email = getDecryptedString(profileModel.getEmail());
+        // mobileNumber = getDecryptedString(profileModel.getMobileNumber());
         email = profileModel.getEmail();
         mobileNumber = profileModel.getMobileNumber();
         pinCode = profileModel.getPinCode();
@@ -155,5 +165,29 @@ public class MyProfile {
 
     public void setUserProfileImage(Bitmap userImageBitmap) {
         userProfileImage.setValue(userImageBitmap);
+    }
+
+    public String getEncryptedString(String input) {
+        String data ="";
+        try {
+            data = aesEncryption.encrypt(input);
+            Log.d("encryption", input+" -> "+data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    public String getDecryptedString(String input) {
+        String data ="";
+        try {
+            data = aesEncryption.decrypt(input);
+            Log.d("encryption", input+" -> "+data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }

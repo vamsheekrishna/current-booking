@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
@@ -57,7 +58,12 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     @Override
     public void gotoTicketStatus(boolean ticketStatus, String passengerDetails, Object bookingDetails) {
-        replaceFragment(TicketStatusFragment.newInstance(ticketStatus, passengerDetails, bookingDetails), "TicketStatusFragment", true);
+        // replaceFragment(TicketStatusFragment.newInstance(ticketStatus, passengerDetails, bookingDetails), "TicketStatusFragment", true);
+    }
+
+    @Override
+    public void gotoTicketStatus(CCAvenueResponse ccAvenueResponse) {
+        replaceFragment(TicketStatusFragment.newInstance(ccAvenueResponse), "TicketStatusFragment", true);
     }
 
     public void gotoOptionSelection(int index) {

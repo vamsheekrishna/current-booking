@@ -45,6 +45,7 @@ import retrofit2.Response;
 /**
  * Created by Satya Seshu on 22/06/20.
  */
+
 public class PassengerDetailsFragment extends BaseFragment {
     private static final String ARG_BUS_TYPE = "BusType";
 
@@ -206,7 +207,7 @@ public class PassengerDetailsFragment extends BaseFragment {
                     if(response.isSuccessful()) {
                         GetFareResponse fareDetails = response.body();
                         if(response.body().getStatus().equalsIgnoreCase("success")) {
-                            showDialog("", fareDetails.getMsg());
+                            // showDialog("", fareDetails.getMsg());
                             mListener.gotoConfirmTicket(busType, fareDetails.getFareDetails().getFareDetails());
                         } else {
                             showDialog("", fareDetails.getMsg());

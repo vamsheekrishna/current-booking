@@ -28,17 +28,10 @@ public  class AESEncryption  extends EncryptionKey implements Encryption
 		String encode = "";
 		try {
 			if (encryptionSTR != null) {
-				
-				//getKey(key); 
-				
-				
 				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 				cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
-				//final String encryptedString = Base64.encodeBase64(cipher.doFinal(encryptionSTR.getBytes())).toString();
-				//final String encryptedString = Base64.encodeBase64String(cipher.doFinal(encryptionSTR.getBytes("UTF-8")));
 				byte[] data = cipher.doFinal(encryptionSTR.getBytes(StandardCharsets.UTF_8));
-				String hash = Base64.encodeToString(data, Base64.DEFAULT);
-				encode = hash;
+				encode = Base64.encodeToString(data, Base64.DEFAULT);
 			}
 		} catch (NoSuchPaddingException npe) {
 			npe.printStackTrace();
@@ -61,30 +54,14 @@ public  class AESEncryption  extends EncryptionKey implements Encryption
 
 	@Override
 	public String decrypt(String decryptionSTR) {
-		// TODO Auto-generated method stub
-		
-
-		
 		try {
 			if (decryptionSTR != null) {
-				
-				
 				//getKey(key); 
 				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 				cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
 				byte[] bts = Base64.decode(decryptionSTR, Base64.DEFAULT);
-
-
-				//byte[] original = cipher.doFinal(decryptionSTR.getBytes("UTF-8"));
-				//String hashs = Base64.decode(original, Base64.DEFAULT);
-
 				byte[] decrypted = cipher.doFinal(bts);
-
 				return new String(decrypted).replaceAll("\0", "");
-
-				//return new String(hashs);
-
-				
 			}
 		} catch (NoSuchPaddingException npe) {
 			npe.printStackTrace();
@@ -118,10 +95,8 @@ public  class AESEncryption  extends EncryptionKey implements Encryption
 			ivParameterSpec=new IvParameterSpec(key);
 
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
     }
 
 	@Override

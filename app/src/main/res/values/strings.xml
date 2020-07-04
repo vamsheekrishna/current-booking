@@ -135,5 +135,6 @@
     <string name="bus_details">Bus Details</string>
     <string name="passenger">Passenger</string>
     <string name="concession">Concession</string>
-
+    <string name="country">India</string>
+    <string name="currency">INR</string>
 </resources>

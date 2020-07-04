@@ -48,6 +48,7 @@ android {
             buildConfigField('String','CONCESSION_LIST','"operator/getConcession"')
             buildConfigField('String','CONCESSION_RATE_LIST','"operator/getConcessionrates"')
             buildConfigField('String','GET_FARE','"get/fare"')
+            buildConfigField('String','GET_RSA_KEY','"get/rsakey"')
         }
         prod {
             dimension "version"
@@ -73,6 +74,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

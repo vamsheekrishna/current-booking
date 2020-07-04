@@ -96,34 +96,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         userName = view.findViewById(R.id.user_id);
-        userName.setText("8919251921");
+        userName.setText("7416226233");
         password = view.findViewById(R.id.password);
         password.setText("12345678");
 
         // encryptionSample();
-    }
-
-    private void encryptionSample() {
-        Encryption AESencryption;
-        EncryptionHelper objEncryptionHelper = new EncryptionHelper();
-
-
-        try {
-            AESencryption = EncryptionFactory.getEncryptionByName("AES");
-
-
-            String input = "Rajan";
-            String key = "QWRTEfnfdys635";//E-m!tr@2016
-            AESencryption.setKey(key);
-
-            String output = AESencryption.encrypt(input);
-
-            System.out.println("des string : " + AESencryption.encrypt(input));
-            System.out.println("des string : " + AESencryption.decrypt(output));
-            System.out.println("des string : " + AESencryption.decrypt("uxAnGbyK8Ligc+4s8PIxcw=="));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -149,11 +126,15 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                             LoginResponse data = response.body();
                             if(data != null) {
                                 if (data.getStatus().equalsIgnoreCase("success")) {
-                                    MyProfile.getInstance(data.getData().getProfileModel());
-                                    if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
-                                        mListener.goToProfileActivity();
-                                    } else {
-                                        mListener.goToTicketBookingActivity();
+                                    try {
+                                        MyProfile.getInstance(data.getData().getProfileModel());
+                                        if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
+                                            mListener.goToProfileActivity();
+                                        } else {
+                                            mListener.goToTicketBookingActivity();
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 } else {
                                     showDialog("", data.getMsg(), (dialog, which) -> {
