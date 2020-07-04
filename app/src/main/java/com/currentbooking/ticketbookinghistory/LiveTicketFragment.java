@@ -1,5 +1,6 @@
 package com.currentbooking.ticketbookinghistory;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
-import com.currentbooking.ticketbookinghistory.models.LiveTicketsModel;
+import com.currentbooking.ticketbookinghistory.models.TicketViewModel;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Objects;
 /**
  * Created by Satya Seshu on 03/07/20.
  */
-public class LiveTicketFragment  extends BaseFragment {
+public class LiveTicketFragment  extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -32,21 +33,13 @@ public class LiveTicketFragment  extends BaseFragment {
     private String mParam2;
 
     private RecyclerView liveTicketsListRecyclerField;
-    private List<LiveTicketsModel> liveTicketsList;
+    private List<TicketViewModel> liveTicketsList;
 
     public LiveTicketFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewTicketFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    OnTicketBookingHistoryListener mListener;
     public static LiveTicketFragment newInstance(String param1, String param2) {
         LiveTicketFragment fragment = new LiveTicketFragment();
         Bundle args = new Bundle();
@@ -63,6 +56,18 @@ public class LiveTicketFragment  extends BaseFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnTicketBookingHistoryListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -88,23 +93,28 @@ public class LiveTicketFragment  extends BaseFragment {
 
         liveTicketsList = new ArrayList<>();
 
-        LiveTicketsModel liveTicketsModel = new LiveTicketsModel();
+        TicketViewModel liveTicketsModel = new TicketViewModel();
         liveTicketsModel.setStatus(0);
         liveTicketsList.add(liveTicketsModel);
 
-        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel = new TicketViewModel();
         liveTicketsModel.setStatus(1);
         liveTicketsList.add(liveTicketsModel);
 
-        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel = new TicketViewModel();
         liveTicketsModel.setStatus(2);
         liveTicketsList.add(liveTicketsModel);
 
-        liveTicketsModel = new LiveTicketsModel();
+        liveTicketsModel = new TicketViewModel();
         liveTicketsModel.setStatus(3);
         liveTicketsList.add(liveTicketsModel);
 
-        LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
+        LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList, this);
         liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mListener.viewTicket(new TicketViewModel());
     }
 }
