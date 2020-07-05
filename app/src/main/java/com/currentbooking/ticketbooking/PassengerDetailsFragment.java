@@ -27,13 +27,13 @@ import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -194,30 +194,33 @@ public class PassengerDetailsFragment extends BaseFragment {
 
             progressDialog.show();
             TicketBookingServices ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-            ticketBookingServices.getFare(ticketBookingModule.getSelectedBusOperator().getValue().getOperatorCode(),
+            ticketBookingServices.getFare(Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode(),
                     "",
-                    ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode(),
-                    ticketBookingModule.getSelectedDropPoint().getValue().getStopCode(),
-                    ticketBookingModule.getSelectedBusType().getValue().getBusTypeCD(),
-                    ticketBookingModule.getSelectedBusObject().getValue().getBusServiceNo(),
+                    Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
+                    Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode(),
+                    Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD(),
+                    Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getBusServiceNo(),
                     jsonText
             ).enqueue(new Callback<GetFareResponse>() {
                 @Override
-                public void onResponse(Call<GetFareResponse> call, Response<GetFareResponse> response) {
-                    if(response.isSuccessful()) {
+                public void onResponse(@NotNull Call<GetFareResponse> call, @NotNull Response<GetFareResponse> response) {
+                    if (response.isSuccessful()) {
                         GetFareResponse fareDetails = response.body();
-                        if(response.body().getStatus().equalsIgnoreCase("success")) {
-                            // showDialog("", fareDetails.getMsg());
-                            mListener.gotoConfirmTicket(busType, fareDetails.getFareDetails().getFareDetails(), jsonText);
-                        } else {
-                            showDialog("", fareDetails.getMsg());
+                        if (fareDetails != null) {
+                            if (fareDetails.getStatus().equalsIgnoreCase("success")) {
+                                mListener.gotoConfirmTicket(busType, fareDetails.getFareDetails().getFareDetails(), jsonText);
+                            } else {
+                                showDialog("", fareDetails.getMsg());
+                            }
                         }
-                    } else {}
+                    } else {
+                        showDialog("", response.message());
+                    }
                     progressDialog.dismiss();
                 }
 
                 @Override
-                public void onFailure(Call<GetFareResponse> call, Throwable t) {
+                public void onFailure(@NotNull Call<GetFareResponse> call, @NotNull Throwable t) {
                     showDialog("", t.getMessage());
                     progressDialog.dismiss();
                 }

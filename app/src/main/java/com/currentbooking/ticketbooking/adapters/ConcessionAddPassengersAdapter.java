@@ -47,8 +47,12 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
     public void onBindViewHolder(@NonNull ConcessionAddPassengersAdapter.ConcessionTypeViewHolder holder, int position) {
         Concession passengersDetails = passengersList.get(position);
         holder.tvPersonTypeField.setText(passengersDetails.getPersonType());
+        holder.tvPersonNameField.setText(passengersDetails.getName());
+        holder.tvAgeField.setText(String.valueOf(passengersDetails.getAge()));
         if (passengersDetails.isConcessionDetailsAdded()) {
             holder.tvConcessionTypeField.setText(passengersDetails.getConcessionNM());
+        } else {
+            holder.tvConcessionTypeField.setText("N/A");
         }
         holder.deleteConcessionBtnLayoutField.setTag(position);
     }
@@ -61,15 +65,17 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
     static class ConcessionTypeViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvPersonTypeField;
+        TextView tvPersonNameField;
         TextView tvConcessionTypeField;
         LinearLayout deleteConcessionBtnLayoutField;
-        //LinearLayout rootView;
+        TextView tvAgeField;
         public ConcessionTypeViewHolder(@NonNull View itemView) {
             super(itemView);
-            //rootView = itemView.findViewById(R.id.root_view);
-            tvPersonTypeField = itemView.findViewById(R.id.tv_person_type_field);
+            tvPersonNameField = itemView.findViewById(R.id.tv_person_name_field);
             tvConcessionTypeField = itemView.findViewById(R.id.tv_concession_type_field);
             deleteConcessionBtnLayoutField = itemView.findViewById(R.id.delete_concession_code_btn_field);
+            tvAgeField = itemView.findViewById(R.id.tv_person_age_field);
+            tvPersonTypeField = itemView.findViewById(R.id.tv_person_type_field);
         }
     }
 }

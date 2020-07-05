@@ -58,6 +58,7 @@ public class Concession implements Serializable  {
     private String personType;
     private boolean isConcessionDetailsAdded = false;
     private int age;
+    private String name;
 
     public String getConcessionID() {
         return concessionID;
@@ -209,5 +210,13 @@ public class Concession implements Serializable  {
 
     public void setMaxAgeLimit(String maxAgeLimit) {
         this.maxAgeLimit = maxAgeLimit;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class AddPassengersDialogView extends DialogFragment {
     private String selectedPersonType;
     private TextView tvConcessionTypeField;
     private  NumberPicker numberPickerField;
+    private EditText etNameField;
 
     public static AddPassengersDialogView getInstance(List<Concession> concessionList) {
         AddPassengersDialogView addPassengersDialog = new AddPassengersDialogView();
@@ -80,6 +82,7 @@ public class AddPassengersDialogView extends DialogFragment {
     }
 
     private void loadUIComponents(View view) {
+        etNameField = view.findViewById(R.id.et_name_field);
         numberPickerField = view.findViewById(R.id.number_picker);
         numberPickerField.setMinValue(13);
         numberPickerField.setMaxValue(59);
@@ -183,10 +186,16 @@ public class AddPassengersDialogView extends DialogFragment {
     }
 
     private void addPassengerSelected() {
+        String name = etNameField.getText().toString().trim();
+        if(TextUtils.isEmpty(name)) {
+            etNameField.setError(getString(R.string.name_cannot_be_empty));
+            return;
+        }
         if(selectedConcessionDetails == null) {
             selectedConcessionDetails = new Concession();
             selectedConcessionDetails.setConcessionDetailsAdded(false);
         }
+        selectedConcessionDetails.setName(name);
         selectedConcessionDetails.setAge(numberPickerField.getValue());
         selectedConcessionDetails.setPersonType(selectedPersonType);
         callBackInterface.callBackReceived(selectedConcessionDetails);

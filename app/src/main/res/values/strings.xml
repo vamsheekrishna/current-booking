@@ -137,4 +137,6 @@
     <string name="concession">Concession</string>
     <string name="country">India</string>
     <string name="currency">INR</string>
+    <string name="name">Name</string>
+    <string name="name_cannot_be_empty">Name cannot be Empty</string>
 </resources>
