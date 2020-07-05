@@ -64,5 +64,10 @@ public interface TicketBookingServices {
                                   @Field("bus_service_no") String busServiceNO,
                                   @Field("passenger_details") String result);
     @POST(BuildConfig.GET_RSA_KEY)
-    Call<RSAKeyResponse> getRSAKey();
+    @FormUrlEncoded
+    Call<RSAKeyResponse> getRSAKey(@Field("bus_operator") String busOperator,
+                                   @Field("bus_details") String busDetails,
+                                   @Field("passenger_details") String passengerDetails,
+                                   @Field("breakup") String breakup,
+                                   @Field("user_id") String userID);
 }

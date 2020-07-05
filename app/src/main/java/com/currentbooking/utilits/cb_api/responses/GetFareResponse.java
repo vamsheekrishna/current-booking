@@ -34,13 +34,27 @@ public class GetFareResponse extends BaseResponse {
         }
     }
     public class FareDetails implements Serializable {
+
+        String passengerDetails;
         @SerializedName("fare_breakup")
         @Expose
         ArrayList<FareBreakup> fareBreakups;
 
+        @SerializedName("breakup")
+        @Expose
+        String breakup;
+
+        @SerializedName("fare")
+        @Expose
+        String fare;
+
         @SerializedName("total")
         @Expose
         int total;
+
+        @SerializedName("service_charge")
+        @Expose
+        String serviceCharge;
 
         @SerializedName("no_child_seat")
         @Expose
@@ -80,6 +94,38 @@ public class GetFareResponse extends BaseResponse {
 
         public void setFareBreakups(ArrayList<FareBreakup> fareBreakups) {
             this.fareBreakups = fareBreakups;
+        }
+
+        public String getBreakup() {
+            return breakup;
+        }
+
+        public void setBreakup(String breakup) {
+            this.breakup = breakup;
+        }
+
+        public String getFare() {
+            return fare;
+        }
+
+        public void setFare(String fare) {
+            this.fare = fare;
+        }
+
+        public String getServiceCharge() {
+            return serviceCharge;
+        }
+
+        public void setServiceCharge(String serviceCharge) {
+            this.serviceCharge = serviceCharge;
+        }
+
+        public String getPassengerDetails() {
+            return passengerDetails;
+        }
+
+        public void setPassengerDetails(String passengerDetails) {
+            this.passengerDetails = passengerDetails;
         }
     }
 }

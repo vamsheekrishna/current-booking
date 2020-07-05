@@ -208,7 +208,7 @@ public class PassengerDetailsFragment extends BaseFragment {
                         GetFareResponse fareDetails = response.body();
                         if(response.body().getStatus().equalsIgnoreCase("success")) {
                             // showDialog("", fareDetails.getMsg());
-                            mListener.gotoConfirmTicket(busType, fareDetails.getFareDetails().getFareDetails());
+                            mListener.gotoConfirmTicket(busType, fareDetails.getFareDetails().getFareDetails(), jsonText);
                         } else {
                             showDialog("", fareDetails.getMsg());
                         }

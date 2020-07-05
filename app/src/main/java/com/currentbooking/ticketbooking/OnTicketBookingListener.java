@@ -7,7 +7,7 @@ public interface OnTicketBookingListener {
     void goToHome();
     void gotoSelectBus(String busOperatorName, String busType);
 
-    void gotoConfirmTicket(String busType, GetFareResponse.FareDetails personsAddedList);
+    void gotoConfirmTicket(String busType, GetFareResponse.FareDetails personsAddedList, String passengerDetails);
     void gotoPassengerDetails(String busType);
 
     void gotoPayment(GetFareResponse.FareDetails mFareDetails);

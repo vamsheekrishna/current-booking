@@ -20,13 +20,13 @@ public class BusOperator {
     @Expose
     private String status;
 
-    @SerializedName("created_by")
+/*    @SerializedName("created_by")
     @Expose
-    private String createdBy;
+    private String createdBy;*/
 
-    @SerializedName("created_date")
+/*    @SerializedName("created_date")
     @Expose
-    private String createdDate = "2019-12-31 10:47:43";
+    private String createdDate = "2019-12-31 10:47:43";*/
 
     public String getId() {
         return id;
@@ -60,7 +60,7 @@ public class BusOperator {
         this.status = status;
     }
 
-    public String getCreatedBy() {
+ /*   public String getCreatedBy() {
         return createdBy;
     }
 
@@ -74,5 +74,5 @@ public class BusOperator {
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
-    }
+    }*/
 }

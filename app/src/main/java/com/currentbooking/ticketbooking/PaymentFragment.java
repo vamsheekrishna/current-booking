@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,10 +20,14 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.currentbooking.R;
+import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.BusObject;
+import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
+import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyData;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
@@ -33,9 +38,12 @@ import com.currentbooking.utilits.encrypt.Encryption;
 import com.currentbooking.utilits.encrypt.EncryptionHelper;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -154,7 +162,17 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
 
         progressDialog.show();
         ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        ticketBookingService.getRSAKey().enqueue(new Callback<RSAKeyResponse>() {
+
+        TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(getActivity()).get(TicketBookingViewModel.class);
+
+        Gson gson = new Gson();
+        Type listType = new TypeToken<BusOperator>() {}.getType();
+        String busOperator = gson.toJson(ticketBookingViewModel.getSelectedBusOperator().getValue(), listType);
+        listType = new TypeToken<BusObject>() {}.getType();
+        String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
+        listType = new TypeToken<GetFareResponse.FareDetails>() {}.getType();
+        String fareDetails = gson.toJson(mFareDetails, listType);
+        ticketBookingService.getRSAKey(busOperator, selectedBus,mFareDetails.getPassengerDetails(), mFareDetails.getBreakup() , MyProfile.getInstance().getUserId() ).enqueue(new Callback<RSAKeyResponse>() {
             @Override
             public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
                 RSAKeyResponse data = response.body();

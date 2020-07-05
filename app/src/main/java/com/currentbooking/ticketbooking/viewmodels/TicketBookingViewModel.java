@@ -32,7 +32,6 @@ import retrofit2.Response;
 public class TicketBookingViewModel extends ViewModel {
     private final TicketBookingServices ticketBookingServices;
 
-    private MutableLiveData<BusOperator> selectedBusOperator;
     private MutableLiveData<ArrayList<BusOperator>> busOperators;
 
     private MutableLiveData<ArrayList<BusType>> busTypes;
@@ -44,7 +43,8 @@ public class TicketBookingViewModel extends ViewModel {
     private MutableLiveData<BusStopObject> selectedDropPoint = new MutableLiveData<>();
 
     private MutableLiveData<BusObject> selectedBusObject = new MutableLiveData<>();
-
+    private MutableLiveData<BusOperator> selectedBusOperator;
+    
     private MutableLiveData<Concession> selectedConcession = new MutableLiveData<>();
     private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Concession>> concessionList = new MutableLiveData<>();
