@@ -340,4 +340,5 @@
                 app:backgroundTint="@color/edit_text_border_color" />
         </LinearLayout>
     </RelativeLayout>
+
 </LinearLayout>

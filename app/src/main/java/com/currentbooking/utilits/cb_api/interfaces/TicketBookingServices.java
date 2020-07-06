@@ -68,6 +68,6 @@ public interface TicketBookingServices {
     Call<RSAKeyResponse> getRSAKey(@Field("bus_operator") String busOperator,
                                    @Field("bus_details") String busDetails,
                                    @Field("passenger_details") String passengerDetails,
-                                   @Field("breakup") String breakup,
+                                   @Field("breakup") String fareDetails,
                                    @Field("user_id") String userID);
 }

@@ -115,8 +115,9 @@ public class ConfirmTicketFragment extends BaseFragment {
         tvTotalFareField.setText(String.valueOf(mFareDetails.getTotal()));
 
         tvFareField = view.findViewById(R.id.tv_fare_field);
+        tvFareField.setText(mFareDetails.getFare());
         tvTaxesFareField = view.findViewById(R.id.tv_service_charge_or_gst_field);
-
+        tvTaxesFareField.setText(mFareDetails.getServiceCharge());
         tvPassengersDetailsField = view.findViewById(R.id.tv_passengers_details_field);
 
         int adultsCount = mFareDetails.getTotalAdultSeat();

@@ -171,7 +171,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
         listType = new TypeToken<BusObject>() {}.getType();
         String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
         listType = new TypeToken<GetFareResponse.FareDetails>() {}.getType();
-        String fareDetails = gson.toJson(mFareDetails, listType);
+        // String fareDetails = gson.toJson(mFareDetails, listType);
         ticketBookingService.getRSAKey(busOperator, selectedBus,mFareDetails.getPassengerDetails(), mFareDetails.getBreakup() , MyProfile.getInstance().getUserId() ).enqueue(new Callback<RSAKeyResponse>() {
             @Override
             public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
@@ -265,9 +265,10 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             // jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
-            // Log.d("JsonObject", "html: "+html);
+            Log.d("JsonObject", "html: "+html);
             // showDialog("", html);
             mListener.gotoTicketStatus(ccAvenueResponse);
+            Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
         }
 
         @JavascriptInterface

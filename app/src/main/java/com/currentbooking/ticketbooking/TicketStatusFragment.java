@@ -21,7 +21,10 @@ import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class TicketStatusFragment extends BaseFragment {
@@ -91,7 +94,32 @@ public class TicketStatusFragment extends BaseFragment {
         Objects.requireNonNull(getActivity()).setTitle(getString(R.string.booking_status));
         LinearLayout bookingSuccessLayoutField = view.findViewById(R.id.booking_success_layout_field);
         LinearLayout bookingFailedLayoutField = view.findViewById(R.id.booking_failed_layout_field);
-        if (ccAvenueResponse.getOrder_status().equalsIgnoreCase("success")) {
+
+        String busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
+        String busType = Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeName();
+
+        view.findViewById(R.id.btn_failed_try_again_field).setOnClickListener(v -> paymentFailedTryAgainBtnSelected());
+        view.findViewById(R.id.btn_failed_go_to_home_field).setOnClickListener(v -> paymentFailedHomeBtnSelected());
+        view.findViewById(R.id.btn_success_book_another_field).setOnClickListener(v -> paymentSuccessBookAnotherBtnSelected());
+        view.findViewById(R.id.btn_success_go_to_home_field).setOnClickListener(v -> paymentSuccessHomeBtnSelected());
+
+        ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
+        ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText(ccAvenueResponse.getFare());
+        ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText(ccAvenueResponse.getService_charge());
+        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());
+
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        ((TextView) view.findViewById(R.id.date_field)).setText(formattedDate);
+
+        df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        formattedDate = df.format(c);
+        ((TextView) view.findViewById(R.id.time_field)).setText(formattedDate);
+
+        if (ccAvenueResponse.getStatus().equalsIgnoreCase("success")) {
             ivBookingStatusField.setImageResource(R.drawable.booking_success_icon);
             paymentSuccessBtnLayoutField.setVisibility(View.VISIBLE);
             tvBookingStatusField.setText(getString(R.string.booking_successful));
@@ -104,22 +132,6 @@ public class TicketStatusFragment extends BaseFragment {
             bookingSuccessLayoutField.setVisibility(View.GONE);
             bookingFailedLayoutField.setVisibility(View.VISIBLE);
         }
-
-        String busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
-        String busType = Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeName();
-
-        view.findViewById(R.id.btn_failed_try_again_field).setOnClickListener(v -> paymentFailedTryAgainBtnSelected());
-        view.findViewById(R.id.btn_failed_go_to_home_field).setOnClickListener(v -> paymentFailedHomeBtnSelected());
-        view.findViewById(R.id.btn_success_book_another_field).setOnClickListener(v -> paymentSuccessBookAnotherBtnSelected());
-        view.findViewById(R.id.btn_success_go_to_home_field).setOnClickListener(v -> paymentSuccessHomeBtnSelected());
-
-        ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText("");
-        ((TextView) view.findViewById(R.id.date_field)).setText("");
-        ((TextView) view.findViewById(R.id.time_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText("");
-        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText("");
-
 
         if(busDetails != null) {
             String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNo());
@@ -138,7 +150,7 @@ public class TicketStatusFragment extends BaseFragment {
             ((TextView) view.findViewById(R.id.tv_bus_journey_hours_field)).setText(hoursDifference);
             ((TextView) view.findViewById(R.id.tv_bus_journey_end_time_field)).setText(endTime);
         }
-        ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(ccAvenueResponse.getAmount());
+        // ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(ccAvenueResponse.getTotal_fare());
     }
 
     private void paymentSuccessHomeBtnSelected() {
