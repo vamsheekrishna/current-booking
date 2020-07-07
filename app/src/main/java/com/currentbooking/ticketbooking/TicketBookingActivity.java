@@ -53,18 +53,13 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void gotoPayment(GetFareResponse.FareDetails fareDetails) {
-        replaceFragment(PaymentFragment.newInstance("", fareDetails), "PaymentFragment", true);
+    public void gotoPayment(String passengerDetails, GetFareResponse.FareDetails fareDetails) {
+        replaceFragment(PaymentFragment.newInstance(passengerDetails, fareDetails), "PaymentFragment", true);
     }
 
     @Override
-    public void gotoTicketStatus(boolean ticketStatus, String passengerDetails, Object bookingDetails) {
-        // replaceFragment(TicketStatusFragment.newInstance(ticketStatus, passengerDetails, bookingDetails), "TicketStatusFragment", true);
-    }
-
-    @Override
-    public void gotoTicketStatus(CCAvenueResponse ccAvenueResponse) {
-        replaceFragment(TicketStatusFragment.newInstance(ccAvenueResponse), "TicketStatusFragment", true);
+    public void gotoTicketStatus(String passengerDetails, CCAvenueResponse ccAvenueResponse) {
+        replaceFragment(TicketStatusFragment.newInstance(passengerDetails, ccAvenueResponse), "TicketStatusFragment", true);
     }
 
     public void gotoOptionSelection(int index) {

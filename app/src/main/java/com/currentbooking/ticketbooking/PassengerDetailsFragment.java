@@ -58,12 +58,11 @@ public class PassengerDetailsFragment extends BaseFragment {
     private RecyclerView addPassengerRecyclerField;
     private TicketBookingViewModel ticketBookingModule;
     private String busType;
+    private OnTicketBookingListener mListener;
 
     public PassengerDetailsFragment() {
         // Required empty public constructor
     }
-
-    private OnTicketBookingListener mListener;
 
     public static PassengerDetailsFragment newInstance(String busType) {
         PassengerDetailsFragment fragment = new PassengerDetailsFragment();
@@ -172,25 +171,14 @@ public class PassengerDetailsFragment extends BaseFragment {
             }
         });
         addPassengerRecyclerField.setAdapter(addedPassengersAdapter);
-        view.findViewById(R.id.confirm_payment).setOnClickListener(v -> confirmPaymentSelected());
+        view.findViewById(R.id.confirm_ticket).setOnClickListener(v -> confirmTicketSelected());
     }
 
-    private void confirmPaymentSelected() {
+    private void confirmTicketSelected() {
         if(!personsAddedList.isEmpty()) {
-
-            /*JsonArray result = (JsonArray) new Gson().toJsonTree(personsAddedList,
-                    new TypeToken<List<Concession>>() {
-                    }.getType());
-            gson.toJson(response);*/
-
             Type listType = new TypeToken<List<Concession>>() {}.getType();
-            /*List<String> target = new A<String>();
-            target.add("blah");*/
-
             Gson gson = new Gson();
             String jsonText = gson.toJson(personsAddedList, listType);
-            List<Concession> target2 = gson.fromJson(jsonText, listType);
-
 
             progressDialog.show();
             TicketBookingServices ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
@@ -212,6 +200,8 @@ public class PassengerDetailsFragment extends BaseFragment {
                             } else {
                                 showDialog("", fareDetails.getMsg());
                             }
+                        } else {
+                            showDialog("", getString(R.string.no_information_available));
                         }
                     } else {
                         showDialog("", response.message());

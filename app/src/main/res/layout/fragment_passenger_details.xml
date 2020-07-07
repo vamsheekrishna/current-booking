@@ -12,7 +12,7 @@
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/confirm_payment"
+        android:layout_above="@+id/confirm_ticket"
         android:layout_alignParentTop="true">
 
         <LinearLayout
@@ -256,7 +256,7 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/confirm_payment"
+        android:id="@+id/confirm_ticket"
         style="@style/button_gray"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"

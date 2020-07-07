@@ -10,9 +10,9 @@ public interface OnTicketBookingListener {
     void gotoConfirmTicket(String busType, GetFareResponse.FareDetails personsAddedList, String passengerDetails);
     void gotoPassengerDetails(String busType);
 
-    void gotoPayment(GetFareResponse.FareDetails mFareDetails);
-    void gotoTicketStatus(boolean ticketStatus, String passengerDetails, Object bookingDetails);
-    void gotoTicketStatus(CCAvenueResponse ccAvenueResponse);
+    void gotoPayment(String passengerDetails, GetFareResponse.FareDetails mFareDetails);
+    void gotoTicketStatus(String passengerDetails, CCAvenueResponse bookingDetails);
+    //void gotoTicketStatus(CCAvenueResponse ccAvenueResponse);
     void gotoOptionSelection(int listData);
     void gotoBusStopSelect(int i);
 }

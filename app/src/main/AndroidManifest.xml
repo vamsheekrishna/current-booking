@@ -44,11 +44,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".home.HomeActivity">
+        <activity
+            android:name=".home.HomeActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".utilits.encrypt.testClient" />
         <activity
             android:name=".ticketbooking.TicketBookingActivity"

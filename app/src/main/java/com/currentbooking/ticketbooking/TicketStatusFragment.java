@@ -1,5 +1,6 @@
 package com.currentbooking.ticketbooking;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +11,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
-import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,33 +35,29 @@ public class TicketStatusFragment extends BaseFragment {
     private static final String ARG_PASSENGER_DETAILS = "PassengerDetails";
 
     // TODO: Rename and change types of parameters
-    // private boolean bookingStatus;
-    // private Object bookingDetails;
+    private boolean bookingStatus;
     private TicketBookingViewModel ticketBookingModule;
     private CCAvenueResponse ccAvenueResponse;
-    //private String passengerDetails;
+    private String passengerDetails;
+    private OnTicketBookingListener mListener;
 
     private TicketStatusFragment() {
         // Required empty public constructor
     }
 
-    /*public static TicketStatusFragment newInstance(boolean bookingStatus, String passengerDetails, Object bookingDetails) {
+    public static TicketStatusFragment newInstance(String passengerDetails, CCAvenueResponse ccAvenueResponse) {
         TicketStatusFragment fragment = new TicketStatusFragment();
         Bundle args = new Bundle();
-        args.putBoolean(ARG_BOOKING_STATUS, bookingStatus);
-        args.putSerializable(ARG_BOOKING_DETAILS, (Serializable) bookingDetails);
         args.putString(ARG_PASSENGER_DETAILS, passengerDetails);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
-    public static TicketStatusFragment newInstance(CCAvenueResponse ccAvenueResponse) {
-        TicketStatusFragment fragment = new TicketStatusFragment();
-        Bundle args = new Bundle();
-        // args.putBoolean(ARG_BOOKING_STATUS, bookingStatus);
         args.putSerializable(CC_AVENUE_RESPONSE, ccAvenueResponse);
-        // args.putString(ARG_PASSENGER_DETAILS, passengerDetails);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnTicketBookingListener) context;
     }
 
     @Override
@@ -69,9 +65,8 @@ public class TicketStatusFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            // bookingStatus = extras.getBoolean(ARG_BOOKING_STATUS);
+            passengerDetails = getArguments().getString(ARG_PASSENGER_DETAILS);
             ccAvenueResponse = (CCAvenueResponse) extras.getSerializable(CC_AVENUE_RESPONSE);
-            // passengerDetails = extras.getString(ARG_PASSENGER_DETAILS);
         }
     }
 
@@ -103,13 +98,12 @@ public class TicketStatusFragment extends BaseFragment {
         view.findViewById(R.id.btn_success_book_another_field).setOnClickListener(v -> paymentSuccessBookAnotherBtnSelected());
         view.findViewById(R.id.btn_success_go_to_home_field).setOnClickListener(v -> paymentSuccessHomeBtnSelected());
 
-        ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
+        /*((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
         ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText(ccAvenueResponse.getFare());
         ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText(ccAvenueResponse.getService_charge());
-        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());
+        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());*/
 
         Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
@@ -150,22 +144,23 @@ public class TicketStatusFragment extends BaseFragment {
             ((TextView) view.findViewById(R.id.tv_bus_journey_hours_field)).setText(hoursDifference);
             ((TextView) view.findViewById(R.id.tv_bus_journey_end_time_field)).setText(endTime);
         }
-        // ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(ccAvenueResponse.getTotal_fare());
+        ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(passengerDetails);
     }
 
     private void paymentSuccessHomeBtnSelected() {
-
+        requireActivity().finish();
     }
 
     private void paymentSuccessBookAnotherBtnSelected() {
-
+        mListener.goToHome();
     }
 
     private void paymentFailedHomeBtnSelected() {
-
+        requireActivity().finish();
     }
 
     private void paymentFailedTryAgainBtnSelected() {
-
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.popBackStack();
     }
 }

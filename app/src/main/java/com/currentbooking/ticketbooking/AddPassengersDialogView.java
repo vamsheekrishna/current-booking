@@ -157,10 +157,12 @@ public class AddPassengersDialogView extends DialogFragment {
         if (selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
             numberPickerField.setMinValue(13);
             numberPickerField.setMaxValue(59);
-        } else if (selectedPersonType.equalsIgnoreCase(getString(R.string.sr_citizen))) {
+        }
+       /* else if (selectedPersonType.equalsIgnoreCase(getString(R.string.sr_citizen))) {
             numberPickerField.setMinValue(60);
             numberPickerField.setMaxValue(120);
-        } else if (selectedPersonType.equalsIgnoreCase(getString(R.string.child))) {
+        }*/
+        else if (selectedPersonType.equalsIgnoreCase(getString(R.string.child))) {
             numberPickerField.setMinValue(3);
             numberPickerField.setMaxValue(12);
         }

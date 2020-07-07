@@ -3,11 +3,6 @@ package com.currentbooking.ticketbooking;
 import android.content.Context;
 import android.net.http.SslError;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,6 +14,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MyProfile;
@@ -27,7 +26,6 @@ import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
-import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyData;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
@@ -40,10 +38,9 @@ import com.currentbooking.utilits.views.BaseFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
-import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,10 +48,10 @@ import retrofit2.Response;
 
 public class PaymentFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PASSENGER_DETAILS = "Passenger Details";
+    private static final String ARG_FARE_DETAILS = "Fare Details";
 
-    private String mParam1;
+    private String passengerDetails;
     private GetFareResponse.FareDetails mFareDetails;
     // JsonObject jsonObject;
     OnTicketBookingListener mListener;
@@ -62,17 +59,16 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     private RSAKeyData rsaKeyObject;
     CCAvenueResponse ccAvenueResponse;
     WebView webview;
-    private String statusFinal;
 
     public PaymentFragment() {
         // Required empty public constructor
     }
 
-    public static PaymentFragment newInstance(String param1, GetFareResponse.FareDetails param2) {
+    public static PaymentFragment newInstance(String passengerDetails, GetFareResponse.FareDetails fareDetails) {
         PaymentFragment fragment = new PaymentFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putSerializable(ARG_PARAM2, param2);
+        args.putString(ARG_PASSENGER_DETAILS, passengerDetails);
+        args.putSerializable(ARG_FARE_DETAILS, fareDetails);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,15 +82,15 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle("Payment");
+        Objects.requireNonNull(getActivity()).setTitle("Payment");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mFareDetails = (GetFareResponse.FareDetails) getArguments().getSerializable(ARG_PARAM2);
+            passengerDetails = getArguments().getString(ARG_PASSENGER_DETAILS);
+            mFareDetails = (GetFareResponse.FareDetails) getArguments().getSerializable(ARG_FARE_DETAILS);
         }
     }
 
@@ -135,35 +131,24 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                 }
             }
         });
-        webview.setOnKeyListener(new View.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if(event.getAction() == KeyEvent.ACTION_DOWN)
-                {
-                    WebView webView = (WebView) v;
-
-                    switch(keyCode)
-                    {
-                        case KeyEvent.KEYCODE_BACK:
-                            if(webView.canGoBack())
-                            {
-                                webView.goBack();
-                                return true;
-                            }
-                            break;
+        webview.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                WebView webView = (WebView) v;
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (webView.canGoBack()) {
+                        webView.goBack();
+                        return true;
                     }
                 }
-
-                return false;
             }
+
+            return false;
         });
 
         progressDialog.show();
         ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
 
-        TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(getActivity()).get(TicketBookingViewModel.class);
+        TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
 
         Gson gson = new Gson();
         Type listType = new TypeToken<BusOperator>() {}.getType();
@@ -267,7 +252,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
             Log.d("JsonObject", "html: "+html);
             // showDialog("", html);
-            mListener.gotoTicketStatus(ccAvenueResponse);
+            mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
             Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
         }
 

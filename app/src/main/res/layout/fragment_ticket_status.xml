@@ -188,7 +188,6 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/opensans_regular"
-                            android:text="1880"
                             android:textColor="@color/black_color_two" />
                     </RelativeLayout>
 
@@ -214,7 +213,6 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/opensans_regular"
-                            android:text="320"
                             android:textColor="@color/black_color_two" />
                     </RelativeLayout>
 
@@ -240,7 +238,6 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/opensans_bold"
-                            android:text="2200"
                             android:textColor="@color/black_color_two" />
                     </RelativeLayout>
 

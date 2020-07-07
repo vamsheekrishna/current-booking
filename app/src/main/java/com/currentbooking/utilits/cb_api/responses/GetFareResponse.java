@@ -20,7 +20,7 @@ public class GetFareResponse extends BaseResponse {
         this.fareResultDetails = fareDetails;
     }
 
-    public class FareResultDetails implements Serializable {
+    public static class FareResultDetails implements Serializable {
         @SerializedName("result")
         @Expose
         FareDetails fareDetails;
@@ -33,7 +33,8 @@ public class GetFareResponse extends BaseResponse {
             this.fareDetails = fareDetails;
         }
     }
-    public class FareDetails implements Serializable {
+
+    public static class FareDetails implements Serializable {
 
         String passengerDetails;
         @SerializedName("fare_breakup")
