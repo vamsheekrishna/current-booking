@@ -137,7 +137,6 @@ public class ConfirmTicketFragment extends BaseFragment {
             adultsDetails = adultsDetails + String.format(Locale.getDefault(), "%d %s", childCount, getString(R.string.children));
         }
 
-        String passengerDetails = "";
         if(!TextUtils.isEmpty(childDetails)) {
             passengerDetails = String.format("%s,\n%s", adultsDetails, childDetails);
         } else {

@@ -12,7 +12,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -253,7 +252,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             Log.d("JsonObject", "html: "+html);
             // showDialog("", html);
             mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
-            Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
         }
 
         @JavascriptInterface
