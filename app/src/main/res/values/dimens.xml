@@ -4,4 +4,5 @@
     <dimen name="header_text_size">20sp</dimen>
     <dimen name="ticket_inc_dec">42dp</dimen>
     <dimen name="mobile_number_length">10</dimen>
+    <dimen name="text_margin">8dp</dimen>
 </resources>

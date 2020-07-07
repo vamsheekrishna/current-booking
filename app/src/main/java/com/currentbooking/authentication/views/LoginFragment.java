@@ -17,9 +17,6 @@ import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
-import com.currentbooking.utilits.encrypt.Encryption;
-import com.currentbooking.utilits.encrypt.EncryptionFactory;
-import com.currentbooking.utilits.encrypt.EncryptionHelper;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import retrofit2.Call;
@@ -96,8 +93,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         userName = view.findViewById(R.id.user_id);
-        userName.setText("7416226233");
         password = view.findViewById(R.id.password);
+        userName.setText("7416226233");
         password.setText("12345678");
 
         // encryptionSample();
@@ -131,7 +128,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                         if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
                                             mListener.goToProfileActivity();
                                         } else {
-                                            mListener.goToTicketBookingActivity();
+                                            mListener.goToHomeActivity();
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();

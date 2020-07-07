@@ -14,6 +14,7 @@ import com.currentbooking.R;
 import com.currentbooking.SplashScreen;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.authentication.view_models.Authentication;
+import com.currentbooking.home.HomeActivity;
 import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.views.BaseActivity;
@@ -55,9 +56,9 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     }
 
     @Override
-    public void goToTicketBookingActivity() {
+    public void goToHomeActivity() {
         if (showPermission()) {
-            Intent intent = new Intent(this, TicketBookingActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();
         }

@@ -1,7 +1,7 @@
 package com.currentbooking.authentication;
 
 public interface OnAuthenticationClickedListener {
-    void goToTicketBookingActivity();
+    void goToHomeActivity();
     void goToForgotPassword();
     void validateOTP();
     void changePassword();
