@@ -3,9 +3,9 @@ package com.currentbooking.home;
 import android.os.Bundle;
 
 import com.currentbooking.R;
-import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
+import com.currentbooking.utilits.views.BaseActivity;
 
-public class HomeActivity extends BaseNavigationDrawerActivity {
+public class HomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

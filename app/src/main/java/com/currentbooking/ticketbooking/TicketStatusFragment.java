@@ -98,20 +98,13 @@ public class TicketStatusFragment extends BaseFragment {
         view.findViewById(R.id.btn_success_book_another_field).setOnClickListener(v -> paymentSuccessBookAnotherBtnSelected());
         view.findViewById(R.id.btn_success_go_to_home_field).setOnClickListener(v -> paymentSuccessHomeBtnSelected());
 
-        /*((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
+        ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
         ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText(ccAvenueResponse.getFare());
         ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText(ccAvenueResponse.getService_charge());
-        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());*/
+        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());
 
-        Date c = Calendar.getInstance().getTime();
-
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate = df.format(c);
-        ((TextView) view.findViewById(R.id.date_field)).setText(formattedDate);
-
-        df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        formattedDate = df.format(c);
-        ((TextView) view.findViewById(R.id.time_field)).setText(formattedDate);
+        ((TextView) view.findViewById(R.id.date_field)).setText(ccAvenueResponse.getBooking_date());
+        ((TextView) view.findViewById(R.id.time_field)).setText(ccAvenueResponse.getBooking_time());
 
         if (ccAvenueResponse.getStatus().equalsIgnoreCase("success")) {
             ivBookingStatusField.setImageResource(R.drawable.booking_success_icon);

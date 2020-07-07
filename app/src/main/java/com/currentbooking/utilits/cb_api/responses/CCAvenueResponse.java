@@ -11,6 +11,8 @@ public class CCAvenueResponse implements Serializable {
     String ticket_id;
     String ticket_number;
     String total_fare;
+    String booking_date;
+    String booking_time;
 
     public String getBos_id() {
         return bos_id;
@@ -74,5 +76,21 @@ public class CCAvenueResponse implements Serializable {
 
     public void setTotal_fare(String total_fare) {
         this.total_fare = total_fare;
+    }
+
+    public String getBooking_date() {
+        return booking_date;
+    }
+
+    public void setBooking_date(String booking_date) {
+        this.booking_date = booking_date;
+    }
+
+    public String getBooking_time() {
+        return booking_time;
+    }
+
+    public void setBooking_time(String booking_time) {
+        this.booking_time = booking_time;
     }
 }
