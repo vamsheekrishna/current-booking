@@ -4,19 +4,19 @@
     android:layout_alignParentTop="true"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="190dp"
+    android:background="@color/colorPrimary"
     android:layout_marginTop="16dp">
     <LinearLayout
         android:layout_centerInParent="true"
-        android:background="@drawable/header_banner_1"
+        android:background="@drawable/header_banner"
         android:orientation="vertical"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <androidx.appcompat.widget.AppCompatTextView
-            android:background="@color/white"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/white"
             android:fontFamily="@font/roboto_bold"
             android:id="@+id/name"
             android:textSize="20sp"
