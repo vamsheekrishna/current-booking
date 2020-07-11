@@ -7,58 +7,89 @@ import java.io.Serializable;
 
 public class BusObject implements Serializable {
 
+    @SerializedName("route_no")
+    @Expose
+    private String routeNO;
+    @SerializedName("bus_type_cd")
+    @Expose
+    private String busTypeCD;
     @SerializedName("origin_stop_cd")
     @Expose
-    private String originStopCd;
+    private String originStopCD;
     @SerializedName("origin_stop_name")
     @Expose
     private String originStopName;
+    @SerializedName("origin_stop_dev_nm")
+    @Expose
+    private String originStopDevNM;
     @SerializedName("origin_date_time")
     @Expose
     private String originDateTime;
     @SerializedName("last_stop_cd")
     @Expose
-    private String lastStopCd;
-    @SerializedName("last_stop_name")
+    private String lastStopCD;
+    @SerializedName("lastStopName")
     @Expose
-    private String lastStopName;
+    private String lastStopDevNM;
     @SerializedName("last_stop_date_time")
     @Expose
     private String lastStopDateTime;
     @SerializedName("req_from_stop_cd")
     @Expose
-    private String reqFromStopCd;
+    private String reqFromStopCD;
+    @SerializedName("req_from_stop_dev_nm")
+    @Expose
+    private String reqFromStopDevNM;
     @SerializedName("req_from_stop_nm")
     @Expose
-    private String reqFromStopNm;
+    private String reqFromStopNM;
     @SerializedName("req_from_date_time")
     @Expose
     private String reqFromDateTime;
     @SerializedName("req_till_stop_cd")
     @Expose
-    private String reqTillStopCd;
+    private String reqTillStopCD;
     @SerializedName("req_till_stop_nm")
     @Expose
-    private String reqTillStopNm;
+    private String reqTillStopNM;
+    @SerializedName("req_till_stop_dev_nm")
+    @Expose
+    private String reqTillStopDevNM;
     @SerializedName("req_till_date_time")
     @Expose
     private String reqTillDateTime;
     @SerializedName("depot_nm")
     @Expose
-    private String depotNm;
+    private String depotNM;
     @SerializedName("bus_service_no")
     @Expose
-    private String busServiceNo;
+    private String busServiceNO;
     @SerializedName("fare_amt")
     @Expose
     private String fareAmt;
 
-    public String getOriginStopCd() {
-        return originStopCd;
+    public String getRouteNO() {
+        return routeNO;
     }
 
-    public void setOriginStopCd(String originStopCd) {
-        this.originStopCd = originStopCd;
+    public void setRouteNO(String routeNO) {
+        this.routeNO = routeNO;
+    }
+
+    public String getBusTypeCD() {
+        return busTypeCD;
+    }
+
+    public void setBusTypeCD(String busTypeCD) {
+        this.busTypeCD = busTypeCD;
+    }
+
+    public String getOriginStopCD() {
+        return originStopCD;
+    }
+
+    public void setOriginStopCD(String originStopCD) {
+        this.originStopCD = originStopCD;
     }
 
     public String getOriginStopName() {
@@ -69,6 +100,14 @@ public class BusObject implements Serializable {
         this.originStopName = originStopName;
     }
 
+    public String getOriginStopDevNM() {
+        return originStopDevNM;
+    }
+
+    public void setOriginStopDevNM(String originStopDevNM) {
+        this.originStopDevNM = originStopDevNM;
+    }
+
     public String getOriginDateTime() {
         return originDateTime;
     }
@@ -77,20 +116,20 @@ public class BusObject implements Serializable {
         this.originDateTime = originDateTime;
     }
 
-    public String getLastStopCd() {
-        return lastStopCd;
+    public String getLastStopCD() {
+        return lastStopCD;
     }
 
-    public void setLastStopCd(String lastStopCd) {
-        this.lastStopCd = lastStopCd;
+    public void setLastStopCD(String lastStopCD) {
+        this.lastStopCD = lastStopCD;
     }
 
-    public String getLastStopName() {
-        return lastStopName;
+    public String getLastStopDevNM() {
+        return lastStopDevNM;
     }
 
-    public void setLastStopName(String lastStopName) {
-        this.lastStopName = lastStopName;
+    public void setLastStopDevNM(String lastStopDevNM) {
+        this.lastStopDevNM = lastStopDevNM;
     }
 
     public String getLastStopDateTime() {
@@ -101,20 +140,28 @@ public class BusObject implements Serializable {
         this.lastStopDateTime = lastStopDateTime;
     }
 
-    public String getReqFromStopCd() {
-        return reqFromStopCd;
+    public String getReqFromStopCD() {
+        return reqFromStopCD;
     }
 
-    public void setReqFromStopCd(String reqFromStopCd) {
-        this.reqFromStopCd = reqFromStopCd;
+    public void setReqFromStopCD(String reqFromStopCD) {
+        this.reqFromStopCD = reqFromStopCD;
     }
 
-    public String getReqFromStopNm() {
-        return reqFromStopNm;
+    public String getReqFromStopDevNM() {
+        return reqFromStopDevNM;
     }
 
-    public void setReqFromStopNm(String reqFromStopNm) {
-        this.reqFromStopNm = reqFromStopNm;
+    public void setReqFromStopDevNM(String reqFromStopDevNM) {
+        this.reqFromStopDevNM = reqFromStopDevNM;
+    }
+
+    public String getReqFromStopNM() {
+        return reqFromStopNM;
+    }
+
+    public void setReqFromStopNM(String reqFromStopNM) {
+        this.reqFromStopNM = reqFromStopNM;
     }
 
     public String getReqFromDateTime() {
@@ -125,20 +172,28 @@ public class BusObject implements Serializable {
         this.reqFromDateTime = reqFromDateTime;
     }
 
-    public String getReqTillStopCd() {
-        return reqTillStopCd;
+    public String getReqTillStopCD() {
+        return reqTillStopCD;
     }
 
-    public void setReqTillStopCd(String reqTillStopCd) {
-        this.reqTillStopCd = reqTillStopCd;
+    public void setReqTillStopCD(String reqTillStopCD) {
+        this.reqTillStopCD = reqTillStopCD;
     }
 
-    public String getReqTillStopNm() {
-        return reqTillStopNm;
+    public String getReqTillStopNM() {
+        return reqTillStopNM;
     }
 
-    public void setReqTillStopNm(String reqTillStopNm) {
-        this.reqTillStopNm = reqTillStopNm;
+    public void setReqTillStopNM(String reqTillStopNM) {
+        this.reqTillStopNM = reqTillStopNM;
+    }
+
+    public String getReqTillStopDevNM() {
+        return reqTillStopDevNM;
+    }
+
+    public void setReqTillStopDevNM(String reqTillStopDevNM) {
+        this.reqTillStopDevNM = reqTillStopDevNM;
     }
 
     public String getReqTillDateTime() {
@@ -149,20 +204,20 @@ public class BusObject implements Serializable {
         this.reqTillDateTime = reqTillDateTime;
     }
 
-    public String getDepotNm() {
-        return depotNm;
+    public String getDepotNM() {
+        return depotNM;
     }
 
-    public void setDepotNm(String depotNm) {
-        this.depotNm = depotNm;
+    public void setDepotNM(String depotNM) {
+        this.depotNM = depotNM;
     }
 
-    public String getBusServiceNo() {
-        return busServiceNo;
+    public String getBusServiceNO() {
+        return busServiceNO;
     }
 
-    public void setBusServiceNo(String busServiceNo) {
-        this.busServiceNo = busServiceNo;
+    public void setBusServiceNO(String busServiceNO) {
+        this.busServiceNO = busServiceNO;
     }
 
     public String getFareAmt() {

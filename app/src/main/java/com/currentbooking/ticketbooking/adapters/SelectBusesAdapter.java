@@ -47,11 +47,11 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
     @Override
     public void onBindViewHolder(@NonNull SelectBusesViewHolder holder, int position) {
         BusObject busObject = listData.get(position);
-        String busRoute = String.format("%s %s %s", busObject.getOriginStopName(), toText, busObject.getLastStopName());
+        String busRoute = String.format("%s %s %s", busObject.getOriginStopName(), toText, busObject.getLastStopCD());
         holder.tvBusRouteField.setText(busRoute);
         holder.tvBusTypeField.setText(busType);
         holder.tvBusFareField.setText(String.format("%s /-", busObject.getFareAmt()));
-        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busObject.getBusServiceNo());
+        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busObject.getBusServiceNO());
         holder.tvBusRouteNameField.setText(busRouteName);
         holder.btnBookNowField.setTag(busObject);
         Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busObject.getOriginDateTime());

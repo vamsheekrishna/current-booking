@@ -92,8 +92,8 @@ public class ConfirmTicketFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
-        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopName());
-        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNo());
+        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopCD());
+        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
         ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
         ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);
 

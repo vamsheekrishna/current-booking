@@ -20,7 +20,31 @@ public class BusOperator {
     @Expose
     private String status;
 
-/*    @SerializedName("created_by")
+    @SerializedName("adult_min_age")
+    @Expose
+    private String adultMinAge;
+
+    @SerializedName("adult_max_age")
+    @Expose
+    private String adultMaxAge;
+
+    @SerializedName("child_min_age")
+    @Expose
+    private String childMinAge;
+
+    @SerializedName("child_max_age")
+    @Expose
+    private String childMaxAge;
+
+    @SerializedName("max_ticket")
+    @Expose
+    private String maxTicket;
+
+    @SerializedName("valid_till")
+    @Expose
+    private String validTill;
+
+    /*    @SerializedName("created_by")
     @Expose
     private String createdBy;*/
 

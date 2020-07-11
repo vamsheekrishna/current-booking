@@ -121,11 +121,11 @@ public class TicketStatusFragment extends BaseFragment {
         }
 
         if(busDetails != null) {
-            String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNo());
+            String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
             ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
             ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);
 
-            String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopName());
+            String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopCD());
             Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busDetails.getOriginDateTime());
             Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busDetails.getLastStopDateTime());
             String startTime = DateUtilities.getTimeFromCalendar(journeyStartCalendar);

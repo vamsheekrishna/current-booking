@@ -123,7 +123,7 @@ public class PassengerDetailsFragment extends BaseFragment {
             ((TextView) view.findViewById(R.id.user_age_field)).setText("");
         }
 
-        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNo());
+        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
         ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
         ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);
 
@@ -133,7 +133,7 @@ public class PassengerDetailsFragment extends BaseFragment {
             }
         });
 
-        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopName());
+        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopCD());
         Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busDetails.getOriginDateTime());
         Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busDetails.getLastStopDateTime());
         String startTime = DateUtilities.getTimeFromCalendar(journeyStartCalendar);
@@ -187,7 +187,7 @@ public class PassengerDetailsFragment extends BaseFragment {
                     Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD(),
-                    Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getBusServiceNo(),
+                    Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getBusServiceNO(),
                     jsonText
             ).enqueue(new Callback<GetFareResponse>() {
                 @Override

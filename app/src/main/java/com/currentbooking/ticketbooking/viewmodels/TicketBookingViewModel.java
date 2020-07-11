@@ -89,52 +89,6 @@ public class TicketBookingViewModel extends ViewModel {
         return selectedBusOperator;
     }
 
-    public void loadBusPoints() {
-        ArrayList<BusPoint> list = new ArrayList<>();
-        list.add(new BusPoint("Adoni", 0));
-        list.add(new BusPoint("Amaravati", 1));
-        list.add(new BusPoint("Anantapur", 2));
-        list.add(new BusPoint("Chandragiri", 3));
-        list.add(new BusPoint("Chittoor", 4));
-        list.add(new BusPoint("Dowlaiswaram", 5));
-        list.add(new BusPoint("Eluru", 6));
-        list.add(new BusPoint("Guntur", 7));
-        list.add(new BusPoint("Kadapa", 8));
-        list.add(new BusPoint("Kakinada", 9));
-        list.add(new BusPoint("Kurnool", 10));
-        list.add(new BusPoint("Machilipatnam", 11));
-        list.add(new BusPoint("Nagarjunakoṇḍa", 12));
-        list.add(new BusPoint("Rajahmundry", 13));
-        list.add(new BusPoint("Srikakulam", 14));
-        list.add(new BusPoint("Tirupati", 15));
-        list.add(new BusPoint("Vijayawada", 16));
-        list.add(new BusPoint("Visakhapatnam", 17));
-        list.add(new BusPoint("Vizianagaram", 18));
-        list.add(new BusPoint("Hyderabad", 19));
-        list.add(new BusPoint("Karimnagar", 20));
-        list.add(new BusPoint("Khammam", 21));
-        list.add(new BusPoint("Mahbubnagar", 22));
-        list.add(new BusPoint("Nizamabad", 23));
-        list.add(new BusPoint("Sangareddi", 24));
-        list.add(new BusPoint("Warangal", 25));
-        busPoints.setValue(list);
-        selectedPickUpPoint.setValue(new BusStopObject());
-        selectedDropPoint.setValue(new BusStopObject());
-        /*ticketBookingServices.getBusPoints(Objects.requireNonNull(selectedBusOperator.getValue()).opertorName,
-                selectBusType.getValue().getBusTypeID()).enqueue(new Callback<BusStopList>() {
-            @Override
-            public void onResponse(Call<BusStopList> call, Response<BusStopList> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<BusStopList> call, Throwable t) {
-
-            }
-        });*/
-
-
-    }
     public MutableLiveData<BusObject> getSelectedBusObject() {
         return selectedBusObject;
     }
