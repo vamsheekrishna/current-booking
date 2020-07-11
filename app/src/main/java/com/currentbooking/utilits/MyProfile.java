@@ -5,9 +5,20 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.ProfileModel;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.encrypt.Encryption;
 import com.currentbooking.utilits.encrypt.EncryptionFactory;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public class MyProfile {
     private static MyProfile myProfile;
@@ -25,6 +36,7 @@ public class MyProfile {
     private String address2;
     private String state;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<TodayTickets.AvailableTickets>> todayTickets = new MutableLiveData<>();
     Encryption aesEncryption;
 
     private MyProfile() throws Exception {
@@ -167,6 +179,14 @@ public class MyProfile {
         userProfileImage.setValue(userImageBitmap);
     }
 
+    public MutableLiveData<ArrayList<TodayTickets.AvailableTickets>> getTodayTickets() {
+        return todayTickets;
+    }
+
+    public void setTodayTickets(ArrayList<TodayTickets.AvailableTickets> todayTickets) {
+        this.todayTickets.setValue(todayTickets);
+    }
+
     public String getEncryptedString(String input) {
         String data ="";
         try {
@@ -189,5 +209,26 @@ public class MyProfile {
             e.printStackTrace();
         }
         return data;
+    }
+    public void getAvailableLiveTickets() {
+        String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+        String id = MyProfile.getInstance().getUserId();
+        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        service.getTodayTicket(date, id).enqueue(new Callback<TodayTickets>() {
+            @Override
+            public void onResponse(Call<TodayTickets> call, Response<TodayTickets> response) {
+                if(response.body().getStatus().equalsIgnoreCase("success")) {
+                    ArrayList<TodayTickets.AvailableTickets> data = response.body().getAvailableTickets();
+                    if(null != data && data.size()>0 ) {
+                        MyProfile.getInstance().setTodayTickets(data);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TodayTickets> call, Throwable t) {
+                // showDialog("onFailure", "" + t.getMessage());
+            }
+        });
     }
 }

@@ -49,6 +49,7 @@ android {
             buildConfigField('String','CONCESSION_RATE_LIST','"operator/getConcessionrates"')
             buildConfigField('String','GET_FARE','"get/fare"')
             buildConfigField('String','GET_RSA_KEY','"get/rsakey"')
+            buildConfigField('String',"GET_TODAYS_TICKETS", '"http://ticket.rokad.in/api/get/tickets"')
         }
         prod {
             dimension "version"

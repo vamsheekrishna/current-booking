@@ -125,7 +125,7 @@ public class TicketViewModel implements Serializable {
         this.totalFare = totalFare;
     }
 
-    class PassengerDetails {
+    public class PassengerDetails {
         @SerializedName("name")
         @Expose
         String name;

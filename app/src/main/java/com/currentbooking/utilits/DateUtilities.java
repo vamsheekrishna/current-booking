@@ -33,6 +33,12 @@ public class DateUtilities {
 
         return getTimeFromCalendar(Calendar.getInstance(locale));
     }
+    public static String getTodayDateString(String dateFormat) {
+        Locale locale = Locale.getDefault();
+        Calendar cal = Calendar.getInstance(locale);
+        DateFormat formatter = new SimpleDateFormat(dateFormat, locale);
+        return formatter.format(cal.getTime());
+    }
 
     public static Calendar getCalendarFromDate(String dateValue) {
         Locale locale = Locale.getDefault();
@@ -131,6 +137,7 @@ public class DateUtilities {
 
     private static String CALENDAR_DATE_FORMAT_ONE = "dd-MM-yyyy";
     private static String CALENDAR_DATE_FORMAT_TWO = "MM/dd/yyyy";
+    public static String CALENDAR_DATE_FORMAT_THREE = "yyyy-MM-dd";
     private static String CALENDAR_TIME_FORMAT_ONE = "hh:mm";
     private static String CALENDAR_TIME_FORMAT_TWO = "HH:mm";
     private static String CALENDAR_DATE_TIME_FORMAT_ONE = "yyyy-MM-dd HH:mm:ss"; // 2020-06-21 15:00:00

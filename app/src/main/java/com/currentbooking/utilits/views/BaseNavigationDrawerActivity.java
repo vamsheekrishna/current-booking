@@ -34,6 +34,9 @@ import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -41,9 +44,16 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -52,8 +62,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public NavigationView navigationView;
     //protected LinearLayoutCompat signOut;
     private TextView textCartItemCount;
-    private int mCartItemCount = 1;
+    private int mCartItemCount = 0;
     private AppCompatImageView ivProfileImageField;
+    private View badgeBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +73,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         setNavigationView();
 
         loadUIComponents();
+
+        // LogetAvailableLiveTickets();
+        MyProfile.getInstance().getTodayTickets().observe(this, availableTickets -> {
+            mCartItemCount = availableTickets.size();
+        });
+        ArrayList<TodayTickets.AvailableTickets> data = MyProfile.getInstance().getTodayTickets().getValue();
+        if(null != data) {
+            mCartItemCount = data.size();
+
+        }
     }
 
     private void loadUIComponents() {
@@ -113,6 +134,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         View actionView = menuItem.getActionView();
         textCartItemCount = actionView.findViewById(R.id.cart_badge);
+        badgeBase = actionView.findViewById(R.id.badge_base);
 
         setupBadge();
 
@@ -124,16 +146,17 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     }
 
     private void setupBadge() {
-
         if (textCartItemCount != null) {
             if (mCartItemCount == 0) {
                 if (textCartItemCount.getVisibility() != View.GONE) {
                     textCartItemCount.setVisibility(View.GONE);
+                    badgeBase.setVisibility(View.GONE);
                 }
             } else {
                 textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
                 if (textCartItemCount.getVisibility() != View.VISIBLE) {
                     textCartItemCount.setVisibility(View.VISIBLE);
+                    badgeBase.setVisibility(View.VISIBLE);
                 }
             }
         }

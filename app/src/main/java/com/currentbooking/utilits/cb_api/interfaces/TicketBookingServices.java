@@ -11,6 +11,7 @@ import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
@@ -70,4 +71,9 @@ public interface TicketBookingServices {
                                    @Field("passenger_details") String passengerDetails,
                                    @Field("breakup") String fareDetails,
                                    @Field("user_id") String userID);
+
+    @POST(BuildConfig.GET_TODAYS_TICKETS)
+    @FormUrlEncoded
+    Call<TodayTickets> getTodayTicket(@Field("date") String date,
+                                      @Field("user_id") String userID);
 }
