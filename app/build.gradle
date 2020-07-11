@@ -1,24 +1,23 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.currentbooking"
+        applicationId "com.example.myapplication"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
-    dataBinding {
-        enabled true
-    }
-
     flavorDimensions "version"
-
+    buildFeatures {
+        dataBinding = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -38,18 +37,18 @@ android {
             buildConfigField("String", "FORGOT_PASSWORD", '"login/forgetpass"')
             buildConfigField("String", "VALIDATE_OTP", '"login/verifyotp"')
             buildConfigField("String", 'RESEND_OTP', '"login/resendotp"')
-            buildConfigField('String','PROFILE_UPDATE','"login/updateprofile"')
-            buildConfigField('String','CHANGE_PASSWORD','"login/changepassword"')
+            buildConfigField('String', 'PROFILE_UPDATE', '"login/updateprofile"')
+            buildConfigField('String', 'CHANGE_PASSWORD', '"login/changepassword"')
 
             buildConfigField("String", "AVAILABLE_BUS_LIST", '"Bus_search/search"')
             buildConfigField("String", "OPERATOR_LIST", '"operator/list"')
             buildConfigField("String", "BUS_TYPE", '"operator/getBustype"')
             buildConfigField("String", "AVAILABLE_BUS_STOPS", '"operator/busstop"')
-            buildConfigField('String','CONCESSION_LIST','"operator/getConcession"')
-            buildConfigField('String','CONCESSION_RATE_LIST','"operator/getConcessionrates"')
-            buildConfigField('String','GET_FARE','"get/fare"')
-            buildConfigField('String','GET_RSA_KEY','"get/rsakey"')
-            buildConfigField('String',"GET_TODAYS_TICKETS", '"http://ticket.rokad.in/api/get/tickets"')
+            buildConfigField('String', 'CONCESSION_LIST', '"operator/getConcession"')
+            buildConfigField('String', 'CONCESSION_RATE_LIST', '"operator/getConcessionrates"')
+            buildConfigField('String', 'GET_FARE', '"get/fare"')
+            buildConfigField('String', 'GET_RSA_KEY', '"get/rsakey"')
+            buildConfigField('String', "GET_TODAYS_TICKETS", '"http://ticket.rokad.in/api/get/tickets"')
         }
         prod {
             dimension "version"
@@ -73,19 +72,24 @@ android {
     }
 }
 
-dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
 
+dependencies {
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     testImplementation 'junit:junit:4.13'
     implementation 'commons-codec:commons-codec:20041127.091804'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "com.google.android.material:material:1.3.0-alpha01"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
