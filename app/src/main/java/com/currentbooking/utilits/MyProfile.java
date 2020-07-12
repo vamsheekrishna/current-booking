@@ -12,6 +12,8 @@ import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.encrypt.Encryption;
 import com.currentbooking.utilits.encrypt.EncryptionFactory;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -210,24 +212,29 @@ public class MyProfile {
         }
         return data;
     }
+
     public void getAvailableLiveTickets() {
         String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
         String id = MyProfile.getInstance().getUserId();
         TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         service.getTodayTicket(date, id).enqueue(new Callback<TodayTickets>() {
             @Override
-            public void onResponse(Call<TodayTickets> call, Response<TodayTickets> response) {
-                if(response.body().getStatus().equalsIgnoreCase("success")) {
-                    ArrayList<TodayTickets.AvailableTickets> data = response.body().getAvailableTickets();
-                    if(null != data && data.size()>0 ) {
-                        MyProfile.getInstance().setTodayTickets(data);
+            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                TodayTickets todayTickets = response.body();
+                if (todayTickets != null) {
+                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                        ArrayList<TodayTickets.AvailableTickets> data = todayTickets.getAvailableTickets();
+                        if (null != data && data.size() > 0) {
+                            MyProfile.getInstance().setTodayTickets(data);
+                        }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<TodayTickets> call, Throwable t) {
+            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
                 // showDialog("onFailure", "" + t.getMessage());
+                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
             }
         });
     }

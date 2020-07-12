@@ -54,7 +54,6 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     private GetFareResponse.FareDetails mFareDetails;
     // JsonObject jsonObject;
     OnTicketBookingListener mListener;
-    private TicketBookingServices ticketBookingService;
     private RSAKeyData rsaKeyObject;
     CCAvenueResponse ccAvenueResponse;
     WebView webview;
@@ -145,7 +144,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
         });
 
         progressDialog.show();
-        ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
 
         TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
 

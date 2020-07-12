@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ticketbooking.TicketBookingHomeFragment">
+
     <fragment
         android:layout_alignParentTop="true"
         android:id="@+id/map"
@@ -28,29 +29,14 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/select_transport"
                 android:drawableStart="@drawable/user_thumb"
-                android:drawableLeft="@drawable/user_thumb"
                 android:hint="@string/select_state_transport"
                 style="@style/text_view" />
             <androidx.appcompat.widget.AppCompatTextView
                 android:visibility="gone"
                 android:id="@+id/select_bus_type"
                 android:drawableStart="@drawable/user_thumb"
-                android:drawableLeft="@drawable/user_thumb"
                 android:hint="@string/select_bus_type"
                 style="@style/text_view" />
-            <!--<TextView
-                android:layout_marginTop="16dp"
-                android:text="@string/select_bus_type"
-                android:textSize="14sp"
-                android:fontFamily="@font/opensans_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_select_type"
-                android:orientation="horizontal"
-                android:scrollbars="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>-->
             <include
                 android:visibility="gone"
                 android:id="@+id/bus_point"

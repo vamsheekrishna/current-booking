@@ -3,7 +3,9 @@ package com.currentbooking.utilits.cb_api.responses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BusOperator {
+import java.io.Serializable;
+
+public class BusOperator implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;
@@ -84,7 +86,55 @@ public class BusOperator {
         this.status = status;
     }
 
- /*   public String getCreatedBy() {
+    public String getAdultMinAge() {
+        return adultMinAge;
+    }
+
+    public void setAdultMinAge(String adultMinAge) {
+        this.adultMinAge = adultMinAge;
+    }
+
+    public String getAdultMaxAge() {
+        return adultMaxAge;
+    }
+
+    public void setAdultMaxAge(String adultMaxAge) {
+        this.adultMaxAge = adultMaxAge;
+    }
+
+    public String getChildMinAge() {
+        return childMinAge;
+    }
+
+    public void setChildMinAge(String childMinAge) {
+        this.childMinAge = childMinAge;
+    }
+
+    public String getChildMaxAge() {
+        return childMaxAge;
+    }
+
+    public void setChildMaxAge(String childMaxAge) {
+        this.childMaxAge = childMaxAge;
+    }
+
+    public String getMaxTicket() {
+        return maxTicket;
+    }
+
+    public void setMaxTicket(String maxTicket) {
+        this.maxTicket = maxTicket;
+    }
+
+    public String getValidTill() {
+        return validTill;
+    }
+
+    public void setValidTill(String validTill) {
+        this.validTill = validTill;
+    }
+
+    /*   public String getCreatedBy() {
         return createdBy;
     }
 

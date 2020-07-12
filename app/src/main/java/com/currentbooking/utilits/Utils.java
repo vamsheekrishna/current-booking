@@ -1,5 +1,6 @@
 package com.currentbooking.utilits;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.net.InetAddress;
@@ -56,5 +57,17 @@ public class Utils {
 
     public static String getDateString(Long value) {
         return "";
+    }
+
+    public static int getIntegerValueFromString(String value) {
+        int newValue = 0;
+        if (!TextUtils.isEmpty(value)) {
+            try {
+                newValue = Integer.parseInt(value);
+            } catch (Exception e) {
+
+            }
+        }
+        return newValue;
     }
 }

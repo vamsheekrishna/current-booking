@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -20,9 +21,11 @@ import com.currentbooking.ticketbooking.adapters.ConcessionAddPassengersAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
+import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -59,6 +62,8 @@ public class PassengerDetailsFragment extends BaseFragment {
     private TicketBookingViewModel ticketBookingModule;
     private String busType;
     private OnTicketBookingListener mListener;
+    private BusOperator busOperatorDetails;
+    private AppCompatButton addPassengerBtnField;
 
     public PassengerDetailsFragment() {
         // Required empty public constructor
@@ -94,6 +99,7 @@ public class PassengerDetailsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        busOperatorDetails = ticketBookingModule.getSelectedBusOperator().getValue();
         return inflater.inflate(R.layout.fragment_passenger_details, container, false);
     }
 
@@ -147,7 +153,9 @@ public class PassengerDetailsFragment extends BaseFragment {
         String fareAmount = String.format("Rs. %s", busDetails.getFareAmt());
         ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(fareAmount);
 
-        view.findViewById(R.id.add_passenger_btn_field).setOnClickListener(v -> addPassengerSelected());
+
+        addPassengerBtnField = view.findViewById(R.id.add_passenger_btn_field);
+        addPassengerBtnField.setOnClickListener(v -> addPassengerSelected());
 
         addPassengerRecyclerField = view.findViewById(R.id.passengers_recycler_field);
         addPassengerRecyclerField.setHasFixedSize(false);
@@ -163,10 +171,7 @@ public class PassengerDetailsFragment extends BaseFragment {
                 if (index > -1) {
                     personsAddedList.remove(pObject);
                     addedPassengersAdapter.notifyItemRemoved(index);
-                    int size = personsAddedList.size();
-                    if (size == 0) {
-                        addPassengerRecyclerField.setVisibility(View.GONE);
-                    }
+                    updatePassengerList();
                 }
             }
         });
@@ -222,17 +227,25 @@ public class PassengerDetailsFragment extends BaseFragment {
 
     private void addPassengerSelected() {
         concessionList = ticketBookingModule.getConcessionLiveData().getValue();
-        AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(concessionList);
+        AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(busOperatorDetails, concessionList);
         addPassengersDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof Concession) {
-                addPassengerRecyclerField.setVisibility(View.VISIBLE);
                 personsAddedList.add((Concession) pObject);
                 int size = personsAddedList.size();
                 addedPassengersAdapter.notifyItemInserted(size);
+                updatePassengerList();
             }
         });
         if (!requireActivity().isFinishing()) {
             addPassengersDialog.show(requireActivity().getSupportFragmentManager(), AddPassengersDialogView.class.getName());
+        }
+    }
+
+    private void updatePassengerList() {
+        if(personsAddedList.size() == Utils.getIntegerValueFromString(busOperatorDetails.getMaxTicket())) {
+            addPassengerBtnField.setVisibility(View.GONE);
+        } else {
+            addPassengerBtnField.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -81,7 +81,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         ArrayList<TodayTickets.AvailableTickets> data = MyProfile.getInstance().getTodayTickets().getValue();
         if(null != data) {
             mCartItemCount = data.size();
-
         }
     }
 

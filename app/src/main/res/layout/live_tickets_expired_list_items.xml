@@ -57,7 +57,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@id/iv_share_btn_field"
                 android:fontFamily="@font/opensans_semi_bold"
-                android:text="KMT BUS 3245"
                 android:textColor="@color/black_color_two"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -68,7 +67,6 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center_horizontal"
-            android:text="Hyderabad to Bangalore"
             android:textColor="@color/black_color_two"
             android:textSize="13sp" />
 
@@ -84,6 +82,7 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/tv_ticket_number_field"
                 style="@style/text_style_medium_bold"
                 android:layout_width="0dp"
                 android:layout_height="30dp"

@@ -146,7 +146,17 @@ public class TicketStatusFragment extends BaseFragment {
         requireActivity().finish();
     }
 
+    public void clearBackStack() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(
+                0);
+        fragmentManager.popBackStack(entry.getId(),
+                FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.executePendingTransactions();
+    }
+
     private void paymentSuccessBookAnotherBtnSelected() {
+        clearBackStack();
         mListener.goToHome();
     }
 

@@ -52,12 +52,11 @@
                 android:src="@drawable/time" />
 
             <TextView
-                android:id="@+id/tv_expires_in_field"
+                android:id="@+id/tv_expires_in_time_field"
                 style="@style/text_style_medium_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="01:45"
                 android:textColor="@color/black_color_two"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -95,24 +94,24 @@
                 android:src="@drawable/share" />
 
             <TextView
+                android:id="@+id/tv_bus_route_name_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@id/iv_share_btn_field"
                 android:fontFamily="@font/opensans_semi_bold"
-                android:text="KMT BUS 3245"
                 android:textColor="@color/black_color_two"
                 android:textSize="16sp" />
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_bus_route_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center_horizontal"
-            android:text="Hyderabad to Bangalore"
             android:textColor="@color/black_color_two"
             android:textSize="13sp" />
 
@@ -128,6 +127,7 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/tv_ticket_number_field"
                 style="@style/text_style_medium_bold"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
@@ -138,7 +138,6 @@
                 android:gravity="center_vertical"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="@string/ticket_number"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 

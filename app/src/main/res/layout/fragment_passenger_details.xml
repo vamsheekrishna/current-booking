@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".ticketbooking.ConfirmTicketFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,6 +27,7 @@
                 android:layout_height="10dp" />
 
             <include layout="@layout/confirm_passenger_route_details" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,7 +136,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 
@@ -253,7 +253,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_ticket"

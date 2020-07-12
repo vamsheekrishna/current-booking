@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
 import com.currentbooking.ticketbookinghistory.models.TicketViewModel;
+import com.currentbooking.utilits.Constants;
+import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
     private String mParam2;
 
     private RecyclerView liveTicketsListRecyclerField;
-    private List<TicketViewModel> liveTicketsList;
+    private List<TodayTickets.AvailableTickets> liveTicketsList;
 
     public LiveTicketFragment() {
         // Required empty public constructor
@@ -92,8 +95,15 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
         liveTicketsListRecyclerField.addItemDecoration(divider);
 
         liveTicketsList = new ArrayList<>();
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            ArrayList<TodayTickets.AvailableTickets> liveTickets = myProfile.getTodayTickets().getValue();
+            if(liveTickets != null && !liveTickets.isEmpty()) {
+                liveTicketsList.addAll(liveTickets);
+            }
+        }
 
-        TicketViewModel liveTicketsModel = new TicketViewModel();
+        /*TicketViewModel liveTicketsModel = new TicketViewModel();
         liveTicketsModel.setStatus(0);
         liveTicketsList.add(liveTicketsModel);
 
@@ -107,7 +117,7 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
 
         liveTicketsModel = new TicketViewModel();
         liveTicketsModel.setStatus(3);
-        liveTicketsList.add(liveTicketsModel);
+        liveTicketsList.add(liveTicketsModel);*/
 
         LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList, this);
         liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);

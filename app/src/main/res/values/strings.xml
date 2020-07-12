@@ -64,7 +64,7 @@
     <string name="confirm_payment">Confirm Payment</string>
     <string name="please_enter_your_stop_name">Please enter your stop name</string>
     <string name="booking_successful">Booking Successful</string>
-    <string name="ticket_number">Ticket Number</string>
+    <string name="ticket_number">Ticket Number.</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="fare">Fare</string>

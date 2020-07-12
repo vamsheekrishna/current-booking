@@ -20,12 +20,15 @@ import com.currentbooking.R;
 import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.ticketbooking.adapters.CustomSpinnerAdapter;
 import com.currentbooking.utilits.DialogUtility;
+import com.currentbooking.utilits.Utils;
+import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 /**
  * Created by Satya Seshu on 20/06/20.
@@ -40,11 +43,14 @@ public class AddPassengersDialogView extends DialogFragment {
     private TextView tvConcessionTypeField;
     private  NumberPicker numberPickerField;
     private EditText etNameField;
+    private BusOperator busOperatorDetails;
 
-    public static AddPassengersDialogView getInstance(List<Concession> concessionList) {
+
+    public static AddPassengersDialogView getInstance(BusOperator busOperatorDetails, List<Concession> concessionList) {
         AddPassengersDialogView addPassengersDialog = new AddPassengersDialogView();
         Bundle extras = new Bundle();
         extras.putSerializable("ConcessionsList", (Serializable) concessionList);
+        extras.putSerializable("BusOperatorDetails", busOperatorDetails);
         addPassengersDialog.setArguments(extras);
         return addPassengersDialog;
     }
@@ -68,6 +74,7 @@ public class AddPassengersDialogView extends DialogFragment {
 
         Bundle extras = getArguments();
         if (extras != null) {
+            busOperatorDetails = (BusOperator) extras.getSerializable("BusOperatorDetails");
             concessionsTypeList = (List<Concession>) extras.getSerializable("ConcessionsList");
         }
 
@@ -101,9 +108,9 @@ public class AddPassengersDialogView extends DialogFragment {
                 Object lSelectedItem = personTypesSpinnerField.getSelectedItem();
                 if (lSelectedItem instanceof String) {
                     selectedPersonType = (String) lSelectedItem;
-                    setDefaultAgeLimit();
                     selectedConcessionDetails = null;
                     tvConcessionTypeField.setText(getString(R.string.concession_type));
+                    setAgeLimit();
                 }
             }
 
@@ -124,47 +131,13 @@ public class AddPassengersDialogView extends DialogFragment {
         });
     }
 
-    private int getIntegerValueFromString(String value) {
-        int newValue = 0;
-        if (!TextUtils.isEmpty(value)) {
-            try {
-                newValue = Integer.parseInt(value);
-            } catch (Exception e) {
-
-            }
-        }
-        return newValue;
-    }
-
     private void setAgeLimit() {
-        if (selectedConcessionDetails != null) {
-            int minAge = getIntegerValueFromString(selectedConcessionDetails.getMinAgeLimit());
-            int maxAge = getIntegerValueFromString(selectedConcessionDetails.getMaxAgeLimit());
-
-            if(minAge != 0 && maxAge != 0) {
-                numberPickerField.setMinValue(minAge);
-                numberPickerField.setMaxValue(maxAge);
-                numberPickerField.setValue(minAge);
-            } else {
-                setDefaultAgeLimit();
-            }
+        if(selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
+            numberPickerField.setMinValue(Utils.getIntegerValueFromString(busOperatorDetails.getAdultMinAge()));
+            numberPickerField.setMaxValue(Utils.getIntegerValueFromString(busOperatorDetails.getAdultMaxAge()));
         } else {
-            setDefaultAgeLimit();
-        }
-    }
-
-    private void setDefaultAgeLimit() {
-        if (selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
-            numberPickerField.setMinValue(13);
-            numberPickerField.setMaxValue(59);
-        }
-       /* else if (selectedPersonType.equalsIgnoreCase(getString(R.string.sr_citizen))) {
-            numberPickerField.setMinValue(60);
-            numberPickerField.setMaxValue(120);
-        }*/
-        else if (selectedPersonType.equalsIgnoreCase(getString(R.string.child))) {
-            numberPickerField.setMinValue(3);
-            numberPickerField.setMaxValue(12);
+            numberPickerField.setMinValue(Utils.getIntegerValueFromString(busOperatorDetails.getChildMinAge()));
+            numberPickerField.setMaxValue(Utils.getIntegerValueFromString(busOperatorDetails.getChildMaxAge()));
         }
     }
 
@@ -175,7 +148,6 @@ public class AddPassengersDialogView extends DialogFragment {
                 selectedConcessionDetails = (Concession) pObject;
                 selectedConcessionDetails.setConcessionDetailsAdded(true);
                 tvConcessionTypeField.setText(selectedConcessionDetails.getConcessionNM());
-                setAgeLimit();
             }
         });
         if (!requireActivity().isFinishing()) {
