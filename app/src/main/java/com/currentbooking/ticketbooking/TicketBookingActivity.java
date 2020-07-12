@@ -1,12 +1,12 @@
 package com.currentbooking.ticketbooking;
 
+import android.app.Fragment;
 import android.os.Bundle;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.R;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
+import com.currentbooking.utilits.views.BaseFragment;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener {
@@ -55,7 +55,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     @Override
     public void gotoTicketStatus(String passengerDetails, CCAvenueResponse ccAvenueResponse) {
-        replaceFragment(TicketStatusFragment.newInstance(passengerDetails, ccAvenueResponse), "TicketStatusFragment", true);
+        replaceFragment(TicketStatusFragment.newInstance(passengerDetails, ccAvenueResponse), "TicketStatusFragment", false);
     }
 
     public void gotoOptionSelection(int index) {
@@ -70,5 +70,13 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        BaseFragment f = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.base_container);
+        if (! (f instanceof TicketStatusFragment)) {
+            super.onBackPressed();
+        }
     }
 }

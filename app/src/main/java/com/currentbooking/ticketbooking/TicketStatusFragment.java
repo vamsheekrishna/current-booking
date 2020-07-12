@@ -2,6 +2,7 @@ package com.currentbooking.ticketbooking;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,10 @@ public class TicketStatusFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (OnTicketBookingListener) context;
+        if(context instanceof OnTicketBookingListener) {
+
+            mListener = (OnTicketBookingListener) context;
+        }
     }
 
     @Override
@@ -76,14 +80,25 @@ public class TicketStatusFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
-        // mListener.getAvailableLiveTickets();
         return inflater.inflate(R.layout.fragment_ticket_status, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        view.setOnKeyListener( new View.OnKeyListener()
+                          {
+                              @Override
+                              public boolean onKey( View v, int keyCode, KeyEvent event )
+                              {
+                                  if( keyCode == KeyEvent.KEYCODE_BACK )
+                                  {
+                                     return true;
+                                  }
+                                  return false;
+                              }
+                          }
+        );
         BusObject busDetails = ticketBookingModule.getSelectedBusObject().getValue();
         ImageView ivBookingStatusField = view.findViewById(R.id.iv_booking_status_image);
         LinearLayout paymentSuccessBtnLayoutField = view.findViewById(R.id.payment_success_buttons_layout_field);
@@ -114,6 +129,7 @@ public class TicketStatusFragment extends BaseFragment {
             tvBookingStatusField.setText(getString(R.string.booking_successful));
             bookingSuccessLayoutField.setVisibility(View.VISIBLE);
             bookingFailedLayoutField.setVisibility(View.GONE);
+            mListener.setupBadge();
         } else {
             ivBookingStatusField.setImageResource(R.drawable.close_icon);
             paymentSuccessBtnLayoutField.setVisibility(View.GONE);

@@ -3,7 +3,7 @@ package com.currentbooking.ticketbooking;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 
-public interface OnTicketBookingListener {
+public interface OnTicketBookingListener extends BaseListener {
     void goToHome();
     void gotoSelectBus(String busOperatorName, String busType);
 

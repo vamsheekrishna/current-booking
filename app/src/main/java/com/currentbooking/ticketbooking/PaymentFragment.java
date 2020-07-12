@@ -129,7 +129,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                 }
             }
         });
-        webview.setOnKeyListener((v, keyCode, event) -> {
+        /*webview.setOnKeyListener((v, keyCode, event) -> {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
                 WebView webView = (WebView) v;
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -141,7 +141,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             }
 
             return false;
-        });
+        });*/
 
         progressDialog.show();
         TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
@@ -250,6 +250,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
             Log.d("JsonObject", "html: "+html);
             // showDialog("", html);
+            MyProfile.getInstance().getAvailableLiveTickets();
             mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
             //Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
         }

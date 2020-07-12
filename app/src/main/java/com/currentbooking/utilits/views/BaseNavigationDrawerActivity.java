@@ -144,7 +144,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         return true;
     }
 
-    private void setupBadge() {
+    public void setupBadge() {
         if (textCartItemCount != null) {
             if (mCartItemCount == 0) {
                 if (textCartItemCount.getVisibility() != View.GONE) {
