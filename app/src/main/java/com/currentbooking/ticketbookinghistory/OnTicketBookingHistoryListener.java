@@ -1,8 +1,8 @@
 package com.currentbooking.ticketbookinghistory;
 
-import com.currentbooking.ticketbookinghistory.models.TicketViewModel;
+import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
 
 public interface OnTicketBookingHistoryListener {
     void showLiveTickets();
-    void viewTicket(TicketViewModel liveTicketsModel);
+    void viewTicket(AvailableTickets liveTicketsModel);
 }

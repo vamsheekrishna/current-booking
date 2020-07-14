@@ -135,8 +135,20 @@ public class DateUtilities {
         return getDateOfBirthFromCalendar(Calendar.getInstance(locale));
     }
 
+    public static String getCurrentDate() {
+        Locale locale = Locale.getDefault();
+        Calendar calendar = Calendar.getInstance();
+        try {
+            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_FORMAT_TWO, locale);
+            return formatter.format(calendar.getTime());
+        } catch (Exception ex) {
+            LoggerInfo.errorLog("getCurrentDate", ex.getMessage());
+        }
+        return getCurrentDate();
+    }
+
     private static String CALENDAR_DATE_FORMAT_ONE = "dd-MM-yyyy";
-    private static String CALENDAR_DATE_FORMAT_TWO = "MM/dd/yyyy";
+    private static String CALENDAR_DATE_FORMAT_TWO = "dd MMM yyyy";
     public static String CALENDAR_DATE_FORMAT_THREE = "yyyy-MM-dd";
     private static String CALENDAR_TIME_FORMAT_ONE = "hh:mm";
     private static String CALENDAR_TIME_FORMAT_TWO = "HH:mm";

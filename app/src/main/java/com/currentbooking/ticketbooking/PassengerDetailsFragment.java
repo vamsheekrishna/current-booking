@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,6 +65,7 @@ public class PassengerDetailsFragment extends BaseFragment {
     private OnTicketBookingListener mListener;
     private BusOperator busOperatorDetails;
     private AppCompatButton addPassengerBtnField;
+    private Bundle savedState = null;
 
     public PassengerDetailsFragment() {
         // Required empty public constructor
@@ -100,7 +102,17 @@ public class PassengerDetailsFragment extends BaseFragment {
         // Inflate the select_bus_points for this fragment
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         busOperatorDetails = ticketBookingModule.getSelectedBusOperator().getValue();
-        return inflater.inflate(R.layout.fragment_passenger_details, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_passenger_details, container, false);
+
+        if(savedInstanceState != null && savedState == null) {
+            savedState = savedInstanceState.getBundle("PassengerDetails");
+        }
+        if(savedState != null) {
+            personsAddedList = (List<Concession>) savedState.getSerializable("PassengersList");
+        }
+        savedState = null;
+        return view;
     }
 
     @Override
@@ -247,5 +259,26 @@ public class PassengerDetailsFragment extends BaseFragment {
         } else {
             addPassengerBtnField.setVisibility(View.VISIBLE);
         }
+    }
+
+    private Bundle saveState() { /* called either from onDestroyView() or onSaveInstanceState() */
+        Bundle state = new Bundle();
+        state.putSerializable("PassengersList", (Serializable) personsAddedList);
+        return state;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        /* If onDestroyView() is called first, we can use the previously savedState but we can't call saveState() anymore */
+        /* If onSaveInstanceState() is called first, we don't have savedState, so we need to call saveState() */
+        /* => (?:) operator inevitable! */
+        outState.putBundle("PassengerDetails", (savedState != null) ? savedState : saveState());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        savedState = saveState(); /* vstup defined here for sure */
     }
 }

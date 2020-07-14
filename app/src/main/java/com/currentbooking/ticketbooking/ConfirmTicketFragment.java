@@ -158,7 +158,6 @@ public class ConfirmTicketFragment extends BaseFragment {
         });
     }
 
-
     private void confirmSelected() {
         mListener.gotoPayment(passengerDetails, mFareDetails);
     }

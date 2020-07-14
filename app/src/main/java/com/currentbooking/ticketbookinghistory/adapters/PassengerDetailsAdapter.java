@@ -1,6 +1,7 @@
 package com.currentbooking.ticketbookinghistory.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.ticketbookinghistory.models.PassengerDetailsModel;
 
 import java.util.List;
 
@@ -18,10 +20,10 @@ import java.util.List;
  */
 public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetailsAdapter.PassengerDetailsViewHolder> {
 
-    private List<Object> listData;
+    private List<PassengerDetailsModel> listData;
     private LayoutInflater layoutInflater;
 
-    public PassengerDetailsAdapter(Context context, List<Object> listData) {
+    public PassengerDetailsAdapter(Context context, List<PassengerDetailsModel> listData) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
     }
@@ -35,7 +37,14 @@ public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetai
 
     @Override
     public void onBindViewHolder(@NonNull PassengerDetailsViewHolder holder, int position) {
-
+        PassengerDetailsModel passengerDetailsModel = listData.get(position);
+        holder.tvConcessionNameField.setText(passengerDetailsModel.getType());
+        holder.tvPassengerAgeField.setText(passengerDetailsModel.getAge());
+        String concession = passengerDetailsModel.getConcessionCD();
+        if (TextUtils.isEmpty(concession)) {
+            concession = "N/A";
+        }
+        holder.tvConcessionNameField.setText(concession);
     }
 
     @Override
@@ -47,13 +56,13 @@ public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetai
 
         TextView tvPassengerTypeField;
         TextView tvPassengerAgeField;
-        TextView tvConcessionTypeField;
+        TextView tvConcessionNameField;
 
         public PassengerDetailsViewHolder(@NonNull View itemView) {
             super(itemView);
             tvPassengerTypeField = itemView.findViewById(R.id.tv_passenger_type_field);
             tvPassengerAgeField = itemView.findViewById(R.id.tv_passenger_age_field);
-            tvConcessionTypeField = itemView.findViewById(R.id.tv_passenger_concession_type_field);
+            tvConcessionNameField = itemView.findViewById(R.id.tv_passenger_concession_type_field);
         }
     }
 }

@@ -28,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Ticket No. 546789344"
                 android:textColor="@color/button_bg" />
 
             <TextView
@@ -37,7 +36,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_semi_bold"
-                android:text="KMT BUS 3245"
                 android:textColor="@color/black_color_two"
                 android:textSize="16sp" />
 
@@ -47,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Hyderabad to Banglore"
                 android:textColor="@color/black_color_two" />
 
             <RelativeLayout
@@ -62,7 +59,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="05:45"
                     android:textColor="@color/black_color_two" />
 
                 <View
@@ -89,7 +85,6 @@
                     android:layout_alignParentEnd="true"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
-                    android:text="08:45"
                     android:textColor="@color/black_color_two" />
 
                 <TextView
@@ -100,7 +95,6 @@
                     android:layout_centerInParent="true"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
-                    android:text="3 Hrs"
                     android:textColor="@color/black_color_two" />
 
                 <View
@@ -140,6 +134,7 @@
                 android:src="@drawable/time" />
 
             <TextView
+                android:id="@+id/tv_booking_status_field"
                 style="@style/text_style_extra_medium_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -147,7 +142,6 @@
                 android:gravity="center"
                 android:minHeight="40dp"
                 android:layout_marginStart="5dp"
-                android:text="@string/approved"
                 android:textAllCaps="true"
                 android:textColor="@color/green" />
         </LinearLayout>

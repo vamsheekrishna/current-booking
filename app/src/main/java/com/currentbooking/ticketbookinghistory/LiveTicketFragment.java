@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
-import com.currentbooking.ticketbookinghistory.models.TicketViewModel;
-import com.currentbooking.utilits.Constants;
+import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
+import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.cb_api.responses.TodayTickets;
+import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.utilits.views.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -34,9 +36,6 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private RecyclerView liveTicketsListRecyclerField;
-    private List<TodayTickets.AvailableTickets> liveTicketsList;
 
     public LiveTicketFragment() {
         // Required empty public constructor
@@ -86,7 +85,7 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
     }
 
     private void loadUIComponents(View view) {
-        liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_fieid);
+        RecyclerView liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_fieid);
         liveTicketsListRecyclerField.setHasFixedSize(false);
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
@@ -94,37 +93,38 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
                 R.drawable.recycler_decoration_divider_two)));
         liveTicketsListRecyclerField.addItemDecoration(divider);
 
-        liveTicketsList = new ArrayList<>();
+        List<AvailableTickets> liveTicketsList = new ArrayList<>();
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-            ArrayList<TodayTickets.AvailableTickets> liveTickets = myProfile.getTodayTickets().getValue();
-            if(liveTickets != null && !liveTickets.isEmpty()) {
+            ArrayList<AvailableTickets> liveTickets = myProfile.getTodayTickets().getValue();
+            if (liveTickets != null && !liveTickets.isEmpty()) {
                 liveTicketsList.addAll(liveTickets);
             }
         }
 
-        /*TicketViewModel liveTicketsModel = new TicketViewModel();
-        liveTicketsModel.setStatus(0);
-        liveTicketsList.add(liveTicketsModel);
+        TextView liveTicketHeaderField = view.findViewById(R.id.live_ticket_header_field);
+        String headerText = String.format(Locale.getDefault(), "%d Live Tickets Found on %s", liveTicketsList.size(), DateUtilities.getCurrentDate());
+        liveTicketHeaderField.setText(headerText);
 
-        liveTicketsModel = new TicketViewModel();
-        liveTicketsModel.setStatus(1);
-        liveTicketsList.add(liveTicketsModel);
-
-        liveTicketsModel = new TicketViewModel();
-        liveTicketsModel.setStatus(2);
-        liveTicketsList.add(liveTicketsModel);
-
-        liveTicketsModel = new TicketViewModel();
-        liveTicketsModel.setStatus(3);
-        liveTicketsList.add(liveTicketsModel);*/
-
-        LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList, this);
+        LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
         liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
+
+        liveTicketsListRecyclerField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), liveTicketsListRecyclerField, new RecyclerTouchListener.ClickListener() {
+
+            @Override
+            public void onClick(View view, int position) {
+                mListener.viewTicket(liveTicketsList.get(position));
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     @Override
     public void onClick(View v) {
-        mListener.viewTicket(new TicketViewModel());
+
     }
 }

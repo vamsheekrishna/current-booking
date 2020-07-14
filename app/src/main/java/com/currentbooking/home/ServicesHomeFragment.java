@@ -2,6 +2,7 @@ package com.currentbooking.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,34 +65,20 @@ public class ServicesHomeFragment extends BaseFragment implements View.OnClickLi
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView recyclerView = view.findViewById(R.id.list);
-
-        String usrName = MyProfile.getInstance().getFirstName() +" "+ MyProfile.getInstance().getLastName();
-
-        if (!usrName.isEmpty() || usrName != null)
-        ((TextView)view.findViewById(R.id.name)).setText(usrName);
-        else
-            startActivity(new Intent(getContext(), AuthenticationActivity.class));
-        /*int mColumnCount = 3;
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), mColumnCount));
-        }*/
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            String usrName = myProfile.getFirstName() + " " + myProfile.getLastName();
+            if (!TextUtils.isEmpty(usrName))
+                ((TextView) view.findViewById(R.id.name)).setText(usrName);
+            else
+                startActivity(new Intent(getContext(), AuthenticationActivity.class));
+        }
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         DummyContent.ITEMS.clear();
         DummyContent.createDummyItem(1, R.drawable.ic_launcher, "Current Booking");
         DummyContent.createDummyItem(2, R.drawable.tp, "Travel Pulse");
         DummyContent.createDummyItem(3, R.drawable.insurance, "Insurance");
-        /*DummyContent.createDummyItem(3, R.drawable.insurance, "Insurance");
-        DummyContent.createDummyItem(4, R.drawable.current_bus_booking, "Current Bus Booking");
-        DummyContent.createDummyItem(5, R.drawable.air_hotel_booking, "Hotel Booking");
-        DummyContent.createDummyItem(6, R.drawable.car_rental, "Car Rental");
-        DummyContent.createDummyItem(7, R.drawable.cash_cards, "Cash Cards");
-        DummyContent.createDummyItem(8, R.drawable.dth, "DTH");
-        DummyContent.createDummyItem(10, R.drawable.e_paylater, "e-Pay Later");
-        DummyContent.createDummyItem(11, R.drawable.electricity, "Electricity");
-        DummyContent.createDummyItem(12, R.drawable.gold_loan, "Gold Loan");*/
         recyclerView.setAdapter(new MyServiceRecyclerViewAdapter(DummyContent.ITEMS, this));
     }
 

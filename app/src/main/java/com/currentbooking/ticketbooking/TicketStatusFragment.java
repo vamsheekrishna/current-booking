@@ -18,15 +18,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
-import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 public class TicketStatusFragment extends BaseFragment {
@@ -86,19 +82,12 @@ public class TicketStatusFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.setOnKeyListener( new View.OnKeyListener()
-                          {
-                              @Override
-                              public boolean onKey( View v, int keyCode, KeyEvent event )
-                              {
-                                  if( keyCode == KeyEvent.KEYCODE_BACK )
-                                  {
-                                     return true;
-                                  }
-                                  return false;
-                              }
-                          }
-        );
+        view.setOnKeyListener((v, keyCode, event) -> {
+            if( keyCode == KeyEvent.KEYCODE_BACK ) {
+               return true;
+            }
+            return false;
+        });
         BusObject busDetails = ticketBookingModule.getSelectedBusObject().getValue();
         ImageView ivBookingStatusField = view.findViewById(R.id.iv_booking_status_image);
         LinearLayout paymentSuccessBtnLayoutField = view.findViewById(R.id.payment_success_buttons_layout_field);

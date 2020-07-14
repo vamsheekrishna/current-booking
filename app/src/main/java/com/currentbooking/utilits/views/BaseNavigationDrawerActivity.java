@@ -30,6 +30,7 @@ import com.currentbooking.profile.ui.main.ProfileFragment;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.ticketbookinghistory.TicketBookingHistoryActivity;
+import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
 import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
@@ -78,7 +79,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         MyProfile.getInstance().getTodayTickets().observe(this, availableTickets -> {
             mCartItemCount = availableTickets.size();
         });
-        ArrayList<TodayTickets.AvailableTickets> data = MyProfile.getInstance().getTodayTickets().getValue();
+        ArrayList<AvailableTickets> data = MyProfile.getInstance().getTodayTickets().getValue();
         if(null != data) {
             mCartItemCount = data.size();
         }

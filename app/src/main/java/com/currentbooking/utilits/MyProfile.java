@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.ProfileModel;
@@ -38,7 +39,7 @@ public class MyProfile {
     private String address2;
     private String state;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<TodayTickets.AvailableTickets>> todayTickets = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<AvailableTickets>> todayTickets = new MutableLiveData<>();
     Encryption aesEncryption;
 
     private MyProfile() throws Exception {
@@ -181,11 +182,11 @@ public class MyProfile {
         userProfileImage.setValue(userImageBitmap);
     }
 
-    public MutableLiveData<ArrayList<TodayTickets.AvailableTickets>> getTodayTickets() {
+    public MutableLiveData<ArrayList<AvailableTickets>> getTodayTickets() {
         return todayTickets;
     }
 
-    public void setTodayTickets(ArrayList<TodayTickets.AvailableTickets> todayTickets) {
+    public void setTodayTickets(ArrayList<AvailableTickets> todayTickets) {
         this.todayTickets.setValue(todayTickets);
     }
 
@@ -223,7 +224,7 @@ public class MyProfile {
                 TodayTickets todayTickets = response.body();
                 if (todayTickets != null) {
                     if (todayTickets.getStatus().equalsIgnoreCase("success")) {
-                        ArrayList<TodayTickets.AvailableTickets> data = todayTickets.getAvailableTickets();
+                        ArrayList<AvailableTickets> data = todayTickets.getAvailableTickets();
                         if (null != data && data.size() > 0) {
                             MyProfile.getInstance().setTodayTickets(data);
                         }
