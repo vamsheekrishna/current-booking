@@ -74,7 +74,7 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".fcm.MyFireBaseMessagingService"
+            android:name=".fcm.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

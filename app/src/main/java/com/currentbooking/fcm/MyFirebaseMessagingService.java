@@ -10,7 +10,7 @@ import com.google.firebase.messaging.RemoteMessage;
 /**
  * Created by Satya Seshu on 13/07/20.
  */
-public class MyFireBaseMessagingService extends FirebaseMessagingService {
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String token) {
