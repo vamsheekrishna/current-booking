@@ -200,7 +200,7 @@ public class PassengerDetailsFragment extends BaseFragment {
             progressDialog.show();
             TicketBookingServices ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
             ticketBookingServices.getFare(Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode(),
-                    "",
+                    Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getOriginDateTime(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD(),
