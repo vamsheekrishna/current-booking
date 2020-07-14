@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "180597867581",
-    "firebase_url": "https://current-booking-1c377.firebaseio.com",
-    "project_id": "current-booking-1c377",
-    "storage_bucket": "current-booking-1c377.appspot.com"
+    "project_number": "292165238193",
+    "firebase_url": "https://current-booking.firebaseio.com",
+    "project_id": "current-booking",
+    "storage_bucket": "current-booking.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:180597867581:android:4fbc7e498a707cb94fd654",
+        "mobilesdk_app_id": "1:292165238193:android:7fb5c47acb9b63c8eed190",
         "android_client_info": {
           "package_name": "com.currentbooking.ticketbooking"
         }
       },
       "oauth_client": [
         {
-          "client_id": "180597867581-fmcda22fjqtb47rbteh1ht95c52i2d35.apps.googleusercontent.com",
+          "client_id": "292165238193-6kiftveimkcqmeag0j0nh836k7jvvoep.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.currentbooking.ticketbooking",
-            "certificate_hash": "1684bfa00aa08bb1602ea747a101eb84f272d39d"
+            "certificate_hash": "5ad57c144004ba75afc0bf938ec2ff737a69c035"
           }
         },
         {
-          "client_id": "180597867581-6i220ci8tunn3qkuqn2gekpnbaugcnd5.apps.googleusercontent.com",
+          "client_id": "292165238193-ugh4fgmfojfj26ihdmpt1vk5o4r2a4kj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDpvy9Rn3Zp4cLyn-zLoT2888-XWSuJiXQ"
+          "current_key": "AIzaSyBOIPH4R_d3ql1E8SS1MB1TZ3jN2hVD5yU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "180597867581-6i220ci8tunn3qkuqn2gekpnbaugcnd5.apps.googleusercontent.com",
+              "client_id": "292165238193-ugh4fgmfojfj26ihdmpt1vk5o4r2a4kj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

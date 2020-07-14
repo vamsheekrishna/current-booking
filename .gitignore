@@ -83,3 +83,5 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+.idea/modules/app/google-services.json
+.DS_Store

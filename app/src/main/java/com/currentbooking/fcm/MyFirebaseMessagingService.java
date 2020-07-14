@@ -1,37 +1,33 @@
 package com.currentbooking.fcm;
 
-
-import androidx.annotation.NonNull;
+import android.util.Log;
 
 import com.currentbooking.utilits.LoggerInfo;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-/**
- * Created by Satya Seshu on 13/07/20.
- */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
+    String TAG = "Constraints";
     @Override
-    public void onNewToken(@NonNull String token) {
-        super.onNewToken(token);
-        LoggerInfo.printLog( "Refreshed token: " , token);
-    }
-
-    @Override
-    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
-        LoggerInfo.printLog("From: " , remoteMessage.getFrom());
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            LoggerInfo.printLog( "Message data payload: ", remoteMessage.getData());
+            LoggerInfo.printLog(TAG, "Message data payload: " + remoteMessage.getData());
 
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            LoggerInfo.printLog( "Message Notification Body: ", remoteMessage.getNotification().getBody());
+            LoggerInfo.printLog(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
+    }
+
+    @Override
+    public void onNewToken(String token) {
+        Log.d(TAG, "Refreshed token: " + token);
+
     }
 }
