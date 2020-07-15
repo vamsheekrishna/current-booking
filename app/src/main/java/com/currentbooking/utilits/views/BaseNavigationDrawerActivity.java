@@ -2,11 +2,6 @@ package com.currentbooking.utilits.views;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -20,24 +15,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
-import com.currentbooking.authentication.view_models.Authentication;
 import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
-import com.currentbooking.profile.ui.main.ProfileFragment;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
-import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.ticketbookinghistory.TicketBookingHistoryActivity;
 import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
 import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
-import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
-import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -48,13 +36,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 

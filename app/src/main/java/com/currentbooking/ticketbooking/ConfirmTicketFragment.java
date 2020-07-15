@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -23,7 +25,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
-public class ConfirmTicketFragment extends BaseFragment {
+public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View {
     private static final String ARG_BUS_TYPE = "BusType";
     private static final String ARG_ADDED_PASSENGERS_LIST = "AddedPassengersList";
 
@@ -51,6 +53,12 @@ public class ConfirmTicketFragment extends BaseFragment {
         return fragment;
     }
 
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -71,7 +79,8 @@ public class ConfirmTicketFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.fragment_confirm_ticket, container, false);
     }
 

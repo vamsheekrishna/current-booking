@@ -16,10 +16,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -34,7 +38,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.Objects;
 
-public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener {
+public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener, MvvmView.View {
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -51,6 +56,13 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
+    }
+
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getActivity();
     }
 
     @Override
@@ -139,7 +151,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
             mapFragment.getMapAsync(callback);
             fetchLocation();
         }
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        //ticketBookingModule = new ViewModelProvider(requireActivity(), getDefaultViewModelProviderFactory()).get(TicketBookingViewModel.class);
+        //ticketBookingModule = ViewModelProviders.of(this, new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
 
         selectTransport = view.findViewById(R.id.select_transport);
