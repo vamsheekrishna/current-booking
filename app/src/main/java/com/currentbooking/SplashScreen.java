@@ -1,7 +1,5 @@
 package com.currentbooking;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +8,6 @@ import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.UserData;
 import com.currentbooking.utilits.views.BaseActivity;
 
 public class SplashScreen extends BaseActivity {
