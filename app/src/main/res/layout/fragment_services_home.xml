@@ -8,7 +8,7 @@
         android:id="@+id/top_layout_field"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.3"
+        android:layout_weight="0.25"
         android:background="@color/red_three">
 
         <LinearLayout
@@ -61,7 +61,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_weight="0.75"
         android:scrollbars="none">
 
         <LinearLayout
@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:contentDescription="@string/app_name"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/ic_launcher" />
                 </RelativeLayout>
 
                 <TextView
@@ -158,7 +158,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="20dp"
                         android:contentDescription="@string/app_name"
                         android:src="@drawable/travel_pulse" />
                 </RelativeLayout>
@@ -186,13 +186,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:background="@drawable/rounded_circle_two"
+                    android:background="@drawable/white_rounded_circle"
                     android:gravity="center_vertical">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="20dp"
                         android:contentDescription="@string/app_name"
                         android:src="@drawable/shopping_cart" />
                 </RelativeLayout>

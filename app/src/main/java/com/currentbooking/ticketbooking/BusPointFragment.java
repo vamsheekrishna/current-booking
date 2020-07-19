@@ -26,6 +26,8 @@ import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusStopResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -42,7 +44,6 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     private String mParam1;
     private String mParam2;
     private TicketBookingViewModel ticketBookingModule;
-    private TicketBookingServices ticketService;
     BusStopAdapter busStopAdapter;
     private int mIndex;
 
@@ -122,31 +123,28 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
 
     private void getBusStopList(String stopPrefix) {
         progressDialog.show();
-        ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        ticketService.getBusStopList("MSRTC", stopPrefix).enqueue(new Callback<BusStopResponse>() {
+        TicketBookingServices ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        ticketService.getBusStopList("", stopPrefix).enqueue(new Callback<BusStopResponse>() {
             @Override
-            public void onResponse(Call<BusStopResponse> call, Response<BusStopResponse> response) {
-                if(response.isSuccessful()) {
-                    assert response.body() != null;
-                    if(response.body().getStatus().equalsIgnoreCase(getString(R.string.success))) {
-                        ArrayList<BusStopObject> data = response.body().getBusStopList().getBusStopList();
-                        /*for (int i = 0; i < data.size(); i++) {
-                            if (!Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopName().equals(data.get(i).getStopName())) {
-                                list.add(new ItemData(data.get(i).getStopName(), i));
-                            }
-                        }*/
-                        busStopAdapter.updateItems(data);
-                        busStopAdapter.notifyDataSetChanged();
-                    } else {
-                        String data = response.body().getMsg();
-                        showDialog("", data);
+            public void onResponse(@NotNull Call<BusStopResponse> call, @NotNull Response<BusStopResponse> response) {
+                if (response.isSuccessful()) {
+                    BusStopResponse body = response.body();
+                    if (body != null) {
+                        if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+                            ArrayList<BusStopObject> data = body.getBusStopList().getBusStopList();
+                            busStopAdapter.updateItems(data);
+                            busStopAdapter.notifyDataSetChanged();
+                        } else {
+                            String data = body.getMsg();
+                            showDialog("", data);
+                        }
                     }
                 }
                 progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<BusStopResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<BusStopResponse> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
             }
         });
@@ -169,8 +167,11 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         BusStopObject data = (BusStopObject)v.getTag();
         if (mIndex == 2) {
             // BusStopObject selectedBusPoint = busPoints.get(index);
-            if (!Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopName().equals(data.getStopName()) || !ticketBookingModule.getSelectedDropPoint().getValue().getStopName().equals(data.getStopName())) {
-                ticketBookingModule.getSelectedPickUpPoint().setValue(data);
+            BusStopObject busStopObject = ticketBookingModule.getSelectedPickUpPoint().getValue();
+            if (busStopObject != null) {
+                if(!busStopObject.getStopName().equals(data.getStopName())) {
+                    ticketBookingModule.getSelectedPickUpPoint().setValue(data);
+                }
             }
         } else if (mIndex == 3) {
             // BusStopObject selectedBusPoint = busPoints.get(index);

@@ -12,6 +12,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="290dp" />
+
     <ScrollView
         android:background="@drawable/login_body_bg"
         android:translationZ="90dp"
@@ -19,6 +20,7 @@
         android:layout_above="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_margin="16dp"
             android:layout_marginBottom="0dp"
@@ -26,24 +28,28 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/bus_point"
+                android:layout_marginTop="16dp"
+                layout="@layout/select_bus_points"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/select_transport"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/select_state_transport"
+                android:visibility="gone"
                 style="@style/text_view" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:visibility="gone"
                 android:id="@+id/select_bus_type"
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/select_bus_type"
                 style="@style/text_view" />
-            <include
-                android:visibility="gone"
-                android:id="@+id/bus_point"
-                android:layout_marginTop="16dp"
-                layout="@layout/select_bus_points"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+
         </LinearLayout>
     </ScrollView>
     <LinearLayout

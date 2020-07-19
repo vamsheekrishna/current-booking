@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ public class CustomLoadingDialog extends DialogFragment {
 
     public static Dialog getInstance(Context context) {
         Dialog dialog =  new Dialog(context, R.style.CustomLoadingDialogTheme);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         View inflate = View.inflate(context, R.layout.custom_loading_progress, null);
         dialog.setContentView(inflate);
         dialog.setCancelable(false);
