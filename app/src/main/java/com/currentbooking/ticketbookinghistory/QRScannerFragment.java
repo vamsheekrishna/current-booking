@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static android.content.Context.VIBRATOR_SERVICE;
+import static com.currentbooking.ticketbookinghistory.GenerateQRCode.ETIM_PRE_FIX;
 
 public class QRScannerFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
@@ -131,22 +133,13 @@ public class QRScannerFragment extends BaseFragment {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if(barcodes.size()!=0 ) {
                     final Barcode thisCode = barcodes.valueAt(0);
-                    if(thisCode.rawValue.contains("virtual_") && !isSuccess) {
-                        // cameraSource.stop();
-                        //detector.release();
-                        //isSuccess = true;
-
-                        Vibrator vibrator = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
+                    if(thisCode.rawValue.contains(ETIM_PRE_FIX) && !isSuccess) {
+                        Toast.makeText(getContext(),"ETIM PRE FIX"+thisCode.rawValue,Toast.LENGTH_LONG).show();
+                        Vibrator vibrator = (Vibrator) Objects.requireNonNull(getContext()).getSystemService(VIBRATOR_SERVICE);
                         assert vibrator != null;
                         vibrator.vibrate(new long[]{0, 200, 300,400} , -1);
                         Objects.requireNonNull(getActivity()).onBackPressed();
                     }
-//                    textView.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                                                        // textView.setText(thisCode.rawValue);
-//                        }
-//                    });
                 }
             }
         });

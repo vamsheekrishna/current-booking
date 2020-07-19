@@ -7,26 +7,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
+import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.views.BaseFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 public class GenerateQRCode extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String ETIM_PRE_FIX = "ETIM_";
 
     private MyTicketInfo myTicketInfo;
     private String mParam2;
     private ImageView imageView;
+    private String ticketJson= "{}";
 
     public GenerateQRCode() {
         //
@@ -61,17 +69,12 @@ public class GenerateQRCode extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imageView = view.findViewById(R.id.qr_code);
-        // generateQRCode();
-        // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
-        // String date = simpleDateFormat.format(new Date());
-        // String text= new Date().getTime()+"";
 
-        // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
+        Type ticketType = new TypeToken<MyTicketInfo>() {}.getType();
+        Gson gson = new Gson();
+        ticketJson = gson.toJson(myTicketInfo, ticketType);
 
-        // String date = simpleDateFormat.format(new Date());
-        // String date = new Date().getTime()+"";
-
-        String text="Sample";
+        String text= ETIM_PRE_FIX +ticketJson;
         imageView.setImageBitmap(encodeAsBitmap(text, 1020,1020));
     }
 
