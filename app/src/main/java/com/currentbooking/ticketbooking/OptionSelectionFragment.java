@@ -7,11 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
@@ -20,8 +19,9 @@ import com.currentbooking.ticketbooking.adapters.OptionSelectionAdapter;
 import com.currentbooking.ticketbooking.viewmodels.ItemData;
 import com.currentbooking.ticketbooking.viewmodels.OptionSelectionViewModel;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
-import com.currentbooking.utilits.cb_api.responses.BusPoint;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class OptionSelectionFragment extends BaseFragment implements View.OnClickListener {
+public class OptionSelectionFragment extends BaseFragment implements View.OnClickListener, MvvmView.View {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,6 +74,12 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
         // callBackInterface = (CallBackInterface) context;
     }
 
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
+
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,7 +91,8 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                 null, false);
         OptionSelectionViewModel optionSelectionViewModel = new OptionSelectionViewModel();
         dataBinding.setViewModel(optionSelectionViewModel);
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         loadUIComponents(dataBinding);
         return dataBinding.getRoot();
     }

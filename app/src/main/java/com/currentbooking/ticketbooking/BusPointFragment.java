@@ -1,6 +1,7 @@
 package com.currentbooking.ticketbooking;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.adapters.BusStopAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
@@ -30,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BusPointFragment extends BaseFragment implements View.OnClickListener {
+public class BusPointFragment extends BaseFragment implements View.OnClickListener, MvvmView.View {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -77,10 +80,17 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         Objects.requireNonNull(getActivity()).setTitle("Select Bus Stop");
     }
 
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         SearchView searchView = view.findViewById(R.id.searchView);
         RecyclerView resultsListField = view.findViewById(R.id.search_results_field);
         resultsListField.setHasFixedSize(false);

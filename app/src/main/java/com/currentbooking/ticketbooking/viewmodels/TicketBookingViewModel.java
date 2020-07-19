@@ -1,16 +1,18 @@
 package com.currentbooking.ticketbooking.viewmodels;
 
-import android.graphics.Bitmap;
+import android.app.Dialog;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.currentbooking.utilits.LoggerInfo;
-import com.currentbooking.utilits.cb_api.responses.BusObject;
-import com.currentbooking.utilits.cb_api.responses.BusOperator;
+import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.BusObject;
+import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.BusOperatorList;
 import com.currentbooking.utilits.cb_api.responses.BusPoint;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
@@ -20,9 +22,11 @@ import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRates;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
+import com.currentbooking.utilits.views.CustomLoadingDialog;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -44,14 +48,17 @@ public class TicketBookingViewModel extends ViewModel {
 
     private MutableLiveData<BusObject> selectedBusObject = new MutableLiveData<>();
     private MutableLiveData<BusOperator> selectedBusOperator;
-    
+
     private MutableLiveData<Concession> selectedConcession = new MutableLiveData<>();
     private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Concession>> concessionList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ConcessionRates>> concessionRates = new MutableLiveData<>();
+    private Dialog loadingDialog;
+    private MvvmView.View mvvmView;
 
 
-    public TicketBookingViewModel() {
+    public TicketBookingViewModel(MvvmView.View mvvmView) {
+        this.mvvmView = mvvmView;
         ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         getBusOperators();
     }
@@ -59,6 +66,7 @@ public class TicketBookingViewModel extends ViewModel {
     public LiveData<ArrayList<BusPoint>> getBusPoints() {
         return busPoints;
     }
+
     public MutableLiveData<BusStopObject> getSelectedPickUpPoint() {
         return selectedPickUpPoint;
     }
@@ -69,6 +77,7 @@ public class TicketBookingViewModel extends ViewModel {
     public LiveData<ArrayList<BusOperator>> getBusOperators() {
         if (busOperators == null) {
             busOperators = new MutableLiveData<>();
+            loadingDialog = CustomLoadingDialog.getInstance(mvvmView.getContext());
             loadBusOperators();
         }
         return busOperators;
@@ -93,49 +102,59 @@ public class TicketBookingViewModel extends ViewModel {
         return selectedBusObject;
     }
     private void loadBusOperators() {
+        loadingDialog.show();
         ticketBookingServices.getBusOperators().enqueue(new Callback<BusOperatorList>() {
             @Override
-            public void onResponse(Call<BusOperatorList> call, Response<BusOperatorList> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<BusOperatorList> call, @NotNull Response<BusOperatorList> response) {
+                loadingDialog.dismiss();
+                if (response.isSuccessful()) {
                     LoggerInfo.printLog("operators list response", response.body());
                     BusOperatorList data = response.body();
-                    if(data.getStatus().equals("success")) {
-                        if (null != data.getBusOperatorList().getBusOperators()) {
-                            busOperators.setValue(data.getBusOperatorList().getBusOperators());
+                    if (data != null) {
+                        if (data.getStatus().equals("success")) {
+                            if (null != data.getBusOperatorList().getBusOperators()) {
+                                busOperators.setValue(data.getBusOperatorList().getBusOperators());
+                            }
+                        } else {
+                            busOperators.setValue(new ArrayList<>());
                         }
-                    } else {
-                        busOperators.setValue(new ArrayList<>());
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<BusOperatorList> call, Throwable t) {
+            public void onFailure(@NotNull Call<BusOperatorList> call, @NotNull Throwable t) {
+                loadingDialog.dismiss();
                 busOperators.setValue(new ArrayList<>());
             }
         });
     }
 
     public void loadBusTypes() {
-        if(selectedBusOperator!=null) {
-            String operator = selectedBusOperator.getValue().getOperatorCode().toLowerCase();
+        if (selectedBusOperator != null) {
+            loadingDialog.show();
+            String operator = Objects.requireNonNull(selectedBusOperator.getValue()).getOperatorCode().toLowerCase();
             ticketBookingServices.getBusTypes(operator).enqueue(new Callback<BusTypeList>() {
                 @Override
-                public void onResponse(Call<BusTypeList> call, Response<BusTypeList> response) {
-                    if(response.isSuccessful()) {
+                public void onResponse(@NotNull Call<BusTypeList> call, @NotNull Response<BusTypeList> response) {
+                    loadingDialog.dismiss();
+                    if (response.isSuccessful()) {
                         BusTypeList data = response.body();
-                        if(data.getStatus().equals("success")) {
-                            if (null != data.getBusTypes().getBusTypes()) {
-                                busTypes.setValue(data.getBusTypes().getBusTypes());
+                        if (data != null) {
+                            if (data.getStatus().equals("success")) {
+                                if (null != data.getBusTypes().getBusTypes()) {
+                                    busTypes.setValue(data.getBusTypes().getBusTypes());
+                                }
+                            } else {
+                                busTypes.setValue(new ArrayList<>());
                             }
-                        } else {
-                            busTypes.setValue(new ArrayList<>());
                         }
                     }
                 }
 
                 @Override
-                public void onFailure(Call<BusTypeList> call, Throwable t) {
+                public void onFailure(@NotNull Call<BusTypeList> call, @NotNull Throwable t) {
+                    loadingDialog.dismiss();
                     busTypes.setValue(new ArrayList<>());
                 }
             });

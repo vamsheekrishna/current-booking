@@ -140,4 +140,10 @@
     <string name="name">Name</string>
     <string name="name_cannot_be_empty">Name cannot be Empty</string>
     <string name="feature_availability_msg">Please wait, this feature will available soon</string>
+    <string name="current_booking">Current Booking</string>
+    <string name="advance_booking">Advance Booking</string>
+    <string name="travel_pulse">Travel Pulse</string>
+    <string name="e_commerce">E Commerce</string>
+    <string name="welcome">Welcome</string>
+    <string name="services_home">Services Home</string>
 </resources>

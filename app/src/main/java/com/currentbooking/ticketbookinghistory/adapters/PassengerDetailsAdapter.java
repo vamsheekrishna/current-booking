@@ -38,7 +38,7 @@ public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetai
     @Override
     public void onBindViewHolder(@NonNull PassengerDetailsViewHolder holder, int position) {
         PassengerDetailsModel passengerDetailsModel = listData.get(position);
-        holder.tvConcessionNameField.setText(passengerDetailsModel.getType());
+        holder.tvPassengerTypeField.setText(passengerDetailsModel.getType());
         holder.tvPassengerAgeField.setText(passengerDetailsModel.getAge());
         String concession = passengerDetailsModel.getConcessionCD();
         if (TextUtils.isEmpty(concession)) {

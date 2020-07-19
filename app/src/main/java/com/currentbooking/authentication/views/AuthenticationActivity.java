@@ -1,4 +1,5 @@
 package com.currentbooking.authentication.views;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -6,26 +7,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.currentbooking.R;
-import com.currentbooking.SplashScreen;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
-import com.currentbooking.authentication.view_models.Authentication;
 import com.currentbooking.home.HomeActivity;
 import com.currentbooking.profile.ProfileActivity;
-import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.views.BaseActivity;
-import com.currentbooking.utilits.views.BaseFragment;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
 
 public class AuthenticationActivity extends BaseActivity implements OnAuthenticationClickedListener {
-    private Authentication authentication;
 
     private static final int REQUEST_CODE = 101;
 
@@ -34,12 +23,10 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Bundle extras = getIntent().getExtras();
-        String userName;
 
         if (extras != null) {
             addFragment(ChangePasswordFragment.newInstance("", ""), "ChangePasswordFragment", false);
         } else if(savedInstanceState == null) {
-            authentication = new ViewModelProvider(this).get(Authentication.class);
             addFragment(AuthenticationHomeFragment.newInstance("", ""), "AuthenticationHomeFragment", false);
         }
     }

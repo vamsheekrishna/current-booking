@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,6 +20,8 @@ import com.currentbooking.databinding.FragmentSelectBusBinding;
 import com.currentbooking.ticketbooking.adapters.SelectBusesAdapter;
 import com.currentbooking.ticketbooking.viewmodels.SelectBusesViewModel;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.AvailableBusList;
@@ -35,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class SelectBusesFragment extends BaseFragment {
+public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,6 +72,12 @@ public class SelectBusesFragment extends BaseFragment {
         mListener = (OnTicketBookingListener) context;
     }
 
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +106,8 @@ public class SelectBusesFragment extends BaseFragment {
         dataBinding.setViewModel(selectBusesViewModel);
 
         loadUIComponents(dataBinding);
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
 
         progressDialog.show();
         TicketBookingServices busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);

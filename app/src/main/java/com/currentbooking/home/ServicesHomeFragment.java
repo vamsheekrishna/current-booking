@@ -10,48 +10,27 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
-import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.home.dummy.DummyContent;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 
-public class ServicesHomeFragment extends BaseFragment implements View.OnClickListener {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    TextView mBalance;
-    private String mParam1;
-    private String mParam2;
+public class ServicesHomeFragment extends BaseFragment {
 
     public ServicesHomeFragment() {
         // Required empty public constructor
     }
 
-    public static ServicesHomeFragment newInstance(String param1, String param2) {
-        ServicesHomeFragment fragment = new ServicesHomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static ServicesHomeFragment newInstance() {
+        return new ServicesHomeFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-    @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle("Services Home");
+        requireActivity().setTitle(getString(R.string.services_home));
     }
 
     @Override
@@ -64,48 +43,34 @@ public class ServicesHomeFragment extends BaseFragment implements View.OnClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.list);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-            String usrName = myProfile.getFirstName() + " " + myProfile.getLastName();
-            if (!TextUtils.isEmpty(usrName))
-                ((TextView) view.findViewById(R.id.name)).setText(usrName);
-            else
-                startActivity(new Intent(getContext(), AuthenticationActivity.class));
+            String userName = String.format("%s %s", myProfile.getFirstName(), myProfile.getLastName());
+            if (!TextUtils.isEmpty(userName))
+                ((TextView) view.findViewById(R.id.user_name_field)).setText(userName);
         }
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        DummyContent.ITEMS.clear();
-        DummyContent.createDummyItem(1, R.drawable.ic_launcher, "Current Booking");
-        DummyContent.createDummyItem(2, R.drawable.tp, "Travel Pulse");
-        DummyContent.createDummyItem(3, R.drawable.insurance, "Insurance");
-        recyclerView.setAdapter(new MyServiceRecyclerViewAdapter(DummyContent.ITEMS, this));
+        view.findViewById(R.id.current_booking_layout_field).setOnClickListener(v -> currentBookingSelected());
+        view.findViewById(R.id.advance_booking_layout_field).setOnClickListener(v -> advanceBookingSelected());
+        view.findViewById(R.id.travel_pulse_layout_field).setOnClickListener(v -> travelPulseSelected());
+        view.findViewById(R.id.shopping_cart_layout_field).setOnClickListener(v -> shoppingCartSelected());
     }
 
-    @Override
-    public void onClick(View view) {
-            DummyContent.DummyItem mItem = (DummyContent.DummyItem) view.getTag();
-            Intent intent;
-            if(mItem.id == 1) {
-                intent = new Intent(getActivity(), TicketBookingActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-            /*else if(mItem.id == 2) {
-                intent = new Intent(getActivity(), DMTActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            } else if(mItem.id == 10) {
-                intent = new Intent(getActivity(), AEPSActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            } else if(mItem.id == 3) {
-                intent = new Intent(getActivity(), MFS100Test.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }*/
-            else {
-                showDialog("", getString(R.string.feature_availability_msg));
-            }
+    private void currentBookingSelected() {
+        Intent intent = new Intent(getActivity(), TicketBookingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    private void advanceBookingSelected() {
+        showDialog("", getString(R.string.feature_availability_msg));
+    }
+
+    private void travelPulseSelected() {
+        showDialog("", getString(R.string.feature_availability_msg));
+    }
+
+    private void shoppingCartSelected() {
+        showDialog("", getString(R.string.feature_availability_msg));
     }
 }

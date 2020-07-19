@@ -20,7 +20,9 @@ import com.currentbooking.R;
 import com.currentbooking.ticketbooking.adapters.ConcessionAddPassengersAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
@@ -50,7 +52,7 @@ import retrofit2.Response;
  * Created by Satya Seshu on 22/06/20.
  */
 
-public class PassengerDetailsFragment extends BaseFragment {
+public class PassengerDetailsFragment extends BaseFragment implements MvvmView.View {
     private static final String ARG_BUS_TYPE = "BusType";
 
     private BusObject busDetails;
@@ -85,6 +87,12 @@ public class PassengerDetailsFragment extends BaseFragment {
         mListener = (OnTicketBookingListener) context;
     }
 
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +108,8 @@ public class PassengerDetailsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
-        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         busOperatorDetails = ticketBookingModule.getSelectedBusOperator().getValue();
 
         View view = inflater.inflate(R.layout.fragment_passenger_details, container, false);
