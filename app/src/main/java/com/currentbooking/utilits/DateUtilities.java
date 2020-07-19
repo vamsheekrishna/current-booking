@@ -20,7 +20,7 @@ public class DateUtilities {
             return getTimeFromCalendar(Calendar.getInstance(locale));
         }
         try {
-            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_FORMAT_TWO, locale); //MM/dd/yyyy
+            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_FORMAT_TWO, locale); //dd MMM yyyy
             Date date = formatter.parse(dateValue);
             Calendar cal = Calendar.getInstance(locale);
             if (date != null) {
@@ -134,6 +134,20 @@ public class DateUtilities {
 
         return getDateOfBirthFromCalendar(Calendar.getInstance(locale));
     }
+
+    public static String getDateOfBirthFromCalendar1(Calendar calendar) {
+        Locale locale = Locale.getDefault();
+        try {
+            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_FORMAT_TWO, locale); //dd MMM yyy
+            return formatter.format(calendar.getTime());
+        } catch (Exception ex) {
+            LoggerInfo.errorLog("getDateStringFromCalendar1", ex.getMessage());
+        }
+
+        return getDateOfBirthFromCalendar(Calendar.getInstance(locale));
+    }
+
+
 
     public static String getCurrentDate() {
         Locale locale = Locale.getDefault();

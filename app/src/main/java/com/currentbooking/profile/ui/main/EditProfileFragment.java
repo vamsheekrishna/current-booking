@@ -66,7 +66,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private AppCompatEditText email;
     private AppCompatImageView ivProfileImageField;
 
-    AppCompatTextView dob, male, female;
+    AppCompatTextView dobField, male, female;
     private Calendar dateOfBirthCalendar;
     String gender = "Male";
     private Uri profileImageUri = null;
@@ -126,9 +126,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         etLastName.setText(MyProfile.getInstance().getLastName());
         ((TextView) view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
         ((TextView) view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
-        dob = view.findViewById(R.id.dob);
-        dob.setText(MyProfile.getInstance().getDob());
-        dob.setOnClickListener(this);
+        dobField = view.findViewById(R.id.dob);
+        //dob.setText(MyProfile.getInstance().getDob());
+        dobField.setOnClickListener(this);
         male= view.findViewById(R.id.male);
         male.setOnClickListener(this);
         female = view.findViewById(R.id.female);
@@ -144,14 +144,23 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         etPinCode = view.findViewById(R.id.pin_code);
         etPinCode.setText(MyProfile.getInstance().getPinCode());
         view.findViewById(R.id.save_profile).setOnClickListener(this);
-        if (MyProfile.getInstance().getGender().equalsIgnoreCase(getString(R.string.male))) {
-            selectedMale();
-        } else {
-            selectedFemale();
-        }
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
         ivProfileImageField.setOnClickListener(this);
         updateUserProfileImage();
+
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            String dob = myProfile.getDob();
+            if (!TextUtils.isEmpty(dob)) {
+                dateOfBirthCalendar = DateUtilities.getCalendarFromDate2(dob);
+                dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dateOfBirthCalendar));
+            }
+            if (myProfile.getGender().equalsIgnoreCase(getString(R.string.male))) {
+                selectedMale();
+            } else {
+                selectedFemale();
+            }
+        }
     }
 
     @Override
@@ -312,9 +321,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 dateOfBirthCalendar.set(Calendar.YEAR, year);
                 dateOfBirthCalendar.set(Calendar.MONTH, month);
                 dateOfBirthCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String myFormat = "dd/MMM/yyyy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
-                dob.setText(sdf.format(dateOfBirthCalendar.getTime()));
+                dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dateOfBirthCalendar));
                 dateOfBirthValue = DateUtilities.getDateOfBirthFromCalendar(dateOfBirthCalendar);
             }
         });

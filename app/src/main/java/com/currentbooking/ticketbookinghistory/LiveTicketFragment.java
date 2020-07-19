@@ -106,8 +106,10 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
         String headerText = String.format(Locale.getDefault(), "%d Live Tickets Found on %s", liveTicketsList.size(), DateUtilities.getCurrentDate());
         liveTicketHeaderField.setText(headerText);
 
-        LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
-        liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
+        if(!liveTicketsList.isEmpty()) {
+            LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
+            liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
+        }
 
         liveTicketsListRecyclerField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), liveTicketsListRecyclerField, new RecyclerTouchListener.ClickListener() {
 

@@ -2,6 +2,7 @@ package com.currentbooking.utilits.views;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -30,12 +31,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import io.reactivex.Single;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -76,9 +80,31 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             String imageUrl = myProfile.getProfileImage();
+            ProgressBarCircular profileCircularBar = findViewById(R.id.profile_circular_field);
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
-                        transform(new CircleTransform()).into(ivProfileImageField);
+                //Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                //      transform(new CircleTransform()).into(ivProfileImageField);
+
+                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                        transform(new CircleTransform()).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        profileCircularBar.setVisibility(View.GONE);
+                        ivProfileImageField.setImageBitmap(bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        ivProfileImageField.setImageResource(R.drawable.avatar);
+                        profileCircularBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        ivProfileImageField.setImageDrawable(placeHolderDrawable);
+                    }
+                });
+
             }
             String emailID = myProfile.getEmail();
             if (!TextUtils.isEmpty(emailID)) {

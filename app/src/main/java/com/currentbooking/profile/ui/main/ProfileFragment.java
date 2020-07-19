@@ -16,12 +16,14 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.CircleTransform;
+import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
@@ -32,7 +34,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private TextView fName;
     private TextView lastName;
     private TextView mobileNo;
-    private TextView dob;
+    private TextView dobField;
     private TextView address1;
     private TextView address2;
     private TextView pinCode;
@@ -62,7 +64,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fName.setText(MyProfile.getInstance().getFirstName());
         lastName.setText(MyProfile.getInstance().getLastName());
         mobileNo.setText(MyProfile.getInstance().getMobileNumber());
-        dob.setText(MyProfile.getInstance().getDob());
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            String dob = myProfile.getDob();
+            if (!TextUtils.isEmpty(dob)) {
+                Calendar dobCalendar = DateUtilities.getCalendarFromDate2(dob);
+                dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dobCalendar));
+            }
+        }
+
         address1.setText(MyProfile.getInstance().getAddress1());
         address2.setText(MyProfile.getInstance().getAddress2());
         pinCode.setText(MyProfile.getInstance().getPinCode());
@@ -92,7 +102,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         mobileNo = view.findViewById(R.id.mobile_no);
         AppCompatTextView email = view.findViewById(R.id.email);
         email.setText(MyProfile.getInstance().getEmail());
-        dob = view.findViewById(R.id.dob);
+        dobField = view.findViewById(R.id.dob);
         address1 = view.findViewById(R.id.address1);
         address2 = view.findViewById(R.id.address2);
         AppCompatTextView state = view.findViewById(R.id.state);
