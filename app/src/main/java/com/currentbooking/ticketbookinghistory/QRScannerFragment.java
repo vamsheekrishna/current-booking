@@ -87,30 +87,8 @@ public class QRScannerFragment extends BaseFragment {
                 .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
                 .build();
 
-        cameraSource = new CameraSource.Builder(getActivity(), detector).setRequestedPreviewSize(640,480)
+        cameraSource = new CameraSource.Builder(getActivity(), detector).setRequestedPreviewSize(1020,1020)
                 .build();
-        //ImageView myImageView = findViewById(R.id.imgview);
-        /*myBitmap = BitmapFactory.decodeResource(
-                getApplicationContext().getResources(),
-                R.drawable.qr_code);*/
-        //myImageView.setImageBitmap(myBitmap);
-        /*textView = view.findViewById(R.id.txtContent);
-
-        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Vibrator vibrator = (Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE);
-                        assert vibrator != null;
-                        vibrator.vibrate(new long[]{0, 200} , -1);
-                        textView.setText("");
-                    }
-                });
-            }
-        });*/
-
         showPreview(view);
     }
 

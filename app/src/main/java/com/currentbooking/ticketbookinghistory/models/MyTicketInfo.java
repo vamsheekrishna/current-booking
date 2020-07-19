@@ -59,9 +59,11 @@ public class MyTicketInfo implements Serializable {
     @SerializedName("no_child_seat")
     @Expose
     String no_child_seat;
+
     @SerializedName("no_con_seat")
     @Expose
     String no_con_seat;
+
     @SerializedName("passenger_details")
     @Expose
     ArrayList<PassengerDetailsModel> passengerDetailsList;

@@ -25,7 +25,7 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
 
     @Override
     public void generateQRCode(MyTicketInfo busTicketDetails) {
-        replaceFragment(GenerateVirtualCard.newInstance(busTicketDetails, ""), "LiveTicketFragment", true);
+        replaceFragment(GenerateQRCode.newInstance(busTicketDetails, ""), "LiveTicketFragment", true);
     }
 
     @Override

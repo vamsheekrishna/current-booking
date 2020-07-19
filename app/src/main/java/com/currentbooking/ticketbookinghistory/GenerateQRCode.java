@@ -19,7 +19,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-public class GenerateVirtualCard extends BaseFragment {
+public class GenerateQRCode extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -27,13 +27,12 @@ public class GenerateVirtualCard extends BaseFragment {
     private MyTicketInfo myTicketInfo;
     private String mParam2;
     private ImageView imageView;
-    private TextView qrCodeText, qrCodeName;
 
-    public GenerateVirtualCard() {
+    public GenerateQRCode() {
         //
     }
-    public static GenerateVirtualCard newInstance(MyTicketInfo param1, String param2) {
-        GenerateVirtualCard fragment = new GenerateVirtualCard();
+    public static GenerateQRCode newInstance(MyTicketInfo param1, String param2) {
+        GenerateQRCode fragment = new GenerateQRCode();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,8 +61,6 @@ public class GenerateVirtualCard extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imageView = view.findViewById(R.id.qr_code);
-        qrCodeText = view.findViewById(R.id.qr_code_text);
-        qrCodeName = view.findViewById(R.id.qr_code_name);
         // generateQRCode();
         // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
         // String date = simpleDateFormat.format(new Date());
@@ -74,10 +71,8 @@ public class GenerateVirtualCard extends BaseFragment {
         // String date = simpleDateFormat.format(new Date());
         // String date = new Date().getTime()+"";
 
-        String text="virtual_";
-        qrCodeText.setText("123 456 345");
-        qrCodeName.setText("Sample Name");
-        imageView.setImageBitmap(encodeAsBitmap(text, 600,600));
+        String text="Sample";
+        imageView.setImageBitmap(encodeAsBitmap(text, 1020,1020));
     }
 
     public static Bitmap encodeAsBitmap(String source, int width, int height) {
