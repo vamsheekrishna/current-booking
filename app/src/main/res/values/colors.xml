@@ -26,6 +26,11 @@
     <color name="red_two">#EF4B4E</color>
     <color name="edit_text_border_color_two">#E0E0E0</color>
     <color name="gray_color_two">#b6b6b6</color>
-    <color name="transparent">#4D808080</color>
+    <color name="red_three">#E42A32</color>
+    <color name="light_pink">#FFE4E4</color>
+    <color name="light_green">#D0FFCB</color>
+    <color name="sky_blue">#C5DEFF</color>
+    <color name="light_yellow">#F5F0AA</color>
+    <color name="transparent">@android:color/transparent</color>
 
 </resources>

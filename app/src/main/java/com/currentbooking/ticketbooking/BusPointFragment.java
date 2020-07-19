@@ -123,8 +123,9 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
 
     private void getBusStopList(String stopPrefix) {
         progressDialog.show();
+        String operatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
         TicketBookingServices ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        ticketService.getBusStopList("", stopPrefix).enqueue(new Callback<BusStopResponse>() {
+        ticketService.getBusStopList(operatorName, stopPrefix).enqueue(new Callback<BusStopResponse>() {
             @Override
             public void onResponse(@NotNull Call<BusStopResponse> call, @NotNull Response<BusStopResponse> response) {
                 if (response.isSuccessful()) {

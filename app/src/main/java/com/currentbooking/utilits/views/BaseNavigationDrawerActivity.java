@@ -99,12 +99,11 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 String ageDifference = String.format(Locale.getDefault(), "%d yrs", age);
                 tvUserAgeField.setText(ageDifference);
             }
+            myProfile.getUserProfileImage().observe(this, bitmap -> {
+                Bitmap newBitmap = CommonUtils.getCircularBitmap(bitmap);
+                ivProfileImageField.setImageBitmap(newBitmap);
+            });
         }
-
-        MyProfile.getInstance().getUserProfileImage().observe(this, bitmap -> {
-            Bitmap newBitmap = CommonUtils.getCircularBitmap(bitmap);
-            ivProfileImageField.setImageBitmap(newBitmap);
-        });
     }
 
     @Override

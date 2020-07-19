@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
@@ -155,13 +158,13 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
 
         selectTransport = view.findViewById(R.id.select_transport);
-        selectTransport.setVisibility(View.GONE);
         selectTransport.setOnClickListener(this);
 
         selectBusType = view.findViewById(R.id.select_bus_type);
         selectBusType.setOnClickListener(this);
         selectBusType.setVisibility(View.GONE);
         bus_point = view.findViewById(R.id.bus_point);
+        bus_point.setVisibility(View.GONE);
 
         pickUp = view.findViewById(R.id.pick_up);
         pickUp.setOnClickListener(this);
@@ -179,22 +182,24 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
             pickUp.setText(busPoint.getStopName());
         });
 
-        ticketBookingModule.getSelectedDropPoint().observe(getActivity(), busPoint -> {
-            dropPoint.setText(busPoint.getStopName());
+        ticketBookingModule.getSelectedDropPoint().observe(getActivity(),          busPoint -> {
+            String stopName = busPoint.getStopName();
+            if(!TextUtils.isEmpty(stopName)) {
+                dropPoint.setText(stopName);
+                selectBusType.setVisibility(View.VISIBLE);
+            }
         });
 
         ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
             if(null != busOperator) {
                 selectTransport.setText(busOperator.getOpertorName());
-                selectBusType.setVisibility(View.VISIBLE);
-                bus_point.setVisibility(View.GONE);
+                bus_point.setVisibility(View.VISIBLE);
             }
         });
 
         ticketBookingModule.getSelectedBusType().observe(getActivity(), busType -> {
             if(null != busType && null != busType.getBusTypeName() && busType.getBusTypeName().length()>0) {
                 selectBusType.setText(busType.getBusTypeName());
-                bus_point.setVisibility(View.VISIBLE);
             }
         });
     }

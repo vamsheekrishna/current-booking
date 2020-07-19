@@ -126,7 +126,7 @@ public class DateUtilities {
     public static String getDateOfBirthFromCalendar(Calendar calendar) {
         Locale locale = Locale.getDefault();
         try {
-            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_FORMAT_ONE, locale);
+            DateFormat formatter = new SimpleDateFormat(CALENDAR_DATE_FORMAT_ONE, locale); //dd-MM-yyy
             return formatter.format(calendar.getTime());
         } catch (Exception ex) {
             LoggerInfo.errorLog("getDateStringFromCalendar1", ex.getMessage());

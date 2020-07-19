@@ -222,7 +222,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         String _etState =  Objects.requireNonNull(etState.getText()).toString().trim();
         String _etPinCode = Objects.requireNonNull(etPinCode.getText()).toString().trim();
         String _email = Objects.requireNonNull(email.getText()).toString().trim();
-        String _dob = Objects.requireNonNull(dob.getText()).toString().trim();
+        //String _dob = Objects.requireNonNull(dob.getText()).toString().trim();
         if (!Utils.isValidWord(fName)) {
             showDialog("", getString(R.string.error_first_name));
         } else if (!Utils.isValidWord(lName)) {
@@ -246,7 +246,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 MyProfile.getInstance().setState(_etState);
                                 MyProfile.getInstance().setPinCode(_etPinCode);
                                 MyProfile.getInstance().setEmail(_email);
-                                MyProfile.getInstance().setDob(_dob);
+                                MyProfile.getInstance().setDob(dateOfBirthValue);
                                 showDialog("", response.body().getMsg(), (dialog, which) -> {
                                     Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
                                     MyProfile.getInstance().setUserProfileImage(bitmap);

@@ -46,6 +46,7 @@
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/user_id"
                 style="@style/edit_text"
+                android:visibility="gone"
                 android:text="@string/user_id" />
 
             <androidx.appcompat.widget.AppCompatTextView

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.currentbooking.R;
 import com.currentbooking.utilits.CircleTransform;
@@ -31,11 +32,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private TextView fName;
     private TextView lastName;
     private TextView mobileNo;
-    private TextView email;
     private TextView dob;
     private TextView address1;
     private TextView address2;
-    private TextView state;
     private TextView pinCode;
     private AppCompatImageView ivProfileImageField;
 
@@ -91,12 +90,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fName = view.findViewById(R.id.first_name);
         lastName = view.findViewById(R.id.last_name);
         mobileNo = view.findViewById(R.id.mobile_no);
-        email = view.findViewById(R.id.email);
+        AppCompatTextView email = view.findViewById(R.id.email);
         email.setText(MyProfile.getInstance().getEmail());
         dob = view.findViewById(R.id.dob);
         address1 = view.findViewById(R.id.address1);
         address2 = view.findViewById(R.id.address2);
-        state = view.findViewById(R.id.state);
+        AppCompatTextView state = view.findViewById(R.id.state);
         state.setText(MyProfile.getInstance().getState());
         pinCode = view.findViewById(R.id.pin_code);
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
