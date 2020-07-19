@@ -1,36 +1,18 @@
 package com.currentbooking.ticketbooking;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.text.TextUtils;
 
 import com.currentbooking.R;
-import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class TicketBookingActivity extends BaseNavigationDrawerActivity implements OnTicketBookingListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*Bundle extras = getIntent().getExtras();
-        if(extras == null) {
-            newString= null;
-        } else {
-            newString= extras.getString("STRING_I_NEED");
-        }*/
 
         if (savedInstanceState == null) {
             addFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", false);

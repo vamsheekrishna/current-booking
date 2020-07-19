@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
@@ -85,7 +86,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 //Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
                 //      transform(new CircleTransform()).into(ivProfileImageField);
 
-                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
+                /*Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
                         transform(new CircleTransform()).into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -103,7 +104,13 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     public void onPrepareLoad(Drawable placeHolderDrawable) {
                         ivProfileImageField.setImageDrawable(placeHolderDrawable);
                     }
-                });
+                });*/
+
+               /* GlideApp.with(this).load(trainerProfileUrl).placeholder(R.drawable.user_default_profile)
+                        .circleCrop()
+                        .error(R.drawable.user_default_profile).into(ivTrainerImageField);
+
+                GlideA*/
 
             }
             String emailID = myProfile.getEmail();
