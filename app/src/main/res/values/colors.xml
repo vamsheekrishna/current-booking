@@ -26,5 +26,6 @@
     <color name="red_two">#EF4B4E</color>
     <color name="edit_text_border_color_two">#E0E0E0</color>
     <color name="gray_color_two">#b6b6b6</color>
+    <color name="transparent">#4D808080</color>
 
 </resources>

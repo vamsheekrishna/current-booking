@@ -1,6 +1,6 @@
 package com.currentbooking.utilits.cb_api.responses;
 
-import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
+import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,13 +10,13 @@ public class TodayTickets extends BaseResponse {
 
     @SerializedName("result")
     @Expose
-    ArrayList<AvailableTickets> availableTickets;
+    ArrayList<MyTicketInfo> availableTickets;
 
-    public ArrayList<AvailableTickets> getAvailableTickets() {
+    public ArrayList<MyTicketInfo> getAvailableTickets() {
         return availableTickets;
     }
 
-    public void setAvailableTickets(ArrayList<AvailableTickets> availableTickets) {
+    public void setAvailableTickets(ArrayList<MyTicketInfo> availableTickets) {
         this.availableTickets = availableTickets;
     }
 }

@@ -1,8 +1,12 @@
 package com.currentbooking.ticketbookinghistory;
 
-import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
+import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 
 public interface OnTicketBookingHistoryListener {
     void showLiveTickets();
-    void viewTicket(AvailableTickets liveTicketsModel);
+    void viewTicket(MyTicketInfo liveTicketsModel);
+
+    void generateQRCode(MyTicketInfo busTicketDetails);
+
+    void scanQRCode(MyTicketInfo busTicketDetails);
 }

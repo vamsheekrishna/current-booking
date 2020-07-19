@@ -1,6 +1,7 @@
 package com.currentbooking.ticketbooking;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -181,7 +182,12 @@ public class SelectBusesFragment extends BaseFragment {
         if (selectBusesAdapter != null) {
             busesResultListField.setAdapter(selectBusesAdapter);
         } else {
-            showDialog("", getString(R.string.no_information_available));
+            showDialog("", getString(R.string.no_information_available), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Objects.requireNonNull(getActivity()).onBackPressed();
+                }
+            });
         }
     }
 }

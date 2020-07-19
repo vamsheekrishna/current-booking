@@ -1,5 +1,6 @@
 package com.currentbooking.ticketbookinghistory;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.adapters.PassengerDetailsAdapter;
-import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
+import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.ticketbookinghistory.models.PassengerDetailsModel;
 import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -22,29 +23,27 @@ import com.currentbooking.utilits.views.BaseFragment;
 import java.util.List;
 import java.util.Objects;
 
-public class ViewTicketFragment extends BaseFragment {
+public class ViewTicketFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private AvailableTickets busTicketDetails;
+    private MyTicketInfo busTicketDetails;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private OnTicketBookingHistoryListener mListener;
 
     public ViewTicketFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param ticketDetails Parameter 1.
-     * @param param2        Parameter 2.
-     * @return A new instance of fragment ViewTicketFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ViewTicketFragment newInstance(AvailableTickets ticketDetails, String param2) {
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnTicketBookingHistoryListener)context;
+    }
+
+    public static ViewTicketFragment newInstance(MyTicketInfo ticketDetails, String param2) {
         ViewTicketFragment fragment = new ViewTicketFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, ticketDetails);
@@ -57,7 +56,7 @@ public class ViewTicketFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            busTicketDetails = (AvailableTickets) getArguments().getSerializable(ARG_PARAM1);
+            busTicketDetails = (MyTicketInfo) getArguments().getSerializable(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -71,6 +70,8 @@ public class ViewTicketFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.view_qr_code).setOnClickListener(this);
+        view.findViewById(R.id.scan_qr_code).setOnClickListener(this);
         loadUIComponents(view);
     }
 
@@ -82,12 +83,6 @@ public class ViewTicketFragment extends BaseFragment {
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
                 R.drawable.recycler_decoration_divider)));
         passengerListRecyclerField.addItemDecoration(divider);
-
-        /*List<Object> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);*/
-
         TextView tvBusRouteNameField = view.findViewById(R.id.tv_route_name_field);
         TextView tvBusRouteField = view.findViewById(R.id.tv_bus_route_field);
         TextView tvJourneyStartTimeField = view.findViewById(R.id.tv_bus_journey_start_time_field);
@@ -103,8 +98,6 @@ public class ViewTicketFragment extends BaseFragment {
         tvJourneyEndTimeField.setText(busTicketDetails.getDrop_time());
         String journeyHrs = String.format("%s Hrs", busTicketDetails.getHours());
         tvJourneyHrsField.setText(journeyHrs);
-       /* String ticketNo = String.format("%s %s", getString(R.string.ticket_number), busTicketDetails.getOrder_id());
-        approvedViewHolder.tvTicketNoField.setText(ticketNo);*/
 
         List<PassengerDetailsModel> passengerDetailsList = busTicketDetails.getPassengerDetailsList();
 
@@ -129,5 +122,14 @@ public class ViewTicketFragment extends BaseFragment {
             tvBookingStatusField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.pink_color));
         }
         tvBookingStatusField.setText(ticketStatus);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.scan_qr_code) {
+            mListener.scanQRCode(busTicketDetails);
+        } else {
+            mListener.generateQRCode(busTicketDetails);
+        }
     }
 }

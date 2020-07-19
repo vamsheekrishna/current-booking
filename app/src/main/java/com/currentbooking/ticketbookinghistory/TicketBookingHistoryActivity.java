@@ -2,7 +2,7 @@ package com.currentbooking.ticketbookinghistory;
 
 import android.os.Bundle;
 
-import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
+import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity implements OnTicketBookingHistoryListener {
@@ -19,7 +19,17 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
     }
 
     @Override
-    public void viewTicket(AvailableTickets busTicketDetails) {
+    public void viewTicket(MyTicketInfo busTicketDetails) {
         replaceFragment(ViewTicketFragment.newInstance(busTicketDetails, ""), "LiveTicketFragment", true);
+    }
+
+    @Override
+    public void generateQRCode(MyTicketInfo busTicketDetails) {
+        replaceFragment(GenerateVirtualCard.newInstance(busTicketDetails, ""), "LiveTicketFragment", true);
+    }
+
+    @Override
+    public void scanQRCode(MyTicketInfo busTicketDetails) {
+       replaceFragment(QRScannerFragment.newInstance("", ""), "QRScannerFragment", true);
     }
 }

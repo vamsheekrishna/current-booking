@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
-import com.currentbooking.ticketbookinghistory.models.AvailableTickets;
+import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.RecyclerTouchListener;
@@ -93,10 +93,10 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
                 R.drawable.recycler_decoration_divider_two)));
         liveTicketsListRecyclerField.addItemDecoration(divider);
 
-        List<AvailableTickets> liveTicketsList = new ArrayList<>();
+        List<MyTicketInfo> liveTicketsList = new ArrayList<>();
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-            ArrayList<AvailableTickets> liveTickets = myProfile.getTodayTickets().getValue();
+            ArrayList<MyTicketInfo> liveTickets = myProfile.getTodayTickets().getValue();
             if (liveTickets != null && !liveTickets.isEmpty()) {
                 liveTicketsList.addAll(liveTickets);
             }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Satya Seshu on 14/07/20.
  */
-public class AvailableTickets implements Serializable {
+public class MyTicketInfo implements Serializable {
 
     @SerializedName("bos_id")
     @Expose

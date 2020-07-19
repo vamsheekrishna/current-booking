@@ -112,4 +112,7 @@ dependencies {
     //image cropping
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.google.android.gms:play-services-vision:20.0.0'
+
 }
