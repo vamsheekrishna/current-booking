@@ -113,12 +113,15 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.ticket_booking));
-    }
+        mListener.showBadge(true);
+        mListener.showHamburgerIcon(true);
+        }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
+        mListener.updateBadgeCount(progressDialog, false);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
         return inflater.inflate(R.layout.fragment_ticket_booking_home, container, false);
     }

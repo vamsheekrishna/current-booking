@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.currentbooking.R;
+import com.currentbooking.ticketbooking.BaseListener;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -35,5 +36,4 @@ public class BaseActivity extends AppCompatActivity {
         }
         fragmentTransaction.commit();
     }
-
 }

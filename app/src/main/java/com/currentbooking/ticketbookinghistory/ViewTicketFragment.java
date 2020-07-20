@@ -1,11 +1,14 @@
 package com.currentbooking.ticketbookinghistory;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +21,30 @@ import com.currentbooking.ticketbookinghistory.adapters.PassengerDetailsAdapter;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.ticketbookinghistory.models.PassengerDetailsModel;
 import com.currentbooking.utilits.Constants;
+import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.LoggerInfo;
+import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
+import com.currentbooking.utilits.cb_api.responses.UpdateTicketStatus;
 import com.currentbooking.utilits.views.BaseFragment;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.currentbooking.ticketbookinghistory.GenerateQRCode.ETIM_PRE_FIX;
+import static com.currentbooking.utilits.Constants.KEY_APPROVED;
+import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public class ViewTicketFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
@@ -127,9 +150,101 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.scan_qr_code) {
-            mListener.scanQRCode(busTicketDetails);
+            IntentIntegrator.forSupportFragment(ViewTicketFragment.this).initiateScan();
+            // mListener.scanQRCode(busTicketDetails);
         } else {
             mListener.generateQRCode(busTicketDetails);
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+
+                if(result.getContents().contains(ETIM_PRE_FIX)) {
+                    String[] temp = result.getContents().split(ETIM_PRE_FIX);
+
+                    Toast.makeText(getActivity(), "Scanned: " + temp[1], Toast.LENGTH_LONG).show();
+                    String wayBillNo = "11058";
+                    String depot_name = "M";
+                    String depot_code = "depot code 101";
+                    String trip_no = "trip no 2233";
+                    String route_no = "route no 1122";
+                    String bus_type = "Sleeper";
+                    String bus_time = busTicketDetails.getStart_time();
+                    String conductor_id = "101";
+                    String conductor_name = "Vijay";
+                    String status = KEY_APPROVED;
+                    String ticket_number = "4";//busTicketDetails.getTicket_no();
+                    String operator = busTicketDetails.getOperator_name();
+                    String etim_no = "1122334455";
+                    String bus_no = "bus no 1";
+                    String machine_no = "machine no 3";
+                    String bus_service_id = busTicketDetails.getBus_service_no();
+                    RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class).updateTicketStatus(wayBillNo,
+                            depot_name, depot_code, trip_no, route_no, bus_type, bus_time, conductor_id, conductor_name, status, ticket_number, operator, etim_no,
+                            bus_no, machine_no, bus_service_id).enqueue(new Callback<UpdateTicketStatus>() {
+                        @Override
+                        public void onResponse(Call<UpdateTicketStatus> call, Response<UpdateTicketStatus> response) {
+                            assert response.body() != null;
+                            if (response.isSuccessful() && response.body().getStatus().equalsIgnoreCase("Success")) {
+                                showDialog(getString(R.string.ticket_status), getString(R.string.status_approved), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Objects.requireNonNull(getActivity()).onBackPressed();
+                                    }
+                                });
+                                // MyProfile.getInstance().updateLiveTickets(progressDialog);
+
+                                /*String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+                                String id = MyProfile.getInstance().getUserId();
+                                TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+                                progressDialog.show();
+                                service.getTodayTicket(date, id).enqueue(new Callback<TodayTickets>() {
+                                    @Override
+                                    public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                                        TodayTickets todayTickets = response.body();
+                                        if (todayTickets != null) {
+                                            if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                                                ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                                                if (null != data && data.size() > 0) {
+                                                    MyProfile.getInstance().setTodayTickets(data);
+                                                    mListener.setupBadge();
+                                                }
+                                            }
+                                        }
+                                        progressDialog.cancel();
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                                        // showDialog("onFailure", "" + t.getMessage());
+                                        LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                                        progressDialog.cancel();
+                                    }
+                                });*/
+
+                            } else {
+                                assert response.body() != null;
+                                showDialog("", response.body().getMsg());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UpdateTicketStatus> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

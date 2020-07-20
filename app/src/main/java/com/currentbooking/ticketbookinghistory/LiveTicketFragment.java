@@ -79,6 +79,14 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getActivity()).setTitle("My Tickets");
+        mListener.showBadge(false);
+        mListener.showHamburgerIcon(false);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);

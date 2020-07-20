@@ -1,6 +1,7 @@
 package com.currentbooking.ticketbooking;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ import com.currentbooking.ticketbooking.adapters.ConcessionsTypeAdapter;
 import com.currentbooking.utilits.DialogUtility;
 import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.utilits.cb_api.responses.Concession;
+import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,6 +51,13 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
         extras.putSerializable("ConcessionsList", (Serializable) concessionList);
         concessionTypeSelectionDialog.setArguments(extras);
         return concessionTypeSelectionDialog;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        ((BaseNavigationDrawerActivity)context).hideHamBurgerIcon();
+        ((BaseNavigationDrawerActivity)context).showBadge(false);
     }
 
     @Override

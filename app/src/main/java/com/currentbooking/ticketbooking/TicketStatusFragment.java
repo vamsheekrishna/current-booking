@@ -17,15 +17,30 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
+import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.MyViewModelFactory;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.views.BaseFragment;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public class TicketStatusFragment extends BaseFragment implements MvvmView.View {
 
@@ -78,7 +93,13 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
             ccAvenueResponse = (CCAvenueResponse) extras.getSerializable(CC_AVENUE_RESPONSE);
         }
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().setTitle("Ticket Status");
+        mListener.showBadge(false);
+        mListener.showHamburgerIcon(false);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,7 +148,35 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
             tvBookingStatusField.setText(getString(R.string.booking_successful));
             bookingSuccessLayoutField.setVisibility(View.VISIBLE);
             bookingFailedLayoutField.setVisibility(View.GONE);
-            mListener.setupBadge();
+
+            String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+            String id = MyProfile.getInstance().getUserId();
+            TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+            progressDialog.show();
+            service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
+                @Override
+                public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                    TodayTickets todayTickets = response.body();
+                    if (todayTickets != null) {
+                        if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                            ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                            if (null != data && data.size() > 0) {
+                                MyProfile.getInstance().setTodayTickets(data);
+                                // mListener.setupBadge();
+                            }
+                        }
+                    }
+                    progressDialog.cancel();
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                    // showDialog("onFailure", "" + t.getMessage());
+                    LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                    progressDialog.cancel();
+                }
+            });
+
         } else {
             ivBookingStatusField.setImageResource(R.drawable.close_icon);
             paymentSuccessBtnLayoutField.setVisibility(View.GONE);

@@ -146,4 +146,6 @@
     <string name="e_commerce">E Commerce</string>
     <string name="welcome">Welcome</string>
     <string name="services_home">Services Home</string>
+    <string name="status_approved">Your ticket has been approved successfully</string>
+    <string name="ticket_status">Ticket Status</string>
 </resources>

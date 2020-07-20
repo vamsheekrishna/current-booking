@@ -48,7 +48,8 @@ android {
             buildConfigField('String', 'CONCESSION_RATE_LIST', '"operator/getConcessionrates"')
             buildConfigField('String', 'GET_FARE', '"get/fare"')
             buildConfigField('String', 'GET_RSA_KEY', '"get/rsakey"')
-            buildConfigField('String', "GET_TODAYS_TICKETS", '"http://ticket.rokad.in/api/get/tickets"')
+            buildConfigField('String', "GET_TODAYS_TICKETS", '"get/tickets"')
+            buildConfigField('String', "VALIDATE_TICKET",'"ticket/validate"')
         }
         prod {
             dimension "version"
@@ -110,9 +111,16 @@ dependencies {
     //image cropping
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
-    implementation 'com.google.zxing:core:3.4.0'
+/*    implementation 'com.google.zxing:core:3.2.1'*/
+
     implementation 'com.google.android.gms:play-services-vision:20.1.0'
+    implementation 'com.google.android.gms:play-services:7.8.0'
 
     //volley
     implementation 'com.android.volley:volley:1.1.1'
+
+
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    implementation 'com.google.zxing:core:3.4.0'
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
 }

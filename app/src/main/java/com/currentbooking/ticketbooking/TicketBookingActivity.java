@@ -32,12 +32,12 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     @Override
     public void gotoConfirmTicket(String busType, GetFareResponse.FareDetails fareDetails, String passengerDetails) {
         fareDetails.setPassengerDetails(passengerDetails);
-        addFragment(ConfirmTicketFragment.newInstance(busType, fareDetails), "ConfirmTicketFragment", true);
+        replaceFragment(ConfirmTicketFragment.newInstance(busType, fareDetails), "ConfirmTicketFragment", true);
     }
 
     @Override
     public void gotoPassengerDetails(String busType) {
-        addFragment(PassengerDetailsFragment.newInstance(busType), "PassengerDetailsFragment", true);
+        replaceFragment(PassengerDetailsFragment.newInstance(busType), "PassengerDetailsFragment", true);
     }
 
     @Override
@@ -70,5 +70,15 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
         if (! (f instanceof TicketStatusFragment)) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void showHamburgerIcon(boolean b) {
+
+    }
+
+    @Override
+    public void showBadge(boolean b) {
+
     }
 }

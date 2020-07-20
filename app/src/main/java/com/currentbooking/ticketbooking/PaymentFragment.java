@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +80,8 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("Payment");
+        mListener.showHamburgerIcon(false);
+        mListener.showBadge(false);
     }
 
     @Override
@@ -250,7 +251,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
             Log.d("JsonObject", "html: "+html);
             // showDialog("", html);
-            MyProfile.getInstance().getAvailableLiveTickets();
+            // MyProfile.getInstance().updateLiveTickets(progressDialog);
             mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
             //Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
         }

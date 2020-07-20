@@ -64,17 +64,18 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
         super.onAttach(context);
         mListener = (OnTicketBookingListener) context;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getActivity()).setTitle("Confirm Ticket");
+        mListener.showBadge(false);
+        mListener.showHamburgerIcon(false);
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle("Confirm Ticket");
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

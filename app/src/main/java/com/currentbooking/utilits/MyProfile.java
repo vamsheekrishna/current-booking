@@ -1,5 +1,6 @@
 package com.currentbooking.utilits;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -214,10 +215,11 @@ public class MyProfile {
         return data;
     }
 
-    public void getAvailableLiveTickets() {
+    /*public void updateLiveTickets(Dialog progressDialog) {
         String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
         String id = MyProfile.getInstance().getUserId();
         TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        progressDialog.show();
         service.getTodayTicket(date, id).enqueue(new Callback<TodayTickets>() {
             @Override
             public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
@@ -230,13 +232,15 @@ public class MyProfile {
                         }
                     }
                 }
+                progressDialog.cancel();
             }
 
             @Override
             public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
                 // showDialog("onFailure", "" + t.getMessage());
                 LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                progressDialog.cancel();
             }
         });
-    }
+    }*/
 }

@@ -1,5 +1,6 @@
 package com.currentbooking.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,12 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
-import com.currentbooking.home.dummy.DummyContent;
+import com.currentbooking.ticketbooking.BaseListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 
 public class ServicesHomeFragment extends BaseFragment {
+
+    private BaseListener mListener;
 
     public ServicesHomeFragment() {
         // Required empty public constructor
@@ -31,18 +34,27 @@ public class ServicesHomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.services_home));
+        mListener.showBadge(true);
+        mListener.showHamburgerIcon(false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (BaseListener)context;
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        mListener.updateBadgeCount(progressDialog, true);
         return inflater.inflate(R.layout.fragment_services_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             String userName = String.format("%s %s", myProfile.getFirstName(), myProfile.getLastName());

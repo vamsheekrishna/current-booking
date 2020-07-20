@@ -13,22 +13,15 @@ import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
-import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
-import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
-import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.views.BaseFragment;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
@@ -133,7 +126,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                     try {
                                         MyProfile.getInstance(data.getData().getProfileModel());
 
-                                        MyProfile.getInstance().getAvailableLiveTickets();
+                                        // MyProfile.getInstance().updateLiveTickets(progressDialog);
                                         if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
                                             mListener.goToProfileActivity();
                                         } else {

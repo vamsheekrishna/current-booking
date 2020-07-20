@@ -1,5 +1,6 @@
 package com.currentbooking.utilits.views;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.VolleyError;
@@ -23,13 +23,18 @@ import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
+import com.currentbooking.ticketbooking.BaseListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.ticketbookinghistory.TicketBookingHistoryActivity;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
+import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,16 +43,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
+
+public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, BaseListener {
 
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navigationView;
     //protected LinearLayoutCompat signOut;
     private TextView textCartItemCount;
-    private int mCartItemCount = 0;
     private NetworkImageView ivProfileImageField;
     private View badgeBase;
+    private int mCartItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +67,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         setNavigationView();
 
         loadUIComponents();
-
-        // LogetAvailableLiveTickets();
-        MyProfile.getInstance().getTodayTickets().observe(this, availableTickets -> {
-            mCartItemCount = availableTickets.size();
-        });
-        ArrayList<MyTicketInfo> data = MyProfile.getInstance().getTodayTickets().getValue();
-        if(null != data) {
-            mCartItemCount = data.size();
-        }
     }
 
     private void loadUIComponents() {
@@ -133,8 +135,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         View actionView = menuItem.getActionView();
         textCartItemCount = actionView.findViewById(R.id.cart_badge);
         badgeBase = actionView.findViewById(R.id.badge_base);
-
-        setupBadge();
+        showBadge(true);
 
         actionView.setOnClickListener(v -> {
             startActivity(new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class));
@@ -143,12 +144,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         return true;
     }
 
-    public void setupBadge() {
+/*    public void setupBadge() {
         if (textCartItemCount != null) {
             if (mCartItemCount == 0) {
                 if (textCartItemCount.getVisibility() != View.GONE) {
                     textCartItemCount.setVisibility(View.GONE);
-                    badgeBase.setVisibility(View.GONE);
+                    // badgeBase.setVisibility(View.GONE);
                 }
             } else {
                 textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
@@ -158,7 +159,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 }
             }
         }
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
@@ -244,5 +245,81 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 break;
         }
         mDrawerLayout.closeDrawer(navigationView);
+    }
+
+    public void hideHamBurgerIcon() {
+        assert getSupportActionBar() != null;   //null check
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);   //show back button
+    }
+
+    public void showHamBurgerIcon() {
+        assert getSupportActionBar() != null;   //null check
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
+
+    protected void replaceFragment(BaseFragment baseFragment, String fragment_id, boolean isAddToBackStack) {
+        super.replaceFragment(baseFragment, fragment_id, isAddToBackStack);
+    }
+
+    protected void addFragment(BaseFragment baseFragment, String fragment_id, boolean isAddToBackStack) {
+       super.addFragment(baseFragment,fragment_id,isAddToBackStack);
+    }
+
+    @Override
+    public void showHamburgerIcon(boolean b) {
+        if(b) {
+            showHamBurgerIcon();
+        } else {
+            hideHamBurgerIcon();
+        }
+    }
+
+    @Override
+    public void showBadge(boolean b) {
+        if(null != badgeBase) {
+            if (b) {
+                badgeBase.setVisibility(View.VISIBLE);
+                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+
+            } else {
+                badgeBase.setVisibility(View.GONE);
+            }
+        }
+    }
+    @Override
+    public void updateBadgeCount(Dialog progressDialog, boolean b) {
+        String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+        String id = MyProfile.getInstance().getUserId();
+        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        progressDialog.show();
+        service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
+            @Override
+            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                TodayTickets todayTickets = response.body();
+                if (todayTickets != null) {
+                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                        ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                        if (null != data && data.size() > 0) {
+                            MyProfile.getInstance().setTodayTickets(data);
+                            showBadge(b);
+                        }
+                    }
+                }
+                progressDialog.cancel();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                // showDialog("onFailure", "" + t.getMessage());
+                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                progressDialog.cancel();
+            }
+        });
     }
 }

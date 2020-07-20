@@ -64,7 +64,11 @@ public class GenerateQRCode extends BaseFragment {
         return inflater.inflate(R.layout.fragment_generate_virtual_card, container, false);
 
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Show QRCode");
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

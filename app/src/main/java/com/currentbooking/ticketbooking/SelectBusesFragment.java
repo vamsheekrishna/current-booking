@@ -91,6 +91,8 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.select_bus));
+        mListener.showBadge(false);
+        mListener.showHamburgerIcon(false);
     }
 
     @Override

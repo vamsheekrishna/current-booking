@@ -1,8 +1,10 @@
 package com.currentbooking.ticketbookinghistory;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
+import com.currentbooking.utilits.views.BaseActivity;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity implements OnTicketBookingHistoryListener {
@@ -30,6 +32,8 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
 
     @Override
     public void scanQRCode(MyTicketInfo busTicketDetails) {
-       replaceFragment(QRScannerFragment.newInstance("", ""), "QRScannerFragment", true);
+       replaceFragment(QRScannerFragment.newInstance(busTicketDetails, ""), "QRScannerFragment", true);
     }
+
+
 }

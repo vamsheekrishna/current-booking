@@ -12,6 +12,7 @@ import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
 import com.currentbooking.utilits.cb_api.responses.TodayTickets;
+import com.currentbooking.utilits.cb_api.responses.UpdateTicketStatus;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
@@ -74,6 +75,29 @@ public interface TicketBookingServices {
 
     @POST(BuildConfig.GET_TODAYS_TICKETS)
     @FormUrlEncoded
-    Call<TodayTickets> getTodayTicket(@Field("date") String date,
-                                      @Field("user_id") String userID);
+    Call<TodayTickets> getCurrentBookingTicket(@Field("date") String date,
+                                               @Field("user_id") String userID);
+
+    @POST(BuildConfig.VALIDATE_TICKET)
+    @FormUrlEncoded
+    Call<UpdateTicketStatus> updateTicketStatus(
+            @Field("waybill_no") String wayBillNo,
+            @Field("depot_name") String depot_name,
+            @Field("depot_code") String depot_code,
+            @Field("trip_no") String trip_no,
+            @Field("route_no") String route_no,
+            @Field("bus_type") String bus_type,
+            @Field("bus_time") String bus_time,
+            @Field("conductor_id") String conductor_id,
+            @Field("conductor_name") String conductor_name,
+            @Field("status") String status,
+            @Field("ticket_id") String ticketID,
+            @Field("operator") String operator,
+            @Field("etim_no") String etim_no,
+            @Field("bus_no") String bus_no,
+            @Field("machine_no") String machine_no,
+            @Field("bus_service_id") String bus_service_id
+
+
+    );
 }

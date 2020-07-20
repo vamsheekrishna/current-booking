@@ -46,6 +46,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     private TicketBookingViewModel ticketBookingModule;
     BusStopAdapter busStopAdapter;
     private int mIndex;
+    private OnTicketBookingListener mListener;
 
     public BusPointFragment() {
         // Required empty public constructor
@@ -58,6 +59,12 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnTicketBookingListener)context;
     }
 
     @Override
@@ -79,6 +86,8 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("Select Bus Stop");
+        mListener.showHamburgerIcon(false);
+        mListener.showBadge(false);
     }
 
     @Nullable

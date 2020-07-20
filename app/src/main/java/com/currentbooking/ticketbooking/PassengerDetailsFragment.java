@@ -102,6 +102,8 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("Confirm Ticket");
+        mListener.showBadge(false);
+        mListener.showHamburgerIcon(false);
     }
 
     @Override

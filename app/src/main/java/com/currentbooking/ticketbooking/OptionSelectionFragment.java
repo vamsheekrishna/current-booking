@@ -45,6 +45,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     private ArrayList<BusOperator> busOperator;
     private ArrayList<BusType> busTypes;
     private ArrayList<BusStopObject> busPoints;
+    private OnTicketBookingListener mListener;
 
     public static OptionSelectionFragment newInstance(int index, String param2) {
         OptionSelectionFragment fragment = new OptionSelectionFragment();
@@ -71,7 +72,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        // callBackInterface = (CallBackInterface) context;
+        mListener = (OnTicketBookingListener) context;
     }
 
     @Nullable
@@ -85,7 +86,13 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
                              Bundle savedInstanceState) {
         return initDataBinding(inflater);
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getActivity()).setTitle("");
+        mListener.showBadge(false);
+        mListener.showHamburgerIcon(false);
+    }
     private View initDataBinding(@NotNull LayoutInflater inflater) {
         FragmentOptionSelectionBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_option_selection,
                 null, false);
