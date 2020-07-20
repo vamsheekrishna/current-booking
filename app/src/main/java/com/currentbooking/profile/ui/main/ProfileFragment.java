@@ -11,17 +11,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
-import com.currentbooking.utilits.CircleTransform;
+import com.currentbooking.utilits.CircularNetworkImageView;
 import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.currentbooking.utilits.views.ProgressBarCircular;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -38,7 +39,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private TextView address1;
     private TextView address2;
     private TextView pinCode;
-    private AppCompatImageView ivProfileImageField;
+    private CircularNetworkImageView ivProfileImageField;
+    private ProgressBarCircular profileCircularBar;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -81,10 +83,27 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         if (bitmap != null) {
             ivProfileImageField.setImageBitmap(bitmap);
         } else {
-            String imageUrl = MyProfile.getInstance().getProfileImage();
-            if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
-                        transform(new CircleTransform()).into(ivProfileImageField);
+            if (myProfile != null) {
+                String imageUrl = myProfile.getProfileImage();
+                if (!TextUtils.isEmpty(imageUrl)) {
+                    HttpsTrustManager.allowAllSSL();
+                    ImageLoader imageLoader = CurrentBookingApplication.getInstance().getImageLoader();
+                    imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            profileCircularBar.setVisibility(View.GONE);
+                            Bitmap bitmap = response.getBitmap();
+                            ivProfileImageField.setImageBitmap(bitmap);
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            profileCircularBar.setVisibility(View.GONE);
+                            ivProfileImageField.setImageResource(R.drawable.avatar);
+                        }
+                    });
+                    ivProfileImageField.setImageUrl(imageUrl, imageLoader);
+                }
             }
         }
     }
@@ -110,6 +129,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         pinCode = view.findViewById(R.id.pin_code);
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
+        profileCircularBar = view.findViewById(R.id.profile_circular_field);
     }
     @Override
     public void onClick(View v) {

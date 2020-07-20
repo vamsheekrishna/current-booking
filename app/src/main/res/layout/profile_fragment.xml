@@ -89,6 +89,7 @@
                 style="@style/text_view"
                 android:drawableStart="@drawable/state"
                 android:hint="@string/state"
+                android:visibility="gone"
                 android:inputType="textCapWords" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -96,6 +97,7 @@
                 style="@style/text_view"
                 android:drawableStart="@drawable/pin_code"
                 android:hint="@string/pin"
+                android:visibility="gone"
                 android:inputType="numberDecimal"
                 android:maxLength="6" />
 
@@ -107,19 +109,25 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="130dp"
                     android:layout_height="130dp"
                     android:background="@drawable/rounded_circle"
                     android:gravity="center">
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <com.currentbooking.utilits.CircularNetworkImageView
                         android:id="@+id/iv_profile_image_field"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@drawable/photo_camera" />
-                </LinearLayout>
+                        android:src="@drawable/avatar" />
+
+                    <com.currentbooking.utilits.views.ProgressBarCircular
+                        android:id="@+id/profile_circular_field"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

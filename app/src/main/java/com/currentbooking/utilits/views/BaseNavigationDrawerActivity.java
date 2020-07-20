@@ -2,7 +2,6 @@ package com.currentbooking.utilits.views;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -17,29 +16,27 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.ticketbookinghistory.TicketBookingHistoryActivity;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
-import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.MyProfile;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
-import io.reactivex.Single;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -49,7 +46,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     //protected LinearLayoutCompat signOut;
     private TextView textCartItemCount;
     private int mCartItemCount = 0;
-    private AppCompatImageView ivProfileImageField;
+    private NetworkImageView ivProfileImageField;
     private View badgeBase;
 
     @Override
@@ -77,39 +74,28 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         TextView tvUserNameField = findViewById(R.id.user_name_field);
         TextView tvUserAgeField = findViewById(R.id.user_age_field);
 
+        ProgressBarCircular progressBarCircular = findViewById(R.id.profile_circular_field);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             String imageUrl = myProfile.getProfileImage();
-            ProgressBarCircular profileCircularBar = findViewById(R.id.profile_circular_field);
             if (!TextUtils.isEmpty(imageUrl)) {
-                //Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
-                //      transform(new CircleTransform()).into(ivProfileImageField);
-
-                /*Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
-                        transform(new CircleTransform()).into(new Target() {
+                HttpsTrustManager.allowAllSSL();
+                ImageLoader imageLoader = CurrentBookingApplication.getInstance().getImageLoader();
+                imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
                     @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        profileCircularBar.setVisibility(View.GONE);
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        progressBarCircular.setVisibility(View.GONE);
+                        Bitmap bitmap = response.getBitmap();
                         ivProfileImageField.setImageBitmap(bitmap);
                     }
 
                     @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBarCircular.setVisibility(View.GONE);
                         ivProfileImageField.setImageResource(R.drawable.avatar);
-                        profileCircularBar.setVisibility(View.GONE);
                     }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        ivProfileImageField.setImageDrawable(placeHolderDrawable);
-                    }
-                });*/
-
-               /* GlideApp.with(this).load(trainerProfileUrl).placeholder(R.drawable.user_default_profile)
-                        .circleCrop()
-                        .error(R.drawable.user_default_profile).into(ivTrainerImageField);
-
-                GlideA*/
+                });
+                ivProfileImageField.setImageUrl(imageUrl, imageLoader);
 
             }
             String emailID = myProfile.getEmail();

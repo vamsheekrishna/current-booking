@@ -16,16 +16,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.core.content.ContextCompat;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
 import com.currentbooking.interfaces.DateTimeInterface;
-import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
-import com.currentbooking.utilits.CircleTransform;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.Utils;
@@ -33,18 +35,14 @@ import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
 import com.currentbooking.utilits.views.BaseFragment;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.currentbooking.utilits.views.ProgressBarCircular;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -55,8 +53,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
 
-    // private ProfileViewModel mViewModel;
-    OnProfileListener mListener;
     private AppCompatEditText etFirstName;
     private AppCompatEditText etLastName;
     private AppCompatEditText etAddress1;
@@ -64,7 +60,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private AppCompatEditText etState;
     private AppCompatEditText etPinCode;
     private AppCompatEditText email;
-    private AppCompatImageView ivProfileImageField;
+    private NetworkImageView ivProfileImageField;
+    private ProgressBarCircular profileCircularBar;
 
     AppCompatTextView dobField, male, female;
     private Calendar dateOfBirthCalendar;
@@ -80,7 +77,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (OnProfileListener) context;
     }
 
     @Nullable
@@ -95,26 +91,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("Edit Profile");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState == null) {
-            /*mViewModel = new ViewModelProvider(getActivity()).get(ProfileViewModel.class);
-
-
-            mViewModel.getFirstName().setValue(MyProfile.);
-            mViewModel.getLastName().getValue());
-            mViewModel.getMobileNumber().getValue());
-            mViewModel.getEmail().getValue());
-            mViewModel.getDob().getValue()));
-            mViewModel.getAddress1().getValue());
-            mViewModel.getAddress2().getValue());
-            mViewModel.getState().getValue());
-            mViewModel.getPinCode().getValue());*/
-
-        }//.of(this).get(ProfileViewModel.class);
     }
 
     @Override
@@ -146,7 +122,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         view.findViewById(R.id.save_profile).setOnClickListener(this);
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
         ivProfileImageField.setOnClickListener(this);
-        updateUserProfileImage();
+        profileCircularBar = view.findViewById(R.id.profile_circular_field);
 
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
@@ -160,6 +136,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             } else {
                 selectedFemale();
             }
+
+            updateUserProfileImage();
         }
     }
 
@@ -203,23 +181,24 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     ivProfileImageField.setImageURI(profileImageUri);
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
+                    LoggerInfo.errorLog("cropping error", error.getMessage());
                 }
             }
         }
     }
 
     private void selectedMale() {
-        male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
-        male.setTextColor(getResources().getColor(R.color.white));
-        female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
-        female.setTextColor(getResources().getColor(R.color.colorAccent));
+        male.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
+        male.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
+        female.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
+        female.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
     }
 
     private void selectedFemale() {
-        female.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg_selected));
-        female.setTextColor(getResources().getColor(R.color.white));
-        male.setBackgroundDrawable(getResources().getDrawable(R.drawable.gender_bg));
-        male.setTextColor(getResources().getColor(R.color.colorAccent));
+        female.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
+        female.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
+        male.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
+        male.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
     }
 
     private void saveSelected() {
@@ -231,7 +210,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         String _etState =  Objects.requireNonNull(etState.getText()).toString().trim();
         String _etPinCode = Objects.requireNonNull(etPinCode.getText()).toString().trim();
         String _email = Objects.requireNonNull(email.getText()).toString().trim();
-        //String _dob = Objects.requireNonNull(dob.getText()).toString().trim();
         if (!Utils.isValidWord(fName)) {
             showDialog("", getString(R.string.error_first_name));
         } else if (!Utils.isValidWord(lName)) {
@@ -282,8 +260,23 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private void updateUserProfileImage() {
         String imageUrl = MyProfile.getInstance().getProfileImage();
         if (!TextUtils.isEmpty(imageUrl)) {
-            Picasso.get().load(imageUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).
-                    transform(new CircleTransform()).into(ivProfileImageField);
+            HttpsTrustManager.allowAllSSL();
+            ImageLoader imageLoader = CurrentBookingApplication.getInstance().getImageLoader();
+            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    profileCircularBar.setVisibility(View.GONE);
+                    Bitmap bitmap = response.getBitmap();
+                    ivProfileImageField.setImageBitmap(bitmap);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    profileCircularBar.setVisibility(View.GONE);
+                    ivProfileImageField.setImageResource(R.drawable.avatar);
+                }
+            });
+            ivProfileImageField.setImageUrl(imageUrl, imageLoader);
         }
     }
 

@@ -103,6 +103,7 @@
                 android:id="@+id/address2"
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address2"
+                android:visibility="gone"
                 android:inputType="textCapWords"
                 style="@style/edit_text" />
 
@@ -110,6 +111,7 @@
                 android:id="@+id/state"
                 android:drawableStart="@drawable/state"
                 android:hint="@string/state"
+                android:visibility="gone"
                 android:inputType="textCapWords"
                 style="@style/edit_text" />
 
@@ -117,32 +119,33 @@
                 android:id="@+id/pin_code"
                 android:drawableStart="@drawable/pin_code"
                 android:hint="@string/pin"
+                android:visibility="gone"
                 android:maxLength="6"
                 android:inputType="numberSigned"
                 style="@style/edit_text" />
 
-            <LinearLayout
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:background="@drawable/rectangle_border_bg"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:background="@drawable/rounded_circle"
-                    android:gravity="center">
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/iv_profile_image_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:scaleType="fitXY" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_profile_image_field"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/photo_camera" />
-                </LinearLayout>
-            </LinearLayout>
+                <com.currentbooking.utilits.views.ProgressBarCircular
+                    android:id="@+id/profile_circular_field"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
     <com.google.android.material.button.MaterialButton
