@@ -68,8 +68,6 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("Confirm Ticket");
-        mListener.showBadge(false);
-        mListener.showHamburgerIcon(false);
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

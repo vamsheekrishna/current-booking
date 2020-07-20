@@ -97,8 +97,6 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
     public void onResume() {
         super.onResume();
         requireActivity().setTitle("Ticket Status");
-        mListener.showBadge(false);
-        mListener.showHamburgerIcon(false);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -13,6 +13,6 @@ public interface OnTicketBookingListener extends BaseListener {
     void gotoPayment(String passengerDetails, GetFareResponse.FareDetails mFareDetails);
     void gotoTicketStatus(String passengerDetails, CCAvenueResponse bookingDetails);
     //void gotoTicketStatus(CCAvenueResponse ccAvenueResponse);
-    void gotoOptionSelection(int listData);
+    void gotoOptionSelection(int listData, String title);
     void gotoBusStopSelect(int i);
 }

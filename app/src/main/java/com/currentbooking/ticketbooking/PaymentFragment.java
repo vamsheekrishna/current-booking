@@ -80,8 +80,6 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("Payment");
-        mListener.showHamburgerIcon(false);
-        mListener.showBadge(false);
     }
 
     @Override

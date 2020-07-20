@@ -22,41 +22,58 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     @Override
     public void goToHome() {
         replaceFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", true);
+        showBadge(true);
+        showHamburgerIcon(true);
     }
 
     @Override
     public void gotoSelectBus(String busOperatorName, String busType) {
         replaceFragment(SelectBusesFragment.newInstance(busOperatorName, busType), "SelectBusFragment", true);
+
+        showBadge(false);
+        showHamburgerIcon(false);
     }
 
     @Override
     public void gotoConfirmTicket(String busType, GetFareResponse.FareDetails fareDetails, String passengerDetails) {
         fareDetails.setPassengerDetails(passengerDetails);
         replaceFragment(ConfirmTicketFragment.newInstance(busType, fareDetails), "ConfirmTicketFragment", true);
+        showBadge(false);
+        showHamburgerIcon(false);
     }
 
     @Override
     public void gotoPassengerDetails(String busType) {
         replaceFragment(PassengerDetailsFragment.newInstance(busType), "PassengerDetailsFragment", true);
+        showBadge(false);
+        showHamburgerIcon(false);
     }
 
     @Override
     public void gotoPayment(String passengerDetails, GetFareResponse.FareDetails fareDetails) {
         replaceFragment(PaymentFragment.newInstance(passengerDetails, fareDetails), "PaymentFragment", true);
+        showBadge(false);
+        showHamburgerIcon(false);
     }
 
     @Override
     public void gotoTicketStatus(String passengerDetails, CCAvenueResponse ccAvenueResponse) {
         replaceFragment(TicketStatusFragment.newInstance(passengerDetails, ccAvenueResponse), "TicketStatusFragment", false);
+        showBadge(false);
+        showHamburgerIcon(false);
     }
 
-    public void gotoOptionSelection(int index) {
-        replaceFragment(OptionSelectionFragment.newInstance(index, ""), "OptionSelection", true);
+    public void gotoOptionSelection(int index, String title) {
+        replaceFragment(OptionSelectionFragment.newInstance(index, title), "OptionSelection", true);
+        showBadge(false);
+        showHamburgerIcon(false);
     }
 
     @Override
     public void gotoBusStopSelect(int index) {
         replaceFragment(BusPointFragment.newInstance(index, ""), "BusPointFragment", true);
+        showBadge(false);
+        showHamburgerIcon(false);
     }
 
     @Override
@@ -70,15 +87,5 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
         if (! (f instanceof TicketStatusFragment)) {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void showHamburgerIcon(boolean b) {
-
-    }
-
-    @Override
-    public void showBadge(boolean b) {
-
     }
 }

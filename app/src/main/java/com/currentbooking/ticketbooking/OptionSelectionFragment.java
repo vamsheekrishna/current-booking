@@ -89,7 +89,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle("");
+        Objects.requireNonNull(getActivity()).setTitle(mParam2);
         mListener.showBadge(false);
         mListener.showHamburgerIcon(false);
     }
@@ -200,9 +200,15 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
             BusType selectedBusType = busTypes.get(Item);
             if (null == ticketBookingModule.getSelectedBusType().getValue().getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
                 ticketBookingModule.getSelectedBusType().setValue(selectedBusType);
-                // ticketBookingModule.loadBusPoints();
             }
         }
         Objects.requireNonNull(getActivity()).onBackPressed();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener.showBadge(true);
+        mListener.showHamburgerIcon(true);
     }
 }

@@ -17,9 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
@@ -113,8 +111,6 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.ticket_booking));
-        mListener.showBadge(true);
-        mListener.showHamburgerIcon(true);
         }
 
     @Override
@@ -236,10 +232,10 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 v.startAnimation(rotate);
                 break;
             case R.id.select_transport:
-                mListener.gotoOptionSelection(0);
+                mListener.gotoOptionSelection(0, "Select Operator");
                 break;
             case R.id.select_bus_type:
-                mListener.gotoOptionSelection(1);
+                mListener.gotoOptionSelection(1, "Select Bus Type");
                 break;
             case R.id.pick_up:
                 mListener.gotoBusStopSelect(2);

@@ -86,8 +86,6 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle("Select Bus Stop");
-        mListener.showHamburgerIcon(false);
-        mListener.showBadge(false);
     }
 
     @Nullable
