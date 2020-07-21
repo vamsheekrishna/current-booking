@@ -235,7 +235,8 @@ public class MyProfile {
                         ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
                         if (null != data && data.size() > 0) {
                             MyProfile.getInstance().setTodayTickets(data);
-                            currentBookingTicketCount.setValue(data.size());
+                            Integer size  = (Integer)data.size();
+                            getCurrentBookingTicketCount().setValue(size);
                         }
                     }
                 }

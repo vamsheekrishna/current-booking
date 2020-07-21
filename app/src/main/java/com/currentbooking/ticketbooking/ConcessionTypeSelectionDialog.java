@@ -4,10 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -23,10 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.currentbooking.R;
 import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.ticketbooking.adapters.ConcessionsTypeAdapter;
-import com.currentbooking.utilits.DialogUtility;
 import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.utilits.cb_api.responses.Concession;
-import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,7 +39,6 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
     private CallBackInterface callBackInterface;
     private ConcessionsTypeAdapter concessionsTypeAdapter;
     private String selectedPersonType;
-    private OnTicketBookingListener mListener;
 
     public static ConcessionTypeSelectionDialog getInstance(String selectedPersonType, List<Concession> concessionList) {
         ConcessionTypeSelectionDialog concessionTypeSelectionDialog = new ConcessionTypeSelectionDialog();
@@ -57,7 +52,6 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (OnTicketBookingListener) context;
     }
 
     @Override
@@ -164,10 +158,6 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
 
             }
         });
-    }
-
-    private void showErrorMessage(String message) {
-        DialogUtility.getOKDialog(requireActivity(), getString(R.string.message), message);
     }
 
     private void closeDialog() {

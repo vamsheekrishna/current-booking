@@ -17,11 +17,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.ticketbookinghistory.adapters.PassengerDetailsAdapter;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.ticketbookinghistory.models.PassengerDetailsModel;
 import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.Utils;
+import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.UpdateTicketStatus;
@@ -50,6 +52,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     // TODO: Rename and change types of parameters
     private OnTicketBookingHistoryListener mListener;
     private LinearLayout qrBaseView;
+    private TextView tvBookingStatusField;
 
     public ViewTicketFragment() {
         // Required empty public constructor
@@ -136,8 +139,12 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         tvServiceChargeOrGstField.setText(busTicketDetails.getServiceCharge());
         tvTotalPersonsFareField.setText(String.format(Locale.getDefault(), "%.2f", actualFare));
 
-        TextView tvBookingStatusField = view.findViewById(R.id.tv_booking_status_field);
+        tvBookingStatusField = view.findViewById(R.id.tv_booking_status_field);
         String ticketStatus = busTicketDetails.getTicket_status();
+        updateTicketStatus(ticketStatus);
+    }
+
+    private void updateTicketStatus(String ticketStatus) {
         if(ticketStatus.equalsIgnoreCase(Constants.KEY_APPROVED)) {
             tvBookingStatusField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.green));
             qrBaseView.setVisibility(View.GONE);
@@ -196,12 +203,21 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
                             bus_no, machine_no, bus_service_id).enqueue(new Callback<UpdateTicketStatus>() {
                         @Override
                         public void onResponse(@NotNull Call<UpdateTicketStatus> call, @NotNull Response<UpdateTicketStatus> response) {
+                            MyProfile.getInstance().updateLiveTickets(progressDialog);
                             UpdateTicketStatus body = response.body();
                             if(response.isSuccessful() && body != null && body.getStatus().equalsIgnoreCase("success")) {
-                                showDialog(getString(R.string.ticket_status), getString(R.string.status_approved));
+                                showDialog(getString(R.string.ticket_status), getString(R.string.status_approved), new CallBackInterface() {
+                                    @Override
+                                    public void callBackReceived(Object pObject) {
+                                        updateTicketStatus(Constants.KEY_APPROVED);
+                                    }
+                                });
                                 qrBaseView.setVisibility(View.GONE);
                             } else {
                                 showDialog("", Objects.requireNonNull(body).getMsg());
+                                if (Objects.requireNonNull(body).getMsg().contains(Constants.KEY_REJECTED)) {
+                                    updateTicketStatus(Constants.KEY_REJECTED);
+                                }
                             }
                         }
 

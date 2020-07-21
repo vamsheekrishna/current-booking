@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
@@ -104,6 +105,13 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
         //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+        MyProfile.getInstance().getCurrentBookingTicketCount().observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                mListener.updateBadgeCount();
+                mListener.showBadge(true);
+            }
+        });
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.fragment_ticket_status, container, false);
     }
@@ -149,32 +157,9 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
             bookingFailedLayoutField.setVisibility(View.GONE);
 
             String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
-            String id = MyProfile.getInstance().getUserId();
-            TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-            progressDialog.show();
-            service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
-                @Override
-                public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
-                    TodayTickets todayTickets = response.body();
-                    if (todayTickets != null) {
-                        if (todayTickets.getStatus().equalsIgnoreCase("success")) {
-                            ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
-                            if (null != data && data.size() > 0) {
-                                MyProfile.getInstance().setTodayTickets(data);
-                                // mListener.setupBadge();
-                            }
-                        }
-                    }
-                    progressDialog.cancel();
-                }
+            String userId = MyProfile.getInstance().getUserId();
+            MyProfile.getInstance().updateLiveTickets(progressDialog);
 
-                @Override
-                public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
-                    // showDialog("onFailure", "" + t.getMessage());
-                    LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
-                    progressDialog.cancel();
-                }
-            });
 
         } else {
             ivBookingStatusField.setImageResource(R.drawable.close_icon);
