@@ -39,6 +39,7 @@ import java.util.Locale;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, BaseListener {
 
+    public static final String SHOW_ALL_RECORDS = "show_all_records";
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navigationView;
@@ -122,7 +123,11 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         badgeBase = actionView.findViewById(R.id.badge_base);
         showBadge(true);
 
-        actionView.setOnClickListener(v -> startActivity(new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class)));
+        actionView.setOnClickListener(v ->
+
+            startActivity(new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class))
+
+            );
 
         return true;
     }
@@ -186,6 +191,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 mDrawerLayout.closeDrawer(navigationView);
                 Intent intent = new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra(SHOW_ALL_RECORDS,true);
                 startActivity(intent);
                 break;
             case R.id.help_layout_field:
@@ -193,7 +199,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 break;
             case R.id.logout_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
-                startActivity(new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class));
+                Intent i = new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+                finish();
                 break;
             case R.id.my_profile_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);

@@ -26,18 +26,27 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.currentbooking.utilits.views.BaseNavigationDrawerActivity.SHOW_ALL_RECORDS;
+
 /**
  * Created by Satya Seshu on 03/07/20.
  */
 public class LiveTicketFragment  extends BaseFragment implements View.OnClickListener {
+
+    private boolean isShowAllRecords;
 
     public LiveTicketFragment() {
         // Required empty public constructor
     }
 
     OnTicketBookingHistoryListener mListener;
-    public static LiveTicketFragment newInstance() {
-        return new LiveTicketFragment();
+    public static LiveTicketFragment newInstance(boolean b) {
+
+        LiveTicketFragment fragment = new LiveTicketFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(SHOW_ALL_RECORDS, b);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -50,6 +59,13 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            isShowAllRecords =getArguments().getBoolean(SHOW_ALL_RECORDS);
+        }
     }
 
     @Override

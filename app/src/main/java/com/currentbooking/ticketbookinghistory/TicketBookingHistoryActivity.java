@@ -1,10 +1,8 @@
 package com.currentbooking.ticketbookinghistory;
 
 import android.os.Bundle;
-import android.view.Menu;
 
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
-import com.currentbooking.utilits.views.BaseActivity;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
 public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity implements OnTicketBookingHistoryListener {
@@ -14,12 +12,16 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
         super.onCreate(savedInstanceState);
         showBadge(false);
         showHamburgerIcon(false);
-        addFragment(LiveTicketFragment.newInstance(), "LiveTicketFragment", false);
+        if (savedInstanceState == null) {
+            addFragment(LiveTicketFragment.newInstance(false), "LiveTicketFragment", false);
+        } else {
+            addFragment(LiveTicketFragment.newInstance(true), "LiveTicketFragment", false);
+        }
     }
 
     @Override
     public void showLiveTickets() {
-        replaceFragment(LiveTicketFragment.newInstance(), "LiveTicketFragment", true);
+        replaceFragment(LiveTicketFragment.newInstance(false), "LiveTicketFragment", true);
     }
 
     @Override
