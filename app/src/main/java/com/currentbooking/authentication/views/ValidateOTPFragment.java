@@ -37,7 +37,6 @@ import retrofit2.Response;
 public class ValidateOTPFragment extends BaseFragment implements View.OnClickListener {
 
 
-    private OnAuthenticationClickedListener mListener;
     private TextView otpView;
     // private TextView password;
     private TextView mobileNumber;
@@ -46,25 +45,8 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mListener = (OnAuthenticationClickedListener)context;
-    }
-
     public static ValidateOTPFragment newInstance(String param1, String param2) {
         return new ValidateOTPFragment();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mListener =null;
     }
 
     @Override

@@ -81,7 +81,7 @@
     <string name="colon">:</string>
     <string name="send_otp">Send OTP</string>
     <string name="enter_otp">Enter OTP</string>
-    <string name="validate_otp">Validate</string>
+    <string name="validate_otp">Validate OTP</string>
     <string name="error_enter_otp">Please enter a valid otp number</string>
     <string name="error_mobile_number">Please enter valid mobile number.</string>
     <string name="is_edit">IS_EDIT</string>
