@@ -26,6 +26,8 @@ import com.currentbooking.utilits.cb_api.responses.ResendOTPResponse;
 import com.currentbooking.utilits.cb_api.responses.ValidateOTP;
 import com.currentbooking.utilits.views.BaseFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -34,17 +36,11 @@ import retrofit2.Response;
 
 public class ValidateOTPFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
     private OnAuthenticationClickedListener mListener;
-    private LoginService loginService;
     private TextView otpView;
     // private TextView password;
     private TextView mobileNumber;
-    private Authentication authentication;
 
     public ValidateOTPFragment() {
         // Required empty public constructor
@@ -57,21 +53,7 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
     }
 
     public static ValidateOTPFragment newInstance(String param1, String param2) {
-        ValidateOTPFragment fragment = new ValidateOTPFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        return new ValidateOTPFragment();
     }
 
     @Override
@@ -95,7 +77,6 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
 
-        authentication = new ViewModelProvider(this).get(Authentication.class);
         return inflater.inflate(R.layout.validate_otp, container, false);
     }
 
@@ -117,17 +98,19 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
             showDialog("", getString(R.string.error_mobile_number));
         } else {
             progressDialog.show();
-            loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
             if (v.getId() == R.id.resend) {
                 loginService.resendOTP(_mobileNumber).enqueue(new Callback<ResendOTPResponse>() {
                     @Override
-                    public void onResponse(Call<ResendOTPResponse> call, Response<ResendOTPResponse> response) {
-                        showDialog("", response.body().getMsg());
+                    public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
+                        if(response.isSuccessful()) {
+                            showDialog("", Objects.requireNonNull(response.body()).getMsg());
+                        }
                         progressDialog.dismiss();
                     }
 
                     @Override
-                    public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+                    public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
                         showDialog("", t.getMessage());
                         progressDialog.dismiss();
                     }
@@ -139,7 +122,7 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
                 } else {
                     loginService.validateOTP(_mobileNumber, otp).enqueue(new Callback<ValidateOTP>() {
                         @Override
-                        public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
+                        public void onResponse(@NotNull Call<ValidateOTP> call, @NotNull Response<ValidateOTP> response) {
                             if (response.isSuccessful()) {
                                 ValidateOTP data = response.body();
                                 assert data != null;
@@ -153,7 +136,7 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
                         }
 
                         @Override
-                        public void onFailure(Call<ValidateOTP> call, Throwable t) {
+                        public void onFailure(@NotNull Call<ValidateOTP> call, @NotNull Throwable t) {
                             showDialog("", t.getMessage());
                             progressDialog.dismiss();
                         }

@@ -47,7 +47,7 @@
                 android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/mobile_number"
                 style="@style/edit_text"
-                android:inputType="phone" />
+                android:inputType="numberSigned" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/email"

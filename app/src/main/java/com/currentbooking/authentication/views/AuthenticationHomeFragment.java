@@ -78,7 +78,7 @@ public class AuthenticationHomeFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         ArrayList<BaseFragment> baseFragments = new ArrayList<>();
         baseFragments.add(LoginFragment.newInstance("",""));
-        baseFragments.add(RegistrationFragment.newInstance("",""));
+        baseFragments.add(RegistrationFragment.newInstance());
         // Instantiate a ViewPager2 and a PagerAdapter.
         viewPager = view.findViewById(R.id.pager);
 
