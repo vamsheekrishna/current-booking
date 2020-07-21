@@ -65,6 +65,7 @@
                     android:id="@+id/view_circle_one"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
+                    android:layout_marginStart="5dp"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/tv_bus_journey_start_time_field"
                     android:background="@drawable/green_color_small_rounded_circle_bg" />

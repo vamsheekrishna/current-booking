@@ -69,4 +69,16 @@ public class Utils {
         }
         return newValue;
     }
+
+    public static double getDoubleValueFromString(String value) {
+        double newValue = 0;
+        if (!TextUtils.isEmpty(value)) {
+            try {
+                newValue = Double.parseDouble(value);
+            } catch (Exception e) {
+
+            }
+        }
+        return newValue;
+    }
 }

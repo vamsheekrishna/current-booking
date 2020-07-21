@@ -21,6 +21,7 @@ import com.currentbooking.ticketbookinghistory.adapters.PassengerDetailsAdapter;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.ticketbookinghistory.models.PassengerDetailsModel;
 import com.currentbooking.utilits.Constants;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.UpdateTicketStatus;
@@ -31,6 +32,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -122,10 +124,17 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         passengerListRecyclerField.setAdapter(passengerDetailsAdapter);
 
         TextView tvTotalPersonsFareField = view.findViewById(R.id.tv_total_persons_bus_fare_price_field);
-        tvTotalPersonsFareField.setText(busTicketDetails.getTotal());
+
 
         TextView tvServiceChargeOrGstField = view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field);
         TextView tvTotalUpdatedFareField = view.findViewById(R.id.tv_total_persons_total_fare_field);
+        tvTotalUpdatedFareField.setText(busTicketDetails.getTotal());
+
+        double totalFare = Utils.getDoubleValueFromString(busTicketDetails.getTotal());
+        double serviceCharge = Utils.getDoubleValueFromString(busTicketDetails.getServiceCharge());
+        double actualFare = totalFare - serviceCharge;
+        tvServiceChargeOrGstField.setText(busTicketDetails.getServiceCharge());
+        tvTotalPersonsFareField.setText(String.format(Locale.getDefault(), "%.2f", actualFare));
 
         TextView tvBookingStatusField = view.findViewById(R.id.tv_booking_status_field);
         String ticketStatus = busTicketDetails.getTicket_status();

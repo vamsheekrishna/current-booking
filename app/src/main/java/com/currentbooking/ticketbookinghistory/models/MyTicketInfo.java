@@ -64,6 +64,10 @@ public class MyTicketInfo implements Serializable {
     @Expose
     String no_con_seat;
 
+    @SerializedName("service_charge")
+    @Expose
+    String serviceCharge;
+
     @SerializedName("passenger_details")
     @Expose
     ArrayList<PassengerDetailsModel> passengerDetailsList;
@@ -194,5 +198,13 @@ public class MyTicketInfo implements Serializable {
 
     public void setPassenger_detail(ArrayList<PassengerDetailsModel> passengerDetailsList) {
         this.passengerDetailsList = passengerDetailsList;
+    }
+
+    public String getServiceCharge() {
+        return serviceCharge;
+    }
+
+    public void setServiceCharge(String serviceCharge) {
+        this.serviceCharge = serviceCharge;
     }
 }
