@@ -118,14 +118,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        MyProfile.getInstance().updateLiveTickets(progressDialog);
-        MyProfile.getInstance().getCurrentBookingTicketCount().observe(getActivity(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                mListener.updateBadgeCount();
-            }
-        });
+        MyProfile.getInstance().getCurrentBookingTicketCount().observe(getActivity(), integer -> mListener.updateBadgeCount());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
         return inflater.inflate(R.layout.fragment_ticket_booking_home, container, false);
     }

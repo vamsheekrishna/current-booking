@@ -17,6 +17,7 @@ import com.currentbooking.utilits.encrypt.EncryptionFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -189,6 +190,11 @@ public class MyProfile {
     }
 
     public void setTodayTickets(ArrayList<MyTicketInfo> todayTickets) {
+        try {
+            Objects.requireNonNull(this.todayTickets.getValue()).clear();
+        } catch (Exception e) {
+
+        }
         this.todayTickets.setValue(todayTickets);
     }
 
@@ -209,7 +215,6 @@ public class MyProfile {
         try {
             data = aesEncryption.decrypt(input);
             Log.d("encryption", input+" -> "+data);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

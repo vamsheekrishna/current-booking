@@ -298,6 +298,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public void updateBadgeCount() {
-        textCartItemCount.setText(String.valueOf(Math.min(MyProfile.getInstance().getCurrentBookingTicketCount().getValue(), 99)));
+        if( null != textCartItemCount)
+            textCartItemCount.setText(String.valueOf(Math.min(MyProfile.getInstance().getCurrentBookingTicketCount().getValue(), 99)));
     }
 }

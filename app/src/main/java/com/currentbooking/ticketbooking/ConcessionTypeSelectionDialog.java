@@ -58,6 +58,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
         super.onAttach(context);
         ((BaseNavigationDrawerActivity)context).hideHamBurgerIcon();
         ((BaseNavigationDrawerActivity)context).showBadge(false);
+        ((BaseNavigationDrawerActivity)context).showHamburgerIcon(false);
     }
 
     @Override
@@ -105,8 +106,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
         concessionsListField.setHasFixedSize(false);
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
-        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
-                R.drawable.recycler_decoration_divider)));
+        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()), R.drawable.recycler_decoration_divider)));
         concessionsListField.addItemDecoration(divider);
 
         concessionsListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), concessionsListField, new RecyclerTouchListener.ClickListener() {
