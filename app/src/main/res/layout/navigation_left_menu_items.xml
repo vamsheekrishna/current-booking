@@ -272,7 +272,7 @@
             android:background="@color/gray_color" />
 
         <LinearLayout
-            android:id="@+id/logout_change_password_field"
+            android:id="@+id/change_password_layout_field"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal">

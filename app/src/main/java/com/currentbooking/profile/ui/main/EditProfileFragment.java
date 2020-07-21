@@ -66,7 +66,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     AppCompatTextView dobField, male, female;
     private Calendar dateOfBirthCalendar;
     String gender = "Male";
-    private Uri profileImageUri = null;
     private Bitmap profileImageBitmap;
     private String dateOfBirthValue;
 
@@ -130,6 +129,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             if (!TextUtils.isEmpty(dob)) {
                 dateOfBirthCalendar = DateUtilities.getCalendarFromDate2(dob);
                 dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dateOfBirthCalendar));
+                dateOfBirthValue = DateUtilities.getDateOfBirthFromCalendar(dateOfBirthCalendar);
             }
             if (myProfile.getGender().equalsIgnoreCase(getString(R.string.male))) {
                 selectedMale();
@@ -175,10 +175,18 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (result != null) {
-                profileImageUri = null;
                 if (resultCode == RESULT_OK) {
-                    profileImageUri = result.getUri();
-                    ivProfileImageField.setImageURI(profileImageUri);
+                    try {
+                        Uri profileImageUri = result.getUri();
+                        if (profileImageUri != null) {
+                            InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
+                            profileImageBitmap = BitmapFactory.decodeStream(imageStream);
+                            ivProfileImageField.setImageURI(profileImageUri);
+                        }
+                    } catch (Exception ex) {
+                        showDialog("", ex.getMessage());
+                    }
+
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                     LoggerInfo.errorLog("cropping error", error.getMessage());
@@ -210,51 +218,70 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         String _etState =  Objects.requireNonNull(etState.getText()).toString().trim();
         String _etPinCode = Objects.requireNonNull(etPinCode.getText()).toString().trim();
         String _email = Objects.requireNonNull(email.getText()).toString().trim();
-        if (!Utils.isValidWord(fName)) {
+
+        if(!Utils.isValidWord(fName)) {
             showDialog("", getString(R.string.error_first_name));
-        } else if (!Utils.isValidWord(lName)) {
+            return;
+        }
+        if (!Utils.isValidWord(lName)) {
             showDialog("", getString(R.string.error_last_name));
-        } else {
-            progressDialog.show();
-            String encodedImage = getEncodedImage();
-            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
-                    _etAddress1, _etAddress2, _etPinCode, dateOfBirthValue, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
-                @Override
-                public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
-                    progressDialog.dismiss();
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            if (response.body().getStatus().equalsIgnoreCase("success")) {
-                                MyProfile.getInstance().setFirstName(fName);
-                                MyProfile.getInstance().setLastName(lName);
-                                MyProfile.getInstance().setAddress1(_etAddress1);
-                                MyProfile.getInstance().setAddress2(_etAddress2);
-                                MyProfile.getInstance().setState(_etState);
-                                MyProfile.getInstance().setPinCode(_etPinCode);
-                                MyProfile.getInstance().setEmail(_email);
-                                MyProfile.getInstance().setDob(dateOfBirthValue);
-                                showDialog("", response.body().getMsg(), (dialog, which) -> {
-                                    Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
-                                    MyProfile.getInstance().setUserProfileImage(bitmap);
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
-                                });
-                            } else {
-                                updateUserProfileImage();
-                                showDialog("", response.body().getMsg());
+            return;
+        }
+        if (!Utils.isValidWord(_etAddress1)) {
+            showDialog("", getString(R.string.error_address_one));
+            return;
+        }
+        if (!Utils.isValidWord(_etAddress2)) {
+            showDialog("", getString(R.string.error_address_two));
+            return;
+        }
+        if (!Utils.isValidWord(_etState)) {
+            showDialog("", getString(R.string.error_state));
+            return;
+        }
+        progressDialog.show();
+        String encodedImage = getEncodedImage();
+        LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+        loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
+                _etAddress1, _etAddress2, _etPinCode, dateOfBirthValue, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus().equalsIgnoreCase("success")) {
+                            MyProfile myProfile = MyProfile.getInstance();
+                            if (myProfile != null) {
+                                myProfile.setFirstName(fName);
+                                myProfile.setLastName(lName);
+                                myProfile.setAddress1(_etAddress1);
+                                myProfile.setAddress2(_etAddress2);
+                                myProfile.setState(_etState);
+                                myProfile.setPinCode(_etPinCode);
+                                myProfile.setEmail(_email);
+                                myProfile.setDob(dateOfBirthValue);
+                                myProfile.setGender(gender);
                             }
+                            showDialog("", response.body().getMsg(), pObject -> {
+                                Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
+                                MyProfile.getInstance().setUserProfileImage(bitmap);
+                                Objects.requireNonNull(getActivity()).onBackPressed();
+                            });
+                        } else {
+                            updateUserProfileImage();
+                            showDialog("", response.body().getMsg());
                         }
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
-                    updateUserProfileImage();
-                    showDialog("", t.getMessage());
-                }
-            });
-        }
+            @Override
+            public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
+                progressDialog.dismiss();
+                updateUserProfileImage();
+                showDialog("", t.getMessage());
+            }
+        });
     }
 
     private void updateUserProfileImage() {
@@ -266,8 +293,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     profileCircularBar.setVisibility(View.GONE);
-                    Bitmap bitmap = response.getBitmap();
-                    ivProfileImageField.setImageBitmap(bitmap);
+                    profileImageBitmap = response.getBitmap();
+                    ivProfileImageField.setImageBitmap(profileImageBitmap);
                 }
 
                 @Override
@@ -282,9 +309,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     private String getEncodedImage() {
         try {
-            if (profileImageUri != null) {
-                final InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
-                profileImageBitmap = BitmapFactory.decodeStream(imageStream);
+            if (profileImageBitmap != null) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] b = baos.toByteArray();

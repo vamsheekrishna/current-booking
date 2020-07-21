@@ -23,10 +23,14 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Bundle extras = getIntent().getExtras();
-
         if (extras != null) {
-            addFragment(ChangePasswordFragment.newInstance("", ""), "ChangePasswordFragment", false);
-        } else if(savedInstanceState == null) {
+            boolean isChangedPassword = extras.getBoolean(getString(R.string.change_password));
+            if(isChangedPassword) {
+                addFragment(AuthenticationHomeFragment.newInstance("", ""), "AuthenticationHomeFragment", false);
+            } else {
+                addFragment(ChangePasswordFragment.newInstance(), "ChangePasswordFragment", false);
+            }
+        } else if (savedInstanceState == null) {
             addFragment(AuthenticationHomeFragment.newInstance("", ""), "AuthenticationHomeFragment", false);
         }
     }
@@ -53,7 +57,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void goToForgotPassword() {
-        replaceFragment(ForgotPasswordFragment.newInstance("", ""), "ForgotPasswordFragment", true);
+        replaceFragment(ForgotPasswordFragment.newInstance(), "ForgotPasswordFragment", true);
     }
 
     @Override

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.databinding.FragmentSelectBusBinding;
+import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.ticketbooking.adapters.SelectBusesAdapter;
 import com.currentbooking.ticketbooking.viewmodels.SelectBusesViewModel;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
@@ -192,12 +193,7 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
         if (selectBusesAdapter != null) {
             busesResultListField.setAdapter(selectBusesAdapter);
         } else {
-            showDialog("", getString(R.string.no_information_available), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Objects.requireNonNull(getActivity()).onBackPressed();
-                }
-            });
+            showDialog("", getString(R.string.no_information_available), pObject -> Objects.requireNonNull(getActivity()).onBackPressed());
         }
     }
 
@@ -207,5 +203,4 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
         mListener.showBadge(true);
         mListener.showHamburgerIcon(true);
     }
-
 }

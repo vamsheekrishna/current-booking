@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.currentbooking.R;
+import com.currentbooking.interfaces.CallBackInterface;
+import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.LoggerInfo;
 
 import java.util.Objects;
@@ -87,18 +89,16 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    protected void showDialog(String title, String msg, DialogInterface.OnClickListener onClickListener) {
+    protected void showDialog(String title, String msg, CallBackInterface callBackInterface) {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
-            /*
-            empty title is the client requirement
-            if (TextUtils.isEmpty(title)) {
-                title = requireActivity().getString(R.string.message);
-            }*/
             builder.setTitle(title);
             builder.setCancelable(false);
             builder.setMessage(msg);
-            builder.setNegativeButton("close", onClickListener);
+            builder.setNegativeButton("close", (dialogInterface, i) -> {
+                callBackInterface.callBackReceived(Constants.TAG_SUCCESS);
+                dialogInterface.dismiss();
+            });
             AlertDialog alertDialog = builder.create();
             if (!requireActivity().isFinishing()) {
                 alertDialog.show();

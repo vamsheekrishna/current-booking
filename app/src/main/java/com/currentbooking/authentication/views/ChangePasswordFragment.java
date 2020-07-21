@@ -1,6 +1,6 @@
 package com.currentbooking.authentication.views;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
-import com.currentbooking.authentication.OnAuthenticationClickedListener;
+import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ChangePasswordResponse;
 import com.currentbooking.utilits.views.BaseFragment;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,42 +28,15 @@ import retrofit2.Response;
 
 public class ChangePasswordFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private OnAuthenticationClickedListener mListener;
-    private LoginService loginService;
     private TextView oldPassword, newPassword, confirmPassword;
 
     public ChangePasswordFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mListener = (OnAuthenticationClickedListener) context;
-    }
-
-    public static ChangePasswordFragment newInstance(String param1, String param2) {
-        ChangePasswordFragment fragment = new ChangePasswordFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static ChangePasswordFragment newInstance() {
+        return new ChangePasswordFragment();
     }
 
     @Override
@@ -67,11 +44,6 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         super.onResume();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mListener =null;
-    }
 
     @Override
     public void onStop() {
@@ -102,9 +74,6 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         String _oldPassword = oldPassword.getText().toString().trim();
         String _newPassword = newPassword.getText().toString().trim();
         String _confirmPassword = confirmPassword.getText().toString().trim();
-        /*if (!Utils.isValidMobile(_mobileNumber)) {
-            showDialog("", getString(R.string.error_mobile_number));
-        }*/
         if (_oldPassword.length() <= 4) {
             showDialog("", getString(R.string.error_password));
         } else if (_newPassword.length() <= 4) {
@@ -118,28 +87,42 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         } else {
             progressDialog.show();
             String mobileNumber = MyProfile.getInstance().getMobileNumber();
-            loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
             loginService.changePassword(MyProfile.getInstance().getUserId(), mobileNumber, _oldPassword, _newPassword).enqueue(new Callback<ChangePasswordResponse>() {
                 @Override
-                public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+                public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
                     if (response.isSuccessful()) {
-                        if (response.body().getStatus().equalsIgnoreCase("success")) {
-                            showDialog("", response.body().getMsg(), (dialog, which) -> {
-                                getActivity().finish();
-                            });
-                        } else {
-                            showDialog("", response.body().getMsg());
+                        ChangePasswordResponse body = response.body();
+                        if(body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                showDialog("", body.getMsg(), pObject -> {
+                                    if (pObject instanceof String) {
+                                        if (((String) pObject).equalsIgnoreCase(Constants.TAG_SUCCESS)) {
+                                            gotoAuthenticationActivity();
+                                        }
+                                    }
+                                });
+                            } else {
+                                showDialog("", body.getMsg());
+                            }
                         }
                     }
                     progressDialog.dismiss();
                 }
 
                 @Override
-                public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+                public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
                     showDialog("",t.getMessage());
                     progressDialog.dismiss();
                 }
             });
         }
+    }
+
+    private void gotoAuthenticationActivity() {
+        Intent intent = new Intent(requireActivity(), AuthenticationActivity.class);
+        intent.putExtra(getString(R.string.change_password), true);
+        startActivity(intent);
+        requireActivity().finish();
     }
 }

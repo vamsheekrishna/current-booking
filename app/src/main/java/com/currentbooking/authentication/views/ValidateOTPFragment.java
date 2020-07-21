@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.authentication.view_models.Authentication;
+import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
@@ -24,6 +25,8 @@ import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.responses.ResendOTPResponse;
 import com.currentbooking.utilits.cb_api.responses.ValidateOTP;
 import com.currentbooking.utilits.views.BaseFragment;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -141,9 +144,7 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
                                 ValidateOTP data = response.body();
                                 assert data != null;
                                 if (data.getStatus().equalsIgnoreCase("success")) {
-                                    showDialog("", data.getMsg(), (dialog, which) -> {
-                                        getActivity().onBackPressed();
-                                    });
+                                    showDialog("", data.getMsg(), pObject -> Objects.requireNonNull(getActivity()).onBackPressed());
                                 } else {
                                     showDialog("", data.getMsg());
                                 }

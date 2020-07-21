@@ -1,8 +1,6 @@
 package com.currentbooking.ticketbookinghistory;
 
-import android.app.MediaRouteButton;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +27,8 @@ import com.currentbooking.utilits.cb_api.responses.UpdateTicketStatus;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -188,19 +188,18 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
                             depot_name, depot_code, trip_no, route_no, bus_type, bus_time, conductor_id, conductor_name, status, ticket_number, operator, etim_no,
                             bus_no, machine_no, bus_service_id).enqueue(new Callback<UpdateTicketStatus>() {
                         @Override
-                        public void onResponse(Call<UpdateTicketStatus> call, Response<UpdateTicketStatus> response) {
-                            assert response.body() != null;
-                            if (response.isSuccessful() && response.body().getStatus().equalsIgnoreCase("Success")) {
+                        public void onResponse(@NotNull Call<UpdateTicketStatus> call, @NotNull Response<UpdateTicketStatus> response) {
+                            UpdateTicketStatus body = response.body();
+                            if(response.isSuccessful() && body != null && body.getStatus().equalsIgnoreCase("success")) {
                                 showDialog(getString(R.string.ticket_status), getString(R.string.status_approved));
                                 qrBaseView.setVisibility(View.GONE);
                             } else {
-                                assert response.body() != null;
-                                showDialog("", response.body().getMsg());
+                                showDialog("", Objects.requireNonNull(body).getMsg());
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<UpdateTicketStatus> call, Throwable t) {
+                        public void onFailure(@NotNull Call<UpdateTicketStatus> call, @NotNull Throwable t) {
 
                         }
                     });

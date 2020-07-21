@@ -103,7 +103,6 @@
                 android:id="@+id/address2"
                 android:drawableStart="@drawable/home"
                 android:hint="@string/address2"
-                android:visibility="gone"
                 android:inputType="textCapWords"
                 style="@style/edit_text" />
 
@@ -111,7 +110,6 @@
                 android:id="@+id/state"
                 android:drawableStart="@drawable/state"
                 android:hint="@string/state"
-                android:visibility="gone"
                 android:inputType="textCapWords"
                 style="@style/edit_text" />
 

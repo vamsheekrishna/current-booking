@@ -9,4 +9,8 @@ public class Constants {
     public static String KEY_APPROVED  = "Approved";
     public static String KEY_REJECTED  = "Rejected";
     public static String KEY_EXPIRED  = "Expired";
+
+
+    //keys
+    public static String TAG_SUCCESS  = "success";
 }

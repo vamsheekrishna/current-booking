@@ -51,7 +51,7 @@
     <string name="my_profile">My Profile</string>
     <string name="dob">Date Of Birth</string>
     <string name="address">Full House Address</string>
-    <string name="address2">Street</string>
+    <string name="address2">Address 2</string>
     <string name="pin">Pin Code</string>
     <string name="state">State</string>
     <string name="profile">profile</string>
@@ -148,4 +148,7 @@
     <string name="services_home">Services Home</string>
     <string name="status_approved">Your ticket has been approved successfully</string>
     <string name="ticket_status">Ticket Status</string>
+    <string name="error_address_one">The Address1 field is required.</string>
+    <string name="error_address_two">The Address2 field is required.</string>
+    <string name="error_state">The State field is required.</string>
 </resources>

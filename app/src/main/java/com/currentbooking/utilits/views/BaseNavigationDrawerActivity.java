@@ -1,6 +1,5 @@
 package com.currentbooking.utilits.views;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -22,40 +21,27 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
+import com.currentbooking.help.HelpActivity;
 import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.ticketbooking.BaseListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.ticketbookinghistory.TicketBookingHistoryActivity;
-import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
-import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
-import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
-import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, BaseListener {
 
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navigationView;
-    //protected LinearLayoutCompat signOut;
     private TextView textCartItemCount;
     private NetworkImageView ivProfileImageField;
     private View badgeBase;
@@ -136,29 +122,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         badgeBase = actionView.findViewById(R.id.badge_base);
         showBadge(true);
 
-        actionView.setOnClickListener(v -> {
-            startActivity(new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class));
-        });
+        actionView.setOnClickListener(v -> startActivity(new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class)));
 
         return true;
     }
-
-/*    public void setupBadge() {
-        if (textCartItemCount != null) {
-            if (mCartItemCount == 0) {
-                if (textCartItemCount.getVisibility() != View.GONE) {
-                    textCartItemCount.setVisibility(View.GONE);
-                    // badgeBase.setVisibility(View.GONE);
-                }
-            } else {
-                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
-                if (textCartItemCount.getVisibility() != View.VISIBLE) {
-                    textCartItemCount.setVisibility(View.VISIBLE);
-                    badgeBase.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
@@ -187,7 +154,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.help_layout_field).setOnClickListener(this);
         findViewById(R.id.logout_layout_field).setOnClickListener(this);
         findViewById(R.id.my_profile_layout_field).setOnClickListener(this);
-        findViewById(R.id.logout_change_password_field).setOnClickListener(this);
+        findViewById(R.id.change_password_layout_field).setOnClickListener(this);
 
     }
     @Override
@@ -200,7 +167,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -223,7 +189,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 startActivity(intent);
                 break;
             case R.id.help_layout_field:
-                Toast.makeText(this, "nav_help", Toast.LENGTH_LONG).show();
+                gotoHelpScreen();
                 break;
             case R.id.logout_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
@@ -233,7 +199,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 mDrawerLayout.closeDrawer(navigationView);
                 startActivity(new Intent(BaseNavigationDrawerActivity.this, ProfileActivity.class));
                 break;
-            case R.id.logout_change_password_field:
+            case R.id.change_password_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
                 intent = new Intent(this, AuthenticationActivity.class);
                 intent.putExtra(getString(R.string.change_password), true);
@@ -244,16 +210,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 break;
         }
         mDrawerLayout.closeDrawer(navigationView);
-    }
-
-    public void hideHamBurgerIcon() {
-        assert getSupportActionBar() != null;   //null check
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);   //show back button
-    }
-
-    public void showHamBurgerIcon() {
-        assert getSupportActionBar() != null;   //null check
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
     }
 
     @Override
@@ -272,10 +228,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public void showHamburgerIcon(boolean b) {
-        if(b) {
-            showHamBurgerIcon();
-        } else {
-            hideHamBurgerIcon();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(b);   //hide hamburger button
         }
     }
 
@@ -298,7 +252,18 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public void updateBadgeCount() {
-        if( null != textCartItemCount)
-            textCartItemCount.setText(String.valueOf(Math.min(MyProfile.getInstance().getCurrentBookingTicketCount().getValue(), 99)));
+        if (textCartItemCount != null) {
+            MyProfile myProfile = MyProfile.getInstance();
+            if (myProfile != null) {
+                Integer value = myProfile.getCurrentBookingTicketCount().getValue();
+                if (value != null) {
+                    textCartItemCount.setText(String.valueOf(Math.min(value, 99)));
+                }
+            }
+        }
+    }
+
+    private void gotoHelpScreen() {
+        startActivity(new Intent(this, HelpActivity.class));
     }
 }

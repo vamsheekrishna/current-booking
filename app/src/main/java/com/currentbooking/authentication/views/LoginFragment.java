@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
+import com.currentbooking.interfaces.CallBackInterface;
+import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
@@ -96,6 +98,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         password = view.findViewById(R.id.password);
         userName.setText("7416226233");
         password.setText("12345");
+        userName.setText("8686378737");
+        password.setText("12345678");
 
         // encryptionSample();
     }
@@ -138,8 +142,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                         e.printStackTrace();
                                     }
                                 } else {
-                                    showDialog("", data.getMsg(), (dialog, which) -> {
-                                        dialog.dismiss();
+                                    showDialog("", data.getMsg(), pObject -> {
                                         if(data.getMsg().contains("verify")) {
                                             mListener.validateOTP();
                                         }

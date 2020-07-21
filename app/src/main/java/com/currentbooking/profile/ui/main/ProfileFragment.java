@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -27,7 +28,7 @@ import com.currentbooking.utilits.views.ProgressBarCircular;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class ProfileFragment extends BaseFragment implements View.OnClickListener {
+public class ProfileFragment extends BaseFragment {
 
     // private ProfileViewModel mViewModel;
 
@@ -41,6 +42,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private TextView pinCode;
     private CircularNetworkImageView ivProfileImageField;
     private ProgressBarCircular profileCircularBar;
+    private AppCompatTextView maleField;
+    private AppCompatTextView femaleField;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -73,6 +76,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 Calendar dobCalendar = DateUtilities.getCalendarFromDate2(dob);
                 dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dobCalendar));
             }
+
+            if (myProfile.getGender().equalsIgnoreCase(getString(R.string.male))) {
+                selectedMale();
+            } else {
+                selectedFemale();
+            }
         }
 
         address1.setText(MyProfile.getInstance().getAddress1());
@@ -81,9 +90,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         Bitmap bitmap = MyProfile.getInstance().getUserProfileImage().getValue();
         if (bitmap != null) {
+            profileCircularBar.setVisibility(View.GONE);
             ivProfileImageField.setImageBitmap(bitmap);
         } else {
             if (myProfile != null) {
+
                 String imageUrl = myProfile.getProfileImage();
                 if (!TextUtils.isEmpty(imageUrl)) {
                     HttpsTrustManager.allowAllSSL();
@@ -108,6 +119,20 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
+    private void selectedMale() {
+        maleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
+        maleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
+        femaleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
+        femaleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
+    }
+
+    private void selectedFemale() {
+        femaleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
+        femaleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
+        maleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
+        maleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -127,14 +152,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         AppCompatTextView state = view.findViewById(R.id.state);
         state.setText(MyProfile.getInstance().getState());
         pinCode = view.findViewById(R.id.pin_code);
-        view.findViewById(R.id.edit_profile).setOnClickListener(this);
+        view.findViewById(R.id.edit_profile).setOnClickListener(v -> {
+            mListener.goToEditProfile();
+        });
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
         profileCircularBar = view.findViewById(R.id.profile_circular_field);
-    }
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.edit_profile) {
-            mListener.goToEditProfile();
-        }
+        maleField = view.findViewById(R.id.male_field);
+        femaleField = view.findViewById(R.id.female_field);
     }
 }
