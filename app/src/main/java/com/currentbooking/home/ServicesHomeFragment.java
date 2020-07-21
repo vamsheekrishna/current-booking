@@ -11,12 +11,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.BaseListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
+import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class ServicesHomeFragment extends BaseFragment {
 
@@ -47,8 +52,10 @@ public class ServicesHomeFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        mListener.updateBadgeCount(progressDialog, true);
+        MyProfile.getInstance().updateLiveTickets(progressDialog);
+        MyProfile.getInstance().getCurrentBookingTicketCount().observe(Objects.requireNonNull(getActivity()), integer -> {
+            mListener.updateBadgeCount();
+        });
         return inflater.inflate(R.layout.fragment_services_home, container, false);
     }
 

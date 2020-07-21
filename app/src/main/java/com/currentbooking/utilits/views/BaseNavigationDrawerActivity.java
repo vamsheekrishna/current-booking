@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,14 +59,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private TextView textCartItemCount;
     private NetworkImageView ivProfileImageField;
     private View badgeBase;
-    private int mCartItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.nav_view_content);
         setNavigationView();
-
         loadUIComponents();
     }
 
@@ -285,41 +284,20 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         if(null != badgeBase) {
             if (b) {
                 badgeBase.setVisibility(View.VISIBLE);
-                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+                Integer value = MyProfile.getInstance().getCurrentBookingTicketCount().getValue();
+                if(value!=null && value > 0)
+                    textCartItemCount.setText(String.valueOf(Math.min(value, 99)));
+                else
+                    badgeBase.setVisibility(View.GONE);
 
             } else {
                 badgeBase.setVisibility(View.GONE);
             }
         }
     }
-    @Override
-    public void updateBadgeCount(Dialog progressDialog, boolean b) {
-        String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
-        String id = MyProfile.getInstance().getUserId();
-        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        progressDialog.show();
-        service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
-            @Override
-            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
-                TodayTickets todayTickets = response.body();
-                if (todayTickets != null) {
-                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
-                        ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
-                        if (null != data && data.size() > 0) {
-                            MyProfile.getInstance().setTodayTickets(data);
-                            showBadge(b);
-                        }
-                    }
-                }
-                progressDialog.cancel();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
-                // showDialog("onFailure", "" + t.getMessage());
-                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
-                progressDialog.cancel();
-            }
-        });
+    @Override
+    public void updateBadgeCount() {
+        textCartItemCount.setText(String.valueOf(Math.min(MyProfile.getInstance().getCurrentBookingTicketCount().getValue(), 99)));
     }
 }

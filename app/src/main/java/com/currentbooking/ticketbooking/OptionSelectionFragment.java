@@ -90,8 +90,6 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle(mParam2);
-        mListener.showBadge(false);
-        mListener.showHamburgerIcon(false);
     }
     private View initDataBinding(@NotNull LayoutInflater inflater) {
         FragmentOptionSelectionBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_option_selection,

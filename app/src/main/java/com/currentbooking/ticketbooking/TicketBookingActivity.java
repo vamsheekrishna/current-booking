@@ -3,6 +3,7 @@ package com.currentbooking.ticketbooking;
 import android.os.Bundle;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -13,7 +14,6 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (savedInstanceState == null) {
             addFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", false);
         }

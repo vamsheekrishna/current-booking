@@ -1,6 +1,7 @@
 package com.currentbooking.ticketbooking;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -217,8 +218,10 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
     }
 
     private void paymentSuccessBookAnotherBtnSelected() {
-        clearBackStack();
-        mListener.goToHome();
+        startActivity(new Intent(getActivity(), TicketBookingActivity.class));
+        Objects.requireNonNull(getActivity()).finish();
+        /*clearBackStack();
+        mListener.goToHome();*/
     }
 
     private void paymentFailedHomeBtnSelected() {

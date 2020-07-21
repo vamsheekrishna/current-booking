@@ -42,6 +42,7 @@ public class MyProfile {
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
     private MutableLiveData<ArrayList<MyTicketInfo>> todayTickets = new MutableLiveData<>();
     Encryption aesEncryption;
+    private MutableLiveData<Integer> currentBookingTicketCount = new MutableLiveData<>();
 
     private MyProfile() throws Exception {
         aesEncryption = EncryptionFactory.getEncryptionByName("AES");
@@ -215,12 +216,12 @@ public class MyProfile {
         return data;
     }
 
-    /*public void updateLiveTickets(Dialog progressDialog) {
+    public void updateLiveTickets(Dialog progressDialog) {
         String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
         String id = MyProfile.getInstance().getUserId();
         TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         progressDialog.show();
-        service.getTodayTicket(date, id).enqueue(new Callback<TodayTickets>() {
+        service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
             @Override
             public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
                 TodayTickets todayTickets = response.body();
@@ -229,6 +230,7 @@ public class MyProfile {
                         ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
                         if (null != data && data.size() > 0) {
                             MyProfile.getInstance().setTodayTickets(data);
+                            currentBookingTicketCount.setValue(data.size());
                         }
                     }
                 }
@@ -242,5 +244,13 @@ public class MyProfile {
                 progressDialog.cancel();
             }
         });
-    }*/
+    }
+
+    public MutableLiveData<Integer> getCurrentBookingTicketCount() {
+        return currentBookingTicketCount;
+    }
+
+    public void setCurrentBookingTicketCount(MutableLiveData<Integer> currentBookingTicketCount) {
+        this.currentBookingTicketCount = currentBookingTicketCount;
+    }
 }

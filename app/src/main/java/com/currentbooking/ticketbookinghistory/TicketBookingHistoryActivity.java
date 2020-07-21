@@ -12,6 +12,8 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showBadge(false);
+        showHamburgerIcon(false);
         addFragment(LiveTicketFragment.newInstance("", ""), "LiveTicketFragment", false);
     }
 

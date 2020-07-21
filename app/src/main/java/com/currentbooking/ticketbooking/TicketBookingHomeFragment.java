@@ -17,11 +17,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -116,8 +118,14 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the select_bus_points for this fragment
-        mListener.updateBadgeCount(progressDialog, false);
+
+        MyProfile.getInstance().updateLiveTickets(progressDialog);
+        MyProfile.getInstance().getCurrentBookingTicketCount().observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                mListener.updateBadgeCount();
+            }
+        });
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
         return inflater.inflate(R.layout.fragment_ticket_booking_home, container, false);
     }
