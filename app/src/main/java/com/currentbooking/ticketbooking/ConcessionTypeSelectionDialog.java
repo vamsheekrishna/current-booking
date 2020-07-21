@@ -43,6 +43,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
     private CallBackInterface callBackInterface;
     private ConcessionsTypeAdapter concessionsTypeAdapter;
     private String selectedPersonType;
+    private OnTicketBookingListener mListener;
 
     public static ConcessionTypeSelectionDialog getInstance(String selectedPersonType, List<Concession> concessionList) {
         ConcessionTypeSelectionDialog concessionTypeSelectionDialog = new ConcessionTypeSelectionDialog();
@@ -56,14 +57,12 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        ((BaseNavigationDrawerActivity)context).showBadge(false);
-        ((BaseNavigationDrawerActivity)context).showHamburgerIcon(false);
+        mListener = (OnTicketBookingListener) context;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @NonNull
@@ -88,9 +87,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
             selectedPersonType = extras.getString("PersonType");
             concessionsTypeList = (List<Concession>) extras.getSerializable("ConcessionsList");
         }
-
         loadUIComponents(view);
-
         return dialog;
     }
 
@@ -168,16 +165,6 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
             }
         });
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            closeDialog();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private void showErrorMessage(String message) {
         DialogUtility.getOKDialog(requireActivity(), getString(R.string.message), message);
