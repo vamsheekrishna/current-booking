@@ -212,7 +212,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
                     Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getOriginDateTime(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode(),
-                    Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD(),
+                    Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getBusTypeCD(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getBusServiceNO(),
                     jsonText
             ).enqueue(new Callback<GetFareResponse>() {

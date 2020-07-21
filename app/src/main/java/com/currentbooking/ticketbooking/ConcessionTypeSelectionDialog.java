@@ -56,7 +56,6 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        ((BaseNavigationDrawerActivity)context).hideHamBurgerIcon();
         ((BaseNavigationDrawerActivity)context).showBadge(false);
         ((BaseNavigationDrawerActivity)context).showHamburgerIcon(false);
     }
