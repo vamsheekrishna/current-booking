@@ -3,22 +3,24 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_bg">
+
     <androidx.core.widget.NestedScrollView
         android:layout_alignParentTop="true"
         android:layout_above="@+id/qr_base_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_alignParentStart="true"
                 style="@style/header_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
                 android:background="@android:color/transparent"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
@@ -31,8 +33,8 @@
                 style="@style/header_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
                 android:background="@android:color/transparent"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
@@ -42,8 +44,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/white_background_rounded_corner"
                 android:orientation="vertical">
 
@@ -97,8 +99,8 @@
                 style="@style/header_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
                 android:background="@android:color/transparent"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
@@ -108,9 +110,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/white_background_rounded_corner"
                 android:orientation="vertical">
 
@@ -204,16 +206,15 @@
         <Button
             android:layout_marginEnd="4dp"
             android:layout_marginStart="8dp"
-            android:text="Show QRCode"
+            android:id="@+id/view_qr_code"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/view_qr_code"
-        />
+            android:text="@string/show_qr_code" />
         <Button
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
-            android:text="Scan QRCode"
+            android:text="@string/book_ticket"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

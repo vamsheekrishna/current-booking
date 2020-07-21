@@ -8,7 +8,7 @@
         android:id="@+id/top_layout_field"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.3"
         android:background="@color/red_three">
 
         <LinearLayout
@@ -61,7 +61,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.75"
+        android:layout_weight="0.7"
         android:scrollbars="none">
 
         <LinearLayout

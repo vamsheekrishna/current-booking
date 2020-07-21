@@ -50,6 +50,9 @@
                 android:hint="@string/select_bus_type"
                 style="@style/text_view" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
         </LinearLayout>
     </ScrollView>
     <LinearLayout

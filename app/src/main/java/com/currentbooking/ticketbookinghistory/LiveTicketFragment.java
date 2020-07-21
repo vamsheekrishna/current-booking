@@ -30,34 +30,14 @@ import java.util.Objects;
  * Created by Satya Seshu on 03/07/20.
  */
 public class LiveTicketFragment  extends BaseFragment implements View.OnClickListener {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public LiveTicketFragment() {
         // Required empty public constructor
     }
 
     OnTicketBookingHistoryListener mListener;
-    public static LiveTicketFragment newInstance(String param1, String param2) {
-        LiveTicketFragment fragment = new LiveTicketFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static LiveTicketFragment newInstance() {
+        return new LiveTicketFragment();
     }
 
     @Override

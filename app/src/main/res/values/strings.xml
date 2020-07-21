@@ -151,4 +151,6 @@
     <string name="error_address_one">The Address1 field is required.</string>
     <string name="error_address_two">The Address2 field is required.</string>
     <string name="error_state">The State field is required.</string>
+    <string name="scan_qr_code">Scan QRCode</string>
+    <string name="show_qr_code">Show QRCode</string>
 </resources>

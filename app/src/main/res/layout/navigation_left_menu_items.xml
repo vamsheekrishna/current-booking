@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -147,194 +146,211 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/book_ticket_layout_field"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ticket" />
-
-            <TextView
-                style="@style/text_style_medium_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical"
-                android:text="@string/book_ticket"
-                android:textColor="@color/black_color_two"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_color" />
-
-        <LinearLayout
-            android:id="@+id/booking_history_layout_field"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/booking_history" />
-
-            <TextView
-                style="@style/text_style_medium_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical"
-                android:text="@string/booking_history"
-                android:textColor="@color/black_color_two"
-                android:textSize="18sp" />
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_color" />
-
-        <LinearLayout
-            android:id="@+id/my_profile_layout_field"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/booking_history" />
-
-            <TextView
-                style="@style/text_style_medium_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical"
-                android:text="@string/my_profile"
-                android:textColor="@color/black_color_two"
-                android:textSize="18sp" />
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_color" />
-
-        <LinearLayout
-            android:id="@+id/help_layout_field"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/help" />
-
-            <TextView
-                style="@style/text_style_medium_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical"
-                android:text="@string/help"
-                android:textColor="@color/black_color_two"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_color" />
-
-        <LinearLayout
-            android:id="@+id/change_password_layout_field"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/logout" />
-
-            <TextView
-                style="@style/text_style_medium_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical"
-                android:text="@string/change_password"
-                android:textColor="@color/black_color_two"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
-    <View
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_color" />
-        <LinearLayout
-        android:id="@+id/logout_layout_field"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/logout" />
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/text_style_medium_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/roboto_regular"
-            android:gravity="center_vertical"
-            android:text="@string/logout"
-            android:textColor="@color/black_color_two"
-            android:textSize="18sp" />
+            <LinearLayout
+                android:id="@+id/book_ticket_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ticket" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/book_ticket"
+                    android:textColor="@color/black_color_two"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_color" />
+
+            <LinearLayout
+                android:id="@+id/booking_history_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/booking_history" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/booking_history"
+                    android:textColor="@color/black_color_two"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_color" />
+
+            <LinearLayout
+                android:id="@+id/my_profile_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/booking_history" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/my_profile"
+                    android:textColor="@color/black_color_two"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_color" />
+
+            <LinearLayout
+                android:id="@+id/help_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/help" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/help"
+                    android:textColor="@color/black_color_two"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_color" />
+
+            <LinearLayout
+                android:id="@+id/change_password_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/logout" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/change_password"
+                    android:textColor="@color/black_color_two"
+                    android:textSize="18sp" />
 
 
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_color" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_color" />
+
+            <LinearLayout
+                android:id="@+id/logout_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/logout" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/logout"
+                    android:textColor="@color/black_color_two"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_color" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

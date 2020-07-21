@@ -38,9 +38,14 @@ public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetai
     @Override
     public void onBindViewHolder(@NonNull PassengerDetailsViewHolder holder, int position) {
         PassengerDetailsModel passengerDetailsModel = listData.get(position);
-        holder.tvPassengerTypeField.setText(passengerDetailsModel.getType());
+        String passengerName = passengerDetailsModel.getName();
+        if(!TextUtils.isEmpty(passengerName)) {
+            holder.tvPassengerNameOrTypeField.setText(passengerName);
+        } else {
+            holder.tvPassengerNameOrTypeField.setText(passengerDetailsModel.getType());
+        }
         holder.tvPassengerAgeField.setText(passengerDetailsModel.getAge());
-        String concession = passengerDetailsModel.getConcessionCD();
+        String concession = passengerDetailsModel.getConcessionName();
         if (TextUtils.isEmpty(concession)) {
             concession = "N/A";
         }
@@ -54,13 +59,13 @@ public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetai
 
     static class PassengerDetailsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvPassengerTypeField;
+        TextView tvPassengerNameOrTypeField;
         TextView tvPassengerAgeField;
         TextView tvConcessionNameField;
 
         public PassengerDetailsViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvPassengerTypeField = itemView.findViewById(R.id.tv_passenger_type_field);
+            tvPassengerNameOrTypeField = itemView.findViewById(R.id.tv_passenger_name_or_passenger_type_field);
             tvPassengerAgeField = itemView.findViewById(R.id.tv_passenger_age_field);
             tvConcessionNameField = itemView.findViewById(R.id.tv_passenger_concession_type_field);
         }

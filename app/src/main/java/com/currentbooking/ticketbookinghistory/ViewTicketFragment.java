@@ -41,13 +41,11 @@ import static com.currentbooking.ticketbookinghistory.GenerateQRCode.ETIM_PRE_FI
 import static com.currentbooking.utilits.Constants.KEY_APPROVED;
 
 public class ViewTicketFragment extends BaseFragment implements View.OnClickListener {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+    private static final String ARG_TICKET_DETAILS = "TicketDetails";
     private MyTicketInfo busTicketDetails;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private OnTicketBookingHistoryListener mListener;
     private LinearLayout qrBaseView;
 
@@ -61,11 +59,10 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         mListener = (OnTicketBookingHistoryListener)context;
     }
 
-    public static ViewTicketFragment newInstance(MyTicketInfo ticketDetails, String param2) {
+    public static ViewTicketFragment newInstance(MyTicketInfo ticketDetails) {
         ViewTicketFragment fragment = new ViewTicketFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, ticketDetails);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_TICKET_DETAILS, ticketDetails);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,8 +71,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            busTicketDetails = (MyTicketInfo) getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            busTicketDetails = (MyTicketInfo) getArguments().getSerializable(ARG_TICKET_DETAILS);
         }
     }
 
@@ -109,7 +105,9 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         TextView tvJourneyHrsField = view.findViewById(R.id.tv_bus_journey_hours_field);
 
         String busRouteName = String.format("%s %s", busTicketDetails.getOperator_name().toUpperCase(), busTicketDetails.getBus_service_no());
-        tvBusRouteNameField.setText(busRouteName);
+        String ticketNo = String.format("%s %s", getString(R.string.ticket_number), busTicketDetails.getOrder_id());
+        String busRouteAndTicketNo = String.format("%s\n%s", busRouteName, ticketNo);
+        tvBusRouteNameField.setText(busRouteAndTicketNo);
 
         String busRoute = String.format("%s to %s", busTicketDetails.getFrom_stop(), busTicketDetails.getTo_stop());
         tvBusRouteField.setText(busRoute);

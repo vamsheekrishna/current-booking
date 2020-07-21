@@ -14,17 +14,17 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
         super.onCreate(savedInstanceState);
         showBadge(false);
         showHamburgerIcon(false);
-        addFragment(LiveTicketFragment.newInstance("", ""), "LiveTicketFragment", false);
+        addFragment(LiveTicketFragment.newInstance(), "LiveTicketFragment", false);
     }
 
     @Override
     public void showLiveTickets() {
-        replaceFragment(LiveTicketFragment.newInstance("", ""), "ViewTicketFragment", true);
+        replaceFragment(LiveTicketFragment.newInstance(), "LiveTicketFragment", true);
     }
 
     @Override
     public void viewTicket(MyTicketInfo busTicketDetails) {
-        replaceFragment(ViewTicketFragment.newInstance(busTicketDetails, ""), "LiveTicketFragment", true);
+        replaceFragment(ViewTicketFragment.newInstance(busTicketDetails), "ViewTicketFragment", true);
     }
 
     @Override
