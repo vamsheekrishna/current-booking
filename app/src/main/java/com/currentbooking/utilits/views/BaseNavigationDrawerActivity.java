@@ -228,16 +228,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public void showHamburgerIcon(boolean b) {
-        /*if (getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(b);   //hide hamburger button
-        }*/
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(b);
         }
-
     }
 
     @Override
