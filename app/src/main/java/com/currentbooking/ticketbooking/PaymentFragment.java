@@ -154,7 +154,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
         String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
         listType = new TypeToken<GetFareResponse.FareDetails>() {}.getType();
         // String fareDetails = gson.toJson(mFareDetails, listType);
-        ticketBookingService.getRSAKey(busOperator, selectedBus,mFareDetails.getPassengerDetails(), mFareDetails.getBreakup() , MyProfile.getInstance().getUserId() ).enqueue(new Callback<RSAKeyResponse>() {
+        ticketBookingService.getRSAKey(busOperator, selectedBus, mFareDetails.getPassengerDetails(), mFareDetails.getBreakup() , MyProfile.getInstance().getUserId() ).enqueue(new Callback<RSAKeyResponse>() {
             @Override
             public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
                 RSAKeyResponse data = response.body();

@@ -196,7 +196,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
             }
         } else if (mIndex == 1) {
             BusType selectedBusType = busTypes.get(Item);
-            if (null == ticketBookingModule.getSelectedBusType().getValue().getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
+            if (null == Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeID() || !ticketBookingModule.getSelectedBusType().getValue().getBusTypeID().equals(selectedBusType.getBusTypeID())) {
                 ticketBookingModule.getSelectedBusType().setValue(selectedBusType);
             }
         }

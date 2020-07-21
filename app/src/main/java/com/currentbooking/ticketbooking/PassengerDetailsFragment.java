@@ -101,7 +101,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle("Confirm Ticket");
+        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.book_ticket));
     }
 
     @Override
@@ -197,10 +197,10 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
             }
         });
         addPassengerRecyclerField.setAdapter(addedPassengersAdapter);
-        view.findViewById(R.id.confirm_ticket).setOnClickListener(v -> confirmTicketSelected());
+        view.findViewById(R.id.book_ticket).setOnClickListener(v -> bookTicketSelected());
     }
 
-    private void confirmTicketSelected() {
+    private void bookTicketSelected() {
         if(!personsAddedList.isEmpty()) {
             Type listType = new TypeToken<List<Concession>>() {}.getType();
             Gson gson = new Gson();

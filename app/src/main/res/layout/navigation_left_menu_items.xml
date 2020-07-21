@@ -103,6 +103,7 @@
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
                     android:textColor="@color/white"
+                    android:paddingBottom="10dp"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -133,13 +134,14 @@
 
                 <TextView
                     android:id="@+id/email_address_field"
-                    style="@style/text_style_medium_normal"
+                    style="@style/text_style_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
             </LinearLayout>
