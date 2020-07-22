@@ -21,16 +21,15 @@ import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
 import com.currentbooking.interfaces.DateTimeInterface;
+import com.currentbooking.utilits.CircularNetworkImageView;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
@@ -60,7 +59,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private AppCompatEditText etState;
     private AppCompatEditText etPinCode;
     private AppCompatEditText email;
-    private NetworkImageView ivProfileImageField;
+    private CircularNetworkImageView ivProfileImageField;
     private ProgressBarCircular profileCircularBar;
 
     AppCompatTextView dobField, male, female;
@@ -127,7 +126,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if (myProfile != null) {
             String dob = myProfile.getDob();
             if (!TextUtils.isEmpty(dob)) {
-                dateOfBirthCalendar = DateUtilities.getCalendarFromDate2(dob);
+                dateOfBirthCalendar = DateUtilities.getCalendarFromMultipleDateFormats2(dob);
                 dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dateOfBirthCalendar));
                 dateOfBirthValue = DateUtilities.getDateOfBirthFromCalendar(dateOfBirthCalendar);
             }
@@ -181,7 +180,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         if (profileImageUri != null) {
                             InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
                             profileImageBitmap = BitmapFactory.decodeStream(imageStream);
-                            ivProfileImageField.setImageURI(profileImageUri);
+                            if (profileImageBitmap != null) {
+                                ivProfileImageField.setImageBitmap(profileImageBitmap);
+                            }
                         }
                     } catch (Exception ex) {
                         showDialog("", ex.getMessage());
@@ -219,23 +220,23 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         String _etPinCode = Objects.requireNonNull(etPinCode.getText()).toString().trim();
         String _email = Objects.requireNonNull(email.getText()).toString().trim();
 
-        if(!Utils.isValidWord(fName)) {
+        if(TextUtils.isEmpty(fName)) {
             showDialog("", getString(R.string.error_first_name));
             return;
         }
-        if (!Utils.isValidWord(lName)) {
+        if (TextUtils.isEmpty(lName)) {
             showDialog("", getString(R.string.error_last_name));
             return;
         }
-        if (!Utils.isValidWord(_etAddress1)) {
+        if (TextUtils.isEmpty(_etAddress1)) {
             showDialog("", getString(R.string.error_address_one));
             return;
         }
-        if (!Utils.isValidWord(_etAddress2)) {
+        if (TextUtils.isEmpty(_etAddress2)) {
             showDialog("", getString(R.string.error_address_two));
             return;
         }
-        if (!Utils.isValidWord(_etState)) {
+        if (TextUtils.isEmpty(_etState)) {
             showDialog("", getString(R.string.error_state));
             return;
         }
@@ -268,17 +269,19 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 Objects.requireNonNull(getActivity()).onBackPressed();
                             });
                         } else {
-                            updateUserProfileImage();
                             showDialog("", response.body().getMsg());
                         }
+                    }  else {
+                        showDialog("", getString(R.string.no_information_available));
                     }
+                } else {
+                    showDialog("", getString(R.string.no_information_available));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
-                updateUserProfileImage();
                 showDialog("", t.getMessage());
             }
         });
@@ -293,8 +296,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     profileCircularBar.setVisibility(View.GONE);
-                    profileImageBitmap = response.getBitmap();
-                    ivProfileImageField.setImageBitmap(profileImageBitmap);
+                    Bitmap bitmap = response.getBitmap();
+                    ivProfileImageField.setImageBitmap(bitmap);
                 }
 
                 @Override

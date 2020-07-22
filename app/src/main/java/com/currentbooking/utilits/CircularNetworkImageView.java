@@ -2,13 +2,11 @@ package com.currentbooking.utilits;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 
@@ -39,39 +37,29 @@ public class CircularNetworkImageView extends NetworkImageView {
 
     @Override
     public void setImageBitmap(Bitmap bm) {
-        if (bm == null) return;
+        if(bm==null) return;
         setImageDrawable(new BitmapDrawable(mContext.getResources(),
                 getCircularBitmap(bm)));
     }
 
-    /**
-     * Creates a circular bitmap and uses whichever dimension is smaller to determine the width
-     * <br/>Also constrains the circle to the leftmost part of the image
-     *
-     * @return bitmap
-     */
     public Bitmap getCircularBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Config.ARGB_8888);
+        int size = Math.min(bitmap.getWidth(), bitmap.getHeight());
+
+        Bitmap output = Bitmap.createBitmap(size,
+                size, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        if (bitmap.getWidth() > bitmap.getHeight())
-            width = bitmap.getHeight();
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, width, height);
-        final RectF rectF = new RectF(rect);
-        final float roundPx = width >> 1;
 
+        BitmapShader shader;
+        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
+                Shader.TileMode.CLAMP);
+
+        Paint paint = new Paint();
         paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setShader(shader);
 
-        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
+        RectF rect = new RectF(0, 0 ,size,size);
+        int radius = size/2;
+        canvas.drawRoundRect(rect, radius,radius, paint);
         return output;
     }
 

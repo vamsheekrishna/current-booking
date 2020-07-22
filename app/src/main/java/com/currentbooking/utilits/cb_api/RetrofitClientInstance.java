@@ -43,18 +43,15 @@ public class RetrofitClientInstance {
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.level(HttpLoggingInterceptor.Level.BODY);
 
-                Interceptor basicAuth = new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        String test = auth.replace("\n","");
-                        Request request = chain.request()
-                                .newBuilder()
-                                .addHeader("Content-Type","application/x-www-form-urlencoded")
-                                // .addHeader("X-API-KEY",BuildConfig.API_KEY)
-                                .addHeader("Authorization", test)
-                                .build();
-                        return chain.proceed(request);
-                    }
+                Interceptor basicAuth = chain -> {
+                    String test = auth.replace("\n","");
+                    Request request = chain.request()
+                            .newBuilder()
+                            .addHeader("Content-Type","application/x-www-form-urlencoded")
+                            // .addHeader("X-API-KEY",BuildConfig.API_KEY)
+                            .addHeader("Authorization", test)
+                            .build();
+                    return chain.proceed(request);
                 };
 
                 OkHttpClient client = new OkHttpClient.Builder()

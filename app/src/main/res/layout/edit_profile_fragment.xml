@@ -123,20 +123,18 @@
                 style="@style/edit_text" />
 
             <RelativeLayout
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:background="@drawable/rectangle_border_bg"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:background="@drawable/rounded_circle"
+                android:gravity="center">
 
-                <com.android.volley.toolbox.NetworkImageView
+                <com.currentbooking.utilits.CircularNetworkImageView
                     android:id="@+id/iv_profile_image_field"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:src="@drawable/avatar" />
 
                 <com.currentbooking.utilits.views.ProgressBarCircular
                     android:id="@+id/profile_circular_field"

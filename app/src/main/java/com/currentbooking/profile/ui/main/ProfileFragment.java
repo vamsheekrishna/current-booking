@@ -22,10 +22,10 @@ import com.currentbooking.utilits.CircularNetworkImageView;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.currentbooking.utilits.views.ProgressBarCircular;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 public class ProfileFragment extends BaseFragment {
@@ -40,6 +40,7 @@ public class ProfileFragment extends BaseFragment {
     private TextView address1;
     private TextView address2;
     private TextView pinCode;
+    private TextView state;
     private CircularNetworkImageView ivProfileImageField;
     private ProgressBarCircular profileCircularBar;
     private AppCompatTextView maleField;
@@ -65,36 +66,33 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle("My Profile");
-        fName.setText(MyProfile.getInstance().getFirstName());
-        lastName.setText(MyProfile.getInstance().getLastName());
-        mobileNo.setText(MyProfile.getInstance().getMobileNumber());
+        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.my_profile));
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             String dob = myProfile.getDob();
             if (!TextUtils.isEmpty(dob)) {
-                Calendar dobCalendar = DateUtilities.getCalendarFromDate2(dob);
-                dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dobCalendar));
+                dobField.setText(DateUtilities.getCalendarFromMultipleDateFormats1(dob));
             }
+
+            fName.setText(myProfile.getFirstName());
+            lastName.setText(myProfile.getLastName());
+            mobileNo.setText(myProfile.getMobileNumber());
 
             if (myProfile.getGender().equalsIgnoreCase(getString(R.string.male))) {
                 selectedMale();
             } else {
                 selectedFemale();
             }
-        }
+            state.setText(myProfile.getState());
+            address1.setText(myProfile.getAddress1());
+            address2.setText(myProfile.getAddress2());
+            pinCode.setText(myProfile.getPinCode());
 
-        address1.setText(MyProfile.getInstance().getAddress1());
-        address2.setText(MyProfile.getInstance().getAddress2());
-        pinCode.setText(MyProfile.getInstance().getPinCode());
-
-        Bitmap bitmap = MyProfile.getInstance().getUserProfileImage().getValue();
-        if (bitmap != null) {
-            profileCircularBar.setVisibility(View.GONE);
-            ivProfileImageField.setImageBitmap(bitmap);
-        } else {
-            if (myProfile != null) {
-
+            Bitmap bitmap = myProfile.getUserProfileImage().getValue();
+            if (bitmap != null) {
+                profileCircularBar.setVisibility(View.GONE);
+                ivProfileImageField.setImageBitmap(bitmap);
+            } else {
                 String imageUrl = myProfile.getProfileImage();
                 if (!TextUtils.isEmpty(imageUrl)) {
                     HttpsTrustManager.allowAllSSL();
@@ -104,7 +102,9 @@ public class ProfileFragment extends BaseFragment {
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                             profileCircularBar.setVisibility(View.GONE);
                             Bitmap bitmap = response.getBitmap();
-                            ivProfileImageField.setImageBitmap(bitmap);
+                            if (bitmap != null) {
+                                ivProfileImageField.setImageBitmap(bitmap);
+                            }
                         }
 
                         @Override
@@ -134,11 +134,6 @@ public class ProfileFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fName = view.findViewById(R.id.first_name);
@@ -149,8 +144,7 @@ public class ProfileFragment extends BaseFragment {
         dobField = view.findViewById(R.id.dob);
         address1 = view.findViewById(R.id.address1);
         address2 = view.findViewById(R.id.address2);
-        AppCompatTextView state = view.findViewById(R.id.state);
-        state.setText(MyProfile.getInstance().getState());
+        state = view.findViewById(R.id.state);
         pinCode = view.findViewById(R.id.pin_code);
         view.findViewById(R.id.edit_profile).setOnClickListener(v -> {
             mListener.goToEditProfile();

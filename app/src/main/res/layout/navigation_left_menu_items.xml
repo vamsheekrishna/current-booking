@@ -8,18 +8,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
+        android:padding="15dp"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="130dp"
-            android:layout_height="130dp">
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_circle"
+            android:gravity="center">
 
             <com.currentbooking.utilits.CircularNetworkImageView
                 android:id="@+id/iv_profile_image_field"
                 android:layout_width="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:src="@drawable/avatar" />
@@ -28,7 +29,6 @@
                 android:id="@+id/profile_circular_field"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:visibility="gone"
                 android:layout_centerInParent="true" />
         </RelativeLayout>
 

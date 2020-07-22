@@ -26,10 +26,12 @@ import com.currentbooking.profile.ProfileActivity;
 import com.currentbooking.ticketbooking.BaseListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
 import com.currentbooking.ticketbookinghistory.TicketBookingHistoryActivity;
+import com.currentbooking.utilits.CircularNetworkImageView;
 import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.Utils;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +46,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navigationView;
     private TextView textCartItemCount;
-    private NetworkImageView ivProfileImageField;
+    private CircularNetworkImageView ivProfileImageField;
     private View badgeBase;
 
     @Override
@@ -74,7 +76,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                         progressBarCircular.setVisibility(View.GONE);
                         Bitmap bitmap = response.getBitmap();
-                        ivProfileImageField.setImageBitmap(bitmap);
+                        if (bitmap != null) {
+                            //bitmap = Utils.getRoundedBitmap(bitmap);
+                            ivProfileImageField.setImageBitmap(bitmap);
+                        }
                     }
 
                     @Override
@@ -83,8 +88,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         ivProfileImageField.setImageResource(R.drawable.avatar);
                     }
                 });
-                ivProfileImageField.setImageUrl(imageUrl, imageLoader);
-
             }
             String emailID = myProfile.getEmail();
             if (!TextUtils.isEmpty(emailID)) {
@@ -100,7 +103,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             }
             String dateOfBirth = MyProfile.getInstance().getDob();
             if (!TextUtils.isEmpty(dateOfBirth)) {
-                Calendar dateOfBirthCalendar = DateUtilities.getCalendarFromDate2(dateOfBirth);
+                Calendar dateOfBirthCalendar = DateUtilities.getCalendarFromMultipleDateFormats2(dateOfBirth);
                 int age = DateUtilities.getAgeDifference(dateOfBirthCalendar);
                 String ageDifference = String.format(Locale.getDefault(), "%d yrs", age);
                 tvUserAgeField.setText(ageDifference);
@@ -211,7 +214,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             case R.id.change_password_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
                 intent = new Intent(this, AuthenticationActivity.class);
-                intent.putExtra(getString(R.string.change_password), true);
+                intent.putExtra(getString(R.string.change_password), false);
                 startActivity(intent);
                 break;
             default:

@@ -161,6 +161,52 @@ public class DateUtilities {
         return getCurrentDate();
     }
 
+    public static String getCalendarFromMultipleDateFormats1(String pDate) {
+        Calendar calendar = Calendar.getInstance();
+        if (TextUtils.isEmpty(pDate)) {
+            return getDateOfBirthFromCalendar1(calendar);
+        }
+        Locale locale = Locale.getDefault();
+        SimpleDateFormat[] formats =
+                new SimpleDateFormat[]{new SimpleDateFormat(CALENDAR_DATE_FORMAT_ONE, locale), new SimpleDateFormat(CALENDAR_DATE_FORMAT_TWO, locale)};
+        Date parsedDate;
+        for (SimpleDateFormat format : formats) {
+            try {
+                parsedDate = format.parse(pDate);
+                if(parsedDate != null) {
+                    calendar.setTime(parsedDate);
+                    return getDateOfBirthFromCalendar1(calendar);
+                }
+            } catch (ParseException e) {
+            }
+        }
+        return getDateOfBirthFromCalendar1(calendar);
+    }
+
+    public static Calendar getCalendarFromMultipleDateFormats2(String pDate) {
+        Calendar calendar = Calendar.getInstance();
+        if (TextUtils.isEmpty(pDate)) {
+            return calendar;
+        }
+        Locale locale = Locale.getDefault();
+        SimpleDateFormat[] formats =
+                new SimpleDateFormat[]{new SimpleDateFormat(CALENDAR_DATE_FORMAT_ONE, locale), new SimpleDateFormat(CALENDAR_DATE_FORMAT_TWO, locale)};
+        Date parsedDate;
+        for (SimpleDateFormat format : formats) {
+            try {
+                parsedDate = format.parse(pDate);
+                if(parsedDate != null) {
+                    calendar.setTime(parsedDate);
+                    return calendar;
+                }
+            } catch (ParseException e) {
+            }
+        }
+        return calendar;
+    }
+
+
+
     private static String CALENDAR_DATE_FORMAT_ONE = "dd-MM-yyyy";
     private static String CALENDAR_DATE_FORMAT_TWO = "dd MMM yyyy";
     public static String CALENDAR_DATE_FORMAT_THREE = "yyyy-MM-dd";
