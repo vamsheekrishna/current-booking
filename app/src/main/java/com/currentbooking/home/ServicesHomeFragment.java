@@ -11,16 +11,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.BaseListener;
 import com.currentbooking.ticketbooking.TicketBookingActivity;
-import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.views.BaseFragment;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public class ServicesHomeFragment extends BaseFragment {
@@ -51,11 +50,7 @@ public class ServicesHomeFragment extends BaseFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MyProfile.getInstance().updateLiveTickets(progressDialog);
-        MyProfile.getInstance().getCurrentBookingTicketCount().observe(Objects.requireNonNull(getActivity()), integer -> {
-            mListener.updateBadgeCount();
-        });
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_services_home, container, false);
     }
 
@@ -64,6 +59,10 @@ public class ServicesHomeFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
+            myProfile.updateLiveTickets(progressDialog);
+            myProfile.getCurrentBookingTicketCount().observe(Objects.requireNonNull(getActivity()), integer -> {
+                mListener.updateBadgeCount();
+            });
             String userName = String.format("%s %s", myProfile.getFirstName(), myProfile.getLastName());
             if (!TextUtils.isEmpty(userName))
                 ((TextView) view.findViewById(R.id.user_name_field)).setText(userName);

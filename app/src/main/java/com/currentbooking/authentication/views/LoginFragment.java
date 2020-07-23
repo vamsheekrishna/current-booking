@@ -1,5 +1,6 @@
 package com.currentbooking.authentication.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,13 +14,17 @@ import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
-import com.currentbooking.interfaces.CallBackInterface;
-import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.views.BaseFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,16 +32,10 @@ import retrofit2.Response;
 
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private OnAuthenticationClickedListener mListener;
-    private LoginService loginService;
     private TextView userName;
     private TextView password;
+    private String deviceKey;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -48,22 +47,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         mListener = (OnAuthenticationClickedListener)context;
     }
 
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
     }
 
     @Override
@@ -96,14 +81,20 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         userName = view.findViewById(R.id.user_id);
         password = view.findViewById(R.id.password);
-        userName.setText("7416226233");
-        password.setText("12345");
-        userName.setText("8686378737");
-        password.setText("12345678");
+        //userName.setText("8686378737");
+        //password.setText("12345678");
 
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                LoggerInfo.errorLog("getInstanceId failed", Objects.requireNonNull(task.getException()).getMessage());
+                return;
+            }
+            deviceKey = Objects.requireNonNull(task.getResult()).getToken();
+        });
         // encryptionSample();
     }
 
+    @SuppressLint("HardwareIds")
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.forgot_password) {
@@ -117,20 +108,18 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             } else if (TextUtils.isEmpty(passwordValue)) {
                 showDialog("", getString(R.string.password_cannot_be_empty));
             } else {
-
+                //String deviceKey = Settings.Secure.getString(requireActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
                 progressDialog.show();
-                loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-                loginService.login(userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
+                LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+                loginService.login(deviceKey, userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
                     @Override
-                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                         if (response.isSuccessful()) {
                             LoginResponse data = response.body();
-                            if(data != null) {
+                            if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase("success")) {
                                     try {
                                         MyProfile.getInstance(data.getData().getProfileModel());
-
-                                        // MyProfile.getInstance().updateLiveTickets(progressDialog);
                                         if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
                                             mListener.goToProfileActivity();
                                         } else {
@@ -154,7 +143,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     }
 
                     @Override
-                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                    public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
                         showDialog("", t.getMessage());
                         progressDialog.dismiss();
                     }
@@ -162,5 +151,4 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             }
         }
     }
-
 }

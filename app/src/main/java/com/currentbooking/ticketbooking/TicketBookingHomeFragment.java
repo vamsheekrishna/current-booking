@@ -17,7 +17,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
@@ -41,12 +40,7 @@ import java.util.Objects;
 
 public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener, MvvmView.View {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     // RecyclerView recyclerView;
-    private String mParam1;
-    private String mParam2;
     private OnTicketBookingListener mListener;
     private TextView selectTransport, pickUp, dropPoint, selectBusType;
     private TicketBookingViewModel ticketBookingModule;
@@ -73,21 +67,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     }
 
     public static TicketBookingHomeFragment newInstance(String param1, String param2) {
-        TicketBookingHomeFragment fragment = new TicketBookingHomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        return new TicketBookingHomeFragment();
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -113,7 +93,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.ticket_booking));
-        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,8 +117,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 currentLocation = location;
                 // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                 //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
-                assert mapFragment != null;
-                mapFragment.getMapAsync(callback);
+                if (mapFragment != null) {
+                    mapFragment.getMapAsync(callback);
+                }
             }
         });
     }
@@ -173,9 +154,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         dropPoint.setOnClickListener(this);
         view.findViewById(R.id.select_bus).setOnClickListener(this);
         ticketBookingModule.getBusTypes().observe(getActivity(), busTypes -> {
-            if( null == busTypes || busTypes.isEmpty()) {
+            /*if( null == busTypes || busTypes.isEmpty()) {
                 bus_point.setVisibility(View.GONE);
-            }
+            }*/
         });
 
         ticketBookingModule.getSelectedPickUpPoint().observe(getActivity(), busPoint -> {

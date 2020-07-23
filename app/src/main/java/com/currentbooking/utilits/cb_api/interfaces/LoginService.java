@@ -17,7 +17,7 @@ import retrofit2.http.POST;
 public interface LoginService {
     @POST(BuildConfig.LOGIN)
     @FormUrlEncoded
-    Call<LoginResponse> login(@Field("mobileno") String username,
+    Call<LoginResponse> login(@Field("device_key") String deviceKey, @Field("mobileno") String username,
                               @Field("password") String password);
 
     @POST(BuildConfig.REGISTRATION)
