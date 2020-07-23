@@ -266,6 +266,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             showDialog("", response.body().getMsg(), pObject -> {
                                 Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
                                 MyProfile.getInstance().setUserProfileImage(bitmap);
+                                String userName = String.format("%s %s", fName, lName);
+                                MyProfile.getInstance().setUserNameDetails(userName);
+                                MyProfile.getInstance().setUserEmailDetails(_email);
+
                                 Objects.requireNonNull(getActivity()).onBackPressed();
                             });
                         } else {
@@ -296,8 +300,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     profileCircularBar.setVisibility(View.GONE);
-                    Bitmap bitmap = response.getBitmap();
-                    ivProfileImageField.setImageBitmap(bitmap);
+                    profileImageBitmap = response.getBitmap();
+                    ivProfileImageField.setImageBitmap(profileImageBitmap);
                 }
 
                 @Override

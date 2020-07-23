@@ -41,6 +41,8 @@ public class MyProfile {
     private String address2;
     private String state;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
+    private MutableLiveData<String> userNameDetails = new MutableLiveData<>();
+    private MutableLiveData<String> userEmailDetails = new MutableLiveData<>();
     private MutableLiveData<ArrayList<MyTicketInfo>> todayTickets = new MutableLiveData<>();
     Encryption aesEncryption;
     private MutableLiveData<Integer> currentBookingTicketCount = new MutableLiveData<>();
@@ -177,6 +179,22 @@ public class MyProfile {
 
     }
 
+    public MutableLiveData<String> getUserNameDetails() {
+        return userNameDetails;
+    }
+
+    public void setUserNameDetails(String userName) {
+        this.userNameDetails.setValue(userName);
+    }
+
+    public MutableLiveData<String> getUserEmailDetails() {
+        return userEmailDetails;
+    }
+
+    public void setUserEmailDetails(String email) {
+        this.userEmailDetails.setValue(email);
+    }
+
     public MutableLiveData<Bitmap> getUserProfileImage() {
         return userProfileImage;
     }
@@ -258,5 +276,9 @@ public class MyProfile {
 
     public void setCurrentBookingTicketCount(MutableLiveData<Integer> currentBookingTicketCount) {
         this.currentBookingTicketCount = currentBookingTicketCount;
+    }
+
+    public void resetMyProfile() {
+        myProfile = null;
     }
 }

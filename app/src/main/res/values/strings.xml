@@ -30,7 +30,7 @@
     <string name="error_password">Please enter valid password.</string>
     <string name="error_conformation_password">Please enter valid conformation password.</string>
     <string name="error_mismatch_password">Password mismatched</string>
-    <string name="user_id_cannot_be_empty">User ID cannot be Empty</string>
+    <string name="user_name_cannot_be_empty">User Name cannot be Empty</string>
     <string name="password_cannot_be_empty">Password cannot be Empty</string>
     <string name="message">Message</string>
     <string name="book_now">Book Now</string>
@@ -153,4 +153,7 @@
     <string name="error_state">The State field is required.</string>
     <string name="scan_qr_code">Scan QRCode</string>
     <string name="show_qr_code">Show QRCode</string>
+    <string name="password_should_be_eight_characters">Password should be 8 character </string>
+    <string name="confirm_password_should_be_eight_characters">Confirm Password should be 8 character </string>
+    <string name="error_enter_mobile_and_password">enter mobile and password</string>
 </resources>

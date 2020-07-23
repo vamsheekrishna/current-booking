@@ -112,6 +112,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 Bitmap newBitmap = CommonUtils.getCircularBitmap(bitmap);
                 ivProfileImageField.setImageBitmap(newBitmap);
             });
+            myProfile.getUserEmailDetails().observe(this, tvEmailIdField::setText);
+            myProfile.getUserNameDetails().observe(this, tvUserNameField::setText);
         }
     }
 
@@ -202,6 +204,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 break;
             case R.id.logout_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
+                MyProfile.getInstance().resetMyProfile();
                 Intent i = new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);

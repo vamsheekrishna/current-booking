@@ -110,7 +110,7 @@ public class AddPassengersDialogView extends DialogFragment {
                     selectedPersonType = (String) lSelectedItem;
                     selectedConcessionDetails = null;
                     tvConcessionTypeField.setText(getString(R.string.concession_type));
-                    setAgeLimit();
+                    setAgeLimit(null);
                 }
             }
 
@@ -131,13 +131,19 @@ public class AddPassengersDialogView extends DialogFragment {
         });
     }
 
-    private void setAgeLimit() {
-        if(selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
-            numberPickerField.setMinValue(Utils.getIntegerValueFromString(busOperatorDetails.getAdultMinAge()));
-            numberPickerField.setMaxValue(Utils.getIntegerValueFromString(busOperatorDetails.getAdultMaxAge()));
+    private void setAgeLimit(Concession concessionDetails) {
+        if (concessionDetails != null) {
+            numberPickerField.setValue(Utils.getIntegerValueFromString(concessionDetails.getMinAgeLimit()));
+            numberPickerField.setMinValue(Utils.getIntegerValueFromString(concessionDetails.getMinAgeLimit()));
+            numberPickerField.setMaxValue(Utils.getIntegerValueFromString(concessionDetails.getMaxAgeLimit()));
         } else {
-            numberPickerField.setMinValue(Utils.getIntegerValueFromString(busOperatorDetails.getChildMinAge()));
-            numberPickerField.setMaxValue(Utils.getIntegerValueFromString(busOperatorDetails.getChildMaxAge()));
+            if (selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
+                numberPickerField.setMinValue(Utils.getIntegerValueFromString(busOperatorDetails.getAdultMinAge()));
+                numberPickerField.setMaxValue(Utils.getIntegerValueFromString(busOperatorDetails.getAdultMaxAge()));
+            } else {
+                numberPickerField.setMinValue(Utils.getIntegerValueFromString(busOperatorDetails.getChildMinAge()));
+                numberPickerField.setMaxValue(Utils.getIntegerValueFromString(busOperatorDetails.getChildMaxAge()));
+            }
         }
     }
 
@@ -148,6 +154,7 @@ public class AddPassengersDialogView extends DialogFragment {
                 selectedConcessionDetails = (Concession) pObject;
                 selectedConcessionDetails.setConcessionDetailsAdded(true);
                 tvConcessionTypeField.setText(selectedConcessionDetails.getConcessionNM());
+                setAgeLimit(selectedConcessionDetails);
             }
         });
         if (!requireActivity().isFinishing()) {

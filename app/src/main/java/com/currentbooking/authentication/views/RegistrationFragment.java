@@ -2,6 +2,7 @@ package com.currentbooking.authentication.views;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,10 +83,67 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
         String password = tvPassword.getText().toString().trim();
         String conformPassword = tvConformPassword.getText().toString().trim();
 
+        if (!Utils.isValidWord(fName)) {
+            showDialog("", getString(R.string.error_first_name));
+            return;
+        }
+        if (!Utils.isValidWord(lName)) {
+            showDialog("", getString(R.string.error_last_name));
+            return;
+        }
+        if (!Utils.isValidMobile(mobile)) {
+            showDialog("", getString(R.string.error_mobile));
+            return;
+        }
+        if(!Utils.isValidEmail(email)) {
+            showDialog("", getString(R.string.error_mail));
+            return;
+        }
+        if(TextUtils.isEmpty(password)) {
+            showDialog("", getString(R.string.error_password));
+            return;
+        }
+        if (password.length() <= 7) {
+            showDialog("", getString(R.string.password_should_be_eight_characters));
+            return;
+        }
+        if(TextUtils.isEmpty(conformPassword)) {
+            showDialog("", getString(R.string.error_conformation_password));
+            return;
+        }
+        if (conformPassword.length() <= 7) {
+            showDialog("", getString(R.string.confirm_password_should_be_eight_characters));
+            return;
+        }
+        if (!password.equals(conformPassword)) {
+            showDialog("", getString(R.string.error_mismatch_password));
+            return;
+        }
+
+        LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+        loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {
+                if (response.isSuccessful()) {
+                    RegistrationResponse responseData = response.body();
+                    if(Objects.requireNonNull(responseData).getStatus().equals("success")) {
+                        mListener.validateOTP();
+                    } else {
+                        showDialog("", responseData.getMsg());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RegistrationResponse> call, @NotNull Throwable t) {
+                showDialog("", t.getMessage());
+            }
+        });
+
          /*else if(null != userID && ! (userID.length() > 5)) {
             showDialog("", getString(R.string.error_user_id));
         }*/
-        if (!Utils.isValidWord(fName)) {
+       /* if (!Utils.isValidWord(fName)) {
             showDialog("", getString(R.string.error_first_name));
         } else if (!Utils.isValidWord(lName)) {
             showDialog("", getString(R.string.error_last_name));
@@ -93,36 +151,15 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
             showDialog("", getString(R.string.error_mobile));
         } else if(!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
-        } else if (!Utils.isValidEmail(email)) {
-            showDialog("", getString(R.string.error_mail));
         } else if (password.length() <= 5) {
-            showDialog("", getString(R.string.error_password));
+            showDialog("", getString(R.string.password_should_be_eight_characters));
         } else if (conformPassword.length() <= 5) {
-            showDialog("", getString(R.string.error_conformation_password));
+            showDialog("", getString(R.string.confirm_password_should_be_eight_characters));
         } else if (!password.equals(conformPassword)) {
             showDialog("", getString(R.string.error_mismatch_password));
         } else {
-            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {
-                    if (response.isSuccessful()) {
-                        RegistrationResponse responseData = response.body();
-                        if(Objects.requireNonNull(responseData).getStatus().equals("success")) {
-                            mListener.validateOTP();
-                            // requireActivity().onBackPressed();
-                        } else {
-                            showDialog("", responseData.getMsg());
-                        }
-                    }
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<RegistrationResponse> call, @NotNull Throwable t) {
-                    showDialog("", t.getMessage());
-                }
-            });
             // requireActivity().onBackPressed();
-        }
+        }*/
     }
 }

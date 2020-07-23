@@ -11,13 +11,13 @@ public class LoggerInfo {
 
     public static void printLog(String from, Object message) {
         if (BuildConfig.DEBUG) {
-            Log.d("current booking", String.format("%s : $%s", from, message));
+            Log.d("current_booking", String.format("%s : $%s", from, message));
         }
     }
 
     public static void errorLog(String from, Object message) {
         if (BuildConfig.DEBUG) {
-            Log.d("current booking", String.format("%s : $%s", from, message));
+            Log.d("current_booking", String.format("%s : $%s", from, message));
         }
     }
 }

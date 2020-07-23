@@ -21,11 +21,14 @@ import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
+import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,7 +85,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         userName = view.findViewById(R.id.user_id);
         password = view.findViewById(R.id.password);
         //userName.setText("8686378737");
-        //password.setText("12345678");
+        //password.setText("12345");
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -100,55 +103,56 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         if (v.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
         } else {
-            String userNameValue = userName.getText().toString().trim();
+            String mobileNo = userName.getText().toString().trim();
             String passwordValue = password.getText().toString().trim();
 
-            if (TextUtils.isEmpty(userNameValue)) {
-                showDialog("", getString(R.string.user_id_cannot_be_empty));
-            } else if (TextUtils.isEmpty(passwordValue)) {
-                showDialog("", getString(R.string.password_cannot_be_empty));
-            } else {
-                //String deviceKey = Settings.Secure.getString(requireActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
-                progressDialog.show();
-                LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-                loginService.login(deviceKey, userNameValue, passwordValue).enqueue(new Callback<LoginResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
-                        if (response.isSuccessful()) {
-                            LoginResponse data = response.body();
-                            if (data != null) {
-                                if (data.getStatus().equalsIgnoreCase("success")) {
-                                    try {
-                                        MyProfile.getInstance(data.getData().getProfileModel());
-                                        if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
-                                            mListener.goToProfileActivity();
-                                        } else {
-                                            mListener.goToHomeActivity();
-                                        }
-
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+            if (TextUtils.isEmpty(mobileNo) || TextUtils.isEmpty(passwordValue)) {
+                showDialog("", getString(R.string.error_enter_mobile_and_password));
+                return;
+            }
+            if (mobileNo.length() < 10) {
+                showDialog("", getString(R.string.error_mobile));
+                return;
+            }
+            progressDialog.show();
+            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+            loginService.login(deviceKey, mobileNo, passwordValue).enqueue(new Callback<LoginResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
+                    if (response.isSuccessful()) {
+                        LoginResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase("success")) {
+                                try {
+                                    MyProfile.getInstance(data.getData().getProfileModel());
+                                    if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
+                                        mListener.goToProfileActivity();
+                                    } else {
+                                        mListener.goToHomeActivity();
                                     }
-                                } else {
-                                    showDialog("", data.getMsg(), pObject -> {
-                                        if(data.getMsg().contains("verify")) {
-                                            mListener.validateOTP();
-                                        }
-                                    });
+
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
+                            } else {
+                                showDialog("", data.getMsg(), pObject -> {
+                                    if (data.getMsg().contains("verify")) {
+                                        mListener.validateOTP();
+                                    }
+                                });
                             }
                         }
-                        progressDialog.dismiss();
                     }
+                    progressDialog.dismiss();
+                }
 
-                    @Override
-                    public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
-                        showDialog("", t.getMessage());
-                        progressDialog.dismiss();
-                    }
-                });
-            }
+                @Override
+                public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
         }
     }
 }
