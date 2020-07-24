@@ -36,7 +36,7 @@ import retrofit2.Response;
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
     private OnAuthenticationClickedListener mListener;
-    private TextView userName;
+    private TextView mobileNoField;
     private TextView password;
     private String deviceKey;
 
@@ -82,10 +82,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
-        userName = view.findViewById(R.id.user_id);
+        mobileNoField = view.findViewById(R.id.user_id);
         password = view.findViewById(R.id.password);
-        //userName.setText("8686378737");
-        //password.setText("12345");
+        mobileNoField.setText("9999999999");
+        password.setText("12345678");
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -103,7 +103,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         if (v.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
         } else {
-            String mobileNo = userName.getText().toString().trim();
+            String mobileNo = mobileNoField.getText().toString().trim();
             String passwordValue = password.getText().toString().trim();
 
             if (TextUtils.isEmpty(mobileNo) || TextUtils.isEmpty(passwordValue)) {

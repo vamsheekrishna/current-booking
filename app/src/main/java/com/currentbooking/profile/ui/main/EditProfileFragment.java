@@ -132,7 +132,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             }
             if (myProfile.getGender().equalsIgnoreCase(getString(R.string.male))) {
                 selectedMale();
-            } else {
+            } else if (myProfile.getGender().equalsIgnoreCase(getString(R.string.female))) {
                 selectedFemale();
             }
 
@@ -269,7 +269,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 String userName = String.format("%s %s", fName, lName);
                                 MyProfile.getInstance().setUserNameDetails(userName);
                                 MyProfile.getInstance().setUserEmailDetails(_email);
-
+                                MyProfile.getInstance().setDateOfBirthDetails(dateOfBirthValue);
                                 Objects.requireNonNull(getActivity()).onBackPressed();
                             });
                         } else {
@@ -311,6 +311,12 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 }
             });
             ivProfileImageField.setImageUrl(imageUrl, imageLoader);
+        } else {
+            profileImageBitmap = MyProfile.getInstance().getUserProfileImage().getValue();
+            if (profileImageBitmap != null) {
+                ivProfileImageField.setImageBitmap(profileImageBitmap);
+            }
+            profileCircularBar.setVisibility(View.GONE);
         }
     }
 

@@ -1,7 +1,5 @@
 package com.currentbooking.authentication.views;
 
-import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,17 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
-import com.currentbooking.authentication.OnAuthenticationClickedListener;
-import com.currentbooking.authentication.view_models.Authentication;
-import com.currentbooking.interfaces.CallBackInterface;
-import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
-import com.currentbooking.utilits.cb_api.responses.LoginResponse;
 import com.currentbooking.utilits.cb_api.responses.ResendOTPResponse;
 import com.currentbooking.utilits.cb_api.responses.ValidateOTP;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -38,14 +30,13 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
 
 
     private TextView otpView;
-    // private TextView password;
     private TextView mobileNumber;
 
     public ValidateOTPFragment() {
         // Required empty public constructor
     }
 
-    public static ValidateOTPFragment newInstance(String param1, String param2) {
+    public static ValidateOTPFragment newInstance() {
         return new ValidateOTPFragment();
     }
 
@@ -69,7 +60,6 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
         view.findViewById(R.id.resend).setOnClickListener(this);
         otpView = view.findViewById(R.id.otp_placeholder);
         mobileNumber = view.findViewById(R.id.mobile_no);
-
     }
 
     @Override
@@ -107,11 +97,12 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
                         public void onResponse(@NotNull Call<ValidateOTP> call, @NotNull Response<ValidateOTP> response) {
                             if (response.isSuccessful()) {
                                 ValidateOTP data = response.body();
-                                assert data != null;
-                                if (data.getStatus().equalsIgnoreCase("success")) {
-                                    showDialog("", data.getMsg(), pObject -> Objects.requireNonNull(getActivity()).onBackPressed());
-                                } else {
-                                    showDialog("", data.getMsg());
+                                if (data != null) {
+                                    if (data.getStatus().equalsIgnoreCase("success")) {
+                                        showDialog("", data.getMsg(), pObject -> requireActivity().finish());
+                                    } else {
+                                        showDialog("", data.getMsg());
+                                    }
                                 }
                             }
                             progressDialog.dismiss();

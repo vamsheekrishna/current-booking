@@ -63,14 +63,6 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
         tvPassword = view.findViewById(R.id.password);
         tvConformPassword = view.findViewById(R.id.conform_password);
 
-        /*tvFirstName.setText("Anita");
-        tvLastName.setText("navale");
-        tvUserID.setText("anita123");
-        tvMobileNumber.setText("8689823291");
-        tvEmailID.setText("tadge@gmail.com");
-        tvPassword.setText("anita123");
-        tvConformPassword.setText("anita123");*/
-
         view.findViewById(R.id.registration).setOnClickListener(this);
     }
 
@@ -139,27 +131,5 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
                 showDialog("", t.getMessage());
             }
         });
-
-         /*else if(null != userID && ! (userID.length() > 5)) {
-            showDialog("", getString(R.string.error_user_id));
-        }*/
-       /* if (!Utils.isValidWord(fName)) {
-            showDialog("", getString(R.string.error_first_name));
-        } else if (!Utils.isValidWord(lName)) {
-            showDialog("", getString(R.string.error_last_name));
-        } else if (!Utils.isValidMobile(mobile)) {
-            showDialog("", getString(R.string.error_mobile));
-        } else if(!Utils.isValidEmail(email)) {
-            showDialog("", getString(R.string.error_mail));
-        } else if (password.length() <= 5) {
-            showDialog("", getString(R.string.password_should_be_eight_characters));
-        } else if (conformPassword.length() <= 5) {
-            showDialog("", getString(R.string.confirm_password_should_be_eight_characters));
-        } else if (!password.equals(conformPassword)) {
-            showDialog("", getString(R.string.error_mismatch_password));
-        } else {
-
-            // requireActivity().onBackPressed();
-        }*/
     }
 }

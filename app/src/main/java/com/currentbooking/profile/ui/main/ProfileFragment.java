@@ -80,7 +80,7 @@ public class ProfileFragment extends BaseFragment {
 
             if (myProfile.getGender().equalsIgnoreCase(getString(R.string.male))) {
                 selectedMale();
-            } else {
+            } else if (myProfile.getGender().equalsIgnoreCase(getString(R.string.female))) {
                 selectedFemale();
             }
             state.setText(myProfile.getState());
@@ -114,6 +114,8 @@ public class ProfileFragment extends BaseFragment {
                         }
                     });
                     ivProfileImageField.setImageUrl(imageUrl, imageLoader);
+                } else {
+                    profileCircularBar.setVisibility(View.GONE);
                 }
             }
         }

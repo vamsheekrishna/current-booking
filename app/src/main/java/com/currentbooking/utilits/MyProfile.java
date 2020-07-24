@@ -41,11 +41,12 @@ public class MyProfile {
     private String address2;
     private String state;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
-    private MutableLiveData<String> userNameDetails = new MutableLiveData<>();
-    private MutableLiveData<String> userEmailDetails = new MutableLiveData<>();
+    private MutableLiveData<String> userNameDetails = new MutableLiveData<>("");
+    private MutableLiveData<String> userEmailDetails = new MutableLiveData<>("");
+    private MutableLiveData<String> dateOfBirthDetails = new MutableLiveData<>("");
     private MutableLiveData<ArrayList<MyTicketInfo>> todayTickets = new MutableLiveData<>();
     Encryption aesEncryption;
-    private MutableLiveData<Integer> currentBookingTicketCount = new MutableLiveData<>();
+    private MutableLiveData<Integer> currentBookingTicketCount = new MutableLiveData<>(0);
 
     private MyProfile() throws Exception {
         aesEncryption = EncryptionFactory.getEncryptionByName("AES");
@@ -176,7 +177,14 @@ public class MyProfile {
         address1 = profileModel.getAddress();
         address2 = profileModel.getAddress2();
         state = profileModel.getState();
+    }
 
+    public MutableLiveData<String> getDateOfBirthDetails() {
+        return dateOfBirthDetails;
+    }
+
+    public void setDateOfBirthDetails(String dateOfBirth) {
+        this.dateOfBirthDetails.setValue(dateOfBirth);
     }
 
     public MutableLiveData<String> getUserNameDetails() {

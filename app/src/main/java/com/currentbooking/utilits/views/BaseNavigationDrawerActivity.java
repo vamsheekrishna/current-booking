@@ -17,7 +17,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
 import com.currentbooking.authentication.views.AuthenticationActivity;
@@ -31,7 +30,6 @@ import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.MyProfile;
-import com.currentbooking.utilits.Utils;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +46,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private TextView textCartItemCount;
     private CircularNetworkImageView ivProfileImageField;
     private View badgeBase;
+    private Calendar dateOfBirthCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +63,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         TextView tvUserNameField = findViewById(R.id.user_name_field);
         TextView tvUserAgeField = findViewById(R.id.user_age_field);
 
-        ProgressBarCircular progressBarCircular = findViewById(R.id.profile_circular_field);
         MyProfile myProfile = MyProfile.getInstance();
+        ProgressBarCircular progressBarCircular = findViewById(R.id.profile_circular_field);
         if (myProfile != null) {
             String imageUrl = myProfile.getProfileImage();
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -77,7 +76,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         progressBarCircular.setVisibility(View.GONE);
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
-                            //bitmap = Utils.getRoundedBitmap(bitmap);
                             ivProfileImageField.setImageBitmap(bitmap);
                         }
                     }
@@ -88,10 +86,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         ivProfileImageField.setImageResource(R.drawable.avatar);
                     }
                 });
+            } else {
+                progressBarCircular.setVisibility(View.GONE);
             }
             String emailID = myProfile.getEmail();
             if (!TextUtils.isEmpty(emailID)) {
-                tvEmailIdField.setText(emailID);
+                myProfile.setUserEmailDetails(emailID);
             }
             String phoneNumber = myProfile.getMobileNumber();
             if (!TextUtils.isEmpty(phoneNumber)) {
@@ -99,14 +99,11 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             }
             String userName = String.format("%s %s", myProfile.getFirstName(), myProfile.getLastName());
             if (!TextUtils.isEmpty(userName)) {
-                tvUserNameField.setText(userName);
+                myProfile.setUserNameDetails(userName);
             }
-            String dateOfBirth = MyProfile.getInstance().getDob();
+            String dateOfBirth = myProfile.getDob();
             if (!TextUtils.isEmpty(dateOfBirth)) {
-                Calendar dateOfBirthCalendar = DateUtilities.getCalendarFromMultipleDateFormats2(dateOfBirth);
-                int age = DateUtilities.getAgeDifference(dateOfBirthCalendar);
-                String ageDifference = String.format(Locale.getDefault(), "%d yrs", age);
-                tvUserAgeField.setText(ageDifference);
+                myProfile.setDateOfBirthDetails(dateOfBirth);
             }
             myProfile.getUserProfileImage().observe(this, bitmap -> {
                 Bitmap newBitmap = CommonUtils.getCircularBitmap(bitmap);
@@ -114,6 +111,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             });
             myProfile.getUserEmailDetails().observe(this, tvEmailIdField::setText);
             myProfile.getUserNameDetails().observe(this, tvUserNameField::setText);
+            myProfile.getDateOfBirthDetails().observe(this, s -> {
+                if (!TextUtils.isEmpty(s)) {
+                    dateOfBirthCalendar = DateUtilities.getCalendarFromMultipleDateFormats2(s);
+                    int age = DateUtilities.getAgeDifference(dateOfBirthCalendar);
+                    String ageDifference = String.format(Locale.getDefault(), "%d yrs", age);
+                    tvUserAgeField.setText(ageDifference);
+                }
+            });
+        } else {
+            progressBarCircular.setVisibility(View.GONE);
         }
     }
 
@@ -251,16 +258,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     @Override
     public void showBadge(boolean b) {
         if(null != badgeBase) {
+            badgeBase.setVisibility(View.GONE);
             if (b) {
-                badgeBase.setVisibility(View.VISIBLE);
-                Integer value = MyProfile.getInstance().getCurrentBookingTicketCount().getValue();
-                if(value!=null && value > 0)
-                    textCartItemCount.setText(String.valueOf(Math.min(value, 99)));
-                else
-                    badgeBase.setVisibility(View.GONE);
-
-            } else {
-                badgeBase.setVisibility(View.GONE);
+                MyProfile myProfile = MyProfile.getInstance();
+                if (myProfile != null) {
+                    Integer value = myProfile.getCurrentBookingTicketCount().getValue();
+                    if (value != null && value > 0) {
+                        badgeBase.setVisibility(View.VISIBLE);
+                        textCartItemCount.setText(String.valueOf(Math.min(value, 99)));
+                    }
+                }
             }
         }
     }
