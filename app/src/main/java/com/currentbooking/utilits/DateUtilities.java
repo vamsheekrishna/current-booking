@@ -120,7 +120,14 @@ public class DateUtilities {
 
     public static int getAgeDifference(Calendar dateOfBirthCalendar) {
         Calendar currentCalendar = Calendar.getInstance();
-        return currentCalendar.get(Calendar.YEAR) - dateOfBirthCalendar.get(Calendar.YEAR);
+        int age = currentCalendar.get(Calendar.YEAR) - dateOfBirthCalendar.get(Calendar.YEAR);
+        if (currentCalendar.get(Calendar.DAY_OF_YEAR) < dateOfBirthCalendar.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+        Integer ageInt = new Integer(age);
+
+        return ageInt;
+
     }
 
     public static String getDateOfBirthFromCalendar(Calendar calendar) {

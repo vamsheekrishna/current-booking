@@ -136,7 +136,6 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
         showBadge(true);
 
         actionView.setOnClickListener(v ->
-
             startActivity(new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class))
 
             );
