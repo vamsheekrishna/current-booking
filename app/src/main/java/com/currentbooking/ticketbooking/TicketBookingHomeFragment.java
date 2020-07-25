@@ -231,7 +231,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
             case R.id.select_bus:
                 if(ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length()>1 &&
                         Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()!= null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length()>1) {
-                    if(!ticketBookingModule.getSelectedDropPoint().getValue().getStopName().equalsIgnoreCase(ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode())) {
+                    String pickupPointStopCode = ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode();
+                    String dropPointStopCode = ticketBookingModule.getSelectedDropPoint().getValue().getStopCode();
+                    if(!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
                         mListener.gotoSelectBus(selectTransport.getText().toString(), selectBusType.getText().toString());
                     } else {
                         showDialog("", "Pickup Point and Drop Point should not be Same.");
