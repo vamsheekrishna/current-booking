@@ -44,7 +44,7 @@ public class ProfileModel {
 
     @SerializedName("address2")
     @Expose
-    String address2;
+    String district;
 
     @SerializedName("state")
     @Expose
@@ -59,12 +59,12 @@ public class ProfileModel {
         this.address = address;
     }
 
-    public String getAddress2() {
-        return address2;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setAddress2(String address2) {
-        this.address2 = address2;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getState() {

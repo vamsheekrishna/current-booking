@@ -54,8 +54,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     private AppCompatEditText etFirstName;
     private AppCompatEditText etLastName;
-    private AppCompatEditText etAddress1;
-    private AppCompatEditText etAddress2;
+    private AppCompatEditText etAddress;
+    private AppCompatEditText etDistrict;
     private AppCompatEditText etState;
     private AppCompatEditText etPinCode;
     private AppCompatEditText email;
@@ -96,27 +96,18 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         super.onViewCreated(view, savedInstanceState);
         etFirstName = view.findViewById(R.id.first_name);
         etLastName = view.findViewById(R.id.last_name);
-        etFirstName.setText(MyProfile.getInstance().getFirstName());
-        etLastName.setText(MyProfile.getInstance().getLastName());
-        ((TextView) view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
-        ((TextView) view.findViewById(R.id.email)).setText(MyProfile.getInstance().getEmail());
         dobField = view.findViewById(R.id.dob);
-        //dob.setText(MyProfile.getInstance().getDob());
         dobField.setOnClickListener(this);
         male= view.findViewById(R.id.male);
         male.setOnClickListener(this);
         female = view.findViewById(R.id.female);
         female.setOnClickListener(this);
-        etAddress1 = view.findViewById(R.id.address1);
-        etAddress1.setText(MyProfile.getInstance().getAddress1());
-        etAddress2 = view.findViewById(R.id.address2);
-        etAddress2.setText(MyProfile.getInstance().getAddress2());
+        etAddress = view.findViewById(R.id.address1);
+        etDistrict = view.findViewById(R.id.district);
         etState = view.findViewById(R.id.state);
-        etState.setText(MyProfile.getInstance().getState());
+
         email = view.findViewById(R.id.email);
-        email.setText(MyProfile.getInstance().getEmail());
         etPinCode = view.findViewById(R.id.pin_code);
-        etPinCode.setText(MyProfile.getInstance().getPinCode());
         view.findViewById(R.id.save_profile).setOnClickListener(this);
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
         ivProfileImageField.setOnClickListener(this);
@@ -124,6 +115,16 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
+            ((TextView) view.findViewById(R.id.mobile_no)).setText(myProfile.getMobileNumber());
+            ((TextView) view.findViewById(R.id.email)).setText(myProfile.getEmail());
+            etFirstName.setText(myProfile.getFirstName());
+            etLastName.setText(myProfile.getLastName());
+            etAddress.setText(myProfile.getAddress());
+            etDistrict.setText(myProfile.getDistrict());
+            etPinCode.setText(myProfile.getPinCode());
+            email.setText(myProfile.getEmail());
+            etState.setText(myProfile.getState());
+
             String dob = myProfile.getDob();
             if (!TextUtils.isEmpty(dob)) {
                 dateOfBirthCalendar = DateUtilities.getCalendarFromMultipleDateFormats2(dob);
@@ -214,8 +215,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         String fName = Objects.requireNonNull(etFirstName.getText()).toString().trim();
         String lName = Objects.requireNonNull(etLastName.getText()).toString().trim();
-        String _etAddress1 = Objects.requireNonNull(etAddress1.getText()).toString().trim();
-        String _etAddress2 = Objects.requireNonNull(etAddress2.getText()).toString().trim();
+        String _etAddress = Objects.requireNonNull(etAddress.getText()).toString().trim();
+        String _etDistrict = Objects.requireNonNull(etDistrict.getText()).toString().trim();
         String _etState =  Objects.requireNonNull(etState.getText()).toString().trim();
         String _etPinCode = Objects.requireNonNull(etPinCode.getText()).toString().trim();
         String _email = Objects.requireNonNull(email.getText()).toString().trim();
@@ -228,23 +229,27 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             showDialog("", getString(R.string.error_last_name));
             return;
         }
-        if (TextUtils.isEmpty(_etAddress1)) {
+        if (TextUtils.isEmpty(_etAddress)) {
             showDialog("", getString(R.string.error_address_one));
             return;
         }
-        if (TextUtils.isEmpty(_etAddress2)) {
-            showDialog("", getString(R.string.error_address_two));
+        if (TextUtils.isEmpty(_etDistrict)) {
+            showDialog("", getString(R.string.error_address_district));
             return;
         }
         if (TextUtils.isEmpty(_etState)) {
             showDialog("", getString(R.string.error_state));
             return;
         }
+        /*if (profileImageBitmap == null) {
+            showDialog("", getString(R.string.error_profile_image));
+            return;
+        }*/
         progressDialog.show();
         String encodedImage = getEncodedImage();
         LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
         loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
-                _etAddress1, _etAddress2, _etPinCode, dateOfBirthValue, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
+                _etAddress, _etDistrict, _etPinCode, dateOfBirthValue, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
             @Override
             public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
                 progressDialog.dismiss();
@@ -255,8 +260,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             if (myProfile != null) {
                                 myProfile.setFirstName(fName);
                                 myProfile.setLastName(lName);
-                                myProfile.setAddress1(_etAddress1);
-                                myProfile.setAddress2(_etAddress2);
+                                myProfile.setAddress(_etAddress);
+                                myProfile.setDistrict(_etDistrict);
                                 myProfile.setState(_etState);
                                 myProfile.setPinCode(_etPinCode);
                                 myProfile.setEmail(_email);
@@ -264,8 +269,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 myProfile.setGender(gender);
                             }
                             showDialog("", response.body().getMsg(), pObject -> {
-                                Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
-                                MyProfile.getInstance().setUserProfileImage(bitmap);
+                                if (profileImageBitmap != null) {
+                                    Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
+                                    MyProfile.getInstance().setUserProfileImage(bitmap);
+                                }
                                 String userName = String.format("%s %s", fName, lName);
                                 MyProfile.getInstance().setUserNameDetails(userName);
                                 MyProfile.getInstance().setUserEmailDetails(_email);
@@ -292,31 +299,37 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void updateUserProfileImage() {
-        String imageUrl = MyProfile.getInstance().getProfileImage();
-        if (!TextUtils.isEmpty(imageUrl)) {
-            HttpsTrustManager.allowAllSSL();
-            ImageLoader imageLoader = CurrentBookingApplication.getInstance().getImageLoader();
-            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    profileCircularBar.setVisibility(View.GONE);
-                    profileImageBitmap = response.getBitmap();
+        Bitmap bitmap = MyProfile.getInstance().getUserProfileImage().getValue();
+        if (bitmap != null) {
+            profileCircularBar.setVisibility(View.GONE);
+            ivProfileImageField.setImageBitmap(bitmap);
+        } else {
+            String imageUrl = MyProfile.getInstance().getProfileImage();
+            if (!TextUtils.isEmpty(imageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                ImageLoader imageLoader = CurrentBookingApplication.getInstance().getImageLoader();
+                imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        profileCircularBar.setVisibility(View.GONE);
+                        profileImageBitmap = response.getBitmap();
+                        ivProfileImageField.setImageBitmap(profileImageBitmap);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        profileCircularBar.setVisibility(View.GONE);
+                        ivProfileImageField.setImageResource(R.drawable.avatar);
+                    }
+                });
+                ivProfileImageField.setImageUrl(imageUrl, imageLoader);
+            } else {
+                profileImageBitmap = MyProfile.getInstance().getUserProfileImage().getValue();
+                if (profileImageBitmap != null) {
                     ivProfileImageField.setImageBitmap(profileImageBitmap);
                 }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    profileCircularBar.setVisibility(View.GONE);
-                    ivProfileImageField.setImageResource(R.drawable.avatar);
-                }
-            });
-            ivProfileImageField.setImageUrl(imageUrl, imageLoader);
-        } else {
-            profileImageBitmap = MyProfile.getInstance().getUserProfileImage().getValue();
-            if (profileImageBitmap != null) {
-                ivProfileImageField.setImageBitmap(profileImageBitmap);
+                profileCircularBar.setVisibility(View.GONE);
             }
-            profileCircularBar.setVisibility(View.GONE);
         }
     }
 

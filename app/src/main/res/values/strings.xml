@@ -148,12 +148,14 @@
     <string name="services_home">Services Home</string>
     <string name="status_approved">Your ticket has been approved successfully</string>
     <string name="ticket_status">Ticket Status</string>
-    <string name="error_address_one">The Address1 field is required.</string>
-    <string name="error_address_two">The Address2 field is required.</string>
+    <string name="error_address_one">full house address is required</string>
+    <string name="error_address_district">The District field is required.</string>
     <string name="error_state">The State field is required.</string>
     <string name="scan_qr_code">Scan QRCode</string>
     <string name="show_qr_code">Show QRCode</string>
     <string name="password_should_be_eight_characters">Password should be 8 character </string>
     <string name="confirm_password_should_be_eight_characters">Confirm Password should be 8 character </string>
-    <string name="error_enter_mobile_and_password">enter mobile and password</string>
+    <string name="error_enter_mobile_and_password">enter mobile no and password</string>
+    <string name="error_profile_image">Profile Image is Required.</string>
+    <string name="district">District</string>
 </resources>

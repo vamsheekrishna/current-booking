@@ -26,17 +26,8 @@ import java.util.ArrayList;
 
 public class AuthenticationHomeFragment extends BaseFragment {
 
-    private static final int NUM_PAGES = 2;
-    private ViewPager2 viewPager;
-    private FragmentStateAdapter pagerAdapter;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private OnAuthenticationClickedListener mListener;
+    private ViewPager2 viewPager;
 
     public AuthenticationHomeFragment() {
         // Required empty public constructor
@@ -48,22 +39,8 @@ public class AuthenticationHomeFragment extends BaseFragment {
         mListener = (OnAuthenticationClickedListener)context;
     }
 
-    public static AuthenticationHomeFragment newInstance(String param1, String param2) {
-        AuthenticationHomeFragment fragment = new AuthenticationHomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static AuthenticationHomeFragment newInstance() {
+        return new AuthenticationHomeFragment();
     }
 
     @Override
@@ -82,7 +59,7 @@ public class AuthenticationHomeFragment extends BaseFragment {
         // Instantiate a ViewPager2 and a PagerAdapter.
         viewPager = view.findViewById(R.id.pager);
 
-        pagerAdapter = new ScreenSlidePagerAdapter(getActivity(), baseFragments);
+        FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(getActivity(), baseFragments);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
         viewPager.setAdapter(pagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
@@ -92,5 +69,13 @@ public class AuthenticationHomeFragment extends BaseFragment {
                 (tab, position) -> tab.setText(titles[position])).attach();
 
          mListener.showPermission();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(viewPager != null) {
+            viewPager.setCurrentItem(0);
+        }
     }
 }

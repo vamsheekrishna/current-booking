@@ -37,8 +37,8 @@ public class MyProfile {
     private String mobileNumber;
     private String pinCode;
     private String profileImage;
-    private String address1;
-    private String address2;
+    private String address;
+    private String district;
     private String state;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
     private MutableLiveData<String> userNameDetails = new MutableLiveData<>("");
@@ -66,20 +66,20 @@ public class MyProfile {
         this.userId = userId;
     }
 
-    public String getAddress1() {
-        return address1;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddress1(String address1) {
-        this.address1 = address1;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getAddress2() {
-        return address2;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setAddress2(String address2) {
-        this.address2 = address2;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getState() {
@@ -174,8 +174,8 @@ public class MyProfile {
         mobileNumber = profileModel.getMobileNumber();
         pinCode = profileModel.getPinCode();
         profileImage = profileModel.getProfileImage();
-        address1 = profileModel.getAddress();
-        address2 = profileModel.getAddress2();
+        address = profileModel.getAddress();
+        district = profileModel.getDistrict();
         state = profileModel.getState();
     }
 

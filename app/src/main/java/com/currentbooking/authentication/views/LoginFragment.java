@@ -84,8 +84,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         mobileNoField = view.findViewById(R.id.user_id);
         password = view.findViewById(R.id.password);
-        //mobileNoField.setText("9999999999");
-        //password.setText("12345678");
+        mobileNoField.setText("7039191834");
+        password.setText("12345678");
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {

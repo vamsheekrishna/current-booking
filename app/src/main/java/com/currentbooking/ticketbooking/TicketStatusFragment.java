@@ -105,12 +105,9 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
         //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
-        MyProfile.getInstance().getCurrentBookingTicketCount().observe(getActivity(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                mListener.updateBadgeCount();
-                mListener.showBadge(true);
-            }
+        MyProfile.getInstance().getCurrentBookingTicketCount().observe(Objects.requireNonNull(getActivity()), integer -> {
+            mListener.updateBadgeCount();
+            mListener.showBadge(true);
         });
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.fragment_ticket_status, container, false);

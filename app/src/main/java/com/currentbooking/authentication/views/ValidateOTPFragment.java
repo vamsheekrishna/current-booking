@@ -99,7 +99,7 @@ public class ValidateOTPFragment extends BaseFragment implements View.OnClickLis
                                 ValidateOTP data = response.body();
                                 if (data != null) {
                                     if (data.getStatus().equalsIgnoreCase("success")) {
-                                        showDialog("", data.getMsg(), pObject -> requireActivity().finish());
+                                        showDialog("", data.getMsg(), pObject -> Objects.requireNonNull(getActivity()).onBackPressed());
                                     } else {
                                         showDialog("", data.getMsg());
                                     }

@@ -37,8 +37,8 @@ public class ProfileFragment extends BaseFragment {
     private TextView lastName;
     private TextView mobileNo;
     private TextView dobField;
-    private TextView address1;
-    private TextView address2;
+    private TextView address;
+    private TextView district;
     private TextView pinCode;
     private TextView state;
     private CircularNetworkImageView ivProfileImageField;
@@ -84,8 +84,8 @@ public class ProfileFragment extends BaseFragment {
                 selectedFemale();
             }
             state.setText(myProfile.getState());
-            address1.setText(myProfile.getAddress1());
-            address2.setText(myProfile.getAddress2());
+            address.setText(myProfile.getAddress());
+            district.setText(myProfile.getDistrict());
             pinCode.setText(myProfile.getPinCode());
 
             Bitmap bitmap = myProfile.getUserProfileImage().getValue();
@@ -144,8 +144,8 @@ public class ProfileFragment extends BaseFragment {
         AppCompatTextView email = view.findViewById(R.id.email);
         email.setText(MyProfile.getInstance().getEmail());
         dobField = view.findViewById(R.id.dob);
-        address1 = view.findViewById(R.id.address1);
-        address2 = view.findViewById(R.id.address2);
+        address = view.findViewById(R.id.address1);
+        district = view.findViewById(R.id.address2);
         state = view.findViewById(R.id.state);
         pinCode = view.findViewById(R.id.pin_code);
         view.findViewById(R.id.edit_profile).setOnClickListener(v -> {

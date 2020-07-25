@@ -100,9 +100,9 @@
                 style="@style/edit_text" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/address2"
+                android:id="@+id/district"
                 android:drawableStart="@drawable/home"
-                android:hint="@string/address2"
+                android:hint="@string/district"
                 android:inputType="textCapWords"
                 style="@style/edit_text" />
 
