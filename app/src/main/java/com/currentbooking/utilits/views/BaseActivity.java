@@ -1,5 +1,7 @@
 package com.currentbooking.utilits.views;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +10,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.currentbooking.R;
+import com.currentbooking.authentication.views.AuthenticationActivity;
 import com.currentbooking.ticketbooking.BaseListener;
+import com.currentbooking.utilits.MyProfile;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +39,11 @@ public class BaseActivity extends AppCompatActivity {
             fragmentTransaction.addToBackStack(fragment_id);
         }
         fragmentTransaction.commit();
+    }
+    public void goToLogout(Context context) {
+        MyProfile.getInstance().resetMyProfile();
+        Intent i = new Intent(context, AuthenticationActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 }

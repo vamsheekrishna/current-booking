@@ -126,36 +126,25 @@
                 android:visibility="gone"
                 android:inputType="numberDecimal"
                 android:maxLength="6" />
-
-            <LinearLayout
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+            <RelativeLayout
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rectangle_border_bg"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:gravity="center">
 
-                <RelativeLayout
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/rounded_circle"
-                    android:gravity="center">
+                <com.currentbooking.utilits.CircularNetworkImageView
+                    android:id="@+id/iv_profile_image_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/avatar" />
 
-                    <com.currentbooking.utilits.CircularNetworkImageView
-                        android:id="@+id/iv_profile_image_field"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/avatar" />
-
-                    <com.currentbooking.utilits.views.ProgressBarCircular
-                        android:id="@+id/profile_circular_field"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerInParent="true" />
-                </RelativeLayout>
-            </LinearLayout>
+                <com.currentbooking.utilits.views.ProgressBarCircular
+                    android:id="@+id/profile_circular_field"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

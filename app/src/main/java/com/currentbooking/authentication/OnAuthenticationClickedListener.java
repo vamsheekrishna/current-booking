@@ -1,5 +1,7 @@
 package com.currentbooking.authentication;
 
+import android.content.Context;
+
 import com.currentbooking.ticketbooking.BaseListener;
 
 public interface OnAuthenticationClickedListener {
@@ -9,4 +11,5 @@ public interface OnAuthenticationClickedListener {
     void changePassword();
     void goToProfileActivity();
     boolean showPermission();
+    void goToLogout(Context context);
 }

@@ -1,5 +1,6 @@
 package com.currentbooking.authentication.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
+import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
@@ -28,8 +30,8 @@ import retrofit2.Response;
 
 public class ChangePasswordFragment extends BaseFragment implements View.OnClickListener {
 
-    // TODO: Rename and change types of parameters
     private TextView oldPassword, newPassword, confirmPassword;
+    private OnAuthenticationClickedListener mListener;
 
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -48,6 +50,12 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnAuthenticationClickedListener)context;
     }
 
     @Override
@@ -120,9 +128,10 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     }
 
     private void gotoAuthenticationActivity() {
-        Intent intent = new Intent(requireActivity(), AuthenticationActivity.class);
+        mListener.goToLogout(getActivity());
+        /*Intent intent = new Intent(requireActivity(), AuthenticationActivity.class);
         intent.putExtra(getString(R.string.change_password), true);
         startActivity(intent);
-        requireActivity().finish();
+        requireActivity().finish();*/
     }
 }

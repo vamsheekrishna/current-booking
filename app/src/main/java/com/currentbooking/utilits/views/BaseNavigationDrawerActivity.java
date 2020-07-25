@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 import java.util.Locale;
 
-public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, BaseListener {
+public  class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, BaseListener {
 
     public static final String SHOW_ALL_RECORDS = "show_all_records";
     public DrawerLayout mDrawerLayout;
@@ -211,10 +211,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 break;
             case R.id.logout_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
-                MyProfile.getInstance().resetMyProfile();
-                Intent i = new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
+                goToLogout(this);
                 finish();
                 break;
             case R.id.my_profile_layout_field:
@@ -233,7 +230,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         }
         mDrawerLayout.closeDrawer(navigationView);
     }
-
     @Override
     public boolean onSupportNavigateUp(){
         onBackPressed();
