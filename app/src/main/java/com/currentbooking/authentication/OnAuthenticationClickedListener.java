@@ -9,7 +9,7 @@ public interface OnAuthenticationClickedListener {
     void goToForgotPassword();
     void validateOTP();
     void changePassword();
-    void goToProfileActivity();
+    void goToProfileActivity(boolean firstTimeUserLoggedIn);
     boolean showPermission();
     void goToLogout(Context context);
 }

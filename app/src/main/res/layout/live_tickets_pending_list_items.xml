@@ -124,9 +124,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_ticket_number_field"
                 style="@style/text_style_medium_bold"
                 android:layout_width="0dp"
@@ -141,12 +142,15 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatTextView
                 style="@style/text_style_medium_normal"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
+                android:gravity="center_vertical"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:layout_weight="0.35"
                 android:background="@drawable/live_tickets_pending_validate_bg"
                 android:fontFamily="@font/roboto_regular"

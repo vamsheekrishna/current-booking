@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.currentbooking.CurrentBookingApplication;
 import com.currentbooking.R;
+import com.currentbooking.home.HomeActivity;
 import com.currentbooking.interfaces.DateTimeInterface;
 import com.currentbooking.utilits.CircularNetworkImageView;
 import com.currentbooking.utilits.CommonUtils;
@@ -67,9 +68,14 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     String gender = "Male";
     private Bitmap profileImageBitmap;
     private String dateOfBirthValue;
+    private boolean firstTimeUserLoggedIn = false;
 
-    public static EditProfileFragment newInstance() {
-        return new EditProfileFragment();
+    public static EditProfileFragment newInstance(boolean firstTimeUserLoggedIn) {
+        EditProfileFragment editProfileFragment = new EditProfileFragment();
+        Bundle extras = new Bundle();
+        extras.putBoolean("firstTimeUserLoggedIn", firstTimeUserLoggedIn);
+        editProfileFragment.setArguments(extras);
+        return editProfileFragment;
     }
 
     @Override
@@ -82,6 +88,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         dateOfBirthCalendar = Calendar.getInstance();
+        Bundle extras = getArguments();
+        if (extras != null) {
+            firstTimeUserLoggedIn = extras.getBoolean("firstTimeUserLoggedIn");
+        }
         return inflater.inflate(R.layout.edit_profile_fragment, container, false);
     }
 
@@ -131,10 +141,13 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dateOfBirthCalendar));
                 dateOfBirthValue = DateUtilities.getDateOfBirthFromCalendar(dateOfBirthCalendar);
             }
-            if (myProfile.getGender().equalsIgnoreCase(getString(R.string.male))) {
-                selectedMale();
-            } else if (myProfile.getGender().equalsIgnoreCase(getString(R.string.female))) {
-                selectedFemale();
+            String gender = myProfile.getGender();
+            if(!TextUtils.isEmpty(gender)) {
+                if (gender.equalsIgnoreCase(getString(R.string.male))) {
+                    selectedMale();
+                } else if (gender.equalsIgnoreCase(getString(R.string.female))) {
+                    selectedFemale();
+                }
             }
 
             updateUserProfileImage();
@@ -149,6 +162,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 break;
             case R.id.dob:
                 dateOfPickerSelected();
+                break;
             case R.id.female:
                 gender = getString(R.string.female);
                 selectedFemale();
@@ -277,7 +291,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                                 MyProfile.getInstance().setUserNameDetails(userName);
                                 MyProfile.getInstance().setUserEmailDetails(_email);
                                 MyProfile.getInstance().setDateOfBirthDetails(dateOfBirthValue);
-                                Objects.requireNonNull(getActivity()).onBackPressed();
+                                if(firstTimeUserLoggedIn) {
+                                    gotoHomeScreen();
+                                } else {
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                }
                             });
                         } else {
                             showDialog("", response.body().getMsg());
@@ -296,6 +314,13 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 showDialog("", t.getMessage());
             }
         });
+    }
+
+    private void gotoHomeScreen() {
+        Intent intent = new Intent(requireActivity(), HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        requireActivity().startActivity(intent);
+        requireActivity().finish();
     }
 
     private void updateUserProfileImage() {

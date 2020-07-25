@@ -71,9 +71,10 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     }
 
     @Override
-    public void goToProfileActivity() {
+    public void goToProfileActivity(boolean firstTimeUserLoggedIn) {
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(getString(R.string.is_edit), true);
+        intent.putExtra(getString(R.string.first_time_user_logged_in), true);
         startActivity(intent);
         finish();
     }

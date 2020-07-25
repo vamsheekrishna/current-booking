@@ -17,11 +17,15 @@ public class ProfileActivity extends BaseNavigationDrawerActivity implements OnP
         // setContentView(R.layout.profile_activity);
         if (savedInstanceState == null) {
             Bundle data = getIntent().getExtras();
-
-            if(data != null && data.getBoolean(getString(R.string.is_edit))) {
-                addFragment(EditProfileFragment.newInstance(), "", false);
+            if (data != null) {
+                boolean firstTimeUserLoggedIn = data.getBoolean(getString(R.string.first_time_user_logged_in));
+                if (data.getBoolean(getString(R.string.is_edit))) {
+                    addFragment(EditProfileFragment.newInstance(firstTimeUserLoggedIn), "EditProfileFragment", false);
+                } else {
+                    addFragment(ProfileFragment.newInstance(), "ProfileFragment", false);
+                }
             } else {
-                addFragment(ProfileFragment.newInstance(), "", false);
+                addFragment(ProfileFragment.newInstance(), "ProfileFragment", false);
             }
             /*getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, ProfileFragment.newInstance())
@@ -31,7 +35,7 @@ public class ProfileActivity extends BaseNavigationDrawerActivity implements OnP
 
     @Override
     public void goToEditProfile() {
-        replaceFragment(EditProfileFragment.newInstance(),"edit profile", true);
+        replaceFragment(EditProfileFragment.newInstance(false), "edit profile", true);
     }
 
     @Override
