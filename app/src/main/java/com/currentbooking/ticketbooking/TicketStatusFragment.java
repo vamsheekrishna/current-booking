@@ -171,7 +171,7 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
             ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
             ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);
 
-            String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopCD());
+            String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getReqTillStopNM());
             Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busDetails.getOriginDateTime());
             Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busDetails.getLastStopDateTime());
             String startTime = DateUtilities.getTimeFromCalendar(journeyStartCalendar);

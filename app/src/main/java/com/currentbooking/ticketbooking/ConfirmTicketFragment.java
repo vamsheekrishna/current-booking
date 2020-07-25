@@ -100,7 +100,7 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
     }
 
     private void loadUIComponents(View view) {
-        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopCD());
+        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getReqTillStopNM());
         String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
         ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
         ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);

@@ -159,7 +159,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
             }
         });
 
-        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getLastStopCD());
+        String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getReqTillStopNM());
         Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busDetails.getOriginDateTime());
         Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busDetails.getLastStopDateTime());
         String startTime = DateUtilities.getTimeFromCalendar(journeyStartCalendar);

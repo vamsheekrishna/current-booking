@@ -47,7 +47,7 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
     @Override
     public void onBindViewHolder(@NonNull SelectBusesViewHolder holder, int position) {
         BusObject busObject = listData.get(position);
-        String busRoute = String.format("%s %s %s", busObject.getOriginStopName(), toText, busObject.getLastStopCD());
+        String busRoute = String.format("%s %s %s", busObject.getOriginStopName(), toText, busObject.getReqTillStopNM());
         holder.tvBusRouteField.setText(busRoute);
         holder.tvBusTypeField.setText(busType);
         holder.tvBusFareField.setText(String.format("%s /-", busObject.getFareAmt()));

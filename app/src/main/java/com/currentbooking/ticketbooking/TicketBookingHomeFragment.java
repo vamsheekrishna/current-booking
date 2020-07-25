@@ -204,9 +204,23 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        BusStopObject pickup = ticketBookingModule.getSelectedPickUpPoint().getValue();
-                        ticketBookingModule.getSelectedPickUpPoint().setValue(ticketBookingModule.getSelectedDropPoint().getValue());
-                        ticketBookingModule.getSelectedDropPoint().setValue(pickup);
+                        BusStopObject pickupPointDetails = ticketBookingModule.getSelectedPickUpPoint().getValue();
+                        BusStopObject dropPointDetails = ticketBookingModule.getSelectedDropPoint().getValue();
+                        //ticketBookingModule.getSelectedPickUpPoint().setValue(ticketBookingModule.getSelectedDropPoint().getValue());
+                        ticketBookingModule.getSelectedDropPoint().setValue(pickupPointDetails);
+                        ticketBookingModule.getSelectedPickUpPoint().setValue(dropPointDetails);
+
+                        if(dropPointDetails != null) {
+                            pickUp.setText(dropPointDetails.getStopName());
+                        } else {
+                            pickUp.setText("");
+                        }
+
+                        if(pickupPointDetails != null) {
+                            dropPoint.setText(pickupPointDetails.getStopName());
+                        } else {
+                            dropPoint.setText("");
+                        }
                     }
 
                     @Override
