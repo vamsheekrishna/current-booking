@@ -92,7 +92,7 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             pendingViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             pendingViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getOrder_id());
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
             pendingViewHolder.tvTicketNoField.setText(ticketNo);
         } else if (getItemViewType(position) == LIVE_TICKETS_REJECTED) {
             RejectedViewHolder rejectedViewHolder = (RejectedViewHolder) holder;

@@ -61,7 +61,6 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
     private List<Concession> concessionList;
     private List<Concession> personsAddedList;
     private ConcessionAddPassengersAdapter addedPassengersAdapter;
-    private RecyclerView addPassengerRecyclerField;
     private TicketBookingViewModel ticketBookingModule;
     private String busType;
     private OnTicketBookingListener mListener;
@@ -178,7 +177,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
         addPassengerBtnField = view.findViewById(R.id.add_passenger_btn_field);
         addPassengerBtnField.setOnClickListener(v -> addPassengerSelected());
 
-        addPassengerRecyclerField = view.findViewById(R.id.passengers_recycler_field);
+        RecyclerView addPassengerRecyclerField = view.findViewById(R.id.passengers_recycler_field);
         addPassengerRecyclerField.setHasFixedSize(false);
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);

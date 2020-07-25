@@ -110,7 +110,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         TextView tvJourneyHrsField = view.findViewById(R.id.tv_bus_journey_hours_field);
 
         String busRouteName = String.format("%s %s", busTicketDetails.getOperator_name().toUpperCase(), busTicketDetails.getBus_service_no());
-        String ticketNo = String.format("%s %s", getString(R.string.ticket_number), busTicketDetails.getOrder_id());
+        String ticketNo = String.format("%s %s", getString(R.string.ticket_number), busTicketDetails.getTicket_no());
         String busRouteAndTicketNo = String.format("%s\n%s", busRouteName, ticketNo);
         tvBusRouteNameField.setText(busRouteAndTicketNo);
 

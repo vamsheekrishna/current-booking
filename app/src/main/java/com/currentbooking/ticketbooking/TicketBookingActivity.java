@@ -37,7 +37,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     @Override
     public void gotoConfirmTicket(String busType, GetFareResponse.FareDetails fareDetails, String passengerDetails) {
         fareDetails.setPassengerDetails(passengerDetails);
-        replaceFragment(ConfirmTicketFragment.newInstance(busType, fareDetails), "ConfirmTicketFragment", true);
+        addFragment(ConfirmTicketFragment.newInstance(busType, fareDetails), "ConfirmTicketFragment", true);
         showBadge(false);
         showHamburgerIcon(false);
     }

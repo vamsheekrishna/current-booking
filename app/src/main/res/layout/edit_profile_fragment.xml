@@ -53,8 +53,6 @@
                     android:layout_width="0dp"
                     android:layout_marginEnd="4dp"
                     android:layout_weight="1"
-                    android:background="@drawable/gender_bg_selected"
-                    android:textColor="@color/white"
                     android:text="@string/male"
                     android:textAllCaps="true" />
 
