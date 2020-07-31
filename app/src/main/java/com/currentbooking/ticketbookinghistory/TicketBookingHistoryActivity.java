@@ -1,9 +1,13 @@
 package com.currentbooking.ticketbookinghistory;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity implements OnTicketBookingHistoryListener {
 
@@ -12,8 +16,14 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
         super.onCreate(savedInstanceState);
         showBadge(false);
         showHamburgerIcon(false);
-        if (savedInstanceState == null) {
-            addFragment(LiveTicketFragment.newInstance(false), "LiveTicketFragment", false);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            boolean isShowAllRecords = extras.getBoolean(SHOW_ALL_RECORDS);
+            if(isShowAllRecords) {
+                addFragment(BookingHistoryTicketFragment.newInstance(true), "BookingHistoryTicketFragment", false);
+            } else {
+                addFragment(LiveTicketFragment.newInstance(true), "LiveTicketFragment", false);
+            }
         } else {
             addFragment(LiveTicketFragment.newInstance(true), "LiveTicketFragment", false);
         }
@@ -38,6 +48,4 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
     public void scanQRCode(MyTicketInfo busTicketDetails) {
        replaceFragment(QRScannerFragment.newInstance(busTicketDetails, ""), "QRScannerFragment", true);
     }
-
-
 }

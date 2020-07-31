@@ -90,7 +90,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/share" />
+                android:src="@drawable/share"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_bus_route_name_field"

@@ -168,6 +168,7 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
         findViewById(R.id.book_ticket_layout_field).setOnClickListener(this);
         findViewById(R.id.booking_history_layout_field).setOnClickListener(this);
         findViewById(R.id.help_layout_field).setOnClickListener(this);
+        findViewById(R.id.live_tickets_layout_field).setOnClickListener(this);
         findViewById(R.id.logout_layout_field).setOnClickListener(this);
         findViewById(R.id.my_profile_layout_field).setOnClickListener(this);
         findViewById(R.id.change_password_layout_field).setOnClickListener(this);
@@ -176,7 +177,6 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         return true;
-
     }
 
     @Override
@@ -205,6 +205,13 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
                 intent.putExtra(SHOW_ALL_RECORDS,true);
                 startActivity(intent);
                 break;
+            case R.id.live_tickets_layout_field:
+                mDrawerLayout.closeDrawer(navigationView);
+                intent = new Intent(BaseNavigationDrawerActivity.this, TicketBookingHistoryActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra(SHOW_ALL_RECORDS,false);
+                startActivity(intent);
+                break;
             case R.id.help_layout_field:
                 gotoHelpScreen();
                 break;
@@ -231,7 +238,7 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
     }
     @Override
     public boolean onSupportNavigateUp(){
-        onBackPressed();
+        //onBackPressed();
         return true;
     }
 

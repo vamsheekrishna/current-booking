@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:background="@color/button_bg">
 
-
         <ImageView
             android:id="@+id/iv_back_arrow_field"
             android:layout_width="wrap_content"

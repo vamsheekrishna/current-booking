@@ -189,6 +189,38 @@
                 android:background="@color/gray_color" />
 
             <LinearLayout
+                android:id="@+id/live_tickets_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/booking_history" />
+
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/live_tickets"
+                    android:textColor="@color/black_color_two"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_color" />
+
+            <LinearLayout
                 android:id="@+id/booking_history_layout_field"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

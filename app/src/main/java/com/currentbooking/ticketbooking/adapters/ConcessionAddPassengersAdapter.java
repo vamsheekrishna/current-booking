@@ -52,7 +52,7 @@ public class ConcessionAddPassengersAdapter extends RecyclerView.Adapter<Concess
         if (passengersDetails.isConcessionDetailsAdded()) {
             holder.tvConcessionTypeField.setText(passengersDetails.getConcessionNM());
         } else {
-            holder.tvConcessionTypeField.setText("N/A");
+            holder.tvConcessionTypeField.setText("");
         }
         holder.deleteConcessionBtnLayoutField.setTag(position);
     }
