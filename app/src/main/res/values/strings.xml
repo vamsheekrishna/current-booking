@@ -159,4 +159,5 @@
     <string name="error_profile_image">Profile Image is Required.</string>
     <string name="district">District</string>
     <string name="first_time_user_logged_in">First Time User Logged In</string>
+    <string name="un_used">Un Used</string>
 </resources>

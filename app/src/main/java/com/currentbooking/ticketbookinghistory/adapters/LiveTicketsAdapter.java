@@ -80,7 +80,7 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             approvedViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             approvedViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getOrder_id());
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
             approvedViewHolder.tvTicketNoField.setText(ticketNo);
         } else if (getItemViewType(position) == LIVE_TICKETS_PENDING) {
             PendingViewHolder pendingViewHolder = (PendingViewHolder) holder;
@@ -104,7 +104,7 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             rejectedViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             rejectedViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getOrder_id());
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
             rejectedViewHolder.tvTicketNoField.setText(ticketNo);
         } else {
             ExpiredViewHolder expiredViewHolder = (ExpiredViewHolder) holder;
@@ -116,7 +116,7 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             expiredViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             expiredViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getOrder_id());
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
             expiredViewHolder.tvTicketNoField.setText(ticketNo);
         }
     }
