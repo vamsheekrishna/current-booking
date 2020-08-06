@@ -126,7 +126,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                 try {
                                     MyProfile.getInstance(data.getData().getProfileModel());
                                     if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
-                                        mListener.goToProfileActivity();
+                                        mListener.goToProfileActivity(true);
                                     } else {
                                         mListener.goToHomeActivity();
                                     }
