@@ -141,12 +141,15 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
     }
 
     private void loadUIComponents(View view) {
-        String fullName = String.format("%s %s", MyProfile.getInstance().getFirstName(), MyProfile.getInstance().getLastName());
-        ((TextView) view.findViewById(R.id.full_name)).setText(fullName);
-        ((TextView) view.findViewById(R.id.mobile_no)).setText(MyProfile.getInstance().getMobileNumber());
-        String dob = MyProfile.getInstance().getDob();
-        if (!TextUtils.isEmpty(dob)) {
-            ((TextView) view.findViewById(R.id.user_age_field)).setText("");
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            String fullName = String.format("%s %s", myProfile.getFirstName(), myProfile.getLastName());
+            ((TextView) view.findViewById(R.id.full_name)).setText(fullName);
+            ((TextView) view.findViewById(R.id.mobile_no)).setText(myProfile.getMobileNumber());
+            String dob = myProfile.getDob();
+            if (!TextUtils.isEmpty(dob)) {
+                ((TextView) view.findViewById(R.id.user_age_field)).setText("");
+            }
         }
 
         String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
