@@ -26,6 +26,8 @@ import com.currentbooking.utilits.cb_api.responses.Concession;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -133,6 +135,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
         }
 
         if (!filterConcessionTypesList.isEmpty()) {
+            Collections.sort(filterConcessionTypesList, (leftItem, rightItem) -> leftItem.getConcessionOrder().compareTo(rightItem.getConcessionOrder()));
             concessionsTypeAdapter = new ConcessionsTypeAdapter(requireActivity(), filterConcessionTypesList);
             concessionsListField.setAdapter(concessionsTypeAdapter);
         }
