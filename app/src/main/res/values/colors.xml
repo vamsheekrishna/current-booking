@@ -32,9 +32,9 @@
     <color name="sky_blue">#C5DEFF</color>
     <color name="light_yellow">#F5F0AA</color>
     <color name="transparent">@android:color/transparent</color>
-    <color name="live_tickets_approved_bg_color">#0D2EAC01</color>
-    <color name="live_tickets_rejected_bg_color">#0DEF4B4E</color>
-    <color name="live_tickets_expired_bg_color">#0DEF4B88</color>
-    <color name="live_tickets_pending_bg_color">#0DFFB404</color>
+    <color name="live_tickets_approved_bg_color">#402EAC01</color>
+    <color name="live_tickets_rejected_bg_color">#40EF4B4E</color>
+    <color name="live_tickets_expired_bg_color">#40EF4B88</color>
+    <color name="live_tickets_pending_bg_color">#40FFB404</color>
 
 </resources>
