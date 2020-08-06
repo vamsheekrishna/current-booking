@@ -128,7 +128,6 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
 
         TextView tvTotalPersonsFareField = view.findViewById(R.id.tv_total_persons_bus_fare_price_field);
 
-
         TextView tvServiceChargeOrGstField = view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field);
         TextView tvTotalUpdatedFareField = view.findViewById(R.id.tv_total_persons_total_fare_field);
         tvTotalUpdatedFareField.setText(busTicketDetails.getTotal());
@@ -151,6 +150,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         } else if(ticketStatus.equalsIgnoreCase(Constants.KEY_REJECTED)) {
             tvBookingStatusField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.red_two));
         } else if(ticketStatus.equalsIgnoreCase(Constants.KEY_PENDING)) {
+            ticketStatus = getString(R.string.un_used);
             tvBookingStatusField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.orange_color));
         } else {
             tvBookingStatusField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.pink_color));
