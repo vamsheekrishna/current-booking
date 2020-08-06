@@ -72,6 +72,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
         dialog.setOnKeyListener((dialog1, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 closeDialog();
+                return true;
             }
             return false;
         });
@@ -89,9 +90,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
         List<Concession> filterConcessionTypesList = new ArrayList<>();
         TextView tvTitleField = view.findViewById(R.id.tv_title_field);
         tvTitleField.setText(getString(R.string.select_concession).toUpperCase());
-        view.findViewById(R.id.iv_back_arrow_field).setOnClickListener(v -> {
-            closeDialog();
-        });
+        view.findViewById(R.id.iv_back_arrow_field).setOnClickListener(v -> closeDialog());
         RecyclerView concessionsListField = view.findViewById(R.id.concession_list_field);
         concessionsListField.setHasFixedSize(false);
 

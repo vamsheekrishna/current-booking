@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="@color/live_tickets_pending_bg_color" />
+    <solid android:color="@color/live_tickets_rejected_bg_color" />
 
     <corners
         android:bottomLeftRadius="10dp"
@@ -11,6 +11,6 @@
         android:topRightRadius="10dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/live_tickets_pending_bg_color" />
+        android:color="@color/live_tickets_rejected_bg_color" />
 
 </shape>
