@@ -9,7 +9,7 @@
 
     <ScrollView
         android:id="@+id/body"
-        android:layout_above="@+id/confirm"
+        android:layout_above="@+id/confirm_payment"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content">

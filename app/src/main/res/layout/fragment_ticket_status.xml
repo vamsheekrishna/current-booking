@@ -169,6 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="15dp"
+                        android:visibility="gone"
                         android:layout_marginEnd="20dp">
 
                         <TextView
@@ -194,6 +195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="15dp"
+                        android:visibility="gone"
                         android:layout_marginEnd="20dp">
 
                         <TextView
@@ -275,21 +277,25 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_failed_try_again_field"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_semi_bold"
                             android:text="@string/try_again"
+                            android:maxLines="1"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_failed_go_to_home_field"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:text="@string/go_to_home"
+                            android:maxLines="1"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             app:backgroundTint="@color/edit_text_border_color" />
                     </LinearLayout>
                 </LinearLayout>
@@ -303,6 +309,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="35dp"
             android:contentDescription="@string/app_name" />
+
         <LinearLayout
             android:id="@+id/payment_success_buttons_layout_field"
             android:layout_width="match_parent"
@@ -315,21 +322,25 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_success_book_another_field"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_semi_bold"
-                android:text="@string/book_another"
+                android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:text="@string/book_again"
+                android:textSize="14sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_success_go_to_home_field"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/go_to_home"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:maxLines="1"
+                android:textSize="14sp"
                 app:backgroundTint="@color/edit_text_border_color" />
         </LinearLayout>
     </RelativeLayout>
