@@ -70,145 +70,181 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/current_booking_layout_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/home_bg_rounded_corner_one"
-                android:gravity="center_vertical"
-                android:minHeight="125dp">
+                android:layout_marginEnd="20dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/current_booking_layout_field"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/rounded_circle_two"
-                    android:gravity="center_vertical">
+                    android:layout_weight="1"
+                    android:background="@drawable/home_bg_rounded_corner_one"
+                    android:gravity="center_vertical"
+                    android:minHeight="125dp"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dp"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_launcher" />
-                </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_circle_two"
+                        android:gravity="center_vertical">
 
-                <TextView
-                    style="@style/text_style_extra_medium_bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="@string/current_booking" />
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_launcher" />
+                    </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/advance_booking_layout_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/advance_booking_rounded_corner_bg"
-                android:gravity="center_vertical"
-                android:minHeight="125dp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/rounded_circle_two"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_launcher" />
-                </RelativeLayout>
-
-                <TextView
-                    style="@style/text_style_extra_medium_bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="@string/advance_booking" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/travel_pulse_layout_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/travel_pulse_rounded_corner_bg"
-                android:gravity="center_vertical"
-                android:minHeight="125dp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/white_rounded_circle"
-                    android:gravity="center_vertical">
-
-                    <ImageView
+                    <TextView
+                        style="@style/text_style_extra_medium_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/travel_pulse" />
-                </RelativeLayout>
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/current_booking" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/text_style_extra_medium_bold"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/advance_booking_layout_field"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="@string/travel_pulse" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:background="@drawable/advance_booking_rounded_corner_bg"
+                    android:gravity="center_vertical"
+                    android:minHeight="125dp"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/shopping_cart_layout_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/e_commerce_rounded_corner_bg"
-                android:gravity="center_vertical"
-                android:minHeight="125dp">
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_circle_two"
+                        android:gravity="center_vertical">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/white_rounded_circle"
-                    android:gravity="center_vertical">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_launcher" />
+                    </RelativeLayout>
 
-                    <ImageView
+                    <TextView
+                        style="@style/text_style_extra_medium_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/shopping_cart" />
-                </RelativeLayout>
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/advance_booking" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <TextView
-                    style="@style/text_style_extra_medium_bold"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/travel_pulse_layout_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/travel_pulse_rounded_corner_bg"
+                    android:gravity="center_vertical"
+                    android:minHeight="125dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/white_rounded_circle"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/travel_pulse" />
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/text_style_extra_medium_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/travel_pulse" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/shopping_cart_layout_field"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="@string/e_commerce" />
+                    android:layout_weight="1"
+                    android:background="@drawable/e_commerce_rounded_corner_bg"
+                    android:gravity="center_vertical"
+                    android:minHeight="125dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/white_rounded_circle"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/shopping_cart" />
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/text_style_extra_medium_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/e_commerce" />
+                </LinearLayout>
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

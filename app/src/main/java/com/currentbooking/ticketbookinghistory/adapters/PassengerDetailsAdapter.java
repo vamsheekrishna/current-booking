@@ -47,7 +47,7 @@ public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetai
         holder.tvPassengerAgeField.setText(passengerDetailsModel.getAge());
         String concession = passengerDetailsModel.getConcessionName();
         if (TextUtils.isEmpty(concession)) {
-            concession = "N/A";
+            concession = "";
         }
        //shweta holder.tvConcessionNameField.setText(concession);
     }

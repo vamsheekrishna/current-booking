@@ -32,7 +32,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/select_transport"
                 android:drawableStart="@drawable/user_thumb"
-                android:hint="@string/select_state_transport"
+                android:hint="@string/select_transport"
                 style="@style/text_view" />
 
             <include

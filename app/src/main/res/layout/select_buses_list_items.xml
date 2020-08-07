@@ -136,7 +136,6 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:minHeight="40dp"
-                android:text="225/-"
                 android:paddingStart="5dp"
                 android:textColor="@color/black"
                 android:paddingEnd="5dp" />

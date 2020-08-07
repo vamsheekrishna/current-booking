@@ -16,7 +16,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/header_text_view_viewticket"
+                style="@style/header_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -30,7 +30,7 @@
             <include layout="@layout/passenger_route_details_items" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/header_text_view_viewticket"
+                style="@style/header_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -96,7 +96,7 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/header_text_view_viewticket"
+                style="@style/header_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -121,8 +121,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginEnd="10dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:layout_marginEnd="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -147,8 +147,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginEnd="10dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:layout_marginEnd="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -212,8 +212,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/show_qr_code"
-            />
+            android:text="@string/show_qr_code" />
         <Button
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
