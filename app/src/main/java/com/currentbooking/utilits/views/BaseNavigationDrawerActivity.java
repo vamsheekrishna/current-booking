@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.text.HtmlCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.VolleyError;

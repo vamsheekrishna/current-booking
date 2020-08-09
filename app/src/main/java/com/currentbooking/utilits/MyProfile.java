@@ -17,6 +17,8 @@ import com.currentbooking.utilits.encrypt.EncryptionFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -260,9 +262,16 @@ public class MyProfile {
                     if (todayTickets.getStatus().equalsIgnoreCase("success")) {
                         ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
                         if (null != data && data.size() > 0) {
+                            Iterator<MyTicketInfo> iterator = data.iterator();
+                            while (iterator.hasNext()) {
+                                MyTicketInfo myTicketInfo = iterator.next();
+                                if(myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
+                                    iterator.remove();
+                                }
+                            }
+
                             MyProfile.getInstance().setTodayTickets(data);
-                            Integer size  = (Integer)data.size();
-                            getCurrentBookingTicketCount().setValue(size);
+                            getCurrentBookingTicketCount().setValue(data.size());
                         }
                     }
                 }

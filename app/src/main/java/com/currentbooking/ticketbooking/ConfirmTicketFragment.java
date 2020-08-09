@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
@@ -78,7 +79,6 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the select_bus_points for this fragment
-        //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         return inflater.inflate(R.layout.fragment_confirm_ticket, container, false);
     }
@@ -164,6 +164,13 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
         view.findViewById(R.id.confirm_payment).setOnClickListener(v -> {
             confirmSelected();
         });
+        TextView tvTicketExpiryMessageField = view.findViewById(R.id.tv_ticket_expiry_message_field);
+
+        String noteMessage = "<font color='#EF4B4E'>Note*</font>";
+        tvTicketExpiryMessageField.setText(HtmlCompat.fromHtml(
+                String.format("%s %s", noteMessage, getString(R.string.ticket_expire_message)),
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
+
     }
 
     private void confirmSelected() {

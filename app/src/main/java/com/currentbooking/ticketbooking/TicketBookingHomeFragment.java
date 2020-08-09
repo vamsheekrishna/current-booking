@@ -48,6 +48,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location currentLocation;
     private SupportMapFragment mapFragment;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -118,6 +120,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         task.addOnSuccessListener(location -> {
             if (location != null) {
                 currentLocation = location;
+                latitude = currentLocation.getLatitude();
+                longitude = currentLocation.getLongitude();
                 // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                 //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
                 if (mapFragment != null) {
@@ -231,16 +235,16 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 v.startAnimation(rotate);
                 break;
             case R.id.select_transport:
-                mListener.gotoOptionSelection(0, "Select Operator");
+                mListener.gotoOptionSelection(0, getString(R.string.select_transport));
                 break;
             case R.id.select_bus_type:
-                mListener.gotoOptionSelection(1, "Select Bus Type");
+                mListener.gotoOptionSelection(1, getString(R.string.select_bus_type));
                 break;
             case R.id.pick_up:
-                mListener.gotoBusStopSelect(2);
+                mListener.gotoBusStopSelect(2, latitude, longitude);
                 break;
             case R.id.drop_point:
-                mListener.gotoBusStopSelect(3);
+                mListener.gotoBusStopSelect(3, latitude, longitude);
                 break;
             case R.id.select_bus:
                 if(ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length()>1 &&

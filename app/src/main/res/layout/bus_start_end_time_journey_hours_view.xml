@@ -52,7 +52,7 @@
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/tv_bus_journey_hours_field"
         android:layout_toEndOf="@+id/view_circle_one"
-        android:background="@color/edit_text_border_color_two" />
+        android:background="@color/edit_text_hint" />
 
     <View
         android:id="@+id/gray_color_two"
@@ -61,5 +61,5 @@
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/view_circle_two"
         android:layout_toEndOf="@id/tv_bus_journey_hours_field"
-        android:background="@color/edit_text_border_color_two" />
+        android:background="@color/edit_text_hint" />
 </RelativeLayout>

@@ -149,6 +149,16 @@
                         android:textSize="@dimen/edit_text_size" />
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_ticket_expiry_message_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/opensans_regular"
+                android:textColor="@color/black_color_two"
+                android:text="@string/ticket_expire_message" />
         </LinearLayout>
     </ScrollView>
 

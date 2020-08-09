@@ -97,7 +97,10 @@ public interface TicketBookingServices {
             @Field("bus_no") String bus_no,
             @Field("machine_no") String machine_no,
             @Field("bus_service_id") String bus_service_id
-
-
     );
+
+    @POST(BuildConfig.AVAILABLE_BUS_STOPS)
+    @FormUrlEncoded
+    Call<BusStopResponse> getNearByStopsList(@Field("latitude") double latitude,
+                                         @Field("longitude") double longitude);
 }

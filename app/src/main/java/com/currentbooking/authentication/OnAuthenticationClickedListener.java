@@ -8,6 +8,7 @@ public interface OnAuthenticationClickedListener {
     void goToHomeActivity();
     void goToForgotPassword();
     void validateOTP();
+    void validateMailOTP();
     void changePassword();
     void goToProfileActivity(boolean firstTimeUserLoggedIn);
     boolean showPermission();

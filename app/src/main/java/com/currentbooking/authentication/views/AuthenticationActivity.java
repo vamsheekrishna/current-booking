@@ -66,6 +66,11 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     }
 
     @Override
+    public void validateMailOTP() {
+        replaceFragment(ValidateMailFragment.newInstance(), "ValidateMailFragment", true);
+    }
+
+    @Override
     public void changePassword() {
 
     }

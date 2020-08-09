@@ -9,39 +9,56 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
+import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.RecyclerTouchListener;
+import com.currentbooking.utilits.Utils;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.views.BaseFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 import static com.currentbooking.utilits.views.BaseNavigationDrawerActivity.SHOW_ALL_RECORDS;
 
 /**
  * Created by Satya Seshu on 03/07/20.
  */
-public class LiveTicketFragment  extends BaseFragment implements View.OnClickListener {
+public class LiveTicketFragment extends BaseFragment implements View.OnClickListener {
 
-    private boolean isShowAllRecords;
+    private LiveTicketsAdapter liveTicketsAdapter;
+    private RecyclerView liveTicketsListRecyclerField;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public LiveTicketFragment() {
         // Required empty public constructor
     }
 
     OnTicketBookingHistoryListener mListener;
+
     public static LiveTicketFragment newInstance(boolean b) {
 
         LiveTicketFragment fragment = new LiveTicketFragment();
@@ -61,13 +78,6 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            isShowAllRecords =getArguments().getBoolean(SHOW_ALL_RECORDS);
-        }
     }
 
     @Override
@@ -90,7 +100,14 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
 
     private void loadUIComponents(View view) {
 
-        RecyclerView liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_fieid);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
+        swipeRefreshLayout.setProgressViewOffset(false, 300, 300);
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorPrimary,
+                R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(this::updateTickets);
+        liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_field);
         liveTicketsListRecyclerField.setHasFixedSize(false);
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
@@ -112,7 +129,12 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
         liveTicketHeaderField.setText(headerText);
 
         if(!liveTicketsList.isEmpty()) {
-            LiveTicketsAdapter liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
+            Collections.sort(liveTicketsList, (t1, t2) -> {
+                Integer t1OrderID = Utils.getIntegerValueFromString(t1.getOrder_id());
+                Integer t2OrderID = Utils.getIntegerValueFromString(t2.getOrder_id());
+                return t1OrderID - t2OrderID;
+            });
+            liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
             liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
         }
 
@@ -128,6 +150,59 @@ public class LiveTicketFragment  extends BaseFragment implements View.OnClickLis
 
             }
         }));
+    }
+
+    private void updateTickets() {
+        swipeRefreshLayout.setRefreshing(true);
+        String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+        String id = MyProfile.getInstance().getUserId();
+        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        progressDialog.show();
+        service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
+            @Override
+            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                swipeRefreshLayout.setRefreshing(false);
+                TodayTickets todayTickets = response.body();
+                if (todayTickets != null) {
+                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                        ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                        if (null != data && data.size() > 0) {
+                            Iterator<MyTicketInfo> iterator = data.iterator();
+                            while (iterator.hasNext()) {
+                                MyTicketInfo myTicketInfo = iterator.next();
+                                if(myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
+                                    iterator.remove();
+                                }
+                            }
+
+                            MyProfile.getInstance().setTodayTickets(data);
+                            MyProfile.getInstance().getCurrentBookingTicketCount().setValue(data.size());
+
+                            if (liveTicketsAdapter != null) {
+                                liveTicketsAdapter.updateTickets(data);
+                                liveTicketsAdapter.notifyDataSetChanged();
+                            } else {
+                                liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), data);
+                                liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
+                            }
+                        }
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                // showDialog("onFailure", "" + t.getMessage());
+                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                progressDialog.dismiss();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void updateAdapter() {
+
     }
 
     @Override

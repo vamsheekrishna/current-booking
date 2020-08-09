@@ -34,6 +34,10 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.context = context;
     }
 
+    public void updateTickets(List<MyTicketInfo> liveTicketsList) {
+        this.liveTicketsList = liveTicketsList;
+    }
+
     @Override
     public int getItemViewType(int position) {
         MyTicketInfo liveTicketsModel = liveTicketsList.get(position);
