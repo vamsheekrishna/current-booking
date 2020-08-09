@@ -76,7 +76,7 @@ public interface TicketBookingServices {
     @POST(BuildConfig.GET_TODAYS_TICKETS)
     @FormUrlEncoded
     Call<TodayTickets> getCurrentBookingTicket(@Field("date") String date,
-                                               @Field("user_id") String userID);
+                                               @Field("user_id") String userID, @Field("ticket_id") String ticketID);
 
     @POST(BuildConfig.VALIDATE_TICKET)
     @FormUrlEncoded

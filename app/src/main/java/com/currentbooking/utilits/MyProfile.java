@@ -254,7 +254,7 @@ public class MyProfile {
         String id = MyProfile.getInstance().getUserId();
         TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         progressDialog.show();
-        service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
+        service.getCurrentBookingTicket(date, id, "").enqueue(new Callback<TodayTickets>() {
             @Override
             public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
                 TodayTickets todayTickets = response.body();

@@ -2,9 +2,13 @@ package com.currentbooking.ticketbooking;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +20,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MvvmView;
+import com.currentbooking.utilits.MyLocation;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.MyViewModelFactory;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
@@ -50,6 +56,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private SupportMapFragment mapFragment;
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private LocationManager locationManager;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -82,12 +89,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 googleMap.addMarker(markerOptions);
-            } else {
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             }
-
         }
     };
 
@@ -127,8 +129,70 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 if (mapFragment != null) {
                     mapFragment.getMapAsync(callback);
                 }
+            } else {
+                locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    onGPS();
+                } else {
+                    getLocation();
+                }
             }
         });
+    }
+
+    private void onGPS() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+        } else {
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (locationGPS != null) {
+                currentLocation = locationGPS;
+                latitude = locationGPS.getLatitude();
+                longitude = locationGPS.getLongitude();
+                updateMap();
+            } else {
+                MyLocation myLocation = new MyLocation(requireActivity());
+                myLocation.getLocation(locationResult);
+            }
+        }
+    }
+
+    public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
+
+        @Override
+        public void gotLocation(Location location) {
+            if (location != null) {
+                currentLocation = location;
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                updateMap();
+            }
+        }
+    };
+
+    private void updateMap() {
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
     }
 
     @Override

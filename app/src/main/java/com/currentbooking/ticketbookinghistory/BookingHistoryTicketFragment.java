@@ -130,7 +130,7 @@ public class BookingHistoryTicketFragment extends BaseFragment {
         String id = MyProfile.getInstance().getUserId();
         TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         progressDialog.show();
-        service.getCurrentBookingTicket("", id).enqueue(new Callback<TodayTickets>() {
+        service.getCurrentBookingTicket("", id, "").enqueue(new Callback<TodayTickets>() {
             @Override
             public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
                 swipeRefreshLayout.setRefreshing(false);

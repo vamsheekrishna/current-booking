@@ -132,7 +132,7 @@ public class LiveTicketFragment extends BaseFragment implements View.OnClickList
             Collections.sort(liveTicketsList, (t1, t2) -> {
                 Integer t1OrderID = Utils.getIntegerValueFromString(t1.getOrder_id());
                 Integer t2OrderID = Utils.getIntegerValueFromString(t2.getOrder_id());
-                return t1OrderID - t2OrderID;
+                return t2OrderID - t1OrderID;
             });
             liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), liveTicketsList);
             liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
@@ -158,7 +158,7 @@ public class LiveTicketFragment extends BaseFragment implements View.OnClickList
         String id = MyProfile.getInstance().getUserId();
         TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         progressDialog.show();
-        service.getCurrentBookingTicket(date, id).enqueue(new Callback<TodayTickets>() {
+        service.getCurrentBookingTicket(date, id, "").enqueue(new Callback<TodayTickets>() {
             @Override
             public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
                 swipeRefreshLayout.setRefreshing(false);
