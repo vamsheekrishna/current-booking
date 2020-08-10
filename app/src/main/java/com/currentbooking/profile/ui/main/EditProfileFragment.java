@@ -63,9 +63,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private CircularNetworkImageView ivProfileImageField;
     private ProgressBarCircular profileCircularBar;
 
-    AppCompatTextView dobField, male, female;
+    private AppCompatTextView dobField;
+    private AppCompatTextView maleField;
+    private AppCompatTextView femaleField;
     private Calendar dateOfBirthCalendar;
-    String gender = "Male";
+    private String gender;
     private Bitmap profileImageBitmap;
     private String dateOfBirthValue;
     private boolean firstTimeUserLoggedIn = false;
@@ -108,10 +110,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         etLastName = view.findViewById(R.id.last_name);
         dobField = view.findViewById(R.id.dob);
         dobField.setOnClickListener(this);
-        male= view.findViewById(R.id.male);
-        male.setOnClickListener(this);
-        female = view.findViewById(R.id.female);
-        female.setOnClickListener(this);
+        maleField= view.findViewById(R.id.male);
+        maleField.setOnClickListener(this);
+        femaleField = view.findViewById(R.id.female);
+        femaleField.setOnClickListener(this);
         etAddress = view.findViewById(R.id.address1);
         etDistrict = view.findViewById(R.id.district);
         etState = view.findViewById(R.id.state);
@@ -141,7 +143,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 dobField.setText(DateUtilities.getDateOfBirthFromCalendar1(dateOfBirthCalendar));
                 dateOfBirthValue = DateUtilities.getDateOfBirthFromCalendar(dateOfBirthCalendar);
             }
-            String gender = myProfile.getGender();
+            gender = myProfile.getGender();
             if(!TextUtils.isEmpty(gender)) {
                 if (gender.equalsIgnoreCase(getString(R.string.male))) {
                     selectedMale();
@@ -212,17 +214,17 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void selectedMale() {
-        male.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
-        male.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
-        female.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
-        female.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
+        maleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
+        maleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
+        femaleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
+        femaleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
     }
 
     private void selectedFemale() {
-        female.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
-        female.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
-        male.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
-        male.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
+        femaleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg_selected));
+        femaleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white));
+        maleField.setBackground(ContextCompat.getDrawable(requireActivity(), R.drawable.gender_bg));
+        maleField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccent));
     }
 
     private void saveSelected() {

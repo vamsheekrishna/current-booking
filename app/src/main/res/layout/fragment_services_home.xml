@@ -81,7 +81,7 @@
                 <LinearLayout
                     android:id="@+id/current_booking_layout_field"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_weight="1"
                     android:background="@drawable/home_bg_rounded_corner_one"
                     android:gravity="center_vertical"
@@ -121,7 +121,7 @@
                 <LinearLayout
                     android:id="@+id/advance_booking_layout_field"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/advance_booking_rounded_corner_bg"
@@ -171,7 +171,7 @@
                 <LinearLayout
                     android:id="@+id/travel_pulse_layout_field"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_weight="1"
                     android:background="@drawable/travel_pulse_rounded_corner_bg"
                     android:gravity="center_vertical"
@@ -211,7 +211,7 @@
                 <LinearLayout
                     android:id="@+id/shopping_cart_layout_field"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/e_commerce_rounded_corner_bg"

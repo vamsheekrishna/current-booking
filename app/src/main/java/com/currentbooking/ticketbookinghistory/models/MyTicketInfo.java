@@ -68,6 +68,14 @@ public class MyTicketInfo implements Serializable {
     @Expose
     String serviceCharge;
 
+    @SerializedName("ticket_date")
+    @Expose
+    long ticket_date;
+
+    @SerializedName("end_date")
+    @Expose
+    long end_date;
+
     @SerializedName("passenger_details")
     @Expose
     ArrayList<PassengerDetailsModel> passengerDetailsList;
@@ -192,19 +200,19 @@ public class MyTicketInfo implements Serializable {
         this.no_con_seat = no_con_seat;
     }
 
-    public ArrayList<PassengerDetailsModel> getPassengerDetailsList() {
-        return passengerDetailsList;
-    }
+    public ArrayList<PassengerDetailsModel> getPassengerDetailsList() { return passengerDetailsList; }
 
-    public void setPassenger_detail(ArrayList<PassengerDetailsModel> passengerDetailsList) {
-        this.passengerDetailsList = passengerDetailsList;
-    }
+    public void setPassenger_detail(ArrayList<PassengerDetailsModel> passengerDetailsList) { this.passengerDetailsList = passengerDetailsList; }
 
-    public String getServiceCharge() {
-        return serviceCharge;
-    }
+    public String getServiceCharge() { return serviceCharge; }
 
-    public void setServiceCharge(String serviceCharge) {
-        this.serviceCharge = serviceCharge;
-    }
+    public void setServiceCharge(String serviceCharge) { this.serviceCharge = serviceCharge; }
+
+    public long getTicket_date() { return ticket_date; }
+
+    public void setTicket_date(long ticket_date) { this.ticket_date = ticket_date; }
+
+    public long getEnd_date() { return end_date; }
+
+    public void setEnd_date(long end_date) { this.end_date = end_date; }
 }
