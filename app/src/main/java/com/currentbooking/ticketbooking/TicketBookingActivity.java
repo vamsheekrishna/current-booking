@@ -51,14 +51,14 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     @Override
     public void gotoPayment(String passengerDetails, GetFareResponse.FareDetails fareDetails) {
-        replaceFragment(PaymentFragment.newInstance(passengerDetails, fareDetails), "PaymentFragment", true);
+        addFragment(PaymentFragment.newInstance(passengerDetails, fareDetails), "PaymentFragment", true);
         showBadge(false);
         showHamburgerIcon(false);
     }
 
     @Override
     public void gotoTicketStatus(String passengerDetails, CCAvenueResponse ccAvenueResponse) {
-        replaceFragment(TicketStatusFragment.newInstance(passengerDetails, ccAvenueResponse), "TicketStatusFragment", false);
+        addFragment(TicketStatusFragment.newInstance(passengerDetails, ccAvenueResponse), "TicketStatusFragment", false);
         showBadge(false);
         showHamburgerIcon(false);
     }
@@ -70,8 +70,8 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     }
 
     @Override
-    public void gotoBusStopSelect(int index) {
-        replaceFragment(BusPointFragment.newInstance(index, ""), "BusPointFragment", true);
+    public void gotoBusStopSelect(int index, double latitude, double longitude) {
+        replaceFragment(BusPointFragment.newInstance(index, latitude, longitude), "BusPointFragment", true);
         showBadge(false);
         showHamburgerIcon(false);
     }

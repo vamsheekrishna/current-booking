@@ -62,4 +62,13 @@ public interface LoginService {
                                               @Field("dob") String dob,
                                               @Field("image") String image,
                                               @Field("state") String state);
+
+    @POST(BuildConfig.RESEND_OTP)
+    @FormUrlEncoded
+    Call<ResendOTPResponse> resendMailOTP(@Field("email") String email);
+
+    @POST(BuildConfig.VALIDATE_OTP)
+    @FormUrlEncoded
+    Call<ValidateOTP> validateMailOTP(@Field("email") String email,
+                                  @Field("otp") String otp);
 }

@@ -139,6 +139,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                 showDialog("", data.getMsg(), pObject -> {
                                     if (data.getMsg().contains("verify")) {
                                         mListener.validateOTP();
+                                    } else if (data.getMsg().contains("mail_verify")) {
+                                        mListener.validateMailOTP();
                                     }
                                 });
                             }

@@ -37,41 +37,38 @@ import retrofit2.Response;
 
 public class BusPointFragment extends BaseFragment implements View.OnClickListener, MvvmView.View {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_INDEX = "SelectedIndex";
+    private static final String ARG_LATITUDE = "Latitude";
+    private static final String ARG_LONGITUDE = "Longitude";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private TicketBookingViewModel ticketBookingModule;
     BusStopAdapter busStopAdapter;
     private int mIndex;
-    private OnTicketBookingListener mListener;
+    private double latitude;
+    private double longitude;
 
     public BusPointFragment() {
         // Required empty public constructor
     }
 
-    public static BusPointFragment newInstance(int param1, String param2) {
+    public static BusPointFragment newInstance(int index, double latitude, double longitude) {
         BusPointFragment fragment = new BusPointFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_INDEX, index);
+        args.putDouble(ARG_LATITUDE, latitude);
+        args.putDouble(ARG_LONGITUDE, longitude);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mListener = (OnTicketBookingListener)context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mIndex = getArguments().getInt(ARG_PARAM1);
+            mIndex = getArguments().getInt(ARG_INDEX);
+            latitude = getArguments().getDouble(ARG_LATITUDE);
+            longitude = getArguments().getDouble(ARG_LONGITUDE);
         }
     }
 
@@ -85,7 +82,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle("Select Bus Stop");
+        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.select_bus_stop));
     }
 
     @Nullable
@@ -124,6 +121,37 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
                     busStopAdapter.getFilter().filter(newText);
                 }
                 return false;
+            }
+        });
+
+        getNearByBusStopsList();
+    }
+
+    private void getNearByBusStopsList() {
+        progressDialog.show();
+        TicketBookingServices ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        ticketService.getNearByStopsList(latitude, longitude).enqueue(new Callback<BusStopResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<BusStopResponse> call, @NotNull Response<BusStopResponse> response) {
+                if (response.isSuccessful()) {
+                    /*BusStopResponse body = response.body();
+                    if (body != null) {
+                        if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+                            ArrayList<BusStopObject> data = body.getBusStopList().getBusStopList();
+                            busStopAdapter.updateItems(data);
+                            busStopAdapter.notifyDataSetChanged();
+                        } else {
+                            String data = body.getMsg();
+                            showDialog("", data);
+                        }
+                    }*/
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<BusStopResponse> call, @NotNull Throwable t) {
+                progressDialog.dismiss();
             }
         });
     }

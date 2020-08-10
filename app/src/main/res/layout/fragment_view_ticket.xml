@@ -15,17 +15,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/header_text_view"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:background="@android:color/transparent"
-                android:paddingStart="0dp"
-                android:paddingEnd="0dp"
-                android:text="@string/bus_details"
-                android:textAllCaps="true" />
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/header_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toStartOf="@id/iv_refresh_icon_field"
+                    android:background="@android:color/transparent"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:text="@string/bus_details"
+                    android:textAllCaps="true" />
+
+                <ImageView
+                    android:id="@+id/iv_refresh_icon_field"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_refresh_icon" />
+
+            </RelativeLayout>
 
             <include layout="@layout/passenger_route_details_items" />
 
@@ -203,6 +222,7 @@
         android:id="@+id/qr_base_view"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content">
 
         <Button
@@ -213,6 +233,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/show_qr_code" />
+
         <Button
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
@@ -220,7 +241,6 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/scan_qr_code"
-            />
+            android:id="@+id/scan_qr_code" />
     </LinearLayout>
 </RelativeLayout>

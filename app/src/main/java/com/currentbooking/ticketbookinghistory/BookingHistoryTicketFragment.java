@@ -11,10 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.currentbooking.R;
 import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
+import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.RecyclerTouchListener;
@@ -40,9 +42,9 @@ import static com.currentbooking.utilits.views.BaseNavigationDrawerActivity.SHOW
  */
 public class BookingHistoryTicketFragment extends BaseFragment {
 
-    private boolean isShowAllRecords;
     private List<MyTicketInfo> ticketsHistoryList = new ArrayList<>();
     private RecyclerView liveTicketsListRecyclerField;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public BookingHistoryTicketFragment() {
         // Required empty public constructor
@@ -71,14 +73,6 @@ public class BookingHistoryTicketFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            isShowAllRecords = getArguments().getBoolean(SHOW_ALL_RECORDS);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_live_ticket, container, false);
@@ -99,7 +93,14 @@ public class BookingHistoryTicketFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
-        liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_fieid);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
+        swipeRefreshLayout.setProgressViewOffset(false, 300, 300);
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorPrimary,
+                R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(this::getHistoryTicketsList);
+        liveTicketsListRecyclerField = view.findViewById(R.id.live_ticket_bookings_list_field);
         liveTicketsListRecyclerField.setHasFixedSize(false);
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
@@ -124,31 +125,38 @@ public class BookingHistoryTicketFragment extends BaseFragment {
     }
 
     private void getHistoryTicketsList() {
+        swipeRefreshLayout.setRefreshing(true);
         ticketsHistoryList.clear();
         String id = MyProfile.getInstance().getUserId();
         TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         progressDialog.show();
-        service.getCurrentBookingTicket("", id).enqueue(new Callback<TodayTickets>() {
+        service.getCurrentBookingTicket("", id, "").enqueue(new Callback<TodayTickets>() {
             @Override
             public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                swipeRefreshLayout.setRefreshing(false);
                 TodayTickets todayTickets = response.body();
                 if (todayTickets != null) {
                     if (todayTickets.getStatus().equalsIgnoreCase("success")) {
                         ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
                         if (null != data && data.size() > 0) {
-                            ticketsHistoryList.addAll(data);
+                            for(MyTicketInfo myTicketInfo : data) {
+                                if(myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
+                                    ticketsHistoryList.add(myTicketInfo);
+                                }
+                            }
                         }
                     }
                 }
-                progressDialog.cancel();
+                progressDialog.dismiss();
                 setBookingHistoryAdapter();
             }
 
             @Override
             public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
                 // showDialog("onFailure", "" + t.getMessage());
                 LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
-                progressDialog.cancel();
+                progressDialog.dismiss();
             }
         });
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,14 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.interfaces.CallBackInterface;
+import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
 import com.currentbooking.ticketbookinghistory.adapters.PassengerDetailsAdapter;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.ticketbookinghistory.models.PassengerDetailsModel;
 import com.currentbooking.utilits.Constants;
+import com.currentbooking.utilits.DateUtilities;
+import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
+import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.cb_api.responses.UpdateTicketStatus;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -33,6 +38,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -43,6 +50,7 @@ import retrofit2.Response;
 
 import static com.currentbooking.ticketbookinghistory.GenerateQRCode.ETIM_PRE_FIX;
 import static com.currentbooking.utilits.Constants.KEY_APPROVED;
+import static com.currentbooking.utilits.DateUtilities.CALENDAR_DATE_FORMAT_THREE;
 
 public class ViewTicketFragment extends BaseFragment implements View.OnClickListener {
 
@@ -53,6 +61,15 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     private OnTicketBookingHistoryListener mListener;
     private LinearLayout qrBaseView;
     private TextView tvBookingStatusField;
+    private TextView tvBusRouteNameField;
+    private TextView tvBusRouteField;
+    private TextView tvJourneyStartTimeField;
+    private TextView tvJourneyEndTimeField;
+    private TextView tvJourneyHrsField;
+    private TextView tvTotalPersonsFareField;
+    private TextView tvServiceChargeOrGstField;
+    private TextView tvTotalUpdatedFareField;
+    private RecyclerView passengerListRecyclerField;
 
     public ViewTicketFragment() {
         // Required empty public constructor
@@ -96,19 +113,32 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     }
 
     private void loadUIComponents(View view) {
-        RecyclerView passengerListRecyclerField = view.findViewById(R.id.passenger_list_recycler_field);
+        passengerListRecyclerField = view.findViewById(R.id.passenger_list_recycler_field);
         passengerListRecyclerField.setHasFixedSize(false);
+
+        ImageView ivRefreshIconField = view.findViewById(R.id.iv_refresh_icon_field);
+        ivRefreshIconField.setOnClickListener(this);
 
         DividerItemDecoration divider = new DividerItemDecoration(Objects.requireNonNull(requireActivity()), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
                 R.drawable.recycler_decoration_divider)));
         passengerListRecyclerField.addItemDecoration(divider);
-        TextView tvBusRouteNameField = view.findViewById(R.id.tv_route_name_field);
-        TextView tvBusRouteField = view.findViewById(R.id.tv_bus_route_field);
-        TextView tvJourneyStartTimeField = view.findViewById(R.id.tv_bus_journey_start_time_field);
-        TextView tvJourneyEndTimeField = view.findViewById(R.id.tv_bus_journey_end_time_field);
-        TextView tvJourneyHrsField = view.findViewById(R.id.tv_bus_journey_hours_field);
+        tvBusRouteNameField = view.findViewById(R.id.tv_route_name_field);
+        tvBusRouteField = view.findViewById(R.id.tv_bus_route_field);
+        tvJourneyStartTimeField = view.findViewById(R.id.tv_bus_journey_start_time_field);
+        tvJourneyEndTimeField = view.findViewById(R.id.tv_bus_journey_end_time_field);
+        tvJourneyHrsField = view.findViewById(R.id.tv_bus_journey_hours_field);
 
+        tvTotalPersonsFareField = view.findViewById(R.id.tv_total_persons_bus_fare_price_field);
+
+        tvServiceChargeOrGstField = view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field);
+        tvTotalUpdatedFareField = view.findViewById(R.id.tv_total_persons_total_fare_field);
+        tvBookingStatusField = view.findViewById(R.id.tv_booking_status_field);
+
+        updateViewTicketsUI();
+    }
+
+    private void updateViewTicketsUI() {
         String busRouteName = String.format("%s %s", busTicketDetails.getOperator_name().toUpperCase(), busTicketDetails.getBus_service_no());
         String ticketNo = String.format("%s %s", getString(R.string.ticket_number), busTicketDetails.getTicket_no());
         String busRouteAndTicketNo = String.format("%s\n%s", busRouteName, ticketNo);
@@ -126,10 +156,6 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         PassengerDetailsAdapter passengerDetailsAdapter = new PassengerDetailsAdapter(requireActivity(), passengerDetailsList);
         passengerListRecyclerField.setAdapter(passengerDetailsAdapter);
 
-        TextView tvTotalPersonsFareField = view.findViewById(R.id.tv_total_persons_bus_fare_price_field);
-
-        TextView tvServiceChargeOrGstField = view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field);
-        TextView tvTotalUpdatedFareField = view.findViewById(R.id.tv_total_persons_total_fare_field);
         tvTotalUpdatedFareField.setText(busTicketDetails.getTotal());
 
         double totalFare = Utils.getDoubleValueFromString(busTicketDetails.getTotal());
@@ -138,7 +164,6 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         tvServiceChargeOrGstField.setText(busTicketDetails.getServiceCharge());
         tvTotalPersonsFareField.setText(String.format(Locale.getDefault(), "%.2f", actualFare));
 
-        tvBookingStatusField = view.findViewById(R.id.tv_booking_status_field);
         String ticketStatus = busTicketDetails.getTicket_status();
         updateTicketStatus(ticketStatus);
     }
@@ -163,11 +188,42 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     public void onClick(View view) {
         if(view.getId() == R.id.scan_qr_code) {
             IntentIntegrator.forSupportFragment(ViewTicketFragment.this).initiateScan();
+        } else if(view.getId() == R.id.iv_refresh_icon_field) {
+            refreshTicketSelected();
         } else {
             mListener.generateQRCode(busTicketDetails);
         }
     }
 
+    private void refreshTicketSelected() {
+        String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+        String id = MyProfile.getInstance().getUserId();
+        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        progressDialog.show();
+        service.getCurrentBookingTicket(date, id, busTicketDetails.getTicket_no()).enqueue(new Callback<TodayTickets>() {
+            @Override
+            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                TodayTickets todayTickets = response.body();
+                if (todayTickets != null) {
+                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                        ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                        if (null != data && data.size() > 0) {
+                            busTicketDetails = data.get(0);
+                            updateViewTicketsUI();
+                        }
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                // showDialog("onFailure", "" + t.getMessage());
+                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
