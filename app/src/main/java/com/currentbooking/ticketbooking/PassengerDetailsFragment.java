@@ -176,7 +176,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
         String fareAmount = String.format("Rs. %s", busDetails.getFareAmt());
         ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(fareAmount);
 
-
+        addPassengerSelected();
         addPassengerBtnField = view.findViewById(R.id.add_passenger_btn_field);
         addPassengerBtnField.setOnClickListener(v -> addPassengerSelected());
 

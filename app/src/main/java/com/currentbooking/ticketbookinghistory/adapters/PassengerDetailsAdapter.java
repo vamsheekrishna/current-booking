@@ -49,7 +49,7 @@ public class PassengerDetailsAdapter extends RecyclerView.Adapter<PassengerDetai
         if (TextUtils.isEmpty(concession)) {
             concession = "";
         }
-       //shweta holder.tvConcessionNameField.setText(concession);
+       holder.tvConcessionNameField.setText(concession);
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,6 +101,10 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         RecyclerView resultsListField = view.findViewById(R.id.search_results_field);
         resultsListField.setHasFixedSize(false);
         busStopAdapter = new BusStopAdapter(requireActivity(), new ArrayList<>(), this);
+
+        searchView.setFocusable(true);
+        searchView.setIconified(false);
+        searchView.requestFocusFromTouch();
         resultsListField.setAdapter(busStopAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -112,10 +117,10 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() < 3) {
+                if (newText.length() < 1) {
                     busStopAdapter.updateItems(new ArrayList<>());
                     busStopAdapter.notifyDataSetChanged();
-                } else if (newText.length() == 3) {
+                } else if (newText.length() == 1) {
                     getBusStopList(newText);
                 } else {
                     busStopAdapter.getFilter().filter(newText);

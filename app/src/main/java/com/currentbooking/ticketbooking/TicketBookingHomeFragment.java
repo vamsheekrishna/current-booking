@@ -210,6 +210,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
 
         selectTransport = view.findViewById(R.id.select_transport);
+        selectTransport.setFocusable(true);
+
         selectTransport.setOnClickListener(this);
 
         selectBusType = view.findViewById(R.id.select_bus_type);
