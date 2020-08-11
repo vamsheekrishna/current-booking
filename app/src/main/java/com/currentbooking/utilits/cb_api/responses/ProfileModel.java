@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class ProfileModel {
-    @SerializedName("User id")
+    @SerializedName("User_id")
     @Expose
     String UserID;
 
