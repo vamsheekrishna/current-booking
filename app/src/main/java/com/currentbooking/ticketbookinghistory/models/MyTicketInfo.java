@@ -70,11 +70,11 @@ public class MyTicketInfo implements Serializable {
 
     @SerializedName("ticket_date")
     @Expose
-    long ticket_date;
+    String ticket_date;
 
     @SerializedName("end_date")
     @Expose
-    long end_date;
+    String end_date;
 
     @SerializedName("passenger_details")
     @Expose
@@ -208,11 +208,11 @@ public class MyTicketInfo implements Serializable {
 
     public void setServiceCharge(String serviceCharge) { this.serviceCharge = serviceCharge; }
 
-    public long getTicket_date() { return ticket_date; }
+    public String getTicket_date() { return ticket_date; }
 
-    public void setTicket_date(long ticket_date) { this.ticket_date = ticket_date; }
+    public void setTicket_date(String ticket_date) { this.ticket_date = ticket_date; }
 
-    public long getEnd_date() { return end_date; }
+    public String getEnd_date() { return end_date; }
 
-    public void setEnd_date(long end_date) { this.end_date = end_date; }
+    public void setEnd_date(String end_date) { this.end_date = end_date; }
 }

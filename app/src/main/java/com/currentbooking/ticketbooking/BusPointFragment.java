@@ -120,7 +120,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
                 if (newText.length() < 1) {
                     busStopAdapter.updateItems(new ArrayList<>());
                     busStopAdapter.notifyDataSetChanged();
-                } else if (newText.length() == 1) {
+                } else if (newText.length() == 3) {
                     getBusStopList(newText);
                 } else {
                     busStopAdapter.getFilter().filter(newText);
