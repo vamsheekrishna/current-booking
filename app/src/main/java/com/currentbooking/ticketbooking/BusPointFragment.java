@@ -165,7 +165,13 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         progressDialog.show();
         String operatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
         TicketBookingServices ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        ticketService.getBusStopList(operatorName, stopPrefix).enqueue(new Callback<BusStopResponse>() {
+        String requestType = "";
+        if(mIndex == 2) {
+            requestType = "fromstop";
+        } else {
+            requestType = "tostop";
+        }
+        ticketService.getBusStopList(operatorName, stopPrefix, requestType).enqueue(new Callback<BusStopResponse>() {
             @Override
             public void onResponse(@NotNull Call<BusStopResponse> call, @NotNull Response<BusStopResponse> response) {
                 if (response.isSuccessful()) {

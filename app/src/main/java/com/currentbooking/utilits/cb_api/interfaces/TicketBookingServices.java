@@ -45,7 +45,8 @@ public interface TicketBookingServices {
     @POST(BuildConfig.AVAILABLE_BUS_STOPS)
     @FormUrlEncoded
     Call<BusStopResponse> getBusStopList(@Field("operator") String operator,
-                                         @Field("stopname") String stopname);
+                                         @Field("stopname") String stopname,
+                                         @Field("field") String requestType);
 
     @POST(BuildConfig.CONCESSION_LIST)
     @FormUrlEncoded

@@ -222,7 +222,7 @@
         android:id="@+id/qr_base_view"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_height="wrap_content">
 
         <Button
