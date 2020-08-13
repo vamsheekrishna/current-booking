@@ -3,6 +3,7 @@ package com.currentbooking.ticketbooking.viewmodels;
 import android.app.Dialog;
 import android.content.Context;
 
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -55,11 +56,13 @@ public class TicketBookingViewModel extends ViewModel {
     private MutableLiveData<ArrayList<ConcessionRates>> concessionRates = new MutableLiveData<>();
     private Dialog loadingDialog;
     private MvvmView.View mvvmView;
+    public ObservableField<String>  searchHintField;
 
 
     public TicketBookingViewModel(MvvmView.View mvvmView) {
         this.mvvmView = mvvmView;
         ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        searchHintField = new ObservableField<>("");
         getBusOperators();
     }
 

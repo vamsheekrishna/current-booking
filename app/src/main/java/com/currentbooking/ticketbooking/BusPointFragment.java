@@ -102,6 +102,12 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         resultsListField.setHasFixedSize(false);
         busStopAdapter = new BusStopAdapter(requireActivity(), new ArrayList<>(), this);
 
+        if(mIndex == 2) {
+            searchView.setQueryHint(getString(R.string.select_pick_up_point));
+        } else if(mIndex == 3) {
+            searchView.setQueryHint(getString(R.string.select_drop_point));
+        }
+
         searchView.setFocusable(true);
         searchView.setIconified(false);
         searchView.requestFocusFromTouch();

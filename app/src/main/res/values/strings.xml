@@ -163,5 +163,6 @@
     <string name="un_used">Un Used</string>
     <string name="validate_mail">Validate Mail</string>
     <string name="ticket_expire_message">This ticket will expired in 3 hrs and  refund will be provided in next 2 working days</string>
+    <string name="select_pick_up_point">Select Pick up Point</string>
 
 </resources>

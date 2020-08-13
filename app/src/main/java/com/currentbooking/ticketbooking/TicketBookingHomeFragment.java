@@ -1,8 +1,8 @@
 package com.currentbooking.ticketbooking;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -142,17 +142,10 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
     private void onGPS() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", (dialog, which) -> {
+            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 100);
+            //
+        }).setNegativeButton("No", (dialog, which) -> dialog.cancel());
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }

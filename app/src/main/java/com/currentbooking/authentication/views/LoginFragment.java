@@ -1,8 +1,12 @@
 package com.currentbooking.authentication.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
@@ -87,6 +92,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         //mobileNoField.setText("8888888888");
         //password.setText("12345678");
 
+        LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            onGPS();
+        }
+
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 LoggerInfo.errorLog("getInstanceId failed", Objects.requireNonNull(task.getException()).getMessage());
@@ -95,6 +105,14 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             deviceKey = Objects.requireNonNull(task.getResult()).getToken();
         });
         // encryptionSample();
+    }
+
+    private void onGPS() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))).setNegativeButton("No", (dialog, which) -> dialog.cancel());
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 
     @SuppressLint("HardwareIds")

@@ -26,7 +26,7 @@ android {
         staging {
             dimension "version"
             applicationId "com.currentbooking.ticketbooking"
-            resValue "string", "app_name", "Current Booking"
+            resValue "string", "app_name", "Mobile Ticketing"
 
             buildConfigField("String", "AUTH_USERNAME", '"api_test_dH6jJy6QX3gtju"')
             buildConfigField("String", "AUTH_PASSWORD", '"eIPKbtPrpsOhjuykdgbioeNWq"')
@@ -56,7 +56,7 @@ android {
         prod {
             dimension "version"
             applicationIdSuffix ".prod"
-            resValue "string", "app_name", "Current Booking"
+            resValue "string", "app_name", "Mobile Ticketing"
 
             buildConfigField("String", "AUTH_USERNAME", '"api_test_dH6jJy6QX3gtju"')
             buildConfigField("String", "AUTH_PASSWORD", '"eIPKbtPrpsOhjuykdgbioeNWq"')
