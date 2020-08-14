@@ -15,20 +15,20 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            addFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", false);
+            addFragment(TicketBookingHomeFragment.newInstance(), "TicketBookingHomeFragment", false);
         }
     }
 
     @Override
     public void goToHome() {
-        replaceFragment(TicketBookingHomeFragment.newInstance("", ""), "TicketBookingHomeFragment", true);
+        replaceFragment(TicketBookingHomeFragment.newInstance(), "TicketBookingHomeFragment", true);
         showBadge(true);
         showHamburgerIcon(true);
     }
 
     @Override
     public void gotoSelectBus(String busOperatorName, String busType) {
-        replaceFragment(SelectBusesFragment.newInstance(busOperatorName, busType), "SelectBusFragment", true);
+        addFragment(SelectBusesFragment.newInstance(busOperatorName, busType), "SelectBusFragment", true);
 
         showBadge(false);
         showHamburgerIcon(false);
@@ -44,7 +44,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     @Override
     public void gotoPassengerDetails(String busType) {
-        replaceFragment(PassengerDetailsFragment.newInstance(busType), "PassengerDetailsFragment", true);
+        addFragment(PassengerDetailsFragment.newInstance(busType), "PassengerDetailsFragment", true);
         showBadge(false);
         showHamburgerIcon(false);
     }
@@ -71,7 +71,7 @@ public class TicketBookingActivity extends BaseNavigationDrawerActivity implemen
 
     @Override
     public void gotoBusStopSelect(int index, double latitude, double longitude) {
-        replaceFragment(BusPointFragment.newInstance(index, latitude, longitude), "BusPointFragment", true);
+        addFragment(BusPointFragment.newInstance(index, latitude, longitude), "BusPointFragment", true);
         showBadge(false);
         showHamburgerIcon(false);
     }

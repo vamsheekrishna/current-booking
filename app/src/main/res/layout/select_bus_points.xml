@@ -2,29 +2,81 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/text_view"
-        android:layout_margin="0dp"
-        android:layout_alignParentTop="true"
-        android:id="@+id/pick_up"
-        android:drawableStart="@drawable/pickup_location"
-        android:hint="@string/pickup_point" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/drop_point"
-        style="@style/text_view"
-        android:layout_margin="0dp"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/pick_up"
-        android:drawableStart="@drawable/pickup_location"
-        android:hint="@string/drop_off_point" />
+    <RelativeLayout
+        android:id="@+id/pick_up_layout_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_round_edges"
+        android:minHeight="40dp">
+
+        <ImageView
+            android:id="@+id/iv_user_thumb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/pickup_location" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/pick_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/iv_user_thumb"
+            android:fontFamily="@font/opensans_regular"
+            android:gravity="center_vertical"
+            android:hint="@string/pickup_point"
+            android:maxLines="1"
+            android:minHeight="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="@dimen/edit_text_size" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/drop_point_layout_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pick_up_layout_field"
+        android:background="@drawable/edit_text_round_edges"
+        android:minHeight="40dp">
+
+        <ImageView
+            android:id="@+id/iv_drop_point_thumb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/pickup_location" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/drop_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/iv_drop_point_thumb"
+            android:fontFamily="@font/opensans_regular"
+            android:gravity="center_vertical"
+            android:hint="@string/drop_off_point"
+            android:maxLines="1"
+            android:minHeight="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="@dimen/edit_text_size" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/swipe_points"
         android:layout_marginTop="-20dp"
         android:layout_marginEnd="24dp"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/pick_up"
+        android:layout_below="@+id/pick_up_layout_field"
         android:padding="8dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/reverse"

@@ -1,7 +1,7 @@
 package com.currentbooking.ticketbooking.viewmodels;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
@@ -22,13 +22,11 @@ import com.currentbooking.utilits.cb_api.responses.BusTypeList;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRates;
-import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
 import com.currentbooking.utilits.views.CustomLoadingDialog;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,10 +46,10 @@ public class TicketBookingViewModel extends ViewModel {
     private MutableLiveData<BusStopObject> selectedDropPoint = new MutableLiveData<>();
 
     private MutableLiveData<BusObject> selectedBusObject = new MutableLiveData<>();
-    private MutableLiveData<BusOperator> selectedBusOperator;
+    private MutableLiveData<BusOperator> selectedBusOperator = new MutableLiveData<>();
 
     private MutableLiveData<Concession> selectedConcession = new MutableLiveData<>();
-    private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
+    //private MutableLiveData<ConcessionRates> selectedConcessionRate = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Concession>> concessionList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ConcessionRates>> concessionRates = new MutableLiveData<>();
     private Dialog loadingDialog;
@@ -95,7 +93,7 @@ public class TicketBookingViewModel extends ViewModel {
     }
 
     public MutableLiveData<BusOperator> getSelectedBusOperator() {
-        if(null == selectedBusOperator){
+        if (selectedBusOperator == null) {
             selectedBusOperator = new MutableLiveData<>();
         }
         return selectedBusOperator;
@@ -135,32 +133,37 @@ public class TicketBookingViewModel extends ViewModel {
 
     public void loadBusTypes() {
         if (selectedBusOperator != null) {
-            loadingDialog.show();
-            String operator = Objects.requireNonNull(selectedBusOperator.getValue()).getOperatorCode().toLowerCase();
-            ticketBookingServices.getBusTypes(operator).enqueue(new Callback<BusTypeList>() {
-                @Override
-                public void onResponse(@NotNull Call<BusTypeList> call, @NotNull Response<BusTypeList> response) {
-                    loadingDialog.dismiss();
-                    if (response.isSuccessful()) {
-                        BusTypeList data = response.body();
-                        if (data != null) {
-                            if (data.getStatus().equals("success")) {
-                                if (null != data.getBusTypes().getBusTypes()) {
-                                    busTypes.setValue(data.getBusTypes().getBusTypes());
+            BusOperator busOperator = selectedBusOperator.getValue();
+            if (busOperator != null) {
+                String operatorCode = busOperator.getOperatorCode();
+                if (!TextUtils.isEmpty(operatorCode)) {
+                    loadingDialog.show();
+                    ticketBookingServices.getBusTypes(operatorCode.toLowerCase()).enqueue(new Callback<BusTypeList>() {
+                        @Override
+                        public void onResponse(@NotNull Call<BusTypeList> call, @NotNull Response<BusTypeList> response) {
+                            loadingDialog.dismiss();
+                            if (response.isSuccessful()) {
+                                BusTypeList data = response.body();
+                                if (data != null) {
+                                    if (data.getStatus().equals("success")) {
+                                        if (null != data.getBusTypes().getBusTypes()) {
+                                            busTypes.setValue(data.getBusTypes().getBusTypes());
+                                        }
+                                    } else {
+                                        busTypes.setValue(new ArrayList<>());
+                                    }
                                 }
-                            } else {
-                                busTypes.setValue(new ArrayList<>());
                             }
                         }
-                    }
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<BusTypeList> call, @NotNull Throwable t) {
-                    loadingDialog.dismiss();
-                    busTypes.setValue(new ArrayList<>());
+                        @Override
+                        public void onFailure(@NotNull Call<BusTypeList> call, @NotNull Throwable t) {
+                            loadingDialog.dismiss();
+                            busTypes.setValue(new ArrayList<>());
+                        }
+                    });
                 }
-            });
+            }
         }
 
     }
@@ -175,9 +178,13 @@ public class TicketBookingViewModel extends ViewModel {
     public void onBusOperatorChanged() {
         resetBusType();
         resetBusPointData();
-        getConcession(Objects.requireNonNull(selectedBusOperator.getValue()).getOperatorCode());
-        getConcessionRate();
-        loadBusTypes();
+        BusOperator busOperator = selectedBusOperator.getValue();
+        if (busOperator != null) {
+            String operatorCode = busOperator.getOperatorCode();
+            if (!TextUtils.isEmpty(operatorCode)) {
+                getConcession(operatorCode);
+            }
+        }
     }
 
     public MutableLiveData<ArrayList<Concession>>  getConcessionLiveData() {
@@ -190,29 +197,35 @@ public class TicketBookingViewModel extends ViewModel {
     public void getConcession(String selectedOperator) {
         ticketBookingServices.getConcessionList(selectedOperator).enqueue(new Callback<ConcessionListResponse>() {
             @Override
-            public void onResponse(Call<ConcessionListResponse> call, Response<ConcessionListResponse> response) {
-                if(response.isSuccessful()) {
-                    assert response.body() != null;
-                    if(response.body().getStatus().equalsIgnoreCase("success")) {
-                        ArrayList<Concession> data = response.body().getConcessionList().getConcessions();
-                        concessionList.setValue(data);
-                    } else {
-                        ArrayList<Concession> data = new ArrayList<>();
-                        concessionList.setValue(data);
+            public void onResponse(@NotNull Call<ConcessionListResponse> call, @NotNull Response<ConcessionListResponse> response) {
+                if (response.isSuccessful()) {
+                    ConcessionListResponse concessionListResponse = response.body();
+                    if (concessionListResponse != null) {
+                        if (concessionListResponse.getStatus().equalsIgnoreCase("success")) {
+                            ArrayList<Concession> data = concessionListResponse.getConcessionList().getConcessions();
+                            concessionList.setValue(data);
+                        } else {
+                            ArrayList<Concession> data = new ArrayList<>();
+                            concessionList.setValue(data);
+                        }
                     }
+
                     selectedConcession.setValue(new Concession());
                 }
+                loadBusTypes();
             }
 
             @Override
-            public void onFailure(Call<ConcessionListResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<ConcessionListResponse> call, @NotNull Throwable t) {
                 ArrayList<Concession> data = new ArrayList<>();
                 concessionList.setValue(data);
                 selectedConcession.setValue(new Concession());
+                loadBusTypes();
             }
         });
     }
-    private void getConcessionRate() {
+
+   /* private void getConcessionRate() {
         ticketBookingServices.getConcessionRatesList(selectedBusOperator.getValue().getOperatorCode()).enqueue(new Callback<ConcessionRatesListResponse>() {
             @Override
             public void onResponse(Call<ConcessionRatesListResponse> call, Response<ConcessionRatesListResponse> response) {
@@ -231,18 +244,22 @@ public class TicketBookingViewModel extends ViewModel {
 
             }
         });
-    }
+    }*/
+
     public void onConcessionSelected(Concession concession) {
         selectedConcession.setValue(concession);
     }
-    public void onConcessionRateSelected(ConcessionRates concessionRates) {
+
+    /*public void onConcessionRateSelected(ConcessionRates concessionRates) {
         selectedConcessionRate.setValue(concessionRates);
     }
+
     public void onBusTypeSelected() {
         resetBusType();
         resetBusPointData();
         // loadBusPoints();
-    }
+    }*/
+
     public void resetBusType() {
         busTypes.setValue(new ArrayList<>());
         selectBusType.setValue(new BusType());

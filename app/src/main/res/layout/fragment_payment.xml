@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="#EBEBEB"
+    android:background="@color/background_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ticketbooking.ConfirmTicketFragment">
@@ -11,21 +11,5 @@
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <!--<LinearLayout
-        android:layout_alignParentTop="true"
-        android:id="@+id/body"
-        android:orientation="horizontal"
-        android:layout_above="@+id/conform"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </LinearLayout>-->
-
-    <!--<com.google.android.material.button.MaterialButton
-        android:layout_alignParentBottom="true"
-        android:id="@+id/conform"
-        android:layout_margin="16dp"
-        android:text="@string/confirm_payment"
-        style="@style/button_gray"/>-->
 
 </RelativeLayout>

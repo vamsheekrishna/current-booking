@@ -1,7 +1,6 @@
 package com.currentbooking.ticketbooking;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +15,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.AdapterView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,12 +27,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
+import com.currentbooking.ticketbooking.adapters.CustomSpinnerAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.MyLocation;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.MyViewModelFactory;
+import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
+import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -42,13 +47,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener, MvvmView.View {
 
     // RecyclerView recyclerView;
     private OnTicketBookingListener mListener;
-    private TextView selectTransport, pickUp, dropPoint, selectBusType;
+    private TextView pickUp, dropPoint;
     private TicketBookingViewModel ticketBookingModule;
     private View bus_point;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -57,6 +66,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private double latitude = 0.0;
     private double longitude = 0.0;
     private LocationManager locationManager;
+    private BusOperator selectedOperatorDetails;
+    private BusType selectedBusTypeDetails;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -75,7 +86,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         mListener = (OnTicketBookingListener) context;
     }
 
-    public static TicketBookingHomeFragment newInstance(String param1, String param2) {
+    public static TicketBookingHomeFragment newInstance() {
         return new TicketBookingHomeFragment();
     }
 
@@ -100,7 +111,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
@@ -112,9 +123,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
     private void fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
-                getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
             return;
         }
 
@@ -142,10 +153,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
     private void onGPS() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", (dialog, which) -> {
-            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 100);
-            //
-        }).setNegativeButton("No", (dialog, which) -> dialog.cancel());
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))).setNegativeButton("No", (dialog, which) -> dialog.cancel());
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -197,56 +205,101 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
             mapFragment.getMapAsync(callback);
             fetchLocation();
         }
-        //ticketBookingModule = new ViewModelProvider(requireActivity(), getDefaultViewModelProviderFactory()).get(TicketBookingViewModel.class);
-        //ticketBookingModule = ViewModelProviders.of(this, new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
         view.findViewById(R.id.swipe_points).setOnClickListener(this);
 
-        selectTransport = view.findViewById(R.id.select_transport);
-        selectTransport.setFocusable(true);
+        Spinner selectTransportSpinnerField = view.findViewById(R.id.select_transport_spinner);
+        Spinner selectBusTypeSpinnerField = view.findViewById(R.id.select_bus_type_spinner);
 
-        selectTransport.setOnClickListener(this);
-
-        selectBusType = view.findViewById(R.id.select_bus_type);
-        selectBusType.setOnClickListener(this);
-        selectBusType.setVisibility(View.GONE);
+        RelativeLayout selectBusTypeLayoutField = view.findViewById(R.id.select_bus_type_layout_field);
+        selectBusTypeLayoutField.setVisibility(View.GONE);
         bus_point = view.findViewById(R.id.bus_point);
         bus_point.setVisibility(View.GONE);
 
         pickUp = view.findViewById(R.id.pick_up);
-        pickUp.setOnClickListener(this);
+        view.findViewById(R.id.pick_up_layout_field).setOnClickListener(this);
+        view.findViewById(R.id.drop_point_layout_field).setOnClickListener(this);
 
         dropPoint = view.findViewById(R.id.drop_point);
-        dropPoint.setOnClickListener(this);
         view.findViewById(R.id.select_bus).setOnClickListener(this);
         ticketBookingModule.getBusTypes().observe(getActivity(), busTypes -> {
-            /*if( null == busTypes || busTypes.isEmpty()) {
-                bus_point.setVisibility(View.GONE);
-            }*/
+
         });
 
         ticketBookingModule.getSelectedPickUpPoint().observe(getActivity(), busPoint -> {
             pickUp.setText(busPoint.getStopName());
         });
 
-        ticketBookingModule.getSelectedDropPoint().observe(getActivity(),          busPoint -> {
+        ticketBookingModule.getSelectedDropPoint().observe(getActivity(), busPoint -> {
             String stopName = busPoint.getStopName();
-            if(!TextUtils.isEmpty(stopName)) {
+            if (!TextUtils.isEmpty(stopName)) {
                 dropPoint.setText(stopName);
-                selectBusType.setVisibility(View.VISIBLE);
+                selectBusTypeLayoutField.setVisibility(View.VISIBLE);
             }
         });
 
-        ticketBookingModule.getSelectedBusOperator().observe(getActivity(), busOperator -> {
-            if(null != busOperator) {
-                selectTransport.setText(busOperator.getOpertorName());
-                bus_point.setVisibility(View.VISIBLE);
+        ticketBookingModule.getBusOperators().observe(requireActivity(), busOperators -> {
+            if (busOperators != null && !busOperators.isEmpty()) {
+                List<Object> busOperatorList = new ArrayList<>();
+                busOperatorList.add(getString(R.string.select_transport));
+                busOperatorList.addAll(busOperators);
+                CustomSpinnerAdapter busOperatorsSpinnerAdapter = new CustomSpinnerAdapter(requireActivity(), busOperatorList);
+                selectTransportSpinnerField.setAdapter(busOperatorsSpinnerAdapter);
+            }
+        });
+
+
+        selectTransportSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Object lSelectedObject = selectTransportSpinnerField.getSelectedItem();
+                selectedOperatorDetails = null;
+                bus_point.setVisibility(View.GONE);
+                if (lSelectedObject instanceof BusOperator) {
+                    ticketBookingModule.onBusOperatorChanged();
+                    selectedOperatorDetails = (BusOperator) lSelectedObject;
+                    bus_point.setVisibility(View.VISIBLE);
+                    ticketBookingModule.getSelectedBusOperator().setValue(selectedOperatorDetails);
+                    ticketBookingModule.loadBusTypes();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        ticketBookingModule.getBusTypes().observe(getActivity(), busTypes -> {
+            if (busTypes != null && !busTypes.isEmpty()) {
+                List<Object> busTypesList = new ArrayList<>();
+                busTypesList.add(getString(R.string.select_bus_type));
+                busTypesList.addAll(busTypes);
+                CustomSpinnerAdapter busTypesSpinnerAdapter = new CustomSpinnerAdapter(requireActivity(), busTypesList);
+                selectBusTypeSpinnerField.setAdapter(busTypesSpinnerAdapter);
+            }
+        });
+
+        selectBusTypeSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Object lSelectedObject = selectBusTypeSpinnerField.getSelectedItem();
+                selectedBusTypeDetails = null;
+                if (lSelectedObject instanceof BusType) {
+                    selectedBusTypeDetails = (BusType) lSelectedObject;
+                    ticketBookingModule.getSelectedBusType().setValue(selectedBusTypeDetails);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
         ticketBookingModule.getSelectedBusType().observe(getActivity(), busType -> {
-            if(null != busType && null != busType.getBusTypeName() && busType.getBusTypeName().length()>0) {
-                selectBusType.setText(busType.getBusTypeName());
+            if (null != busType && null != busType.getBusTypeName() && busType.getBusTypeName().length() > 0) {
+                //selectBusType.setText(busType.getBusTypeName());
             }
         });
     }
@@ -269,7 +322,6 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                     public void onAnimationEnd(Animation animation) {
                         BusStopObject pickupPointDetails = ticketBookingModule.getSelectedPickUpPoint().getValue();
                         BusStopObject dropPointDetails = ticketBookingModule.getSelectedDropPoint().getValue();
-                        //ticketBookingModule.getSelectedPickUpPoint().setValue(ticketBookingModule.getSelectedDropPoint().getValue());
                         ticketBookingModule.getSelectedDropPoint().setValue(pickupPointDetails);
                         ticketBookingModule.getSelectedPickUpPoint().setValue(dropPointDetails);
 
@@ -293,25 +345,25 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 });
                 v.startAnimation(rotate);
                 break;
-            case R.id.select_transport:
+          /*  case R.id.select_transport:
                 mListener.gotoOptionSelection(0, getString(R.string.select_transport));
-                break;
-            case R.id.select_bus_type:
+                break;*/
+            /*case R.id.select_bus_type:
                 mListener.gotoOptionSelection(1, getString(R.string.select_bus_type));
-                break;
-            case R.id.pick_up:
+                break;*/
+            case R.id.pick_up_layout_field:
                 mListener.gotoBusStopSelect(2, latitude, longitude);
                 break;
-            case R.id.drop_point:
+            case R.id.drop_point_layout_field:
                 mListener.gotoBusStopSelect(3, latitude, longitude);
                 break;
             case R.id.select_bus:
-                if(ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length()>1 &&
-                        Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()!= null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length()>1) {
+                if (ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length() > 1 &&
+                        Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode() != null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length() > 1) {
                     String pickupPointStopCode = ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode();
                     String dropPointStopCode = ticketBookingModule.getSelectedDropPoint().getValue().getStopCode();
                     if(!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
-                        mListener.gotoSelectBus(selectTransport.getText().toString(), selectBusType.getText().toString());
+                        mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), selectedBusTypeDetails.getBusTypeCD());
                     } else {
                         showDialog("", "Pickup Point and Drop Point should not be Same.");
                     }

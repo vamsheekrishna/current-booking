@@ -16,21 +16,28 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/user_id"
-                android:drawableStart="@drawable/user_thumb"
                 android:hint="@string/mobile_number"
                 android:maxLength="10"
                 android:inputType="numberSigned"
                 style="@style/edit_text"
-                android:drawableLeft="@drawable/user_thumb" />
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:drawableStart="@drawable/user_thumb">
+
+                <requestFocus />
+            </androidx.appcompat.widget.AppCompatEditText>
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/password"
                 android:inputType="textPassword"
-                android:drawableLeft="@drawable/lock_thumb"
+                style="@style/edit_text"
                 android:hint="@string/password"
                 android:maxLength="8"
-                style="@style/edit_text"/>
+                android:drawableStart="@drawable/lock_thumb" />
+
         </LinearLayout>
     </ScrollView>
     <com.google.android.material.button.MaterialButton

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.cb_api.responses.BusOperator;
+import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 
 import java.util.List;
@@ -64,6 +66,12 @@ public class CustomSpinnerAdapter extends BaseAdapter {
         } else if (dataObject instanceof Concession) {
             Concession concessionDetails = (Concession) dataObject;
             viewHolderItem.textView.setText(concessionDetails.getConcessionNM());
+        } else if (dataObject instanceof BusOperator) {
+            BusOperator busOperatorDetails = (BusOperator) dataObject;
+            viewHolderItem.textView.setText(busOperatorDetails.getOpertorName());
+        } else if (dataObject instanceof BusType) {
+            BusType busTypeDetails = (BusType) dataObject;
+            viewHolderItem.textView.setText(busTypeDetails.getBusTypeName());
         }
         return convertView;
     }
