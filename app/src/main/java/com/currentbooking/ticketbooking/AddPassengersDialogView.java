@@ -1,11 +1,14 @@
 package com.currentbooking.ticketbooking;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -28,6 +31,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -86,6 +90,7 @@ public class AddPassengersDialogView extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
+
     }
 
     private void loadUIComponents(View view) {
@@ -95,7 +100,7 @@ public class AddPassengersDialogView extends DialogFragment {
         numberPickerField.setMaxValue(59);
         Spinner personTypesSpinnerField = view.findViewById(R.id.person_type_spinner_field);
         tvConcessionTypeField = view.findViewById(R.id.tv_concession_type_field);
-
+        ShowSoftKeyboard();
         String[] personTypesItems = getResources().getStringArray(R.array.person_types_items);
         personsTypeList.addAll(Arrays.asList(personTypesItems));
 
@@ -193,4 +198,9 @@ public class AddPassengersDialogView extends DialogFragment {
             dialog.dismiss();
         }
     }
+    public void ShowSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
 }

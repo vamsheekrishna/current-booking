@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -89,6 +91,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         mobileNoField = view.findViewById(R.id.user_id);
         password = view.findViewById(R.id.password);
+        mobileNoField.requestFocus();
+        showSoftKeyboard(mobileNoField);
+
         //mobileNoField.setText("8888888888");
         //password.setText("12345678");
 
@@ -173,6 +178,13 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     progressDialog.dismiss();
                 }
             });
+        }
+    }
+    public void showSoftKeyboard(View view) {
+        if(view.requestFocus()){
+            InputMethodManager imm =(InputMethodManager)
+                    getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
         }
     }
 }
