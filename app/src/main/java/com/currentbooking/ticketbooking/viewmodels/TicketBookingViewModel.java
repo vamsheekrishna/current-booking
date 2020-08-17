@@ -225,41 +225,6 @@ public class TicketBookingViewModel extends ViewModel {
         });
     }
 
-   /* private void getConcessionRate() {
-        ticketBookingServices.getConcessionRatesList(selectedBusOperator.getValue().getOperatorCode()).enqueue(new Callback<ConcessionRatesListResponse>() {
-            @Override
-            public void onResponse(Call<ConcessionRatesListResponse> call, Response<ConcessionRatesListResponse> response) {
-                assert response.body() != null;
-                if(response.body().getStatus().equalsIgnoreCase("success")) {
-                    ArrayList<ConcessionRates> data = response.body().getConcessionRatesList().getConcessionRates();
-                    concessionRates.setValue(data);
-                    selectedConcessionRate.setValue(new ConcessionRates());
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ConcessionRatesListResponse> call, Throwable t) {
-
-            }
-        });
-    }*/
-
-    public void onConcessionSelected(Concession concession) {
-        selectedConcession.setValue(concession);
-    }
-
-    /*public void onConcessionRateSelected(ConcessionRates concessionRates) {
-        selectedConcessionRate.setValue(concessionRates);
-    }
-
-    public void onBusTypeSelected() {
-        resetBusType();
-        resetBusPointData();
-        // loadBusPoints();
-    }*/
-
     public void resetBusType() {
         busTypes.setValue(new ArrayList<>());
         selectBusType.setValue(new BusType());

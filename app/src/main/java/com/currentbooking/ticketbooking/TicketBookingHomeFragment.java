@@ -256,11 +256,10 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 selectedOperatorDetails = null;
                 bus_point.setVisibility(View.GONE);
                 if (lSelectedObject instanceof BusOperator) {
-                    ticketBookingModule.onBusOperatorChanged();
                     selectedOperatorDetails = (BusOperator) lSelectedObject;
                     bus_point.setVisibility(View.VISIBLE);
                     ticketBookingModule.getSelectedBusOperator().setValue(selectedOperatorDetails);
-                    ticketBookingModule.loadBusTypes();
+                    ticketBookingModule.onBusOperatorChanged();
                 }
             }
 
@@ -362,8 +361,15 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                         Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode() != null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length() > 1) {
                     String pickupPointStopCode = ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode();
                     String dropPointStopCode = ticketBookingModule.getSelectedDropPoint().getValue().getStopCode();
-                    if(!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
-                        mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), selectedBusTypeDetails.getBusTypeCD());
+                    String busTypeCd = "";
+                    if (selectedBusTypeDetails != null) {
+                        busTypeCd = selectedBusTypeDetails.getBusTypeCD();
+                    }
+                    if(TextUtils.isEmpty(busTypeCd)) {
+                        busTypeCd = "";
+                    }
+                    if (!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
+                        mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), busTypeCd);
                     } else {
                         showDialog("", "Pickup Point and Drop Point should not be Same.");
                     }
