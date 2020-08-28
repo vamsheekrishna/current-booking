@@ -23,6 +23,7 @@ import com.currentbooking.ticketbooking.viewmodels.SelectBusesViewModel;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.MyViewModelFactory;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.AvailableBusList;
@@ -115,40 +116,44 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
         busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode();
         //busTypeName =  Objects.requireNonNull(Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD());
 
-        busListService.getAvailableBusList(busOperatorName,
-                busTypeName,
-                Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
-                Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()).enqueue(new Callback<AvailableBusList>() {
-            @Override
-            public void onResponse(@NotNull Call<AvailableBusList> call, @NotNull Response<AvailableBusList> response) {
-                if (response.isSuccessful()) {
-                    AvailableBusList availableBusList = response.body();
-                    if (availableBusList != null) {
-                        if (availableBusList.getStatus().equals("success")) {
-                            AvailableBusList.BusListObj busListObj = availableBusList.getBusListObj();
-                            if (busListObj != null) {
-                                ArrayList<BusObject> busesList = busListObj.getBusList();
-                                if (busesList != null && !busesList.isEmpty()) {
-                                    selectBusesAdapter = new SelectBusesAdapter(v -> {
-                                        BusObject busObject = (BusObject) v.getTag();
-                                        ticketBookingModule.getSelectedBusObject().setValue(busObject);
-                                        mListener.gotoPassengerDetails(busTypeName);
-                                    }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName(), busTypeName);
+        if(NetworkUtility.isNetworkConnected(requireActivity())) {
+            busListService.getAvailableBusList(busOperatorName,
+                    busTypeName,
+                    Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
+                    Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()).enqueue(new Callback<AvailableBusList>() {
+                @Override
+                public void onResponse(@NotNull Call<AvailableBusList> call, @NotNull Response<AvailableBusList> response) {
+                    if (response.isSuccessful()) {
+                        AvailableBusList availableBusList = response.body();
+                        if (availableBusList != null) {
+                            if (availableBusList.getStatus().equals("success")) {
+                                AvailableBusList.BusListObj busListObj = availableBusList.getBusListObj();
+                                if (busListObj != null) {
+                                    ArrayList<BusObject> busesList = busListObj.getBusList();
+                                    if (busesList != null && !busesList.isEmpty()) {
+                                        selectBusesAdapter = new SelectBusesAdapter(v -> {
+                                            BusObject busObject = (BusObject) v.getTag();
+                                            ticketBookingModule.getSelectedBusObject().setValue(busObject);
+                                            mListener.gotoPassengerDetails(busTypeName);
+                                        }, getActivity(), busesList, Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName(), busTypeName);
+                                    }
                                 }
                             }
                         }
                     }
+                    progressDialog.dismiss();
+                    setBusesAdapter();
                 }
-                progressDialog.dismiss();
-                setBusesAdapter();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<AvailableBusList> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<AvailableBusList> call, @NotNull Throwable t) {
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            showCloseDialog(getString(R.string.internet_fail));
+        }
 
         return dataBinding.getRoot();
     }
@@ -193,8 +198,12 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
         if (selectBusesAdapter != null) {
             busesResultListField.setAdapter(selectBusesAdapter);
         } else {
-            showDialog("", getString(R.string.no_information_available), pObject -> Objects.requireNonNull(getActivity()).onBackPressed());
+            showCloseDialog(getString(R.string.no_information_available));
         }
+    }
+
+    private void showCloseDialog(String message) {
+        showDialog(getString(R.string.message), message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     @Override

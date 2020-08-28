@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
@@ -72,51 +73,59 @@ public class ValidateMailFragment  extends BaseFragment implements View.OnClickL
         if (!Utils.isValidEmail(emailID)) {
             showDialog("", getString(R.string.error_mail));
         } else {
-            progressDialog.show();
             LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
             if (v.getId() == R.id.resend) {
-                loginService.resendMailOTP(emailID).enqueue(new Callback<ResendOTPResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
-                        if(response.isSuccessful()) {
-                            showDialog("", Objects.requireNonNull(response.body()).getMsg());
-                        }
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
-                        showDialog("", t.getMessage());
-                        progressDialog.dismiss();
-                    }
-                });
-            } else {
-                if (TextUtils.isEmpty(otp)) {
-                    showDialog("", getString(R.string.error_enter_otp));
-                    progressDialog.dismiss();
-                } else {
-                    loginService.validateMailOTP(emailID, otp).enqueue(new Callback<ValidateOTP>() {
+                if(NetworkUtility.isNetworkConnected(requireActivity())) {
+                    progressDialog.show();
+                    loginService.resendMailOTP(emailID).enqueue(new Callback<ResendOTPResponse>() {
                         @Override
-                        public void onResponse(@NotNull Call<ValidateOTP> call, @NotNull Response<ValidateOTP> response) {
+                        public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
                             if (response.isSuccessful()) {
-                                ValidateOTP data = response.body();
-                                if (data != null) {
-                                    if (data.getStatus().equalsIgnoreCase("success")) {
-                                        showDialog("", data.getMsg(), pObject -> Objects.requireNonNull(getActivity()).onBackPressed());
-                                    } else {
-                                        showDialog("", data.getMsg());
-                                    }
-                                }
+                                showDialog("", Objects.requireNonNull(response.body()).getMsg());
                             }
                             progressDialog.dismiss();
                         }
 
                         @Override
-                        public void onFailure(@NotNull Call<ValidateOTP> call, @NotNull Throwable t) {
+                        public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
                             showDialog("", t.getMessage());
                             progressDialog.dismiss();
                         }
                     });
+                } else {
+                    showDialog(getString(R.string.internet_fail));
+                }
+            } else {
+                if (TextUtils.isEmpty(otp)) {
+                    showDialog("", getString(R.string.error_enter_otp));
+                } else {
+                    if(NetworkUtility.isNetworkConnected(requireActivity())) {
+                        progressDialog.show();
+                        loginService.validateMailOTP(emailID, otp).enqueue(new Callback<ValidateOTP>() {
+                            @Override
+                            public void onResponse(@NotNull Call<ValidateOTP> call, @NotNull Response<ValidateOTP> response) {
+                                if (response.isSuccessful()) {
+                                    ValidateOTP data = response.body();
+                                    if (data != null) {
+                                        if (data.getStatus().equalsIgnoreCase("success")) {
+                                            showDialog("", data.getMsg(), pObject -> Objects.requireNonNull(getActivity()).onBackPressed());
+                                        } else {
+                                            showDialog("", data.getMsg());
+                                        }
+                                    }
+                                }
+                                progressDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(@NotNull Call<ValidateOTP> call, @NotNull Throwable t) {
+                                showDialog("", t.getMessage());
+                                progressDialog.dismiss();
+                            }
+                        });
+                    } else {
+                        showDialog(getString(R.string.internet_fail));
+                    }
                 }
             }
         }

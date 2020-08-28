@@ -15,6 +15,7 @@ import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ChangePasswordResponse;
@@ -93,37 +94,41 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         } else if (_oldPassword.equals(_newPassword)) {
             showDialog("", getString(R.string.error_new_password));
         } else {
-            progressDialog.show();
-            String mobileNumber = MyProfile.getInstance().getMobileNumber();
-            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.changePassword(MyProfile.getInstance().getUserId(), mobileNumber, _oldPassword, _newPassword).enqueue(new Callback<ChangePasswordResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
-                    if (response.isSuccessful()) {
-                        ChangePasswordResponse body = response.body();
-                        if(body != null) {
-                            if (body.getStatus().equalsIgnoreCase("success")) {
-                                showDialog("", body.getMsg(), pObject -> {
-                                    if (pObject instanceof String) {
-                                        if (((String) pObject).equalsIgnoreCase(Constants.TAG_SUCCESS)) {
-                                            gotoAuthenticationActivity();
+            if(NetworkUtility.isNetworkConnected(requireActivity())) {
+                progressDialog.show();
+                String mobileNumber = MyProfile.getInstance().getMobileNumber();
+                LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+                loginService.changePassword(MyProfile.getInstance().getUserId(), mobileNumber, _oldPassword, _newPassword).enqueue(new Callback<ChangePasswordResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
+                        if (response.isSuccessful()) {
+                            ChangePasswordResponse body = response.body();
+                            if (body != null) {
+                                if (body.getStatus().equalsIgnoreCase("success")) {
+                                    showDialog("", body.getMsg(), pObject -> {
+                                        if (pObject instanceof String) {
+                                            if (((String) pObject).equalsIgnoreCase(Constants.TAG_SUCCESS)) {
+                                                gotoAuthenticationActivity();
+                                            }
                                         }
-                                    }
-                                });
-                            } else {
-                                showDialog("", body.getMsg());
+                                    });
+                                } else {
+                                    showDialog("", body.getMsg());
+                                }
                             }
                         }
+                        progressDialog.dismiss();
                     }
-                    progressDialog.dismiss();
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
-                    showDialog("",t.getMessage());
-                    progressDialog.dismiss();
-                }
-            });
+                    @Override
+                    public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
+                        showDialog("", t.getMessage());
+                        progressDialog.dismiss();
+                    }
+                });
+            } else {
+                showDialog(getString(R.string.internet_fail));
+            }
         }
     }
 

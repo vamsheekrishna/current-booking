@@ -17,7 +17,6 @@ import com.currentbooking.utilits.encrypt.EncryptionFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -265,7 +264,8 @@ public class MyProfile {
                             Iterator<MyTicketInfo> iterator = data.iterator();
                             while (iterator.hasNext()) {
                                 MyTicketInfo myTicketInfo = iterator.next();
-                                if(myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
+                                if (myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED) ||
+                                        myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_FAILED)) {
                                     iterator.remove();
                                 }
                             }
@@ -280,7 +280,6 @@ public class MyProfile {
 
             @Override
             public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
-                // showDialog("onFailure", "" + t.getMessage());
                 LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
                 progressDialog.cancel();
             }

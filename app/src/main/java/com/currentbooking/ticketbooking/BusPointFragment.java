@@ -3,24 +3,28 @@ package com.currentbooking.ticketbooking;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
+import com.currentbooking.interfaces.CallBackInterface;
 import com.currentbooking.ticketbooking.adapters.BusStopAdapter;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.MyViewModelFactory;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
@@ -48,6 +52,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     private int mIndex;
     private double latitude;
     private double longitude;
+    private AppCompatEditText edtSearchText;
 
     public BusPointFragment() {
         // Required empty public constructor
@@ -97,45 +102,62 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
         //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
-        SearchView searchView = view.findViewById(R.id.searchView);
         RecyclerView resultsListField = view.findViewById(R.id.search_results_field);
         resultsListField.setHasFixedSize(false);
         busStopAdapter = new BusStopAdapter(requireActivity(), new ArrayList<>(), this);
 
-        if(mIndex == 2) {
-            searchView.setQueryHint(getString(R.string.select_pick_up_point));
-        } else if(mIndex == 3) {
-            searchView.setQueryHint(getString(R.string.select_drop_point));
-        }
-
-        searchView.setFocusable(true);
-        searchView.setIconified(false);
-        searchView.requestFocusFromTouch();
         resultsListField.setAdapter(busStopAdapter);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
+        edtSearchText = view.findViewById(R.id.edt_search_text);
+        edtSearchText.setFocusable(true);
+        edtSearchText.requestFocusFromTouch();
+        if (mIndex == 2) {
+            edtSearchText.setHint(getString(R.string.select_pick_up_point));
+        } else if (mIndex == 3) {
+            edtSearchText.setHint(getString(R.string.select_drop_point));
+        }
+        ImageView ivClearText = view.findViewById(R.id.iv_clear_text);
+        /*hide/show clear button in search view*/
+        edtSearchText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getActivity(), "onQueryTextSubmit "+query, Toast.LENGTH_LONG).show();
-                return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText.length() < 1) {
-                    busStopAdapter.updateItems(new ArrayList<>());
-                    busStopAdapter.notifyDataSetChanged();
-                } else if (newText.length() == 3) {
-                    getBusStopList(newText);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().trim().length() == 0) {
+                    ivClearText.setVisibility(View.GONE);
                 } else {
-                    busStopAdapter.getFilter().filter(newText);
+                    performSearch();
+                    ivClearText.setVisibility(View.VISIBLE);
                 }
-                return false;
             }
         });
 
-        getNearByBusStopsList();
+        ivClearText.setOnClickListener(v -> {
+            edtSearchText.setText("");
+            ivClearText.setVisibility(View.GONE);
+        });
+
+        //getNearByBusStopsList();
+    }
+
+    private void performSearch() {
+        String newText = edtSearchText.getText().toString().trim();
+        if (newText.length() < 1) {
+            busStopAdapter.updateItems(new ArrayList<>());
+            busStopAdapter.notifyDataSetChanged();
+        } else if (newText.length() == 3) {
+            getBusStopList(newText);
+        } else {
+            busStopAdapter.getFilter().filter(newText);
+        }
     }
 
     private void getNearByBusStopsList() {
@@ -168,39 +190,43 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void getBusStopList(String stopPrefix) {
-        progressDialog.show();
-        String operatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
-        TicketBookingServices ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        String requestType = "";
-        if(mIndex == 2) {
-            requestType = "fromstop";
-        } else {
-            requestType = "tostop";
-        }
-        ticketService.getBusStopList(operatorName, stopPrefix, requestType).enqueue(new Callback<BusStopResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<BusStopResponse> call, @NotNull Response<BusStopResponse> response) {
-                if (response.isSuccessful()) {
-                    BusStopResponse body = response.body();
-                    if (body != null) {
-                        if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-                            ArrayList<BusStopObject> data = body.getBusStopList().getBusStopList();
-                            busStopAdapter.updateItems(data);
-                            busStopAdapter.notifyDataSetChanged();
-                        } else {
-                            String data = body.getMsg();
-                            showDialog("", data);
+        if(NetworkUtility.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            String operatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
+            TicketBookingServices ticketService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+            String requestType = "";
+            if (mIndex == 2) {
+                requestType = "fromstop";
+            } else {
+                requestType = "tostop";
+            }
+            ticketService.getBusStopList(operatorName, stopPrefix, requestType).enqueue(new Callback<BusStopResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<BusStopResponse> call, @NotNull Response<BusStopResponse> response) {
+                    if (response.isSuccessful()) {
+                        BusStopResponse body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+                                ArrayList<BusStopObject> data = body.getBusStopList().getBusStopList();
+                                busStopAdapter.updateItems(data);
+                                busStopAdapter.notifyDataSetChanged();
+                            } else {
+                                String data = body.getMsg();
+                                showDialog("", data);
+                            }
                         }
                     }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<BusStopResponse> call, @NotNull Throwable t) {
-                progressDialog.dismiss();
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<BusStopResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            showDialog(getString(R.string.message), getString(R.string.internet_fail), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+        }
         /*
         if (ticketBookingModule.getBusPoints() != null) {
             busPoints = ticketBookingModule.getBusPoints().getValue();
@@ -236,6 +262,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         Objects.requireNonNull(getActivity()).onBackPressed();
         // Toast.makeText(getActivity(), "Clicked. ", Toast.LENGTH_LONG).show();
     }
+
     public void hideSoftKeyboard() {
         try {
             InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Activity.INPUT_METHOD_SERVICE);

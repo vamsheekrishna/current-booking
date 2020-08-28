@@ -21,6 +21,7 @@ import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
@@ -154,51 +155,56 @@ public class LiveTicketFragment extends BaseFragment implements View.OnClickList
 
     private void updateTickets() {
         swipeRefreshLayout.setRefreshing(true);
-        String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
-        String id = MyProfile.getInstance().getUserId();
-        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        progressDialog.show();
-        service.getCurrentBookingTicket(date, id, "").enqueue(new Callback<TodayTickets>() {
-            @Override
-            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
-                swipeRefreshLayout.setRefreshing(false);
-                TodayTickets todayTickets = response.body();
-                if (todayTickets != null) {
-                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
-                        ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
-                        if (null != data && data.size() > 0) {
-                            Iterator<MyTicketInfo> iterator = data.iterator();
-                            while (iterator.hasNext()) {
-                                MyTicketInfo myTicketInfo = iterator.next();
-                                if(myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
-                                    iterator.remove();
+        if(NetworkUtility.isNetworkConnected(requireActivity())) {
+            String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+            String id = MyProfile.getInstance().getUserId();
+            TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+            progressDialog.show();
+            service.getCurrentBookingTicket(date, id, "").enqueue(new Callback<TodayTickets>() {
+                @Override
+                public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    TodayTickets todayTickets = response.body();
+                    if (todayTickets != null) {
+                        if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                            ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                            if (null != data && data.size() > 0) {
+                                Iterator<MyTicketInfo> iterator = data.iterator();
+                                while (iterator.hasNext()) {
+                                    MyTicketInfo myTicketInfo = iterator.next();
+                                    if (myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED) ||
+                                            myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_FAILED)) {
+                                        iterator.remove();
+                                    }
                                 }
-                            }
 
-                            MyProfile.getInstance().setTodayTickets(data);
-                            MyProfile.getInstance().getCurrentBookingTicketCount().setValue(data.size());
+                                MyProfile.getInstance().setTodayTickets(data);
+                                MyProfile.getInstance().getCurrentBookingTicketCount().setValue(data.size());
 
-                            if (liveTicketsAdapter != null) {
-                                liveTicketsAdapter.updateTickets(data);
-                                liveTicketsAdapter.notifyDataSetChanged();
-                            } else {
-                                liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), data);
-                                liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
+                                if (liveTicketsAdapter != null) {
+                                    liveTicketsAdapter.updateTickets(data);
+                                    liveTicketsAdapter.notifyDataSetChanged();
+                                } else {
+                                    liveTicketsAdapter = new LiveTicketsAdapter(requireActivity(), data);
+                                    liveTicketsListRecyclerField.setAdapter(liveTicketsAdapter);
+                                }
                             }
                         }
                     }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
-                // showDialog("onFailure", "" + t.getMessage());
-                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
-                progressDialog.dismiss();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                    // showDialog("onFailure", "" + t.getMessage());
+                    LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                    progressDialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        } else {
+            showDialog(getString(R.string.internet_fail));
+        }
     }
 
     private void updateAdapter() {

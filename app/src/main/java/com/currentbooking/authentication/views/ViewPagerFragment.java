@@ -11,32 +11,12 @@ import com.currentbooking.utilits.views.BaseFragment;
 
 public class ViewPagerFragment extends BaseFragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
     public ViewPagerFragment() {
         // Required empty public constructor
     }
 
-    public static ViewPagerFragment newInstance(String param1, String param2) {
-        ViewPagerFragment fragment = new ViewPagerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static ViewPagerFragment newInstance() {
+        return new ViewPagerFragment();
     }
 
     @Override

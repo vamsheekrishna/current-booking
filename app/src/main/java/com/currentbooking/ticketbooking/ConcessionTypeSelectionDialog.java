@@ -8,11 +8,11 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -27,7 +27,6 @@ import com.currentbooking.utilits.cb_api.responses.Concession;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -120,16 +119,18 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
             isChildSelected = true;
         }
 
-        if(isChildSelected) {
-            for(Concession concessionDetails : concessionsTypeList) {
-                if(concessionDetails.getChildPermitted().equalsIgnoreCase("Y")) {
-                    filterConcessionTypesList.add(concessionDetails);
+        if(concessionsTypeList != null && !concessionsTypeList.isEmpty()) {
+            if (isChildSelected) {
+                for (Concession concessionDetails : concessionsTypeList) {
+                    if (concessionDetails.getChildPermitted().equalsIgnoreCase("Y")) {
+                        filterConcessionTypesList.add(concessionDetails);
+                    }
                 }
-            }
-        } else {
-            for(Concession concessionDetails : concessionsTypeList) {
-                if(concessionDetails.getChildPermitted().equalsIgnoreCase("N") && concessionDetails.getAdultPermitted().equalsIgnoreCase("Y")) {
-                    filterConcessionTypesList.add(concessionDetails);
+            } else {
+                for (Concession concessionDetails : concessionsTypeList) {
+                    if (concessionDetails.getChildPermitted().equalsIgnoreCase("N") && concessionDetails.getAdultPermitted().equalsIgnoreCase("Y")) {
+                        filterConcessionTypesList.add(concessionDetails);
+                    }
                 }
             }
         }
@@ -140,7 +141,7 @@ public class ConcessionTypeSelectionDialog extends DialogFragment {
             concessionsListField.setAdapter(concessionsTypeAdapter);
         }
 
-        EditText searchView = view.findViewById(R.id.search_concession_field);
+        AppCompatEditText searchView = view.findViewById(R.id.search_concession_field);
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -19,15 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.currentbooking.R;
 import com.currentbooking.interfaces.CallBackInterface;
-import com.currentbooking.ticketbookinghistory.adapters.LiveTicketsAdapter;
 import com.currentbooking.ticketbookinghistory.adapters.PassengerDetailsAdapter;
 import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.ticketbookinghistory.models.PassengerDetailsModel;
 import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.LoggerInfo;
-import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.NetworkUtility;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.TodayTickets;
@@ -39,7 +39,6 @@ import com.google.zxing.integration.android.IntentResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -196,33 +195,37 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     }
 
     private void refreshTicketSelected() {
-        String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
-        String id = MyProfile.getInstance().getUserId();
-        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        progressDialog.show();
-        service.getCurrentBookingTicket(date, id, busTicketDetails.getTicket_no()).enqueue(new Callback<TodayTickets>() {
-            @Override
-            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
-                TodayTickets todayTickets = response.body();
-                if (todayTickets != null) {
-                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
-                        ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
-                        if (null != data && data.size() > 0) {
-                            busTicketDetails = data.get(0);
-                            updateViewTicketsUI();
+        if(NetworkUtility.isNetworkConnected(requireActivity())) {
+            String date = DateUtilities.getTodayDateString(CALENDAR_DATE_FORMAT_THREE);
+            String id = MyProfile.getInstance().getUserId();
+            TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+            progressDialog.show();
+            service.getCurrentBookingTicket(date, id, busTicketDetails.getTicket_no()).enqueue(new Callback<TodayTickets>() {
+                @Override
+                public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                    TodayTickets todayTickets = response.body();
+                    if (todayTickets != null) {
+                        if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                            ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                            if (null != data && data.size() > 0) {
+                                busTicketDetails = data.get(0);
+                                updateViewTicketsUI();
+                            }
                         }
                     }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
-                // showDialog("onFailure", "" + t.getMessage());
-                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                    // showDialog("onFailure", "" + t.getMessage());
+                    LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            showDialog(getString(R.string.internet_fail));
+        }
     }
 
     @Override
@@ -271,8 +274,8 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
                                 qrBaseView.setVisibility(View.GONE);
                             } else {
                                 showDialog("", Objects.requireNonNull(body).getMsg());
-                                if (Objects.requireNonNull(body).getMsg().contains(Constants.KEY_REJECTED)) {
-                                    updateTicketStatus(Constants.KEY_REJECTED);
+                                if (Objects.requireNonNull(body).getMsg().contains(Constants.KEY_FAILED)) {
+                                    updateTicketStatus(Constants.KEY_FAILED);
                                 }
                             }
                         }

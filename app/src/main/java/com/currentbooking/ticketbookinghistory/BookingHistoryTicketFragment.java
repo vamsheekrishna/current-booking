@@ -19,6 +19,7 @@ import com.currentbooking.ticketbookinghistory.models.MyTicketInfo;
 import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.RecyclerTouchListener;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
@@ -127,38 +128,42 @@ public class BookingHistoryTicketFragment extends BaseFragment {
     private void getHistoryTicketsList() {
         swipeRefreshLayout.setRefreshing(true);
         ticketsHistoryList.clear();
-        String id = MyProfile.getInstance().getUserId();
-        TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        progressDialog.show();
-        service.getCurrentBookingTicket("", id, "").enqueue(new Callback<TodayTickets>() {
-            @Override
-            public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
-                swipeRefreshLayout.setRefreshing(false);
-                TodayTickets todayTickets = response.body();
-                if (todayTickets != null) {
-                    if (todayTickets.getStatus().equalsIgnoreCase("success")) {
-                        ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
-                        if (null != data && data.size() > 0) {
-                            for(MyTicketInfo myTicketInfo : data) {
-                                if(myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
-                                    ticketsHistoryList.add(myTicketInfo);
+        if(NetworkUtility.isNetworkConnected(requireActivity())) {
+            String id = MyProfile.getInstance().getUserId();
+            TicketBookingServices service = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+            progressDialog.show();
+            service.getCurrentBookingTicket("", id, "").enqueue(new Callback<TodayTickets>() {
+                @Override
+                public void onResponse(@NotNull Call<TodayTickets> call, @NotNull Response<TodayTickets> response) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    TodayTickets todayTickets = response.body();
+                    if (todayTickets != null) {
+                        if (todayTickets.getStatus().equalsIgnoreCase("success")) {
+                            ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
+                            if (null != data && data.size() > 0) {
+                                for (MyTicketInfo myTicketInfo : data) {
+                                    if (myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
+                                        ticketsHistoryList.add(myTicketInfo);
+                                    }
                                 }
                             }
                         }
                     }
+                    progressDialog.dismiss();
+                    setBookingHistoryAdapter();
                 }
-                progressDialog.dismiss();
-                setBookingHistoryAdapter();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
-                // showDialog("onFailure", "" + t.getMessage());
-                LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<TodayTickets> call, @NotNull Throwable t) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    // showDialog("onFailure", "" + t.getMessage());
+                    LoggerInfo.errorLog("getAvailableLiveTickets OnFailure", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            showDialog(getString(R.string.internet_fail));
+        }
     }
 
     private void setBookingHistoryAdapter() {

@@ -1,6 +1,5 @@
 package com.currentbooking.ticketbooking;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,13 +9,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.DialogFragment;
 
 import com.currentbooking.R;
@@ -45,8 +44,8 @@ public class AddPassengersDialogView extends DialogFragment {
     private CallBackInterface callBackInterface;
     private String selectedPersonType;
     private TextView tvConcessionTypeField;
-    private  NumberPicker numberPickerField;
-    private EditText etNameField;
+    private NumberPicker numberPickerField;
+    private AppCompatEditText etNameField;
     private BusOperator busOperatorDetails;
 
 
@@ -198,9 +197,9 @@ public class AddPassengersDialogView extends DialogFragment {
             dialog.dismiss();
         }
     }
+
     public void ShowSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
-
 }

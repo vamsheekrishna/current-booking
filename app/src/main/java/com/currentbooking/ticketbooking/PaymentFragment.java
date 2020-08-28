@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.currentbooking.R;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
@@ -30,14 +33,15 @@ import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
 import com.currentbooking.utilits.ccavenue.AvenuesParams;
 import com.currentbooking.utilits.ccavenue.RSAUtility;
 import com.currentbooking.utilits.ccavenue.ServiceUtility;
-import com.currentbooking.utilits.encrypt.Encryption;
-import com.currentbooking.utilits.encrypt.EncryptionHelper;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -110,20 +114,21 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(webview, url);
-                if(null != progressDialog && progressDialog.isShowing()) {
+                if (null != progressDialog && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
             }
+
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError er) {
                 handler.proceed();
                 // Ignore SSL certificate errors
             }
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                // Toast.makeText(getContext(), "Oh no! " + description, Toast.LENGTH_SHORT).show();
-                showDialog("", description+" "+ failingUrl);
-                if(null != progressDialog && progressDialog.isShowing()) {
+
+            public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
+                // Redirect to deprecated method, so you can use it in all SDK versions
+                showDialog("", rerr.getDescription().toString());
+                if (null != progressDialog && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
             }
@@ -142,53 +147,63 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             return false;
         });*/
 
-        progressDialog.show();
-        TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        if (NetworkUtility.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
 
-        TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+            TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<BusOperator>() {}.getType();
-        String busOperator = gson.toJson(ticketBookingViewModel.getSelectedBusOperator().getValue(), listType);
-        listType = new TypeToken<BusObject>() {}.getType();
-        String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
-        listType = new TypeToken<GetFareResponse.FareDetails>() {}.getType();
-        // String fareDetails = gson.toJson(mFareDetails, listType);
-        ticketBookingService.getRSAKey(busOperator, selectedBus, mFareDetails.getPassengerDetails(), mFareDetails.getBreakup() , MyProfile.getInstance().getUserId() ).enqueue(new Callback<RSAKeyResponse>() {
-            @Override
-            public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
-                RSAKeyResponse data = response.body();
-                if(response.isSuccessful()) {
-                    assert data != null;
-                    if(data.getStatus().equalsIgnoreCase("success")) {
-                        assert response.body() != null;
-                        rsaKeyObject = response.body().getData();
-                        loadWebView();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<BusOperator>() {}.getType();
+            String busOperator = gson.toJson(ticketBookingViewModel.getSelectedBusOperator().getValue(), listType);
+            listType = new TypeToken<BusObject>() {
+            }.getType();
+            String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
+            listType = new TypeToken<GetFareResponse.FareDetails>() {
+            }.getType();
+            // String fareDetails = gson.toJson(mFareDetails, listType);
+            ticketBookingService.getRSAKey(busOperator, selectedBus, mFareDetails.getPassengerDetails(), mFareDetails.getBreakup(), MyProfile.getInstance().getUserId()).enqueue(new Callback<RSAKeyResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<RSAKeyResponse> call, @NotNull Response<RSAKeyResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        RSAKeyResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase("success")) {
+                                rsaKeyObject = data.getData();
+                                loadWebView();
+                            } else {
+                                showErrorDialog(data.getMsg());
+                            }
+                        } else {
+                            showErrorDialog(getString(R.string.no_information_available));
+                        }
                     } else {
-                        showDialog("", data.getMsg());
-                        progressDialog.dismiss();
+                        showErrorDialog(getString(R.string.no_information_available));
                     }
-                } else {
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<RSAKeyResponse> call, @NotNull Throwable t) {
+                    showDialog("", t.getMessage());
                     progressDialog.dismiss();
                 }
-            }
+            });
+        } else {
+            showErrorDialog(getString(R.string.internet_fail));
+        }
+    }
 
-            @Override
-            public void onFailure(Call<RSAKeyResponse> call, Throwable t) {
-                showDialog("", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
+    private void showErrorDialog(String message) {
+        showDialog(getString(R.string.message), message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void loadWebView() {
         try {
             /* An instance of this class will be registered as a JavaScript interface */
-            StringBuffer params = new StringBuffer();
+            StringBuilder params = new StringBuilder();
             String access_code, merchant_id, redirect_url, cancel_url, billing_country, merchant_param1, merchant_param2,
-            billing_name , billing_email, billing_tel, encVal = "";
-            Encryption AESencryption;
-            EncryptionHelper objEncryptionHelper = new EncryptionHelper();
+                    billing_name, billing_email, billing_tel, encVal = "";
 
             access_code = rsaKeyObject.getAccess_code(); //getString(R.string.access_code);
             merchant_id = rsaKeyObject.getMerchant_id(); //getString(R.string.merchant_id);
@@ -196,19 +211,16 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             cancel_url = rsaKeyObject.getCancel_url(); // getString(R.string.cancel_url);
             billing_country = getString(R.string.country);
             // merchant_param1 = merchantParams.ticket_id;
-            billing_name  = MyProfile.getInstance().getFirstName();//"shweta";
+            billing_name = MyProfile.getInstance().getFirstName();//"shweta";
             billing_email = MyProfile.getInstance().getEmail(); // "shwetadalvi9@gmail.com";
-            billing_tel   = MyProfile.getInstance().getMobileNumber(); // "8446399429";
-            StringBuffer vEncVal = new StringBuffer("");
-            try {
-                String amount = String.valueOf(mFareDetails.getTotal());
-                String currency = getString(R.string.currency);
-                vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.AMOUNT, amount));
-                vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.CURRENCY, currency));
-                encVal = RSAUtility.encrypt(vEncVal.substring(0, vEncVal.length() - 1), rsaKeyObject.getRsa_key().replaceAll("[\n]", ""));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            billing_tel = MyProfile.getInstance().getMobileNumber(); // "8446399429";
+            StringBuilder vEncVal = new StringBuilder();
+
+            String amount = String.valueOf(mFareDetails.getTotal());
+            String currency = getString(R.string.currency);
+            vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.AMOUNT, amount));
+            vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.CURRENCY, currency));
+            encVal = RSAUtility.encrypt(vEncVal.substring(0, vEncVal.length() - 1), rsaKeyObject.getRsa_key().replaceAll("[\n]", ""));
 
             params.append(ServiceUtility.addToPostParams(AvenuesParams.ACCESS_CODE, access_code));
             params.append(ServiceUtility.addToPostParams(AvenuesParams.MERCHANT_ID, merchant_id));
@@ -225,15 +237,10 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
 
             String vPostParams = params.substring(0, params.length() - 1);
 
-            try {
-                String vTransUrl = ("https://test.ccavenue.com/transaction/initTrans");
-                webview.postUrl(vTransUrl, vPostParams.getBytes("UTF-8"));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
-            } catch (Exception e) {
-                showDialog("", e.getMessage());
-                e.printStackTrace();
-            }
+            String vTransUrl = ("https://test.ccavenue.com/transaction/initTrans");
+            webview.postUrl(vTransUrl, vPostParams.getBytes(StandardCharsets.UTF_8));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
         } catch (Exception e) {
-            e.printStackTrace();
+            showErrorDialog(e.getMessage());
         }
     }
 
@@ -241,6 +248,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         //mListener.gotoTicketStatus();
     }
+
     class MyJavaScriptInterface {
         @JavascriptInterface
         public void processHTML(String html) {

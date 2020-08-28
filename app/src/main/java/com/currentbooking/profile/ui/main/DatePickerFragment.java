@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.currentbooking.interfaces.DateTimeInterface;
+import com.currentbooking.utilits.Constants;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -27,9 +28,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         Bundle extras = getArguments();
         if (extras != null) {
-            year = extras.getInt("Year");
-            month = extras.getInt("Month");
-            dayOfMonth = extras.getInt("DayOfMonth");
+            year = extras.getInt(Constants.KEY_YEAR);
+            month = extras.getInt(Constants.KEY_MONTH);
+            dayOfMonth = extras.getInt(Constants.KEY_DAY_OF_MONTH);
         }
         DatePickerDialog dialog = new DatePickerDialog(Objects.requireNonNull(getActivity()), this, year, month, dayOfMonth);
         dialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());

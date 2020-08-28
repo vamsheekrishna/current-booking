@@ -21,6 +21,7 @@ import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
@@ -89,8 +90,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         mobileNoField.requestFocus();
         showSoftKeyboard(mobileNoField);
 
-        //mobileNoField.setText("8888888888");
-        //password.setText("12345678");
+        mobileNoField.setText("8888888888");
+        password.setText("12345678");
 
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -130,6 +131,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             }
             if (mobileNo.length() < 10) {
                 showDialog("", getString(R.string.error_mobile));
+                return;
+            }
+            if (!NetworkUtility.isNetworkConnected(requireActivity())) {
+                showDialog("", getString(R.string.internet_fail));
                 return;
             }
             progressDialog.show();

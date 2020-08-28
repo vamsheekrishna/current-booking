@@ -1,5 +1,6 @@
 package com.currentbooking.authentication.views;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,11 +14,13 @@ import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
 import com.currentbooking.authentication.OnAuthenticationClickedListener;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.RegistrationResponse;
 import com.currentbooking.utilits.views.BaseFragment;
+import com.currentbooking.utilits.views.CustomLoadingDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -111,15 +114,21 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
             showDialog("", getString(R.string.error_mismatch_password));
             return;
         }
-
+        if(!NetworkUtility.isNetworkConnected(requireActivity())) {
+            showDialog("", getString(R.string.internet_fail));
+            return;
+        }
+        progressDialog.show();
         LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
         loginService.registration(fName, lName, mobile, email, password, conformPassword).enqueue(new Callback<RegistrationResponse>() {
             @Override
             public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     RegistrationResponse responseData = response.body();
                     if(Objects.requireNonNull(responseData).getStatus().equals("success")) {
                         mListener.validateOTP();
+                        resetFields();
                     } else {
                         showDialog("", responseData.getMsg());
                     }
@@ -128,8 +137,18 @@ public class RegistrationFragment extends BaseFragment implements View.OnClickLi
 
             @Override
             public void onFailure(@NotNull Call<RegistrationResponse> call, @NotNull Throwable t) {
+                progressDialog.dismiss();
                 showDialog("", t.getMessage());
             }
         });
+    }
+
+    private void resetFields() {
+        tvFirstName.setText("");
+        tvLastName.setText("");
+        tvMobileNumber.setText("");
+        tvEmailID.setText("");
+        tvPassword.setText("");
+        tvConformPassword.setText("");
     }
 }

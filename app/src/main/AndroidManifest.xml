@@ -53,9 +53,6 @@
         <activity
             android:name=".home.HomeActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".utilits.encrypt.testClient" />
         <activity
             android:name=".ticketbooking.TicketBookingActivity"

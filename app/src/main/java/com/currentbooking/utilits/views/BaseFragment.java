@@ -64,6 +64,26 @@ public class BaseFragment extends Fragment {
     }
 
 
+    public void showDialog(String msg) {
+        try {
+            AlertDialog.Builder builder = new
+                    AlertDialog.Builder(
+                    requireActivity(),
+                    R.style.AlertDialog
+            );
+            builder.setTitle(requireActivity().getString(R.string.message));
+            builder.setCancelable(false);
+            builder.setMessage(msg);
+            builder.setNegativeButton(requireActivity().getString(R.string.close), null);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
+            if (!requireActivity().isFinishing()) {
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+            LoggerInfo.errorLog("show dialog exception", e.getMessage());
+        }
+    }
 
     protected void showDialog(String title, String msg) {
         try {
@@ -107,5 +127,4 @@ public class BaseFragment extends Fragment {
 
         }
     }
-
 }

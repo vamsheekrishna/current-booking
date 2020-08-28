@@ -160,9 +160,10 @@
     <string name="error_profile_image">Profile Image is Required.</string>
     <string name="district">District</string>
     <string name="first_time_user_logged_in">First Time User Logged In</string>
-    <string name="un_used">Un Used</string>
+    <string name="un_used">UnUsed</string>
     <string name="validate_mail">Validate Mail</string>
-    <string name="ticket_expire_message">This ticket will expired in 3 hrs and  refund will be provided in next 2 working days</string>
+    <string name="ticket_expire_message">This ticket will expired in 3 hrs and  refund will be provided within 2 working days</string>
     <string name="select_pick_up_point">Select Pick up Point</string>
+    <string name="internet_fail">Please turn on internet connection</string>
 
 </resources>

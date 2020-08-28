@@ -22,7 +22,7 @@
         android:layout_marginEnd="10dp"
         android:text="@string/name" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,6 +33,7 @@
         android:hint="@string/name"
         android:importantForAutofill="no"
         android:inputType="textCapWords"
+        android:digits="qwertyuiopasdfghjklzxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM"
         android:maxLength="50"
         android:minHeight="40dp"
         android:paddingStart="10dp"

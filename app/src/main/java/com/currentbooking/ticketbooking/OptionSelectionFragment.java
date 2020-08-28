@@ -39,7 +39,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     private static final String ARG_PARAM2 = "param2";
 
     private int mIndex;
-    private String mParam2;
+    private String title;
     // private CallBackInterface callBackInterface;
     private TicketBookingViewModel ticketBookingModule;
     private ArrayList<BusOperator> busOperator;
@@ -65,7 +65,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mIndex = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            title = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -89,7 +89,7 @@ public class OptionSelectionFragment extends BaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(mParam2);
+        Objects.requireNonNull(getActivity()).setTitle(title);
     }
     private View initDataBinding(@NotNull LayoutInflater inflater) {
         FragmentOptionSelectionBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_option_selection,

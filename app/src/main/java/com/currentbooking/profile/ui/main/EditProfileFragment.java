@@ -27,10 +27,12 @@ import com.currentbooking.home.HomeActivity;
 import com.currentbooking.interfaces.DateTimeInterface;
 import com.currentbooking.utilits.CircularNetworkImageView;
 import com.currentbooking.utilits.CommonUtils;
+import com.currentbooking.utilits.Constants;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.LoggerInfo;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
@@ -261,61 +263,65 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             showDialog("", getString(R.string.error_profile_image));
             return;
         }*/
-        progressDialog.show();
-        String encodedImage = getEncodedImage();
-        LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-        loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
-                _etAddress, _etDistrict, _etPinCode, dateOfBirthValue, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getStatus().equalsIgnoreCase("success")) {
-                            MyProfile myProfile = MyProfile.getInstance();
-                            if (myProfile != null) {
-                                myProfile.setFirstName(fName);
-                                myProfile.setLastName(lName);
-                                myProfile.setAddress(_etAddress);
-                                myProfile.setDistrict(_etDistrict);
-                                myProfile.setState(_etState);
-                                myProfile.setPinCode(_etPinCode);
-                                myProfile.setEmail(_email);
-                                myProfile.setDob(dateOfBirthValue);
-                                myProfile.setGender(gender);
+        if(NetworkUtility.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            String encodedImage = getEncodedImage();
+            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+            loginService.updateProfile(MyProfile.getInstance().getUserId(), fName, lName, gender, _email,
+                    _etAddress, _etDistrict, _etPinCode, dateOfBirthValue, encodedImage, _etState).enqueue(new Callback<ResponseUpdateProfile>() {
+                @Override
+                public void onResponse(@NotNull Call<ResponseUpdateProfile> call, @NotNull Response<ResponseUpdateProfile> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            if (response.body().getStatus().equalsIgnoreCase("success")) {
+                                MyProfile myProfile = MyProfile.getInstance();
+                                if (myProfile != null) {
+                                    myProfile.setFirstName(fName);
+                                    myProfile.setLastName(lName);
+                                    myProfile.setAddress(_etAddress);
+                                    myProfile.setDistrict(_etDistrict);
+                                    myProfile.setState(_etState);
+                                    myProfile.setPinCode(_etPinCode);
+                                    myProfile.setEmail(_email);
+                                    myProfile.setDob(dateOfBirthValue);
+                                    myProfile.setGender(gender);
+                                }
+                                showDialog("", response.body().getMsg(), pObject -> {
+                                    if (profileImageBitmap != null) {
+                                        Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
+                                        MyProfile.getInstance().setUserProfileImage(bitmap);
+                                    }
+                                    String userName = String.format("%s %s", fName, lName);
+                                    MyProfile.getInstance().setUserNameDetails(userName);
+                                    MyProfile.getInstance().setUserEmailDetails(_email);
+                                    MyProfile.getInstance().setDateOfBirthDetails(dateOfBirthValue);
+                                    if (firstTimeUserLoggedIn) {
+                                        gotoHomeScreen();
+                                    } else {
+                                        Objects.requireNonNull(getActivity()).onBackPressed();
+                                    }
+                                });
+                            } else {
+                                showDialog("", response.body().getMsg());
                             }
-                            showDialog("", response.body().getMsg(), pObject -> {
-                                if (profileImageBitmap != null) {
-                                    Bitmap bitmap = CommonUtils.getCircularBitmap(profileImageBitmap);
-                                    MyProfile.getInstance().setUserProfileImage(bitmap);
-                                }
-                                String userName = String.format("%s %s", fName, lName);
-                                MyProfile.getInstance().setUserNameDetails(userName);
-                                MyProfile.getInstance().setUserEmailDetails(_email);
-                                MyProfile.getInstance().setDateOfBirthDetails(dateOfBirthValue);
-                                if(firstTimeUserLoggedIn) {
-                                    gotoHomeScreen();
-                                } else {
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
-                                }
-                            });
                         } else {
-                            showDialog("", response.body().getMsg());
+                            showDialog("", getString(R.string.no_information_available));
                         }
-                    }  else {
+                    } else {
                         showDialog("", getString(R.string.no_information_available));
                     }
-                } else {
-                    showDialog("", getString(R.string.no_information_available));
                 }
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
-                progressDialog.dismiss();
-                showDialog("", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<ResponseUpdateProfile> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog("", t.getMessage());
+                }
+            });
+        } else {
+            showDialog(getString(R.string.internet_fail));
+        }
     }
 
     private void gotoHomeScreen() {
@@ -377,9 +383,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private void dateOfPickerSelected() {
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         Bundle extras = new Bundle();
-        extras.putInt("Year", dateOfBirthCalendar.get(Calendar.YEAR));
-        extras.putInt("Month", dateOfBirthCalendar.get(Calendar.MONTH));
-        extras.putInt("DayOfMonth", dateOfBirthCalendar.get(Calendar.DAY_OF_MONTH));
+        extras.putInt(Constants.KEY_YEAR, dateOfBirthCalendar.get(Calendar.YEAR));
+        extras.putInt(Constants.KEY_MONTH, dateOfBirthCalendar.get(Calendar.MONTH));
+        extras.putInt(Constants.KEY_DAY_OF_MONTH, dateOfBirthCalendar.get(Calendar.DAY_OF_MONTH));
         datePickerFragment.setArguments(extras);
         datePickerFragment.setCallBack(new DateTimeInterface() {
             @Override

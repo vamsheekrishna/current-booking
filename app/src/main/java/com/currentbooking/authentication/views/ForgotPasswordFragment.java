@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.currentbooking.R;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.LoginService;
@@ -66,25 +67,31 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
 
         if (!Utils.isValidMobile(_mobileNumber)) {
             showDialog("", getString(R.string.error_mobile_number));
-        } else {
-            progressDialog.show();
-            LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
-            loginService.forgotPassword(_mobileNumber).enqueue(new Callback<ForgotPasswordResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<ForgotPasswordResponse> call, @NotNull Response<ForgotPasswordResponse> response) {
-                    ForgotPasswordResponse body = response.body();
-                    if (body != null) {
-                        showDialog("",body.getMsg());
-                    }
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<ForgotPasswordResponse> call, @NotNull Throwable t) {
-                    showDialog("", t.getMessage());
-                    progressDialog.dismiss();
-                }
-            });
+            return;
         }
+
+        if (!NetworkUtility.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.internet_fail));
+            return;
+        }
+
+        progressDialog.show();
+        LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+        loginService.forgotPassword(_mobileNumber).enqueue(new Callback<ForgotPasswordResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ForgotPasswordResponse> call, @NotNull Response<ForgotPasswordResponse> response) {
+                ForgotPasswordResponse body = response.body();
+                if (body != null) {
+                    showDialog("", body.getMsg());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ForgotPasswordResponse> call, @NotNull Throwable t) {
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
     }
 }
