@@ -31,6 +31,7 @@ import com.currentbooking.utilits.CommonUtils;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.MyProfile;
+import com.currentbooking.wallet.AddMoneyWallet;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -173,6 +174,7 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
         findViewById(R.id.logout_layout_field).setOnClickListener(this);
         findViewById(R.id.my_profile_layout_field).setOnClickListener(this);
         findViewById(R.id.change_password_layout_field).setOnClickListener(this);
+        findViewById(R.id.add_money_layout_field).setOnClickListener(this);
 
     }
     @Override
@@ -230,6 +232,10 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
                 intent = new Intent(this, AuthenticationActivity.class);
                 intent.putExtra(getString(R.string.change_password), false);
                 startActivity(intent);
+                break;
+            case R.id.add_money_layout_field:
+                mDrawerLayout.closeDrawer(navigationView);
+                startActivity(new Intent(BaseNavigationDrawerActivity.this, AddMoneyWallet.class));
                 break;
             default:
                 Toast.makeText(this, "default", Toast.LENGTH_LONG).show();

@@ -169,6 +169,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
 
     private void updateTicketStatus(String ticketStatus) {
         if(ticketStatus.equalsIgnoreCase(Constants.KEY_APPROVED)) {
+            ticketStatus = "Approved and validated successfully";
             tvBookingStatusField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.green));
             qrBaseView.setVisibility(View.GONE);
         } else if(ticketStatus.equalsIgnoreCase(Constants.KEY_REJECTED)) {

@@ -241,7 +241,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         ticketBookingModule.getBusOperators().observe(requireActivity(), busOperators -> {
             if (busOperators != null && !busOperators.isEmpty()) {
                 List<Object> busOperatorList = new ArrayList<>();
-                busOperatorList.add(getString(R.string.select_transport));
+               // busOperatorList.add(getString(R.string.select_transport));
                 busOperatorList.addAll(busOperators);
                 CustomSpinnerAdapter busOperatorsSpinnerAdapter = new CustomSpinnerAdapter(requireActivity(), busOperatorList);
                 selectTransportSpinnerField.setAdapter(busOperatorsSpinnerAdapter);
@@ -369,7 +369,9 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                         busTypeCd = "";
                     }
                     if (!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
-                        mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), busTypeCd);
+                       // mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), busTypeCd);
+                        mListener.gotoSelectBus("MSRTC", busTypeCd);
+
                     } else {
                         showDialog("", "Pickup Point and Drop Point should not be Same.");
                     }

@@ -64,6 +64,11 @@
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".wallet.WalletActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".profile.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"

@@ -3,6 +3,7 @@ package com.currentbooking.authentication.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -42,7 +43,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private TextView mobileNoField;
     private TextView password;
     private String deviceKey;
-
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -51,6 +53,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mListener = (OnAuthenticationClickedListener)context;
+        sharedpreferences = context.getSharedPreferences("login", Context.MODE_PRIVATE);
     }
 
     public static LoginFragment newInstance() {
@@ -88,7 +91,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         mobileNoField = view.findViewById(R.id.user_id);
         password = view.findViewById(R.id.password);
         mobileNoField.requestFocus();
-        showSoftKeyboard(mobileNoField);
+        if(sharedpreferences.contains("mobileNo")){
+            mobileNoField.setText(sharedpreferences.getString("mobileNo",""));
+            password.setText(sharedpreferences.getString("password",""));
+
+        }
 
         mobileNoField.setText("8888888888");
         password.setText("12345678");
@@ -124,7 +131,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         } else {
             String mobileNo = mobileNoField.getText().toString().trim();
             String passwordValue = password.getText().toString().trim();
+            editor = sharedpreferences.edit();
 
+            editor.putString("mobileNo", mobileNo);
+            editor.putString("password", passwordValue);
+            editor.commit();
             if (TextUtils.isEmpty(mobileNo) || TextUtils.isEmpty(passwordValue)) {
                 showDialog("", getString(R.string.error_enter_mobile_and_password));
                 return;

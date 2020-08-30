@@ -15,4 +15,5 @@ public interface OnTicketBookingListener extends BaseListener {
     //void gotoTicketStatus(CCAvenueResponse ccAvenueResponse);
     void gotoOptionSelection(int listData, String title);
     void gotoBusStopSelect(int i, double latitude, double longitude);
+
 }
