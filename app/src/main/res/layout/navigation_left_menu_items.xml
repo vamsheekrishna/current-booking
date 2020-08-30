@@ -273,7 +273,7 @@
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
-                    android:text="@string/add_Money"
+                    android:text="@string/top_up_wallet"
                     android:textColor="@color/black_color_two"
                     android:textSize="18sp" />
             </LinearLayout>

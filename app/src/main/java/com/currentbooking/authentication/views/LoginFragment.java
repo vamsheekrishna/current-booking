@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -91,14 +90,13 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         mobileNoField = view.findViewById(R.id.user_id);
         password = view.findViewById(R.id.password);
         mobileNoField.requestFocus();
-        if(sharedpreferences.contains("mobileNo")){
-            mobileNoField.setText(sharedpreferences.getString("mobileNo",""));
-            password.setText(sharedpreferences.getString("password",""));
-
+        if (sharedpreferences.contains("mobileNo")) {
+            mobileNoField.setText(sharedpreferences.getString("mobileNo", ""));
+            password.setText(sharedpreferences.getString("password", ""));
         }
 
-        mobileNoField.setText("8888888888");
-        password.setText("12345678");
+        //mobileNoField.setText("8888888888");
+        //password.setText("12345678");
 
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -132,10 +130,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             String mobileNo = mobileNoField.getText().toString().trim();
             String passwordValue = password.getText().toString().trim();
             editor = sharedpreferences.edit();
-
-            editor.putString("mobileNo", mobileNo);
-            editor.putString("password", passwordValue);
-            editor.commit();
             if (TextUtils.isEmpty(mobileNo) || TextUtils.isEmpty(passwordValue)) {
                 showDialog("", getString(R.string.error_enter_mobile_and_password));
                 return;
@@ -158,14 +152,15 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase("success")) {
                                 try {
+                                    editor.putString("mobileNo", mobileNo);
+                                    editor.putString("password", passwordValue);
+                                    editor.apply();
                                     MyProfile.getInstance(data.getData().getProfileModel());
                                     if (MyProfile.getInstance().getDob() == null || MyProfile.getInstance().getDob().length() <= 0) {
                                         mListener.goToProfileActivity(true);
                                     } else {
                                         mListener.goToHomeActivity();
                                     }
-
-
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -189,12 +184,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     progressDialog.dismiss();
                 }
             });
-        }
-    }
-    public void showSoftKeyboard(View view) {
-        if(view.requestFocus()){
-            InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
         }
     }
 }

@@ -32,6 +32,7 @@ import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.HttpsTrustManager;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.wallet.AddMoneyWallet;
+import com.currentbooking.wallet.WalletActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -235,7 +236,7 @@ public  class BaseNavigationDrawerActivity extends BaseActivity implements Navig
                 break;
             case R.id.add_money_layout_field:
                 mDrawerLayout.closeDrawer(navigationView);
-                startActivity(new Intent(BaseNavigationDrawerActivity.this, AddMoneyWallet.class));
+                startActivity(new Intent(BaseNavigationDrawerActivity.this, WalletActivity.class));
                 break;
             default:
                 Toast.makeText(this, "default", Toast.LENGTH_LONG).show();

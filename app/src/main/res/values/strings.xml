@@ -166,10 +166,9 @@
     <string name="select_pick_up_point">Select Pick up Point</string>
     <string name="internet_fail">Please turn on internet connection</string>
     <string name="amount">Amount</string>
-    <string name="addwalletpayment">Add Money</string>
-    <string name="add_Money">Topup Wallet</string>
-
-
-
+    <string name="add_money">Add Money</string>
+    <string name="top_up_wallet">Topup Wallet</string>
+    <string name="amount_cannot_be_empty">Amount cannot be Empty</string>
+    <string name="amount_should_greater_than_zero">Amount should greater than 0</string>
 
 </resources>

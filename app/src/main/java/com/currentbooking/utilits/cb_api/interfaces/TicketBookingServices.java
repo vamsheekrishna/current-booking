@@ -105,7 +105,7 @@ public interface TicketBookingServices {
     Call<BusStopResponse> getNearByStopsList(@Field("latitude") double latitude,
                                          @Field("longitude") double longitude);
 
-    @POST(BuildConfig.ADD_MONENY)
+    @POST(BuildConfig.ADD_MONEY)
     @FormUrlEncoded
     Call<RSAKeyResponse> addMoney(@Field("user_id") String userID,@Field("amount") String amount);
 }

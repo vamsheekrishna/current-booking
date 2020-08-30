@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
 
@@ -13,14 +14,15 @@
         android:layout_marginTop="200dp">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/amount"
-            android:layout_width="308dp"
-            android:gravity="center"
+            android:id="@+id/amount_field"
+            android:layout_width="match_parent"
             android:hint="@string/amount"
             android:inputType="numberSigned"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
             android:maxLength="10"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -42,12 +44,12 @@
             android:visibility="gone"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/payment"
+            android:id="@+id/btn_add_money_field"
             style="@style/button_gray"
             android:layout_width="0dp"
             android:layout_marginStart="10dp"
             android:layout_weight="0.5"
-            android:text="@string/addwalletpayment" />
+            android:text="@string/add_money" />
     </LinearLayout>
 
 

@@ -54,7 +54,6 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
     private static final String ARG_AMOUNT_DETAILS = "amount";
 
 
-    private String passengerDetails;
     private String amount;
     private GetFareResponse.FareDetails mFareDetails;
     // JsonObject jsonObject;
@@ -67,12 +66,10 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
         // Required empty public constructor
     }
 
-    public static WalletFragment newInstance(String userid,String amount) {
+    public static WalletFragment newInstance(String amount) {
         WalletFragment fragment = new WalletFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PASSENGER_DETAILS, userid);
         args.putString(ARG_AMOUNT_DETAILS, amount);
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,7 +90,7 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            passengerDetails = getArguments().getString(ARG_PASSENGER_DETAILS);
+            //passengerDetails = getArguments().getString(ARG_PASSENGER_DETAILS);
             amount = getArguments().getString(ARG_AMOUNT_DETAILS);
         }
     }
@@ -149,7 +146,7 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
             return false;
         });*/
 
-        TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        /*TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
 
         TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
 
@@ -160,7 +157,7 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
         String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
         listType = new TypeToken<GetFareResponse.FareDetails>() {}.getType();
         // String fareDetails = gson.toJson(mFareDetails, listType);
-        ticketBookingService.addMoney(MyProfile.getInstance().getUserId(),ARG_AMOUNT_DETAILS ).enqueue(new Callback<RSAKeyResponse>() {
+        ticketBookingService.addMoney(MyProfile.getInstance().getUserId(), amount).enqueue(new Callback<RSAKeyResponse>() {
             @Override
             public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
                 RSAKeyResponse data = response.body();
@@ -184,7 +181,7 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }
-        });
+        });*/
     }
 
     private void loadWebView() {
