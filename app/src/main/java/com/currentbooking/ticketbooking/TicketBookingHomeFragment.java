@@ -335,7 +335,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                         editor.putString("balance", balance.getwallet_balance());
                         editor.apply();
                     } else {
-                        showDialog("", data.getMsg());
+                       // showDialog("", data.getMsg());
                         progressDialog.dismiss();
                     }
                 } else {
@@ -345,7 +345,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
             @Override
             public void onFailure(Call<WalletBalance> call, Throwable t) {
-                showDialog("", t.getMessage());
+               // showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }
         });
