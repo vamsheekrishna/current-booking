@@ -72,7 +72,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/ticket_number"
-                            android:textSize="18dp"
+                            android:textSize="20dp"
                             android:textColor="@color/red_three" />
 
                         <TextView
@@ -80,7 +80,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/colon"
-                            android:textSize="18dp"
+                            android:textSize="20dp"
                             android:textColor="@color/red_three" />
 
                         <TextView
@@ -88,10 +88,45 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:textSize="18dp"
+                            android:textSize="20dp"
                             android:fontFamily="@font/opensans_regular"
                             android:textColor="@color/red_three" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="@string/bus_type"
+                            android:textSize="16dp"
+                            android:textColor="@color/black_color_two" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_regular"
+                            android:text="@string/colon"
+                            android:textSize="20dp"
+                            android:textColor="@color/black_color_two" />
+
+                        <TextView
+                            android:id="@+id/tv_bus_type_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:textSize="20dp"
+                            android:fontFamily="@font/opensans_regular"
+                            android:textColor="@color/black_color_two" />
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -1,6 +1,8 @@
 package com.currentbooking.ticketbooking;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,16 +17,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
+import com.currentbooking.home.HomeActivity;
 import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.LoginService;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
+import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyData;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
@@ -39,6 +45,8 @@ import com.currentbooking.wallet.OnWalletListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.Objects;
@@ -47,12 +55,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.currentbooking.utilits.Utils.internetConnectionAvailable;
+
 public class WalletFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String ARG_PASSENGER_DETAILS = "user_id";
     private static final String ARG_FARE_DETAILS = "Fare Details";
     private static final String ARG_AMOUNT_DETAILS = "amount";
-
 
     private String amount;
     private GetFareResponse.FareDetails mFareDetails;
@@ -146,20 +155,11 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
             return false;
         });*/
 
-        /*TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-
-        TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
-
-        Gson gson = new Gson();
-        Type listType = new TypeToken<BusOperator>() {}.getType();
-        String busOperator = gson.toJson(ticketBookingViewModel.getSelectedBusOperator().getValue(), listType);
-        listType = new TypeToken<BusObject>() {}.getType();
-        String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
-        listType = new TypeToken<GetFareResponse.FareDetails>() {}.getType();
-        // String fareDetails = gson.toJson(mFareDetails, listType);
-        ticketBookingService.addMoney(MyProfile.getInstance().getUserId(), amount).enqueue(new Callback<RSAKeyResponse>() {
+        progressDialog.show();
+        LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+        loginService.addMoney(MyProfile.getInstance().getUserId(),amount).enqueue(new Callback<RSAKeyResponse>() {
             @Override
-            public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
+            public void onResponse(@NotNull Call<RSAKeyResponse> call, @NotNull Response<RSAKeyResponse> response) {
                 RSAKeyResponse data = response.body();
                 if(response.isSuccessful()) {
                     assert data != null;
@@ -170,18 +170,33 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
                     } else {
                         showDialog("", data.getMsg());
                         progressDialog.dismiss();
+                        requireActivity().finish();
                     }
                 } else {
+                    if(data != null){
+                        showdailog(data.getMsg());
+
+                    }else{
+                        showdailog("You have exceed amount limit. You can add money into wallet up to Rs.10000.00 ");
+
+                    }
+
+
                     progressDialog.dismiss();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<RSAKeyResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<RSAKeyResponse> call, @NotNull Throwable t) {
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
+                requireActivity().finish();
             }
-        });*/
+        });
+
+
+
     }
 
     private void loadWebView() {
@@ -204,7 +219,7 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
             billing_tel   = MyProfile.getInstance().getMobileNumber(); // "8446399429";
             StringBuffer vEncVal = new StringBuffer("");
             try {
-                String amount = String.valueOf(mFareDetails.getTotal());
+                //String amount = String.valueOf(mFareDetails.getTotal());
                 String currency = getString(R.string.currency);
                 vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.AMOUNT, amount));
                 vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.CURRENCY, currency));
@@ -234,9 +249,12 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
             } catch (Exception e) {
                 showDialog("", e.getMessage());
                 e.printStackTrace();
+                requireActivity().finish();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            showDialog("", e.getMessage());
+            requireActivity().finish();
         }
     }
 
@@ -250,18 +268,47 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
             // jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             ccAvenueResponse = g.fromJson(html, AddMoneyCCAvenueResponse.class);
-            Log.d("JsonObject", "html: "+html);
-             showDialog("", html);
-            // MyProfile.getInstance().updateLiveTickets(progressDialog);
-           // mListener.gotoAddMoney("");
+            if (ccAvenueResponse.getStatus().equalsIgnoreCase("success")) {
+                Log.d("JsonObject", "html: " + html);
+                showdailog("Your Wallet balance updated successfully");
+            } else {
+                showdailog("Transaction Failed");
+            }
 
-            Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
+
         }
-
         @JavascriptInterface
         public void gotMsg(String msg) {
             showDialog("", msg);
             // Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void showdailog(String msg){
+
+                  try {
+                      AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                      builder.setTitle("Message");
+                      builder.setMessage(msg);
+                      builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              dialog.dismiss();
+                              Intent intent = new Intent(requireActivity(), TicketBookingActivity.class);
+                              intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                              requireActivity().startActivity(intent);
+                              requireActivity().finish();
+                          }
+
+
+                      });
+
+                      AlertDialog alertDialog = builder.create();
+                      alertDialog.show();
+                  }
+                  catch (Exception e){
+                  e.printStackTrace();}
+
+
     }
 }

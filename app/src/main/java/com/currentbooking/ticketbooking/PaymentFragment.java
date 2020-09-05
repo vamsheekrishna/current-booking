@@ -1,5 +1,7 @@
 package com.currentbooking.ticketbooking;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -7,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +31,7 @@ import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.CCAvenueResponse;
+import com.currentbooking.utilits.cb_api.responses.GetBalance;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyData;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
@@ -59,6 +64,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     OnTicketBookingListener mListener;
     private RSAKeyData rsaKeyObject;
     CCAvenueResponse ccAvenueResponse;
+
     WebView webview;
 
     public PaymentFragment() {
@@ -78,6 +84,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mListener = (OnTicketBookingListener) context;
+
     }
 
     @Override
@@ -147,14 +154,15 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             return false;
         });*/
 
-        if (NetworkUtility.isNetworkConnected(requireActivity())) {
+        /*if (NetworkUtility.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
 
             TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
 
             Gson gson = new Gson();
-            Type listType = new TypeToken<BusOperator>() {}.getType();
+            Type listType = new TypeToken<BusOperator>() {
+            }.getType();
             String busOperator = gson.toJson(ticketBookingViewModel.getSelectedBusOperator().getValue(), listType);
             listType = new TypeToken<BusObject>() {
             }.getType();
@@ -191,7 +199,9 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             });
         } else {
             showErrorDialog(getString(R.string.internet_fail));
-        }
+        }*/
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(requireActivity());
     }
 
     private void showErrorDialog(String message) {
@@ -255,17 +265,156 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             // jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
-            Log.d("JsonObject", "html: "+html);
-            // showDialog("", html);
-            // MyProfile.getInstance().updateLiveTickets(progressDialog);
-            mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
-            //Toast.makeText(getContext(), html, Toast.LENGTH_SHORT).show();
+            Log.d("JsonObject", "html: " + html);
+            if (ccAvenueResponse.getStatus().equalsIgnoreCase("success")) {
+                Log.d("JsonObject", "html: " + html);
+                mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
+            }else{
+                showDialog(getString(R.string.message), "Transaction Failed", pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+
+            }
+
         }
 
         @JavascriptInterface
         public void gotMsg(String msg) {
             showDialog("", msg);
             // Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public class ViewDialog {
+
+        public void showDialog(Activity activity) {
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.payment_option_dailog);
+
+            Button wallet = (Button) dialog.findViewById(R.id.using_wallet);
+            Button ccavenue = (Button) dialog.findViewById(R.id.using_netbanking);
+            ccavenue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    if (NetworkUtility.isNetworkConnected(requireActivity())) {
+                        progressDialog.show();
+                        TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+
+                        TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<BusOperator>() {
+                        }.getType();
+                        String busOperator = gson.toJson(ticketBookingViewModel.getSelectedBusOperator().getValue(), listType);
+                        listType = new TypeToken<BusObject>() {
+                        }.getType();
+                        String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
+                        listType = new TypeToken<GetFareResponse.FareDetails>() {
+                        }.getType();
+                        // String fareDetails = gson.toJson(mFareDetails, listType);
+                        ticketBookingService.getRSAKey(busOperator, selectedBus, mFareDetails.getPassengerDetails(), mFareDetails.getBreakup(), MyProfile.getInstance().getUserId()).enqueue(new Callback<RSAKeyResponse>() {
+                            @Override
+                            public void onResponse(@NotNull Call<RSAKeyResponse> call, @NotNull Response<RSAKeyResponse> response) {
+                                progressDialog.dismiss();
+                                if (response.isSuccessful()) {
+                                    RSAKeyResponse data = response.body();
+                                    if (data != null) {
+                                        if (data.getStatus().equalsIgnoreCase("success")) {
+                                            rsaKeyObject = data.getData();
+                                            loadWebView();
+                                        } else {
+                                            showErrorDialog(data.getMsg());
+                                        }
+                                    } else {
+                                        showErrorDialog(getString(R.string.payment_failed_description));
+                                    }
+                                } else {
+                                    showErrorDialog(getString(R.string.payment_failed_description));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NotNull Call<RSAKeyResponse> call, @NotNull Throwable t) {
+                                //showDialog("", t.getMessage());
+                                progressDialog.dismiss();
+                                showErrorDialog(getString(R.string.payment_failed_description));
+
+                            }
+                        });
+                    } else {
+                        showErrorDialog(getString(R.string.internet_fail));
+                    }
+                }
+            });
+            wallet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    if (NetworkUtility.isNetworkConnected(requireActivity())) {
+
+
+                        progressDialog.show();
+                        TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+
+                        TicketBookingViewModel ticketBookingViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<BusOperator>() {
+                        }.getType();
+                        String busOperator = gson.toJson(ticketBookingViewModel.getSelectedBusOperator().getValue(), listType);
+                        listType = new TypeToken<BusObject>() {
+                        }.getType();
+                        String selectedBus = gson.toJson(ticketBookingViewModel.getSelectedBusObject().getValue(), listType);
+                        listType = new TypeToken<GetFareResponse.FareDetails>() {
+                        }.getType();
+                        // String fareDetails = gson.toJson(mFareDetails, listType);
+                        ticketBookingService.getRSAKeyWallet(busOperator, selectedBus, mFareDetails.getPassengerDetails(), mFareDetails.getBreakup(), MyProfile.getInstance().getUserId(),mFareDetails.getFare()).enqueue(new Callback<GetBalance>() {
+                            @Override
+                            public void onResponse(@NotNull Call<GetBalance> call, @NotNull Response<GetBalance> response) {
+                                progressDialog.dismiss();
+                                GetBalance data = response.body();
+                                if(response.isSuccessful()) {
+                                    if (data != null) {
+                                        if (data.getStatus().equalsIgnoreCase("success")||data.getStatus().equalsIgnoreCase("")) {
+                                            ccAvenueResponse = response.body().getResult();
+                                            mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
+                                        }else{
+                                            progressDialog.dismiss();
+                                            showErrorDialog(data.getMsg());
+                                        }
+
+                                    }else{
+                                        progressDialog.dismiss();
+                                        showErrorDialog(getString(R.string.payment_failed_description));
+                                    }
+                                }
+                                else {
+                                    if(data!=null){
+                                        progressDialog.dismiss();
+                                        showErrorDialog(ccAvenueResponse.getMsg());
+                                    }
+                                    progressDialog.dismiss();
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NotNull Call<GetBalance> call, @NotNull Throwable t) {
+                                //showDialog("", t.getMessage());
+                                progressDialog.dismiss();
+                                showErrorDialog(getString(R.string.server_connection_failed));
+
+                            }
+                        });
+                    } else {
+                        showErrorDialog(getString(R.string.internet_fail));
+                    }
+                }
+            });
+
+            dialog.show();
+
         }
     }
 }

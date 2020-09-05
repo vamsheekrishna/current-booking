@@ -76,6 +76,11 @@ public class MyTicketInfo implements Serializable {
     @Expose
     String end_date;
 
+
+    @SerializedName("bus_type_name")
+    @Expose
+    String bus_type_name;
+
     @SerializedName("passenger_details")
     @Expose
     ArrayList<PassengerDetailsModel> passengerDetailsList;
@@ -215,4 +220,11 @@ public class MyTicketInfo implements Serializable {
     public String getEnd_date() { return end_date; }
 
     public void setEnd_date(String end_date) { this.end_date = end_date; }
+    public String getBus_type_name() {
+        return bus_type_name;
+    }
+
+    public void setBus_type_name(String bus_type_name) {
+        this.bus_type_name = bus_type_name;
+    }
 }

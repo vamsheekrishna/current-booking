@@ -116,6 +116,16 @@
             android:gravity="center_horizontal"
             android:textColor="@color/black_color_two"
             android:textSize="13sp" />
+        <TextView
+            android:id="@+id/tv_bus_type_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_horizontal"
+            android:text=""
+            android:textColor="@color/black_color_two"
+            android:textSize="13sp" />
 
         <include
             layout="@layout/bus_start_end_time_journey_hours_view"
@@ -131,7 +141,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_ticket_number_field"
-                style="@style/text_style_medium_bold"
+                style="@style/text_style_medium_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:minHeight="30dp"

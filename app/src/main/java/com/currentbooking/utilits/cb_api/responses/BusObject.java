@@ -13,6 +13,9 @@ public class BusObject implements Serializable {
     @SerializedName("bus_type_cd")
     @Expose
     private String busTypeCD;
+    @SerializedName("bus_type_name")
+    @Expose
+    private String bus_type_name;
     @SerializedName("origin_stop_cd")
     @Expose
     private String originStopCD;
@@ -226,5 +229,13 @@ public class BusObject implements Serializable {
 
     public void setFareAmt(String fareAmt) {
         this.fareAmt = fareAmt;
+    }
+
+    public String getBus_type_name() {
+        return bus_type_name;
+    }
+
+    public void setBus_type_name(String bus_type_name) {
+        this.bus_type_name = bus_type_name;
     }
 }

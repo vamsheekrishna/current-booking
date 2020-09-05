@@ -4,6 +4,7 @@ import com.currentbooking.BuildConfig;
 import com.currentbooking.utilits.cb_api.responses.ChangePasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.ForgotPasswordResponse;
 import com.currentbooking.utilits.cb_api.responses.LoginResponse;
+import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
 import com.currentbooking.utilits.cb_api.responses.RegistrationResponse;
 import com.currentbooking.utilits.cb_api.responses.ResendOTPResponse;
 import com.currentbooking.utilits.cb_api.responses.ResponseUpdateProfile;
@@ -71,4 +72,7 @@ public interface LoginService {
     @FormUrlEncoded
     Call<ValidateOTP> validateMailOTP(@Field("email") String email,
                                   @Field("otp") String otp);
+    @POST(BuildConfig.ADD_MONEY)
+    @FormUrlEncoded
+    Call<RSAKeyResponse> addMoney(@Field("user_id") String userID, @Field("amount") String amount);
 }

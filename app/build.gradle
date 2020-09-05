@@ -52,7 +52,11 @@ android {
             buildConfigField('String', "VALIDATE_TICKET",'"ticket/validate"')
             buildConfigField("String", "VALIDATE_MAIL_OTP", '"login/verifyotp"')
             buildConfigField("String", 'RESEND_MAIL_OTP', '"login/resendotp"')
-            buildConfigField("String", 'ADD_MONEY', '"add/activity_wallet/balance"')
+            buildConfigField("String", 'ADD_MONEY', '"add/wallet/balance"')
+            buildConfigField("String", 'PAYMENT_USING_WALLET', '"book/wallet/ticket"')
+            buildConfigField("String", 'WAlletBalance', '"get/walletbalance"')
+
+
 
         }
         prod {

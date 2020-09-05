@@ -80,6 +80,11 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             approvedViewHolder.tvBusRouteNameField.setText(busRouteName);
             String busRoute = String.format("%s to %s", availableTicket.getFrom_stop(), availableTicket.getTo_stop());
             approvedViewHolder.tvBusRouteField.setText(busRoute);
+            if(availableTicket.getBus_type_name().equalsIgnoreCase("")){
+                approvedViewHolder.tv_bus_type_field.setVisibility(View.GONE);
+            }else{
+                approvedViewHolder.tv_bus_type_field.setText("Bus type: "+availableTicket.getBus_type_name()); }
+            approvedViewHolder.tv_bus_type_field.setText("Bus type: "+availableTicket.getBus_type_name());
             approvedViewHolder.tvJourneyStartTimeField.setText(availableTicket.getStart_time());
             approvedViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
@@ -92,6 +97,10 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             pendingViewHolder.tvBusRouteNameField.setText(busRouteName);
             String busRoute = String.format("%s to %s", availableTicket.getFrom_stop(), availableTicket.getTo_stop());
             pendingViewHolder.tvBusRouteField.setText(busRoute);
+            if(availableTicket.getBus_type_name().equalsIgnoreCase("")){
+                pendingViewHolder.tv_bus_type_field.setVisibility(View.GONE);
+            }else{
+                pendingViewHolder.tv_bus_type_field.setText("Bus type: "+availableTicket.getBus_type_name()); }
             pendingViewHolder.tvJourneyStartTimeField.setText(availableTicket.getStart_time());
             pendingViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
@@ -103,7 +112,10 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String busRouteName = String.format("%s %s", availableTicket.getOperator_name().toUpperCase(), availableTicket.getBus_service_no());
             rejectedViewHolder.tvBusRouteNameField.setText(busRouteName);
             String busRoute = String.format("%s to %s", availableTicket.getFrom_stop(), availableTicket.getTo_stop());
-            rejectedViewHolder.tvBusRouteField.setText(busRoute);
+            if(availableTicket.getBus_type_name().equalsIgnoreCase("")){
+                rejectedViewHolder.tv_bus_type_field.setVisibility(View.GONE);
+            }else{
+                rejectedViewHolder.tv_bus_type_field.setText("Bus type: "+availableTicket.getBus_type_name()); }
             rejectedViewHolder.tvJourneyStartTimeField.setText(availableTicket.getStart_time());
             rejectedViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
@@ -116,6 +128,10 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             expiredViewHolder.tvBusRouteNameField.setText(busRouteName);
             String busRoute = String.format("%s to %s", availableTicket.getFrom_stop(), availableTicket.getTo_stop());
             expiredViewHolder.tvBusRouteField.setText(busRoute);
+            if(availableTicket.getBus_type_name().equalsIgnoreCase("")){
+                expiredViewHolder.tv_bus_type_field.setVisibility(View.GONE);
+            }else{
+                expiredViewHolder.tv_bus_type_field.setText("Bus type: "+availableTicket.getBus_type_name()); }
             expiredViewHolder.tvJourneyStartTimeField.setText(availableTicket.getStart_time());
             expiredViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
@@ -137,11 +153,13 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvJourneyEndTimeField;
         TextView tvJourneyHrsField;
         TextView tvTicketNoField;
+        TextView tv_bus_type_field;
 
         public ApprovedViewHolder(@NonNull View itemView) {
             super(itemView);
             tvBusRouteNameField = itemView.findViewById(R.id.tv_bus_route_name_field);
             tvBusRouteField = itemView.findViewById(R.id.tv_bus_route_field);
+            tv_bus_type_field = itemView.findViewById(R.id.tv_bus_type_field);
             tvJourneyStartTimeField = itemView.findViewById(R.id.tv_bus_journey_start_time_field);
             tvJourneyEndTimeField = itemView.findViewById(R.id.tv_bus_journey_end_time_field);
             tvJourneyHrsField = itemView.findViewById(R.id.tv_bus_journey_hours_field);
@@ -157,12 +175,16 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvJourneyEndTimeField;
         TextView tvJourneyHrsField;
         TextView tvTicketNoField;
+        TextView tv_bus_type_field;
+
 
         public PendingViewHolder(@NonNull View itemView) {
             super(itemView);
             tvExpiresInTimeField = itemView.findViewById(R.id.tv_expires_in_time_field);
             tvBusRouteNameField = itemView.findViewById(R.id.tv_bus_route_name_field);
             tvBusRouteField = itemView.findViewById(R.id.tv_bus_route_field);
+            tv_bus_type_field = itemView.findViewById(R.id.tv_bus_type_field);
+
             tvJourneyStartTimeField = itemView.findViewById(R.id.tv_bus_journey_start_time_field);
             tvJourneyEndTimeField = itemView.findViewById(R.id.tv_bus_journey_end_time_field);
             tvJourneyHrsField = itemView.findViewById(R.id.tv_bus_journey_hours_field);
@@ -175,6 +197,7 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvBusRouteNameField;
         TextView tvBusRouteField;
         TextView tvJourneyStartTimeField;
+        TextView tv_bus_type_field;
         TextView tvJourneyEndTimeField;
         TextView tvJourneyHrsField;
         TextView tvTicketNoField;
@@ -184,6 +207,8 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvExpiresInTimeField = itemView.findViewById(R.id.tv_expires_in_time_field);
             tvBusRouteNameField = itemView.findViewById(R.id.tv_bus_route_name_field);
             tvBusRouteField = itemView.findViewById(R.id.tv_bus_route_field);
+            tv_bus_type_field = itemView.findViewById(R.id.tv_bus_type_field);
+
             tvJourneyStartTimeField = itemView.findViewById(R.id.tv_bus_journey_start_time_field);
             tvJourneyEndTimeField = itemView.findViewById(R.id.tv_bus_journey_end_time_field);
             tvJourneyHrsField = itemView.findViewById(R.id.tv_bus_journey_hours_field);
@@ -194,6 +219,7 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     static class ExpiredViewHolder extends RecyclerView.ViewHolder {
         TextView tvBusRouteNameField;
         TextView tvBusRouteField;
+        TextView tv_bus_type_field;
         TextView tvJourneyStartTimeField;
         TextView tvJourneyEndTimeField;
         TextView tvJourneyHrsField;
@@ -203,6 +229,8 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(itemView);
             tvBusRouteNameField = itemView.findViewById(R.id.tv_bus_route_name_field);
             tvBusRouteField = itemView.findViewById(R.id.tv_bus_route_field);
+            tv_bus_type_field = itemView.findViewById(R.id.tv_bus_type_field);
+
             tvJourneyStartTimeField = itemView.findViewById(R.id.tv_bus_journey_start_time_field);
             tvJourneyEndTimeField = itemView.findViewById(R.id.tv_bus_journey_end_time_field);
             tvJourneyHrsField = itemView.findViewById(R.id.tv_bus_journey_hours_field);

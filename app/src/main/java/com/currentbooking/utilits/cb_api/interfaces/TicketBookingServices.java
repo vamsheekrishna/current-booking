@@ -9,10 +9,12 @@ import com.currentbooking.utilits.cb_api.responses.BusTypeList;
 import com.currentbooking.utilits.cb_api.responses.Concession;
 import com.currentbooking.utilits.cb_api.responses.ConcessionListResponse;
 import com.currentbooking.utilits.cb_api.responses.ConcessionRatesListResponse;
+import com.currentbooking.utilits.cb_api.responses.GetBalance;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.cb_api.responses.RSAKeyResponse;
 import com.currentbooking.utilits.cb_api.responses.TodayTickets;
 import com.currentbooking.utilits.cb_api.responses.UpdateTicketStatus;
+import com.currentbooking.wallet.WalletBalance;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
@@ -74,6 +76,15 @@ public interface TicketBookingServices {
                                    @Field("breakup") String fareDetails,
                                    @Field("user_id") String userID);
 
+    @POST(BuildConfig.PAYMENT_USING_WALLET)
+    @FormUrlEncoded
+    Call<GetBalance> getRSAKeyWallet(@Field("bus_operator") String busOperator,
+                                     @Field("bus_details") String busDetails,
+                                     @Field("passenger_details") String passengerDetails,
+                                     @Field("breakup") String fareDetails,
+                                     @Field("user_id") String userID,
+                                     @Field("amount") String amount);
+
     @POST(BuildConfig.GET_TODAYS_TICKETS)
     @FormUrlEncoded
     Call<TodayTickets> getCurrentBookingTicket(@Field("date") String date,
@@ -104,8 +115,8 @@ public interface TicketBookingServices {
     @FormUrlEncoded
     Call<BusStopResponse> getNearByStopsList(@Field("latitude") double latitude,
                                          @Field("longitude") double longitude);
-
-    @POST(BuildConfig.ADD_MONEY)
+    @POST(BuildConfig.WAlletBalance)
     @FormUrlEncoded
-    Call<RSAKeyResponse> addMoney(@Field("user_id") String userID,@Field("amount") String amount);
+    Call<WalletBalance> getWalletBalance(@Field("user_id") String user_id, @Field("amount") String amount);
+
 }

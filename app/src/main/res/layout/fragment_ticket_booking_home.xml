@@ -28,7 +28,16 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            <TextView
+                android:id="@+id/balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Wallet Balance:"
+                android:layout_gravity="top"
+                android:padding="5dp"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/edit_text_hint"
+                android:textSize="@dimen/edit_text_size" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

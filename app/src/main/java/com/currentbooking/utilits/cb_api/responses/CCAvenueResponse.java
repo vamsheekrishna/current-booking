@@ -14,6 +14,17 @@ public class CCAvenueResponse implements Serializable {
     String booking_date;
     String booking_time;
 
+    public String getBus_type_name() {
+        return bus_type_name;
+    }
+
+    public void setBus_type_name(String bus_type_name) {
+        this.bus_type_name = bus_type_name;
+    }
+
+    String bus_type_name;
+
+
     public String getBos_id() {
         return bos_id;
     }

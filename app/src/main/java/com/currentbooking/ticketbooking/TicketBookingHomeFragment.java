@@ -3,6 +3,7 @@ package com.currentbooking.ticketbooking;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -33,10 +34,14 @@ import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.MyLocation;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.MyViewModelFactory;
+import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
+import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
 import com.currentbooking.utilits.cb_api.responses.BusStopObject;
 import com.currentbooking.utilits.cb_api.responses.BusType;
 import com.currentbooking.utilits.views.BaseFragment;
+import com.currentbooking.wallet.MyWalletBalance;
+import com.currentbooking.wallet.WalletBalance;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -53,11 +58,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TicketBookingHomeFragment extends BaseFragment implements View.OnClickListener, MvvmView.View {
 
     // RecyclerView recyclerView;
     private OnTicketBookingListener mListener;
-    private TextView pickUp, dropPoint;
+    private TextView pickUp, dropPoint,Balance;
     private TicketBookingViewModel ticketBookingModule;
     private View bus_point;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -68,6 +77,12 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private LocationManager locationManager;
     private BusOperator selectedOperatorDetails;
     private BusType selectedBusTypeDetails;
+    MyWalletBalance balance;
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
+
+
+
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -84,6 +99,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mListener = (OnTicketBookingListener) context;
+        sharedpreferences = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+
     }
 
     public static TicketBookingHomeFragment newInstance() {
@@ -221,6 +238,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         view.findViewById(R.id.drop_point_layout_field).setOnClickListener(this);
 
         dropPoint = view.findViewById(R.id.drop_point);
+        Balance = view.findViewById(R.id.balance);
         view.findViewById(R.id.select_bus).setOnClickListener(this);
         ticketBookingModule.getBusTypes().observe(getActivity(), busTypes -> {
 
@@ -299,6 +317,36 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         ticketBookingModule.getSelectedBusType().observe(getActivity(), busType -> {
             if (null != busType && null != busType.getBusTypeName() && busType.getBusTypeName().length() > 0) {
                 //selectBusType.setText(busType.getBusTypeName());
+            }
+        });
+
+        TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+        ticketBookingService.getWalletBalance(MyProfile.getInstance().getUserId(),"").enqueue(new Callback<WalletBalance>() {
+            @Override
+            public void onResponse(Call<WalletBalance> call, Response<WalletBalance> response) {
+                WalletBalance data = response.body();
+                if(response.isSuccessful()) {
+                    assert data != null;
+                    if(data.getStatus().equalsIgnoreCase("success")) {
+                        assert response.body() != null;
+                        balance = response.body().getAvailableBalance();
+                        Balance.setText("My Wallet Balance: "+balance.getwallet_balance());
+                        editor = sharedpreferences.edit();
+                        editor.putString("balance", balance.getwallet_balance());
+                        editor.apply();
+                    } else {
+                        showDialog("", data.getMsg());
+                        progressDialog.dismiss();
+                    }
+                } else {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WalletBalance> call, Throwable t) {
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
             }
         });
     }

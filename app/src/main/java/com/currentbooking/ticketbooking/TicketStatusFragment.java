@@ -139,6 +139,13 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
         view.findViewById(R.id.btn_success_go_to_home_field).setOnClickListener(v -> paymentSuccessHomeBtnSelected());
 
         ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
+        if(ccAvenueResponse.getBus_type_name().equalsIgnoreCase("")){
+            ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText("NA");
+
+        }else {
+            ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(ccAvenueResponse.getBus_type_name());
+        }
+
         ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText(ccAvenueResponse.getFare());
         ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText(ccAvenueResponse.getService_charge());
         ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());
