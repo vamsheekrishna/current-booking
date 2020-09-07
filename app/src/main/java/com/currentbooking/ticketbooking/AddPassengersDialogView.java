@@ -152,6 +152,7 @@ public class AddPassengersDialogView extends DialogFragment {
     }
 
     private void addConcessionScreen() {
+        Utils.hideKeyBoard(requireActivity(), tvConcessionTypeField);
         ConcessionTypeSelectionDialog concessionTypeSelectionDialog = ConcessionTypeSelectionDialog.getInstance(selectedPersonType, concessionsTypeList);
         concessionTypeSelectionDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof Concession) {
@@ -171,6 +172,7 @@ public class AddPassengersDialogView extends DialogFragment {
     }
 
     private void addPassengerSelected() {
+        Utils.hideKeyBoard(requireActivity(), tvConcessionTypeField);
         String name = etNameField.getText().toString().trim();
         if(TextUtils.isEmpty(name)) {
             etNameField.setError(getString(R.string.name_cannot_be_empty));
@@ -185,10 +187,6 @@ public class AddPassengersDialogView extends DialogFragment {
         selectedConcessionDetails.setPersonType(selectedPersonType);
         callBackInterface.callBackReceived(selectedConcessionDetails);
         closeDialog();
-    }
-
-    private void showErrorMessage(String message) {
-        DialogUtility.getOKDialog(requireActivity(), getString(R.string.message), message);
     }
 
     private void closeDialog() {

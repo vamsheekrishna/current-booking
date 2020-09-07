@@ -66,7 +66,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
 
     // RecyclerView recyclerView;
     private OnTicketBookingListener mListener;
-    private TextView pickUp, dropPoint,Balance;
+    private TextView pickUp, dropPoint, balanceField;
     private TicketBookingViewModel ticketBookingModule;
     private View bus_point;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -77,12 +77,8 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private LocationManager locationManager;
     private BusOperator selectedOperatorDetails;
     private BusType selectedBusTypeDetails;
-    MyWalletBalance balance;
-    SharedPreferences sharedpreferences;
-    SharedPreferences.Editor editor;
-
-
-
+    private SharedPreferences sharedpreferences;
+    private SharedPreferences.Editor editor;
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -238,29 +234,56 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         view.findViewById(R.id.drop_point_layout_field).setOnClickListener(this);
 
         dropPoint = view.findViewById(R.id.drop_point);
-        Balance = view.findViewById(R.id.balance);
+        balanceField = view.findViewById(R.id.balance);
         view.findViewById(R.id.select_bus).setOnClickListener(this);
         ticketBookingModule.getBusTypes().observe(getActivity(), busTypes -> {
 
         });
 
         ticketBookingModule.getSelectedPickUpPoint().observe(getActivity(), busPoint -> {
-            pickUp.setText(busPoint.getStopName());
+            String stopName = busPoint.getStopName();
+            if (!TextUtils.isEmpty(stopName)) {
+                pickUp.setText(stopName);
+            }
+
+            BusStopObject pickupPointDetails = ticketBookingModule.getSelectedPickUpPoint().getValue();
+            BusStopObject dropPointDetails = ticketBookingModule.getSelectedDropPoint().getValue();
+            if (pickupPointDetails != null && dropPointDetails != null) {
+                String pickupStopCode = pickupPointDetails.getStopCode();
+                String dropPointStopCode = dropPointDetails.getStopCode();
+                if (!TextUtils.isEmpty(pickupStopCode) && !TextUtils.isEmpty(dropPointStopCode)) {
+                    selectBusTypeLayoutField.setVisibility(View.VISIBLE);
+                } else {
+                    selectBusTypeLayoutField.setVisibility(View.GONE);
+                }
+            } else {
+                selectBusTypeLayoutField.setVisibility(View.GONE);
+            }
         });
 
         ticketBookingModule.getSelectedDropPoint().observe(getActivity(), busPoint -> {
             String stopName = busPoint.getStopName();
             if (!TextUtils.isEmpty(stopName)) {
                 dropPoint.setText(stopName);
-                selectBusTypeLayoutField.setVisibility(View.VISIBLE);
+            }
+            BusStopObject pickupPointDetails = ticketBookingModule.getSelectedPickUpPoint().getValue();
+            BusStopObject dropPointDetails = ticketBookingModule.getSelectedDropPoint().getValue();
+            if (pickupPointDetails != null && dropPointDetails != null) {
+                String pickupStopCode = pickupPointDetails.getStopCode();
+                String dropPointStopCode = dropPointDetails.getStopCode();
+                if (!TextUtils.isEmpty(pickupStopCode) && !TextUtils.isEmpty(dropPointStopCode)) {
+                    selectBusTypeLayoutField.setVisibility(View.VISIBLE);
+                } else {
+                    selectBusTypeLayoutField.setVisibility(View.GONE);
+                }
+            } else {
+                selectBusTypeLayoutField.setVisibility(View.GONE);
             }
         });
 
         ticketBookingModule.getBusOperators().observe(requireActivity(), busOperators -> {
             if (busOperators != null && !busOperators.isEmpty()) {
-                List<Object> busOperatorList = new ArrayList<>();
-               // busOperatorList.add(getString(R.string.select_transport));
-                busOperatorList.addAll(busOperators);
+                List<Object> busOperatorList = new ArrayList<>(busOperators);
                 CustomSpinnerAdapter busOperatorsSpinnerAdapter = new CustomSpinnerAdapter(requireActivity(), busOperatorList);
                 selectTransportSpinnerField.setAdapter(busOperatorsSpinnerAdapter);
             }
@@ -323,29 +346,31 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
         ticketBookingService.getWalletBalance(MyProfile.getInstance().getUserId(),"").enqueue(new Callback<WalletBalance>() {
             @Override
-            public void onResponse(Call<WalletBalance> call, Response<WalletBalance> response) {
-                WalletBalance data = response.body();
-                if(response.isSuccessful()) {
-                    assert data != null;
-                    if(data.getStatus().equalsIgnoreCase("success")) {
-                        assert response.body() != null;
-                        balance = response.body().getAvailableBalance();
-                        Balance.setText("My Wallet Balance: "+balance.getwallet_balance());
-                        editor = sharedpreferences.edit();
-                        editor.putString("balance", balance.getwallet_balance());
-                        editor.apply();
-                    } else {
-                       // showDialog("", data.getMsg());
-                        progressDialog.dismiss();
+            public void onResponse(@NotNull Call<WalletBalance> call, @NotNull Response<WalletBalance> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        WalletBalance data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase("success")) {
+                                WalletBalance responseDetails = response.body();
+                                if (responseDetails != null) {
+                                    MyWalletBalance walletBalanceDetails = responseDetails.getAvailableBalance();
+                                    String walletBalanceText = String.format("%s : %s", getString(R.string.my_wallet_balance), walletBalanceDetails.getwallet_balance());
+                                    balanceField.setText(walletBalanceText);
+                                    editor = sharedpreferences.edit();
+                                    editor.putString("balance", walletBalanceDetails.getwallet_balance());
+                                    editor.apply();
+                                }
+                            }
+                        }
                     }
-                } else {
+                } finally {
                     progressDialog.dismiss();
                 }
             }
 
             @Override
-            public void onFailure(Call<WalletBalance> call, Throwable t) {
-               // showDialog("", t.getMessage());
+            public void onFailure(@NotNull Call<WalletBalance> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
             }
         });

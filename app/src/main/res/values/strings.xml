@@ -175,5 +175,6 @@
 
     <string name="amount_should_greater_than_zero">Amount should be greater than 0</string>
     <string name="server_connection_failed">Server not responding please try again !!!</string>
+    <string name="my_wallet_balance">My Wallet Balance</string>
 
 </resources>

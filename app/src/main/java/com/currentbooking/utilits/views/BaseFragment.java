@@ -116,8 +116,8 @@ public class BaseFragment extends Fragment {
             builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton("close", (dialogInterface, i) -> {
-                callBackInterface.callBackReceived(Constants.TAG_SUCCESS);
                 dialogInterface.dismiss();
+                //callBackInterface.callBackReceived(Constants.TAG_SUCCESS);
             });
             AlertDialog alertDialog = builder.create();
             if (!requireActivity().isFinishing()) {

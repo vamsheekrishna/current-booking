@@ -48,9 +48,4 @@ public class CommonUtils {
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
     }
-
-    public static void hideKeyBoard(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
 }

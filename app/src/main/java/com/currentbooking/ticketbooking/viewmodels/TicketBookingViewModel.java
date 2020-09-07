@@ -229,6 +229,7 @@ public class TicketBookingViewModel extends ViewModel {
         busTypes.setValue(new ArrayList<>());
         selectBusType.setValue(new BusType());
     }
+
     public void resetBusPointData() {
         selectedPickUpPoint.setValue(new BusStopObject());
         selectedDropPoint.setValue(new BusStopObject());

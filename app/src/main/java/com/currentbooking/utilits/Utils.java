@@ -1,5 +1,6 @@
 package com.currentbooking.utilits;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -120,5 +123,10 @@ public class Utils {
         canvas.drawBitmap(sbmp, rect, rect, paint);
 
         return output;
+    }
+
+    public static void hideKeyBoard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

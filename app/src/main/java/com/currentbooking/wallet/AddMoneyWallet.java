@@ -78,7 +78,7 @@ public class AddMoneyWallet extends BaseFragment {
         //name.setText("Name:"+billing_name);
         Button btnAddAmountField = view.findViewById(R.id.btn_add_money_field);
         btnAddAmountField.setOnClickListener(v -> {
-            CommonUtils.hideKeyBoard(requireActivity(), btnAddAmountField);
+            Utils.hideKeyBoard(requireActivity(), btnAddAmountField);
             addAmountSelected();
         });
         TicketBookingServices ticketBookingService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);

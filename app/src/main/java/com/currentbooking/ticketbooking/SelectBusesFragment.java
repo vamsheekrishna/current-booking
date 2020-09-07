@@ -3,6 +3,7 @@ package com.currentbooking.ticketbooking;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,12 +43,9 @@ import retrofit2.Response;
 
 public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_BUS_OPERATOR_NAME = "BusOperatorName";
     private static final String ARG_BUS_TYPE_NAME = "BusTypeName";
 
-    // TODO: Rename and change types of parameters
     private TicketBookingViewModel ticketBookingModule;
     private SelectBusesAdapter selectBusesAdapter;
     private RecyclerView busesResultListField;
@@ -111,12 +109,19 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
         //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
 
-        progressDialog.show();
-        TicketBookingServices busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-        busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode();
+
         //busTypeName =  Objects.requireNonNull(Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeCD());
 
+        return dataBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if(NetworkUtility.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            TicketBookingServices busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
+            busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode();
             busListService.getAvailableBusList(busOperatorName,
                     busTypeName,
                     Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
@@ -151,14 +156,10 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
                     progressDialog.dismiss();
                 }
             });
-        } else {
-            showCloseDialog(getString(R.string.internet_fail));
         }
-
-        return dataBinding.getRoot();
     }
 
-   /* private void setDummyData() {
+    /* private void setDummyData() {
         ArrayList<BusObject> busesList = new ArrayList<>();
         BusObject busObject = new BusObject();
 
@@ -203,7 +204,13 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
     }
 
     private void showCloseDialog(String message) {
-        showDialog(getString(R.string.message), message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+        showDialog(getString(R.string.message), message, new CallBackInterface() {
+            @Override
+            public void callBackReceived(Object pObject) {
+                Log.d("BhuvanMithileshVidhita", "show closed dialog");
+                //requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
     @Override
