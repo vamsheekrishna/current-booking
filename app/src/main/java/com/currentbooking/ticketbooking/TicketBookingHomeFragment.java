@@ -34,6 +34,7 @@ import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.MyLocation;
 import com.currentbooking.utilits.MyProfile;
 import com.currentbooking.utilits.MyViewModelFactory;
+import com.currentbooking.utilits.NetworkUtility;
 import com.currentbooking.utilits.cb_api.RetrofitClientInstance;
 import com.currentbooking.utilits.cb_api.interfaces.TicketBookingServices;
 import com.currentbooking.utilits.cb_api.responses.BusOperator;
@@ -394,19 +395,26 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                     public void onAnimationEnd(Animation animation) {
                         BusStopObject pickupPointDetails = ticketBookingModule.getSelectedPickUpPoint().getValue();
                         BusStopObject dropPointDetails = ticketBookingModule.getSelectedDropPoint().getValue();
-                        ticketBookingModule.getSelectedDropPoint().setValue(pickupPointDetails);
-                        ticketBookingModule.getSelectedPickUpPoint().setValue(dropPointDetails);
+                        BusStopObject tempDetails = pickupPointDetails;
+                        pickupPointDetails = dropPointDetails;
+                        dropPointDetails = tempDetails;
 
-                        if(dropPointDetails != null) {
-                            pickUp.setText(dropPointDetails.getStopName());
-                        } else {
-                            pickUp.setText("");
-                        }
+                        ticketBookingModule.getSelectedPickUpPoint().setValue(pickupPointDetails);
+                        ticketBookingModule.getSelectedDropPoint().setValue(dropPointDetails);
+                        if(dropPointDetails != null && pickupPointDetails != null) {
+                            String dropPointStopCode = dropPointDetails.getStopCode();
+                            if(!TextUtils.isEmpty(dropPointStopCode)) {
+                                dropPoint.setText(dropPointDetails.getStopName());
+                            } else {
+                                dropPoint.setText("");
+                            }
 
-                        if(pickupPointDetails != null) {
-                            dropPoint.setText(pickupPointDetails.getStopName());
-                        } else {
-                            dropPoint.setText("");
+                            String pickUpPointStopCode = pickupPointDetails.getStopCode();
+                            if(!TextUtils.isEmpty(pickUpPointStopCode)) {
+                                pickUp.setText(pickupPointDetails.getStopName());
+                            } else {
+                                pickUp.setText("");
+                            }
                         }
                     }
 
@@ -430,27 +438,32 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 mListener.gotoBusStopSelect(3, latitude, longitude);
                 break;
             case R.id.select_bus:
-                if (ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length() > 1 &&
-                        Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode() != null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length() > 1) {
-                    String pickupPointStopCode = ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode();
-                    String dropPointStopCode = ticketBookingModule.getSelectedDropPoint().getValue().getStopCode();
-                    String busTypeCd = "";
-                    if (selectedBusTypeDetails != null) {
-                        busTypeCd = selectedBusTypeDetails.getBusTypeCD();
-                    }
-                    if(TextUtils.isEmpty(busTypeCd)) {
-                        busTypeCd = "";
-                    }
-                    if (!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
-                       // mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), busTypeCd);
-                        mListener.gotoSelectBus("MSRTC", busTypeCd);
-
+                if (NetworkUtility.isNetworkConnected(requireActivity())) {
+                    if (ticketBookingModule.getSelectedPickUpPoint().getValue() != null && ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode().length() > 1 &&
+                            Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode() != null && ticketBookingModule.getSelectedDropPoint().getValue().getStopCode().length() > 1) {
+                        String pickupPointStopCode = ticketBookingModule.getSelectedPickUpPoint().getValue().getStopCode();
+                        String dropPointStopCode = ticketBookingModule.getSelectedDropPoint().getValue().getStopCode();
+                        String busTypeCd = "";
+                        if (selectedBusTypeDetails != null) {
+                            busTypeCd = selectedBusTypeDetails.getBusTypeCD();
+                        }
+                        if (TextUtils.isEmpty(busTypeCd)) {
+                            busTypeCd = "";
+                        }
+                        if (!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
+                            mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), busTypeCd);
+                        } else {
+                            showDialog("", "Pickup Point and Drop Point should not be Same.");
+                        }
                     } else {
-                        showDialog("", "Pickup Point and Drop Point should not be Same.");
+                        showDialog("", "Please enter your travel details.");
                     }
                 } else {
-                    showDialog("", "Please enter your travel details.");
+                    showDialog(getString(R.string.internet_fail));
                 }
+                break;
+            default:
+                break;
         }
     }
 }
