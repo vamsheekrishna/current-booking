@@ -18,6 +18,7 @@ import com.currentbooking.ticketbooking.viewmodels.TicketBookingViewModel;
 import com.currentbooking.utilits.DateUtilities;
 import com.currentbooking.utilits.MvvmView;
 import com.currentbooking.utilits.MyViewModelFactory;
+import com.currentbooking.utilits.Utils;
 import com.currentbooking.utilits.cb_api.responses.BusObject;
 import com.currentbooking.utilits.cb_api.responses.GetFareResponse;
 import com.currentbooking.utilits.views.BaseFragment;
@@ -103,7 +104,7 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
         String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getReqTillStopNM());
         String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
         ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
-        ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);
+        ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBus_type_name());
 
         Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busDetails.getOriginDateTime());
         Calendar journeyEndCalendar = DateUtilities.getCalendarFromDate(busDetails.getLastStopDateTime());
@@ -174,6 +175,11 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
     }
 
     private void confirmSelected() {
+        int amountValue = Utils.getIntegerValueFromString((mFareDetails.getFare()));
+        if(amountValue>0)
         mListener.gotoPayment(passengerDetails, mFareDetails);
+        else{
+            showDialog("Can not booked ticket with zero fare");
+        }
     }
 }

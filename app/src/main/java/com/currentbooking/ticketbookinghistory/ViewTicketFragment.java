@@ -61,6 +61,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     private LinearLayout qrBaseView;
     private TextView tvBookingStatusField;
     private TextView tvBusRouteNameField;
+    private TextView tv_bus_type_field;
     private TextView tvBusRouteField;
     private TextView tvJourneyStartTimeField;
     private TextView tvJourneyEndTimeField;
@@ -68,6 +69,10 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
     private TextView tvTotalPersonsFareField;
     private TextView tvServiceChargeOrGstField;
     private TextView tvTotalUpdatedFareField;
+    private TextView tv_ticket_time_field;
+    private TextView tv_ticket_date_field;
+    private TextView transction_id;
+
     private RecyclerView passengerListRecyclerField;
 
     public ViewTicketFragment() {
@@ -123,6 +128,12 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
                 R.drawable.recycler_decoration_divider)));
         passengerListRecyclerField.addItemDecoration(divider);
         tvBusRouteNameField = view.findViewById(R.id.tv_route_name_field);
+        tv_bus_type_field = view.findViewById(R.id.tv_bus_type_field);
+        tv_ticket_date_field = view.findViewById(R.id.tv_ticket_date_field);
+        transction_id = view.findViewById(R.id.transction_id);
+
+
+        tv_ticket_time_field = view.findViewById(R.id.tv_ticket_time_field);
         tvBusRouteField = view.findViewById(R.id.tv_bus_route_field);
         tvJourneyStartTimeField = view.findViewById(R.id.tv_bus_journey_start_time_field);
         tvJourneyEndTimeField = view.findViewById(R.id.tv_bus_journey_end_time_field);
@@ -130,7 +141,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
 
         tvTotalPersonsFareField = view.findViewById(R.id.tv_total_persons_bus_fare_price_field);
 
-        tvServiceChargeOrGstField = view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field);
+       // tvServiceChargeOrGstField = view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field);
         tvTotalUpdatedFareField = view.findViewById(R.id.tv_total_persons_total_fare_field);
         tvBookingStatusField = view.findViewById(R.id.tv_booking_status_field);
 
@@ -145,8 +156,11 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
 
         String busRoute = String.format("%s to %s", busTicketDetails.getFrom_stop(), busTicketDetails.getTo_stop());
         tvBusRouteField.setText(busRoute);
-        tvJourneyStartTimeField.setText(busTicketDetails.getStart_time());
         tvJourneyEndTimeField.setText(busTicketDetails.getDrop_time());
+        tvJourneyStartTimeField.setText(busTicketDetails.getStart_time());
+        tv_bus_type_field.setText(busTicketDetails.getBus_type_name());
+        tv_ticket_time_field.setText("  Time: "+busTicketDetails.getTicket_time());
+        tv_ticket_date_field.setText("Date: "+busTicketDetails.getTicket_date());
         String journeyHrs = String.format("%s Hrs", busTicketDetails.getHours());
         tvJourneyHrsField.setText(journeyHrs);
 
@@ -160,9 +174,9 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         double totalFare = Utils.getDoubleValueFromString(busTicketDetails.getTotal());
         double serviceCharge = Utils.getDoubleValueFromString(busTicketDetails.getServiceCharge());
         double actualFare = totalFare - serviceCharge;
-        tvServiceChargeOrGstField.setText(busTicketDetails.getServiceCharge());
+      //  tvServiceChargeOrGstField.setText(busTicketDetails.getServiceCharge());
         tvTotalPersonsFareField.setText(String.format(Locale.getDefault(), "%.2f", actualFare));
-
+        transction_id.setText(busTicketDetails.getBosID());
         String ticketStatus = busTicketDetails.getTicket_status();
         updateTicketStatus(ticketStatus);
     }

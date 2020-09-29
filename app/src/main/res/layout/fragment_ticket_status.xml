@@ -72,7 +72,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/ticket_number"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:textColor="@color/red_three" />
 
                         <TextView
@@ -80,7 +80,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/colon"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:textColor="@color/red_three" />
 
                         <TextView
@@ -88,7 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:fontFamily="@font/opensans_regular"
                             android:textColor="@color/red_three" />
                     </LinearLayout>
@@ -98,7 +98,6 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="10dp"
-                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView
@@ -106,7 +105,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/bus_type"
-                            android:textSize="16dp"
+                            android:textSize="16sp"
                             android:textColor="@color/black_color_two" />
 
                         <TextView
@@ -114,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_regular"
                             android:text="@string/colon"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:textColor="@color/black_color_two" />
 
                         <TextView
@@ -122,7 +121,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:textSize="20dp"
+                            android:textSize="16sp"
+                            android:text=""
                             android:fontFamily="@font/opensans_regular"
                             android:textColor="@color/black_color_two" />
                     </LinearLayout>
@@ -379,7 +379,7 @@
                 android:textColor="@color/white"
                 android:maxLines="1"
                 android:textSize="14sp"
-                app:backgroundTint="@color/edit_text_border_color" />
+                app:backgroundTint="@color/red_two" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

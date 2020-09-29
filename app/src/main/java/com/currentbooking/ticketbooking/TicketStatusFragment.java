@@ -139,11 +139,11 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
         view.findViewById(R.id.btn_success_go_to_home_field).setOnClickListener(v -> paymentSuccessHomeBtnSelected());
 
         ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
-        if(ccAvenueResponse.getBus_type_name().equalsIgnoreCase("")){
+        if(busDetails.getBus_type_name().equalsIgnoreCase("")){
             ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText("NA");
 
         }else {
-            ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(ccAvenueResponse.getBus_type_name());
+            ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBus_type_name());
         }
 
         ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText(ccAvenueResponse.getFare());
@@ -176,7 +176,6 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
         if(busDetails != null) {
             String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
             ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
-            ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);
 
             String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getReqTillStopNM());
             Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busDetails.getOriginDateTime());

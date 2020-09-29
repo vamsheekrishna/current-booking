@@ -8,6 +8,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Choose payment option"
+            style="@style/text_style_medium_bold"
+            />
         <Button
             android:id="@+id/using_wallet"
             android:layout_width="200dp"
@@ -24,7 +30,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@color/colorPrimary"
-            android:text="Net Banking"
+            android:text="Online Payment"
             android:textColor="#FFF" />
     </LinearLayout>
 </LinearLayout>

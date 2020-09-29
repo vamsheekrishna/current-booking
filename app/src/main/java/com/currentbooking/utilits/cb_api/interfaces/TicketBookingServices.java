@@ -74,7 +74,9 @@ public interface TicketBookingServices {
                                    @Field("bus_details") String busDetails,
                                    @Field("passenger_details") String passengerDetails,
                                    @Field("breakup") String fareDetails,
-                                   @Field("user_id") String userID);
+                                   @Field("user_id") String userID,
+                                   @Field("amount") String amount
+    );
 
     @POST(BuildConfig.PAYMENT_USING_WALLET)
     @FormUrlEncoded

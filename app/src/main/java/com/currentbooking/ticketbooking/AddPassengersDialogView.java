@@ -137,9 +137,21 @@ public class AddPassengersDialogView extends DialogFragment {
 
     private void setAgeLimit(Concession concessionDetails) {
         if (concessionDetails != null) {
-            numberPickerField.setValue(Utils.getIntegerValueFromString(concessionDetails.getMinAgeLimit()));
-            numberPickerField.setMinValue(Utils.getIntegerValueFromString(concessionDetails.getMinAgeLimit()));
-            numberPickerField.setMaxValue(Utils.getIntegerValueFromString(concessionDetails.getMaxAgeLimit()));
+            if(concessionDetails.getConcessionCD().equalsIgnoreCase("CT")) {
+                numberPickerField.setValue(Utils.getIntegerValueFromString(concessionDetails.getMinAgeLimit()));
+                numberPickerField.setMinValue(Utils.getIntegerValueFromString(concessionDetails.getMinAgeLimit()));
+                numberPickerField.setMaxValue(Utils.getIntegerValueFromString(concessionDetails.getMaxAgeLimit()));
+            }else{
+                if (selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
+                    numberPickerField.setValue(Utils.getIntegerValueFromString("18"));
+                    numberPickerField.setMinValue(Utils.getIntegerValueFromString("13"));
+                    numberPickerField.setMaxValue(Utils.getIntegerValueFromString("120"));
+                }else{
+                    numberPickerField.setValue(Utils.getIntegerValueFromString("5"));
+                    numberPickerField.setMinValue(Utils.getIntegerValueFromString("5"));
+                    numberPickerField.setMaxValue(Utils.getIntegerValueFromString("11"));
+                }
+            }
         } else {
             if (selectedPersonType.equalsIgnoreCase(getString(R.string.adult))) {
                 numberPickerField.setMinValue(Utils.getIntegerValueFromString(busOperatorDetails.getAdultMinAge()));

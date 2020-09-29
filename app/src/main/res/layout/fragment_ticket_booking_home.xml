@@ -49,9 +49,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/user_thumb" />
+                    android:src="@drawable/state" />
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/select_transport_spinner"

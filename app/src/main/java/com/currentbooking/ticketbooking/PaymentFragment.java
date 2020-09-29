@@ -3,7 +3,10 @@ package com.currentbooking.ticketbooking;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,12 +17,14 @@ import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.currentbooking.R;
@@ -116,6 +121,14 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
         webview = view.findViewById(R.id.web_view);
 
         webview.getSettings().setJavaScriptEnabled(true);
+        if (Build.VERSION.SDK_INT >= 19) {
+            webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
+        else {
+            webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
         webview.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT"); // javaScriptInterface
         webview.setWebViewClient(new WebViewClient() {
             @Override
@@ -201,7 +214,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
             showErrorDialog(getString(R.string.internet_fail));
         }*/
         ViewDialog alert = new ViewDialog();
-        alert.showDialog(requireActivity());
+        alert.showDialogg(requireActivity());
     }
 
     private void showErrorDialog(String message) {
@@ -211,6 +224,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
     private void loadWebView() {
         try {
             /* An instance of this class will be registered as a JavaScript interface */
+            progressDialog.show();
             StringBuilder params = new StringBuilder();
             String access_code, merchant_id, redirect_url, cancel_url, billing_country, merchant_param1, merchant_param2,
                     billing_name, billing_email, billing_tel, encVal = "";
@@ -249,8 +263,10 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
 
             String vTransUrl = ("https://test.ccavenue.com/transaction/initTrans");
             webview.postUrl(vTransUrl, vPostParams.getBytes(StandardCharsets.UTF_8));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
+             progressDialog.dismiss();
         } catch (Exception e) {
             showErrorDialog(e.getMessage());
+            progressDialog.dismiss();
         }
     }
 
@@ -270,7 +286,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                 Log.d("JsonObject", "html: " + html);
                 mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
             }else{
-                showDialog(getString(R.string.message), "Transaction Failed", pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+                showdailog_back("Transaction Failed");
 
             }
 
@@ -285,7 +301,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
 
     public class ViewDialog {
 
-        public void showDialog(Activity activity) {
+        public void showDialogg(Activity activity) {
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
@@ -313,7 +329,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                         listType = new TypeToken<GetFareResponse.FareDetails>() {
                         }.getType();
                         // String fareDetails = gson.toJson(mFareDetails, listType);
-                        ticketBookingService.getRSAKey(busOperator, selectedBus, mFareDetails.getPassengerDetails(), mFareDetails.getBreakup(), MyProfile.getInstance().getUserId()).enqueue(new Callback<RSAKeyResponse>() {
+                        ticketBookingService.getRSAKey(busOperator, selectedBus, mFareDetails.getPassengerDetails(), mFareDetails.getBreakup(), MyProfile.getInstance().getUserId(),mFareDetails.getFare()).enqueue(new Callback<RSAKeyResponse>() {
                             @Override
                             public void onResponse(@NotNull Call<RSAKeyResponse> call, @NotNull Response<RSAKeyResponse> response) {
                                 progressDialog.dismiss();
@@ -322,15 +338,19 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                                     if (data != null) {
                                         if (data.getStatus().equalsIgnoreCase("success")) {
                                             rsaKeyObject = data.getData();
+                                            progressDialog.show();
                                             loadWebView();
                                         } else {
-                                            showErrorDialog(data.getMsg());
+                                            showdailog_back(data.getMsg());
                                         }
                                     } else {
-                                        showErrorDialog(getString(R.string.payment_failed_description));
+                                        showdailog_back(getString(R.string.payment_failed_description));
+
+
                                     }
                                 } else {
-                                    showErrorDialog(getString(R.string.payment_failed_description));
+                                    showdailog_back(getString(R.string.payment_failed_description));
+
                                 }
                             }
 
@@ -338,7 +358,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                             public void onFailure(@NotNull Call<RSAKeyResponse> call, @NotNull Throwable t) {
                                 //showDialog("", t.getMessage());
                                 progressDialog.dismiss();
-                                showErrorDialog(getString(R.string.payment_failed_description));
+                                showdailog_back(getString(R.string.server_connection_failed));
 
                             }
                         });
@@ -381,18 +401,24 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                                             mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
                                         }else{
                                             progressDialog.dismiss();
-                                            showErrorDialog(data.getMsg());
+                                            showdailog_back(data.getMsg());
+
                                         }
 
                                     }else{
                                         progressDialog.dismiss();
-                                        showErrorDialog(getString(R.string.payment_failed_description));
+                                        showdailog_back(getString(R.string.payment_failed_description));
+
                                     }
                                 }
                                 else {
                                     if(data!=null){
                                         progressDialog.dismiss();
-                                        showErrorDialog(ccAvenueResponse.getMsg());
+                                        showdailog_back(ccAvenueResponse.getMsg());
+
+                                    }else{
+                                        showdailog_back(getString(R.string.server_connection_failed));
+
                                     }
                                     progressDialog.dismiss();
 
@@ -403,7 +429,7 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
                             public void onFailure(@NotNull Call<GetBalance> call, @NotNull Throwable t) {
                                 //showDialog("", t.getMessage());
                                 progressDialog.dismiss();
-                                showErrorDialog(getString(R.string.server_connection_failed));
+                                showdailog_back(getString(R.string.server_connection_failed));
 
                             }
                         });
@@ -417,4 +443,32 @@ public class PaymentFragment extends BaseFragment implements View.OnClickListene
 
         }
     }
+    public void showdailog_back(String msg){
+
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setTitle("Message");
+            builder.setMessage(msg);
+            builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(requireActivity(), TicketBookingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    requireActivity().startActivity(intent);
+                    requireActivity().finish();
+                }
+
+
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();}
+
+
+    }
+
 }

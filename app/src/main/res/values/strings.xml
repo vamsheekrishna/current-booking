@@ -65,7 +65,7 @@
     <string name="confirm_payment">Confirm Payment</string>
     <string name="please_enter_your_stop_name">Please enter your stop name</string>
     <string name="booking_successful">Booking Successful</string>
-    <string name="ticket_number">Ticket Number.</string>
+    <string name="ticket_number">Ticket Number</string>
     <string name="bus_type">Bus Type</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
@@ -153,8 +153,8 @@
     <string name="error_address_one">full house address is required</string>
     <string name="error_address_district">The District field is required.</string>
     <string name="error_state">The State field is required.</string>
-    <string name="scan_qr_code">Scan QRCode</string>
-    <string name="show_qr_code">Show QRCode</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="show_qr_code">Show QR Code</string>
     <string name="password_should_be_eight_characters">Password should be 8 character </string>
     <string name="confirm_password_should_be_eight_characters">Confirm Password should be 8 character </string>
     <string name="error_enter_mobile_and_password">enter mobile no and password</string>
@@ -176,5 +176,6 @@
     <string name="amount_should_greater_than_zero">Amount should be greater than 0</string>
     <string name="server_connection_failed">Server not responding please try again !!!</string>
     <string name="my_wallet_balance">My Wallet Balance</string>
+    <string name="ticket_expired_time">180</string>
 
 </resources>

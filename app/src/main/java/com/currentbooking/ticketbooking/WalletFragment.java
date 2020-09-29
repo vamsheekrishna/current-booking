@@ -166,6 +166,8 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
                     if(data.getStatus().equalsIgnoreCase("success")) {
                         assert response.body() != null;
                         rsaKeyObject = response.body().getData();
+                        progressDialog.show();
+
                         loadWebView();
                     } else {
                         showDialog("", data.getMsg());
@@ -202,6 +204,7 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
     private void loadWebView() {
         try {
             /* An instance of this class will be registered as a JavaScript interface */
+            progressDialog.show();
             StringBuffer params = new StringBuffer();
             String access_code, merchant_id, redirect_url, cancel_url, billing_country, merchant_param1, merchant_param2,
             billing_name , billing_email, billing_tel, encVal = "";
@@ -246,8 +249,13 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
             try {
                 String vTransUrl = ("https://test.ccavenue.com/transaction/initTrans");
                 webview.postUrl(vTransUrl, vPostParams.getBytes("UTF-8"));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
+                progressDialog.dismiss();
+
             } catch (Exception e) {
+                progressDialog.dismiss();
+
                 showDialog("", e.getMessage());
+
                 e.printStackTrace();
                 requireActivity().finish();
             }
@@ -255,6 +263,7 @@ public class WalletFragment extends BaseFragment implements View.OnClickListener
             e.printStackTrace();
             showDialog("", e.getMessage());
             requireActivity().finish();
+            progressDialog.dismiss();
         }
     }
 

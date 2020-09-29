@@ -30,6 +30,7 @@ import com.currentbooking.utilits.views.BaseActivity;
 import com.currentbooking.utilits.views.BaseFragment;
 import com.currentbooking.utilits.views.BaseNavigationDrawerActivity;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -44,6 +45,7 @@ public class AddMoneyWallet extends BaseFragment {
     private TextView name,textview_balance;
     private OnWalletListener mListener;
     MyWalletBalance balance;
+    String  current_balance="";
     String limit="";
     public static AddMoneyWallet newInstance() {
         return new AddMoneyWallet();
@@ -92,6 +94,7 @@ public class AddMoneyWallet extends BaseFragment {
                         assert response.body() != null;
                         balance = response.body().getAvailableBalance();
                         textview_balance.setText("Wallet Balance: "+balance.getwallet_balance());
+                        current_balance=balance.getwallet_balance();
                         limit=balance.getLimit();
                     } else {
                         showDialog("", data.getMsg());
@@ -120,10 +123,17 @@ public class AddMoneyWallet extends BaseFragment {
             showDialog(getString(R.string.invalid_amount));
            return;
         }
+        DecimalFormat df = new DecimalFormat("###.#");
 
         int amountValue = Utils.getIntegerValueFromString(amount);
+        int balance = Utils.getIntegerValueFromString(df.format(Double.parseDouble(current_balance)));
+
         int amountValuelimit = Utils.getIntegerValueFromString(limit);
-        if(amountValue >= amountValuelimit) {
+        if(amountValue + balance > amountValuelimit) {
+            showDialog(getString(R.string.Exceed_amount));
+            return;
+        }
+        if(amountValue > amountValuelimit) {
             showDialog(getString(R.string.Exceed_amount));
             return;
         }

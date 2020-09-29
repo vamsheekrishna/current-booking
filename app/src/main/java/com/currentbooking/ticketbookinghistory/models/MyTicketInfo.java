@@ -80,6 +80,9 @@ public class MyTicketInfo implements Serializable {
     @SerializedName("bus_type_name")
     @Expose
     String bus_type_name;
+    @SerializedName("ticket_time")
+    @Expose
+    String ticket_time;
 
     @SerializedName("passenger_details")
     @Expose
@@ -226,5 +229,13 @@ public class MyTicketInfo implements Serializable {
 
     public void setBus_type_name(String bus_type_name) {
         this.bus_type_name = bus_type_name;
+    }
+
+    public String getTicket_time() {
+        return ticket_time;
+    }
+
+    public void setTicket_time(String ticket_time) {
+        this.ticket_time = ticket_time;
     }
 }
