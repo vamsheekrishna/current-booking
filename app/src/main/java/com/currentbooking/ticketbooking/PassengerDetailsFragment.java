@@ -154,7 +154,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
 
         String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
         ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
-        ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busType);
+        ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBus_type_name());
 
         ticketBookingModule.getConcessionLiveData().observe(Objects.requireNonNull(getActivity()), concessions -> {
             if (concessions != null && !concessions.isEmpty()) {

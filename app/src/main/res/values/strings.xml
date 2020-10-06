@@ -70,7 +70,7 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="fare">Fare</string>
-    <string name="service_charge_or_gst">Service Charge/GST</string>
+    <string name="service_charge_or_gst">Service Charge</string>
     <string name="total_fare">Total Fare</string>
     <string name="book_again">Book Again</string>
     <string name="go_to_home">Go To Home</string>

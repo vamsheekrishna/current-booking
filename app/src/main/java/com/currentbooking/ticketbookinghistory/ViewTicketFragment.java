@@ -150,7 +150,9 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
 
     private void updateViewTicketsUI() {
         String busRouteName = String.format("%s %s", busTicketDetails.getOperator_name().toUpperCase(), busTicketDetails.getBus_service_no());
-        String ticketNo = String.format("%s %s", getString(R.string.ticket_number), busTicketDetails.getTicket_no());
+        String spittedvalue[]= busTicketDetails.getTicket_no().split("-");
+        String ticketNo = String.format("%s %s", getString(R.string.ticket_number),spittedvalue[1]);
+
         String busRouteAndTicketNo = String.format("%s\n%s", busRouteName, ticketNo);
         tvBusRouteNameField.setText(busRouteAndTicketNo);
 

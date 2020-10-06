@@ -125,7 +125,7 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
         TextView tvFareField = view.findViewById(R.id.tv_fare_field);
         tvFareField.setText(mFareDetails.getFare());
         TextView tvTaxesFareField = view.findViewById(R.id.tv_service_charge_or_gst_field);
-        tvTaxesFareField.setText(mFareDetails.getServiceCharge());
+        tvTaxesFareField.setText(mFareDetails.getServiceCharge()+" %");
         TextView tvPassengersDetailsField = view.findViewById(R.id.tv_passengers_details_field);
 
         int adultsCount = mFareDetails.getTotalAdultSeat();

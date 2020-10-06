@@ -142,7 +142,7 @@ public class BookingHistoryTicketFragment extends BaseFragment {
                             ArrayList<MyTicketInfo> data = todayTickets.getAvailableTickets();
                             if (null != data && data.size() > 0) {
                                 for (MyTicketInfo myTicketInfo : data) {
-                                    if (myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)) {
+                                    if (myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED)|| myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_APPROVED)) {
                                         ticketsHistoryList.add(myTicketInfo);
                                     }
                                 }

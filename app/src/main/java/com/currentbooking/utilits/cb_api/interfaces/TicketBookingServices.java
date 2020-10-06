@@ -52,7 +52,8 @@ public interface TicketBookingServices {
 
     @POST(BuildConfig.CONCESSION_LIST)
     @FormUrlEncoded
-    Call<ConcessionListResponse> getConcessionList(@Field("operator") String operator);
+    Call<ConcessionListResponse> getConcessionList(@Field("operator") String operator,
+                                                   @Field("bus_type") String bus_type);
 
     @POST(BuildConfig.CONCESSION_RATE_LIST)
     @FormUrlEncoded

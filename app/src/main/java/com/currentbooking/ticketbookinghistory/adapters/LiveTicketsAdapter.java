@@ -89,7 +89,10 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             approvedViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             approvedViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
+            String spittedvalue[]= availableTicket.getTicket_no().split("-");
+
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number),spittedvalue[1]);
+
             approvedViewHolder.tvTicketNoField.setText(ticketNo);
         } else if (getItemViewType(position) == LIVE_TICKETS_PENDING) { // pending
             PendingViewHolder pendingViewHolder = (PendingViewHolder) holder;
@@ -105,7 +108,9 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             pendingViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             pendingViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
+            String spittedvalue[]= availableTicket.getTicket_no().split("-");
+
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number),spittedvalue[1]);
             pendingViewHolder.tvTicketNoField.setText(ticketNo);
         } else if (getItemViewType(position) == LIVE_TICKETS_REJECTED) { // rejected
             RejectedViewHolder rejectedViewHolder = (RejectedViewHolder) holder;
@@ -120,7 +125,9 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             rejectedViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             rejectedViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
+            String spittedvalue[]= availableTicket.getTicket_no().split("-");
+
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number),spittedvalue[1]);
             rejectedViewHolder.tvTicketNoField.setText(ticketNo);
         } else { // expired
             ExpiredViewHolder expiredViewHolder = (ExpiredViewHolder) holder;
@@ -136,7 +143,9 @@ public class LiveTicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             expiredViewHolder.tvJourneyEndTimeField.setText(availableTicket.getDrop_time());
             String journeyHrs = String.format("%s Hrs", availableTicket.getHours());
             expiredViewHolder.tvJourneyHrsField.setText(journeyHrs);
-            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number), availableTicket.getTicket_no());
+            String spittedvalue[]= availableTicket.getTicket_no().split("-");
+
+            String ticketNo = String.format("%s %s", context.getString(R.string.ticket_number),spittedvalue[1]);
             expiredViewHolder.tvTicketNoField.setText(ticketNo);
         }
     }

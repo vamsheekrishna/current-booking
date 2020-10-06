@@ -138,7 +138,7 @@ public class TicketBookingViewModel extends ViewModel {
                 String operatorCode = busOperator.getOperatorCode();
                 if (!TextUtils.isEmpty(operatorCode)) {
                     loadingDialog.show();
-                    ticketBookingServices.getBusTypes(operatorCode.toLowerCase()).enqueue(new Callback<BusTypeList>() {
+                    ticketBookingServices.getBusTypes("msrtc").enqueue(new Callback<BusTypeList>() {
                         @Override
                         public void onResponse(@NotNull Call<BusTypeList> call, @NotNull Response<BusTypeList> response) {
                             loadingDialog.dismiss();
@@ -182,9 +182,13 @@ public class TicketBookingViewModel extends ViewModel {
         if (busOperator != null) {
             String operatorCode = busOperator.getOperatorCode();
             if (!TextUtils.isEmpty(operatorCode)) {
-                getConcession(operatorCode);
+                getConcession(operatorCode,"");
             }
         }
+    }
+    public void concessionbaseonbustypr(String bustype){
+        getConcession("msrtc",bustype);
+
     }
 
     public MutableLiveData<ArrayList<Concession>>  getConcessionLiveData() {
@@ -194,8 +198,8 @@ public class TicketBookingViewModel extends ViewModel {
         return concessionList;
     }
 
-    public void getConcession(String selectedOperator) {
-        ticketBookingServices.getConcessionList(selectedOperator).enqueue(new Callback<ConcessionListResponse>() {
+    public void getConcession(String selectedOperator,String bustype) {
+        ticketBookingServices.getConcessionList(selectedOperator,bustype).enqueue(new Callback<ConcessionListResponse>() {
             @Override
             public void onResponse(@NotNull Call<ConcessionListResponse> call, @NotNull Response<ConcessionListResponse> response) {
                 if (response.isSuccessful()) {
@@ -203,6 +207,7 @@ public class TicketBookingViewModel extends ViewModel {
                     if (concessionListResponse != null) {
                         if (concessionListResponse.getStatus().equalsIgnoreCase("success")) {
                             ArrayList<Concession> data = concessionListResponse.getConcessionList().getConcessions();
+
                             concessionList.setValue(data);
                         } else {
                             ArrayList<Concession> data = new ArrayList<>();

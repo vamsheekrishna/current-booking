@@ -173,7 +173,7 @@ public class LiveTicketFragment extends BaseFragment implements View.OnClickList
                                 while (iterator.hasNext()) {
                                     MyTicketInfo myTicketInfo = iterator.next();
                                     if (myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_EXPIRED) ||
-                                            myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_FAILED)) {
+                                            myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_FAILED)||myTicketInfo.getTicket_status().equalsIgnoreCase(Constants.KEY_APPROVED)) {
                                         iterator.remove();
                                     }
                                 }

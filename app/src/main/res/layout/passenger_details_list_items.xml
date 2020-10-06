@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
         android:paddingStart="5dp"
+        android:visibility="gone"
         android:paddingEnd="5dp"
         android:textColor="@color/black_color_two" />
 

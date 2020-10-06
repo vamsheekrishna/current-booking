@@ -111,6 +111,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
         edtSearchText = view.findViewById(R.id.edt_search_text);
         edtSearchText.setFocusable(true);
         edtSearchText.requestFocusFromTouch();
+        ShowSoftKeyboard();
         if (mIndex == 2) {
             edtSearchText.setHint(getString(R.string.select_pick_up_point));
         } else if (mIndex == 3) {
@@ -271,4 +272,10 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
 
         }
     }
+
+    public void ShowSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
 }

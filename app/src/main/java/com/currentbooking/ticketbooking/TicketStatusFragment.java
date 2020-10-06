@@ -137,8 +137,9 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
         view.findViewById(R.id.btn_failed_go_to_home_field).setOnClickListener(v -> paymentFailedHomeBtnSelected());
         view.findViewById(R.id.btn_success_book_another_field).setOnClickListener(v -> paymentSuccessBookAnotherBtnSelected());
         view.findViewById(R.id.btn_success_go_to_home_field).setOnClickListener(v -> paymentSuccessHomeBtnSelected());
-
-        ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(ccAvenueResponse.getTicket_number());
+         String tkt_number= ccAvenueResponse.getTicket_number();
+        String spittedvalue[]=tkt_number.split("-");
+        ((TextView) view.findViewById(R.id.tv_ticket_number_field)).setText(spittedvalue[1]);
         if(busDetails.getBus_type_name().equalsIgnoreCase("")){
             ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText("NA");
 
@@ -147,7 +148,7 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
         }
 
         ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText(ccAvenueResponse.getFare());
-        ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText(ccAvenueResponse.getService_charge());
+        ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText(ccAvenueResponse.getService_charge()+" %");
         ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());
 
         ((TextView) view.findViewById(R.id.date_field)).setText(ccAvenueResponse.getBooking_date());
