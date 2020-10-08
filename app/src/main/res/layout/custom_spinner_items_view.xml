@@ -10,6 +10,6 @@
     android:paddingStart="5dp"
     android:minHeight="40dp"
     android:paddingEnd="5dp"
-    android:textColor="@color/colorAccent">
+    android:textColor="@color/colorPrimary">
 
 </TextView>

@@ -102,7 +102,7 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
 
     private void loadUIComponents(View view) {
         String busRoute = String.format("%s to %s", busDetails.getOriginStopName(), busDetails.getReqTillStopNM());
-        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
+        String busRouteName = String.format("%s %s", "MSRTC", busDetails.getBusServiceNO());
         ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
         ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBus_type_name());
 
@@ -120,10 +120,10 @@ public class ConfirmTicketFragment extends BaseFragment implements MvvmView.View
 
         ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(fareAmount);
         TextView tvTotalFareField = view.findViewById(R.id.tv_total_fare_field);
-        tvTotalFareField.setText(String.valueOf(mFareDetails.getTotal()));
+        tvTotalFareField.setText(String.valueOf("Rs. "+mFareDetails.getTotal()));
 
         TextView tvFareField = view.findViewById(R.id.tv_fare_field);
-        tvFareField.setText(mFareDetails.getFare());
+        tvFareField.setText("Rs. "+mFareDetails.getFare());
         TextView tvTaxesFareField = view.findViewById(R.id.tv_service_charge_or_gst_field);
         tvTaxesFareField.setText(mFareDetails.getServiceCharge()+" %");
         TextView tvPassengersDetailsField = view.findViewById(R.id.tv_passengers_details_field);

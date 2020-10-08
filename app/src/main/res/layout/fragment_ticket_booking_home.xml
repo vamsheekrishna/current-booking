@@ -42,7 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_round_edges"
-                android:minHeight="40dp">
+                android:minHeight="40dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_user_thumb"
@@ -67,13 +68,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="gone" />
+                />
 
             <RelativeLayout
                 android:id="@+id/select_bus_type_layout_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:background="@drawable/edit_text_round_edges"
                 android:minHeight="40dp">
 

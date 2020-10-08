@@ -51,7 +51,7 @@ public class SelectBusesAdapter extends RecyclerView.Adapter<SelectBusesAdapter.
         holder.tvBusRouteField.setText(busRoute);
         holder.tvBusTypeField.setText(busObject.getBus_type_name());
         holder.tvBusFareField.setText(String.format("%s /-", busObject.getFareAmt()));
-        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busObject.getBusServiceNO());
+        String busRouteName = String.format("%s %s", "MSRTC", busObject.getBusServiceNO());
         holder.tvBusRouteNameField.setText(busRouteName);
         holder.btnBookNowField.setTag(busObject);
         Calendar journeyStartCalendar = DateUtilities.getCalendarFromDate(busObject.getOriginDateTime());

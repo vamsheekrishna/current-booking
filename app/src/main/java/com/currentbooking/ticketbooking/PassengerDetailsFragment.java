@@ -109,7 +109,19 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
         // Inflate the select_bus_points for this fragment
         //ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(TicketBookingViewModel.class);
         ticketBookingModule = new ViewModelProvider(Objects.requireNonNull(getActivity()), new MyViewModelFactory(this)).get(TicketBookingViewModel.class);
-        busOperatorDetails = ticketBookingModule.getSelectedBusOperator().getValue();
+
+        busOperatorDetails=new BusOperator();
+        busOperatorDetails.setAdultMaxAge("120");
+        busOperatorDetails.setAdultMinAge("18");
+        busOperatorDetails.setChildMaxAge("12");
+        busOperatorDetails.setChildMinAge("5");
+        busOperatorDetails.setId("1");
+        busOperatorDetails.setOperatorCode("msrtc");
+        busOperatorDetails.setOperatorCode("mct");
+        busOperatorDetails.setValidTill("120");
+        busOperatorDetails.setStatus("success");
+        busOperatorDetails.setMaxTicket("6");
+       // busOperatorDetails = ticketBookingModule.getSelectedBusOperator().getValue();
 
         View view = inflater.inflate(R.layout.fragment_passenger_details, container, false);
 
@@ -152,7 +164,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
             }
         }
 
-        String busRouteName = String.format("%s %s", busOperatorName.toUpperCase(), busDetails.getBusServiceNO());
+        String busRouteName = String.format("%s %s","MSRTC", busDetails.getBusServiceNO());
         ((TextView) view.findViewById(R.id.tv_route_name_field)).setText(busRouteName);
         ((TextView) view.findViewById(R.id.tv_bus_type_field)).setText(busDetails.getBus_type_name());
 
@@ -173,7 +185,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
         ((TextView) view.findViewById(R.id.tv_bus_journey_start_time_field)).setText(startTime);
         ((TextView) view.findViewById(R.id.tv_bus_journey_hours_field)).setText(hoursDifference);
         ((TextView) view.findViewById(R.id.tv_bus_journey_end_time_field)).setText(endTime);
-        String fareAmount = String.format("Rs. %s", busDetails.getFareAmt());
+        String fareAmount = String.format("Rs.  %s", busDetails.getFareAmt());
         ((TextView) view.findViewById(R.id.tv_bus_fare_price_field)).setText(fareAmount);
 
         addPassengerSelected();
@@ -210,7 +222,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
 
             progressDialog.show();
             TicketBookingServices ticketBookingServices = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
-            ticketBookingServices.getFare(Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode(),
+            ticketBookingServices.getFare(Objects.requireNonNull("MSRTC"),
                     Objects.requireNonNull(ticketBookingModule.getSelectedBusObject().getValue()).getOriginDateTime(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode(),
@@ -249,7 +261,7 @@ public class PassengerDetailsFragment extends BaseFragment implements MvvmView.V
     }
 
     private void addPassengerSelected() {
-        concessionList = ticketBookingModule.getConcessionLiveData().getValue();
+        //concessionList = ticketBookingModule.getConcessionLiveData().getValue();
         AddPassengersDialogView addPassengersDialog = AddPassengersDialogView.getInstance(busOperatorDetails, concessionList);
         addPassengersDialog.setInterfaceClickListener(pObject -> {
             if (pObject instanceof Concession) {

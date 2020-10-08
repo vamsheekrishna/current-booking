@@ -115,7 +115,7 @@ public class LiveTicketFragment extends BaseFragment implements View.OnClickList
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(Objects.requireNonNull(requireActivity()),
                 R.drawable.recycler_decoration_divider_two)));
         liveTicketsListRecyclerField.addItemDecoration(divider);
-
+          updateTickets();
         List<MyTicketInfo> liveTicketsList = new ArrayList<>();
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {

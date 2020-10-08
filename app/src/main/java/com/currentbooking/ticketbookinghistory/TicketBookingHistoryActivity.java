@@ -15,7 +15,7 @@ public class TicketBookingHistoryActivity extends BaseNavigationDrawerActivity i
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showBadge(false);
-        showHamburgerIcon(false);
+        showHamburgerIcon(true);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             boolean isShowAllRecords = extras.getBoolean(SHOW_ALL_RECORDS);

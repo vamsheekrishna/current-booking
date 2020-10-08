@@ -171,7 +171,7 @@ public class ViewTicketFragment extends BaseFragment implements View.OnClickList
         PassengerDetailsAdapter passengerDetailsAdapter = new PassengerDetailsAdapter(requireActivity(), passengerDetailsList);
         passengerListRecyclerField.setAdapter(passengerDetailsAdapter);
 
-        tvTotalUpdatedFareField.setText(busTicketDetails.getTotal());
+        tvTotalUpdatedFareField.setText("Rs."+busTicketDetails.getTotal());
 
         double totalFare = Utils.getDoubleValueFromString(busTicketDetails.getTotal());
         double serviceCharge = Utils.getDoubleValueFromString(busTicketDetails.getServiceCharge());

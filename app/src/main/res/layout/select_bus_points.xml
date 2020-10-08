@@ -42,7 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/pick_up_layout_field"
         android:background="@drawable/edit_text_round_edges"
-        android:minHeight="40dp">
+        android:minHeight="40dp"
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/iv_drop_point_thumb"

@@ -80,6 +80,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
     private BusType selectedBusTypeDetails;
     private SharedPreferences sharedpreferences;
     private SharedPreferences.Editor editor;
+    private  String operator="msrtc";
 
     public TicketBookingHomeFragment() {
         // Required empty public constructor
@@ -228,7 +229,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
         RelativeLayout selectBusTypeLayoutField = view.findViewById(R.id.select_bus_type_layout_field);
         selectBusTypeLayoutField.setVisibility(View.GONE);
         bus_point = view.findViewById(R.id.bus_point);
-        bus_point.setVisibility(View.GONE);
+        //bus_point.setVisibility(View.GONE);
 
         pickUp = view.findViewById(R.id.pick_up);
         view.findViewById(R.id.pick_up_layout_field).setOnClickListener(this);
@@ -296,7 +297,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Object lSelectedObject = selectTransportSpinnerField.getSelectedItem();
                 selectedOperatorDetails = null;
-                bus_point.setVisibility(View.GONE);
+                //bus_point.setVisibility(View.GONE);
                 if (lSelectedObject instanceof BusOperator) {
                     selectedOperatorDetails = (BusOperator) lSelectedObject;
                     bus_point.setVisibility(View.VISIBLE);
@@ -356,7 +357,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                                 WalletBalance responseDetails = response.body();
                                 if (responseDetails != null) {
                                     MyWalletBalance walletBalanceDetails = responseDetails.getAvailableBalance();
-                                    String walletBalanceText = String.format("%s : %s", getString(R.string.my_wallet_balance), walletBalanceDetails.getwallet_balance());
+                                    String walletBalanceText = String.format("%s : %s", getString(R.string.my_wallet_balance),"Rs. "+ walletBalanceDetails.getwallet_balance());
                                     balanceField.setText(walletBalanceText);
                                     editor = sharedpreferences.edit();
                                     editor.putString("balance", walletBalanceDetails.getwallet_balance());
@@ -375,6 +376,19 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                 progressDialog.dismiss();
             }
         });
+        selectedOperatorDetails=new BusOperator();
+        selectedOperatorDetails.setAdultMaxAge("120");
+        selectedOperatorDetails.setAdultMinAge("18");
+        selectedOperatorDetails.setChildMaxAge("12");
+        selectedOperatorDetails.setChildMinAge("5");
+        selectedOperatorDetails.setId("1");
+        selectedOperatorDetails.setOperatorCode("MSRTC");
+        selectedOperatorDetails.setOpertorName("MSRTC");
+        selectedOperatorDetails.setValidTill("120");
+        selectedOperatorDetails.setStatus("success");
+        selectedOperatorDetails.setMaxTicket("6");
+        ticketBookingModule.getSelectedBusOperator().setValue(selectedOperatorDetails);
+
     }
 
     @Override
@@ -451,7 +465,7 @@ public class TicketBookingHomeFragment extends BaseFragment implements View.OnCl
                             busTypeCd = "";
                         }
                         if (!pickupPointStopCode.equalsIgnoreCase(dropPointStopCode)) {
-                            mListener.gotoSelectBus(selectedOperatorDetails.getOpertorName(), busTypeCd);
+                            mListener.gotoSelectBus("msrtc", busTypeCd);
                         } else {
                             showDialog("", "Pickup Point and Drop Point should not be Same.");
                         }

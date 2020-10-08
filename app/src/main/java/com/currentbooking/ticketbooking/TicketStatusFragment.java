@@ -131,7 +131,7 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
         LinearLayout bookingFailedLayoutField = view.findViewById(R.id.booking_failed_layout_field);
 
         String busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOpertorName();
-        String busType = Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeName();
+        //String busType = Objects.requireNonNull(ticketBookingModule.getSelectedBusType().getValue()).getBusTypeName();
 
         view.findViewById(R.id.btn_failed_try_again_field).setOnClickListener(v -> paymentFailedTryAgainBtnSelected());
         view.findViewById(R.id.btn_failed_go_to_home_field).setOnClickListener(v -> paymentFailedHomeBtnSelected());
@@ -149,7 +149,7 @@ public class TicketStatusFragment extends BaseFragment implements MvvmView.View 
 
         ((TextView) view.findViewById(R.id.tv_total_persons_bus_fare_price_field)).setText(ccAvenueResponse.getFare());
         ((TextView) view.findViewById(R.id.tv_total_persons_service_charge_or_gst_field)).setText(ccAvenueResponse.getService_charge()+" %");
-        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText(ccAvenueResponse.getTotal_fare());
+        ((TextView) view.findViewById(R.id.tv_total_persons_total_fare_field)).setText("Rs. "+ccAvenueResponse.getTotal_fare());
 
         ((TextView) view.findViewById(R.id.date_field)).setText(ccAvenueResponse.getBooking_date());
         ((TextView) view.findViewById(R.id.time_field)).setText(ccAvenueResponse.getBooking_time());

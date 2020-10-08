@@ -201,7 +201,7 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
             } else {
                 requestType = "tostop";
             }
-            ticketService.getBusStopList(operatorName, stopPrefix, requestType).enqueue(new Callback<BusStopResponse>() {
+            ticketService.getBusStopList("msrtc", stopPrefix, requestType).enqueue(new Callback<BusStopResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BusStopResponse> call, @NotNull Response<BusStopResponse> response) {
                     if (response.isSuccessful()) {
@@ -253,11 +253,15 @@ public class BusPointFragment extends BaseFragment implements View.OnClickListen
                     ticketBookingModule.getSelectedPickUpPoint().setValue(data);
                 }
             }
+            ticketBookingModule.getSelectedPickUpPoint().setValue(data);
+
         } else if (mIndex == 3) {
             // BusStopObject selectedBusPoint = busPoints.get(index);
-            if (!Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopName().equals(data.getStopName()) || !ticketBookingModule.getSelectedPickUpPoint().getValue().getStopName().equals(data.getStopName())) {
+           /* if (!Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopName().equals(data.getStopName()) || !ticketBookingModule.getSelectedPickUpPoint().getValue().getStopName().equals(data.getStopName())) {
                 ticketBookingModule.getSelectedDropPoint().setValue(data);
-            }
+            }*/
+            ticketBookingModule.getSelectedDropPoint().setValue(data);
+
         }
         hideSoftKeyboard();
         Objects.requireNonNull(getActivity()).onBackPressed();

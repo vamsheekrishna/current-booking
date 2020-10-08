@@ -133,9 +133,8 @@ public class TicketBookingViewModel extends ViewModel {
 
     public void loadBusTypes() {
         if (selectedBusOperator != null) {
-            BusOperator busOperator = selectedBusOperator.getValue();
-            if (busOperator != null) {
-                String operatorCode = busOperator.getOperatorCode();
+           // BusOperator busOperator = selectedBusOperator.getValue();
+                String operatorCode = "msrtc";
                 if (!TextUtils.isEmpty(operatorCode)) {
                     loadingDialog.show();
                     ticketBookingServices.getBusTypes("msrtc").enqueue(new Callback<BusTypeList>() {
@@ -163,7 +162,7 @@ public class TicketBookingViewModel extends ViewModel {
                         }
                     });
                 }
-            }
+
         }
 
     }

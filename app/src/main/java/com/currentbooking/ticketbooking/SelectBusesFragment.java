@@ -122,7 +122,7 @@ public class SelectBusesFragment extends BaseFragment implements MvvmView.View {
             progressDialog.show();
             TicketBookingServices busListService = RetrofitClientInstance.getRetrofitInstance().create(TicketBookingServices.class);
             busOperatorName = Objects.requireNonNull(ticketBookingModule.getSelectedBusOperator().getValue()).getOperatorCode();
-            busListService.getAvailableBusList(busOperatorName,
+            busListService.getAvailableBusList("msrtc",
                     busTypeName,
                     Objects.requireNonNull(ticketBookingModule.getSelectedPickUpPoint().getValue()).getStopCode(),
                     Objects.requireNonNull(ticketBookingModule.getSelectedDropPoint().getValue()).getStopCode()).enqueue(new Callback<AvailableBusList>() {

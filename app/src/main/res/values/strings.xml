@@ -15,7 +15,7 @@
     <string name="select_transport">Select Transport</string>
     <string name="pickup_point">Boarding Point</string>
     <string name="drop_off_point">Alighting Point</string>
-    <string name="select_bus_type">Select Bus Type</string>
+    <string name="select_bus_type">Select Service Type</string>
     <string name="first_name">First Name</string>
     <string name="full_name">Full Name</string>
     <string name="last_name">Last Name</string>
@@ -177,5 +177,5 @@
     <string name="server_connection_failed">Server not responding please try again !!!</string>
     <string name="my_wallet_balance">My Wallet Balance</string>
     <string name="ticket_expired_time">180</string>
-
+    <string name="Rs">\u20B9</string>
 </resources>
